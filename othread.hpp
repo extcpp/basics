@@ -1,4 +1,4 @@
-// Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2014 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
 
 #include <thread>

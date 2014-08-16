@@ -1,13 +1,12 @@
-// Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2014 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
 
-#include <functional>
-#include <chrono>
+#include <utility>
 #include <vector>
+#include <chrono>
+#include <functional>
 #include <iostream>
 #include <iomanip>
-#include <sstream>
-#include <utility>
 
 namespace o{ namespace util{
 
