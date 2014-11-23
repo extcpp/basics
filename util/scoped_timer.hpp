@@ -18,7 +18,7 @@ public:  // defines
     using intStrVec = std::vector<std::pair<int,std::string>>;
 
 public:  // functions
-    scoped_timer(std::function<void(intStrVec)> callback = &scoped_timer::toSting):
+    scoped_timer(std::function<intStrVec(intStrVec)> callback = &scoped_timer::toSting):
         m_callback(callback),
         m_disabled(false),
         m_disableAdd(false)
@@ -34,7 +34,7 @@ public:  // functions
         m_disableAdd(false)
     {
         m_timePoints.reserve(10);
-        m_timePoints.emplace_back(hclock::time_point(),"");
+        m_timePoints.emplace_back(hclock::time_point(), name);
         m_timePoints.back().first=hclock::now();
     }
 
@@ -61,10 +61,10 @@ public:  // functions
         m_disableAdd = true;
     }
 
-    void stop_use_cb()
+    intStrVec stop_use_cb()
     {
         m_disabled=true;
-        m_callback(calculate());
+        return m_callback(calculate());
     }
 
     void set_name(std::string name)
@@ -74,7 +74,7 @@ public:  // functions
 
 private:  // variables
     hrcStrVec m_timePoints;
-    std::function<void(intStrVec)> m_callback;
+    std::function<intStrVec(intStrVec)> m_callback;
     bool m_disabled;
     bool m_disableAdd;
 
@@ -109,7 +109,7 @@ private:  // functions
         return std::move(times);
     }  // function - calculate
 
-    static void toSting(intStrVec times)
+    static intStrVec toSting(intStrVec times)
     {
         int width = 15;
         std::cout << "\ntotal   : "
@@ -136,6 +136,7 @@ private:  // functions
                 std::cout << std::endl;
             }
         }
+        return std::move(times);
     }  // function - to_string
 };
 
