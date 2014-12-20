@@ -13,7 +13,7 @@ namespace obi{ namespace util{
 class scoped_timer
 {
 public:  // defines
-    using hclock = std::chrono::high_resolution_clock;
+    using hclock    = std::chrono::high_resolution_clock;
     using hrcStrVec = std::vector<std::pair<hclock::time_point,std::string>>;
     using intStrVec = std::vector<std::pair<int,std::string>>;
 

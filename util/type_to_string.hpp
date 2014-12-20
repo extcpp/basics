@@ -14,6 +14,7 @@ type_to_string()
 //! create string providing description of given type
 {
     using DT = typename std::decay<T>::type ; // DT - DecayedType
+                      //std::remove_reference
     #ifdef __GNUC__
     // https://gcc.gnu.org/onlinedocs/libstdc++/libstdc++-html-USERS-4.3/a01696.html
     int status{};
@@ -22,7 +23,7 @@ type_to_string()
                             nullptr, /*output buffer*/
                             nullptr, /*bufferlen*/
                             &status
-                           ),
+        ),
         std::free // deleter - void free(void* ptr)
     );
 
@@ -67,7 +68,7 @@ type_to_string()
 #define OBI_TYPE_STRING(X) type_to_string<decltype(X)>()
 
 //print type of given var
-#define OBI_TYPE_PRINT(X)  do {\
+#define OBI_TYPE_PRINT(X) do {\
     std::cout << "Variable " OBI_TO_STRING(X) " is of type: " \
               << type_to_string<decltype(X)>() << std::endl;  \
     } while(0);
