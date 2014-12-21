@@ -2,10 +2,7 @@
 
 namespace obi { namespace functional {
 
-auto mul = [](int x, int y) {
-    return x * y;
-};
-
+// basic
 auto add = [](auto x, auto y) {
     return x + y;
 };
@@ -14,7 +11,18 @@ auto sub = [](auto x, auto y) {
     return x - y;
 };
 
-auto apply_unary =[](auto binary) {
+auto mul = [](int x, int y) {
+    return x * y;
+};
+
+//higher order
+auto apply = [](auto function) {
+    return [=](auto ...tail) {
+        return function(tail...);
+    };
+};
+
+auto apply_unary = [](auto binary) {
     return [=](auto x) {
         return binary(x, x);
     };
@@ -28,20 +36,36 @@ auto apply_binary = [](auto binary) {
     };
 };
 
+auto curry = [](auto function, auto head) {
+  return [=](auto ...tail) {
+    return function(head, tail...);
+  };
+};
+
+
+
+
+
+
+
+
+
+
+//lists
 auto list = [](auto ...xs) {
     return [=](auto access) { return access(xs...); };
 };
 
 auto head = [](auto xs) {
-    return xs([](auto first, auto ...rest) { return first; });
+    return xs([](auto y, auto ...ys) { return y; });
 };
 
 auto tail = [](auto xs) {
-    return xs([](auto first, auto ...rest) { return list(rest...); });
+    return xs([](auto y, auto ...ys) { return list(ys...); });
 };
 
 auto length = [](auto xs) {
-    return xs([](auto ...z) { return sizeof...(z); });
+    return xs([](auto ...yys) { return sizeof...(yys); });
 };
 
 }}  // obi::functional
