@@ -43,14 +43,6 @@ auto curry = [](auto function, auto head) {
 };
 
 
-
-
-
-
-
-
-
-
 //lists
 auto list = [](auto ...xs) {
     return [=](auto access) { return access(xs...); };
@@ -68,4 +60,4 @@ auto length = [](auto xs) {
     return xs([](auto ...yys) { return sizeof...(yys); });
 };
 
-}}  // obi::functional
+}}  // namespace obi::functional

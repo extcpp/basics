@@ -140,4 +140,4 @@ private:  // functions
     }  // function - to_string
 };
 
-}}
+}}  // namespace obi::util
