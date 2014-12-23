@@ -65,12 +65,12 @@ type_to_string()
 #define OBI_TO_STRING(X) #X
 
 //create string that describes type of given var
-#define OBI_TYPE_STRING(X) type_to_string<decltype(X)>()
+#define OBI_TYPE_STRING(X) obi::util::type_to_string<decltype(X)>()
 
 //print type of given var
 #define OBI_TYPE_PRINT(X) do {\
     std::cout << "Variable " OBI_TO_STRING(X) " is of type: " \
-              << type_to_string<decltype(X)>() << std::endl;  \
+              << obi::util::type_to_string<decltype(X)>() << std::endl;  \
     } while(0);
 
 }}  // namespace obi::util
