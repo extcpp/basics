@@ -21,14 +21,25 @@ uint64_t fib(uint64_t n)
 int main() {
 
     scoped_timer timer("function cache test");
+
+    //function_cache - usage
+    auto fib_cache = add_function_cache(&fib);
+
+    //function_cache_old - usage
     function<decltype(fib)> fib_fn = &fib;
-    auto fib_cache = add_function_cache(fib_fn);
+    auto fib_cache_old = add_function_cache_old(fib_fn);
 
     timer.add_step("init - done");
-    cout << fib_cache(8) << endl;
-    timer.add_step("without cache - done");
-    cout << fib_cache(8) << endl;
-    timer.add_step("with cache - done");
+
+    cout << fib_cache(15) << endl;
+    timer.add_step("function_cache (without cache) - done");
+    cout << fib_cache(15) << endl;
+    timer.add_step("function_cache (with cache) - done");
+
+    cout << fib_cache_old(15) << endl;
+    timer.add_step("function_cache_old (without cache) - done");
+    cout << fib_cache_old(15) << endl;
+    timer.add_step("function_cache_old (with cache) - done");
 
     return 0;
 }
