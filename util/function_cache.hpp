@@ -1,7 +1,6 @@
 #pragma once
 
 #include <functional>
-#include <utility>
 #include <type_traits>
 #include <map>
 #include <tuple>
@@ -17,11 +16,10 @@ auto add_function_cache = [](auto fun) {
             std::tuple<decltype(run_args)...>,
             fun_return_type
         > result_cache;
-
         std::tuple<decltype(run_args)...> tuple(run_args...);
         if (result_cache.find(tuple) == result_cache.end()) {
             fun_return_type rv = fun(run_args...);
-            result_cache[tuple] = fun(run_args...);
+            result_cache[tuple] = rv;
             return rv;
         }
         else {
