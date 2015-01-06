@@ -25,7 +25,6 @@ auto add_function_cache = [](auto fun) {
         else {
             return result_cache[tuple];
         }
-        return fun(run_args...);
     });
 };
 
