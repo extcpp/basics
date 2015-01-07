@@ -17,13 +17,14 @@ auto add_function_cache = [](auto fun) {
             fun_return_type
         > result_cache;
         std::tuple<decltype(run_args)...> tuple(run_args...);
-        if (result_cache.find(tuple) == result_cache.end()) {
+        auto search = result_cache.find(tuple);
+        if ( search == result_cache.end()) {
             fun_return_type rv = fun(run_args...);
             result_cache[tuple] = rv;
             return rv;
         }
         else {
-            return result_cache[tuple];
+            return search->second;
         }
     });
 };
@@ -35,13 +36,14 @@ add_function_cache_old(std::function<R(Args...)> fun)
     std::map<std::tuple<Args...>, R> cache;
     return [=](Args... args) mutable  {
         std::tuple<Args...> t(args...);
-        if (cache.find(t) == cache.end()) {
+        auto search = cache.find(t);
+        if (search == cache.end()) {
             R rv = fun(args...);
             cache[t] = rv;
             return rv;
         }
         else {
-            return cache[t];
+            return search->second;
         }
     };
 };
