@@ -10,7 +10,7 @@ namespace obi { namespace util {
 //requires c++14
 auto add_function_cache = [](auto fun) {
     using fun_type = decltype(fun);
-    return ([=](auto... run_args){
+    return ([=](auto... run_args) mutable {
         using fun_return_type = std::result_of_t<fun_type(decltype(run_args)...)>;
         static std::map<
             std::tuple<decltype(run_args)...>,
@@ -34,7 +34,7 @@ add_function_cache_old(std::function<R(Args...)> fun)
 -> std::function<R(Args...)>
 {
     std::map<std::tuple<Args...>, R> cache;
-    return [=](Args... args) mutable  {
+    return [=](Args... args) mutable {
         std::tuple<Args...> t(args...);
         auto search = cache.find(t);
         if (search == cache.end()) {
