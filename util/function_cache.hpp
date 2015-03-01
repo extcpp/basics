@@ -7,16 +7,17 @@
 
 namespace obi { namespace util {
 
-//requires c++14
+// requires c++14
+// Function Pointer only
 auto add_function_cache = [](auto fun) {
     using fun_type = decltype(fun);
-    return ([=](auto... run_args) mutable {
+    return ([=](auto... run_args) {
         using fun_return_type = std::result_of_t<fun_type(decltype(run_args)...)>;
         static std::map<
-            std::tuple<decltype(run_args)...>,
+            std::tuple<fun_type, decltype(run_args)...>,
             fun_return_type
         > result_cache;
-        std::tuple<decltype(run_args)...> tuple(run_args...);
+        std::tuple<fun_type, decltype(run_args)...> tuple(fun, run_args...);
         auto search = result_cache.find(tuple);
         if ( search == result_cache.end()) {
             fun_return_type rv = fun(run_args...);

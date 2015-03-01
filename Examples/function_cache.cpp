@@ -24,8 +24,7 @@ int main() {
     auto fib_cache = add_function_cache(&fib);
 
     //function_cache_old - usage
-    function<decltype(fib)> fib_fn = &fib;
-    auto fib_cache_old = add_function_cache_old(fib_fn);
+    auto fib_cache_old = add_function_cache_old(function<decltype(fib)>(fib));
 
     timer.add_step("init - done");
 
