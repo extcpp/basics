@@ -2,7 +2,7 @@
 #include <libobi/util/functional.hpp>
 
 using namespace std;
-using namespace obi::functional;
+using namespace obi::util;
 
 int main() {
     auto rv1 = apply(add)(11, 12);

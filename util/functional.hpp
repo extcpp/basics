@@ -1,6 +1,6 @@
 #pragma once
 
-namespace obi { namespace functional {
+namespace obi { namespace util {
 
 // basic
 auto add = [](auto x, auto y) {
