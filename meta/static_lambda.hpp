@@ -6,7 +6,7 @@
 
 namespace obi { namespace meta {
 
-#define OBI_STATIC_LAMBDA obi::util::wrapper_factor() += true ? nullptr : obi::util::addr_add() + []
+#define OBI_STATIC_LAMBDA obi::meta::wrapper_factor() += true ? nullptr : obi::meta::addr_add() + []
 
 struct addr_add
 {
