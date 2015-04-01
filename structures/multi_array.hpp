@@ -4,23 +4,6 @@
 
 namespace obi { namespace structures {
 
-//! size function that calculates the length
-//  required length of the array
-template<int last>
-constexpr static
-int
-array_size()
-{
-    return last;
-}
-
-template<int head, int ...tail>
-constexpr static
-typename std::enable_if< sizeof...(tail) != 0, int>::type
-array_size()
-{
-    return head*array_size<tail...>();
-}
 
 //! Multi Array Class
 template <typename _value_type, int... sizes>
@@ -32,9 +15,38 @@ public:
 
 private:
     static const int mysize = array_size<sizes...>();
+    std::array<value_type, mysize> _array;
 
 private:
-    std::array<value_type, mysize> _array;
+    //! size function that calculates the length
+    //  required length of the array
+    template<int last>
+    constexpr static
+    int
+    array_size()
+    {
+        return last;
+    }
+
+    template<int head, int ...tail>
+    constexpr static
+    typename std::enable_if< sizeof...(tail) != 0, int>::type
+    array_size()
+    {
+        return head*array_size<tail...>();
+    }
+
+    at(int last)
+    {
+
+    }
+
+    //accessor
+    at(int head, int... tail)
+    {
+
+    }
+
 };
 
 }}  // obi::structures
