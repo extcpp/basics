@@ -1,14 +1,8 @@
 #pragma once
-#ifdef _WIN32
 
+#ifdef _WIN32
 #include <windows.h>
-#if __cplusplus > 199711L
-    #include <memory>
-    typedef std::shared_ptr<LPWSTR> obi::util::SPLPWSTR;
-#else
-    #include <tr1/memory>
-    typedef std::tr1::shared_ptr<LPWSTR> obi::util::SPLPWSTR;
-#endif
+#include <string>
 
 // I define char* utf-8 encoded to be the default
 // the order out in is not lucky but instring_size is the only optional argument
@@ -19,7 +13,9 @@ namespace obi { namespace util {
 //  LPCTSTR:    LPCSTR (const char*)    LPCWSTR (const wchar)
 //  LPTSTR:     LPSTR (char*)           LPWSTR (wchar)
 
-    int string_from_win_get_size(LPCWSTR in_string, const int& in_string_size=-1){
+
+// form windows to utf8 encoded std::string
+    int string_from_win_get_size(LPCWSTR in_string, int in_string_size=-1){
         return ::WideCharToMultiByte(
             CP_UTF8,                // UNIT    CodePage
             WC_ERR_INVALID_CHARS,   // DOWRD   dwFlags
@@ -32,7 +28,7 @@ namespace obi { namespace util {
         );
     };
 
-    int string_from_win(char* out_string, int out_string_size, LPCWSTR in_string, const int& in_string_size=-1){
+    int string_from_win(char* out_string, int out_string_size, LPCWSTR in_string, int in_string_size=-1){
         return ::WideCharToMultiByte(
             CP_UTF8,                // UNIT    CodePage
             WC_ERR_INVALID_CHARS,   // DOWRD   dwFlags
@@ -45,16 +41,22 @@ namespace obi { namespace util {
         );
     };
 
-    std::string string_from_win(LPCWSTR in_string, const int& in_string_size=-1){
-        int size = string_from_win_get_size(in_string, instring_size);
-        std::alloc buffer(size * sizeof(char));
-        string_from_win(buffer, size, in_string, instring_size);
-        std::string rv = std::string(*buffer);
-        std::free buffer;
+    std::string string_from_win(LPCWSTR in_string, int in_string_size=-1){
+        int size = string_from_win_get_size(in_string, in_string_size);
+        std::string rv;
+        rv.resize(size);
+        string_from_win(&rv[0], size, in_string, instring_size);
         return rv;
     }
 
-    int string_to_win_get_size(char* in_string, const int& in_string_size=-1){
+    std::string string_from_win(const std::wstring in_string){
+        return string_from_win(in_string.c_str());
+    }
+
+
+
+// form utf8 encoded std::string to windows
+    int string_to_win_get_size(const char* in_string, int in_string_size=-1){
         return ::MultiByteToWideChar(
             CP_UTF8,                // UINT     CodePage
             MB_PRECOMPOSED,         // DWORD    dwFlags
@@ -65,7 +67,7 @@ namespace obi { namespace util {
         );
     };
 
-    int string_to_win(LPWSTR out_string, int out_string_size, char* in_string, const int& in_string_size=-1){
+    int string_to_win(LPWSTR out_string, int out_string_size, const char* in_string, int in_string_size=-1){
         return ::MultiByteToWideChar(
             CP_UTF8,                // UINT     CodePage
             MB_PRECOMPOSED,         // DWORD    dwFlags
@@ -76,17 +78,16 @@ namespace obi { namespace util {
         );
     };
 
-    SPLPWSTR string_to_win(std::string in_string){
-        int size = string_to_win_get_size(in_string);
-        std::alloc buffer(size * sizeof(LPWSTR));
-        string_to_win(buffer, size, in_string);
-        #if __cplusplus > 199711L
-            SPLPWSTR rv =      std::make_shared<LPWSTR>(*buffer);
-        #else
-            SPLPWSTR rv = std::tr1::make_shared<LPWSTR>(*buffer);
-        #endif
-        std::free buffer;
+    std::wstring string_to_win(const char* in_string, int in_string_size=-1){
+        int size = string_to_win_get_size(in_string, in_string_size);
+        std::wstring rv;
+        rv.resize(size);
+        string_to_win(&rv[0], size, in_string, in_string_size);
         return rv;
+    }
+
+    std::wstring string_to_win(const char* in_string, int in_string_size=-1){
+        return string_to_win(in_string.c_str());
     }
 }}
 #endif
