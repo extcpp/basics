@@ -34,11 +34,9 @@ namespace obi { namespace util {
         return ::dlopen(filename, flag);
     #elif _WIN32
         #ifdef UNICODE
-            SPLPWSTR tmp = string_to_win(std::string(filename));
-            dl_handle rv  = ::LoadLibrary(tmp.get());
-            return rv;
+            std::wstring tmp = string_to_win(filename);
+            return ::LoadLibrary(tmp.c_str());
         #else
-            //Requires LPSTR!! - todo use multibyte to wide
             return ::LoadLibrary(filename);
         #endif
     #endif
@@ -51,8 +49,6 @@ namespace obi { namespace util {
 
 
 // error
-// returns UFT8Str - todo
-// NOTE - you need to free the returned buffer on windows!!!
     std::string dl_error(void){
     #ifdef linux
         //returns a static buffer - do not free!!!!

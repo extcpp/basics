@@ -43,13 +43,12 @@ namespace obi { namespace util {
 
     std::string string_from_win(LPCWSTR in_string, int in_string_size=-1){
         int size = string_from_win_get_size(in_string, in_string_size);
-        std::string rv;
-        rv.resize(size);
+        std::string rv(size, '');
         string_from_win(&rv[0], size, in_string, instring_size);
         return rv;
     }
 
-    std::string string_from_win(const std::wstring in_string){
+    std::string string_from_win(const std::wstring& in_string){
         return string_from_win(in_string.c_str());
     }
 
@@ -80,8 +79,7 @@ namespace obi { namespace util {
 
     std::wstring string_to_win(const char* in_string, int in_string_size=-1){
         int size = string_to_win_get_size(in_string, in_string_size);
-        std::wstring rv;
-        rv.resize(size);
+        std::wstring rv(size, L'');
         string_to_win(&rv[0], size, in_string, in_string_size);
         return rv;
     }
