@@ -6,11 +6,9 @@
     #include <windows.h>
     #include <strsafe.h>
     #include "windows_strings.hpp"
-    #include <cstdlib>
 #endif
 
 #include <string>
-#include <memory>
 
 // filenames must be a utf-8 strings!
 // std::string or char* are allowed
