@@ -60,7 +60,7 @@ namespace obi { namespace util {
         //returns a static buffer - do not free!!!!
         char* buffer = ::dlerror();
         if(buffer){
-            return std::string(*buffer);
+            return std::string(buffer);
         } else {
             return std::string("");
         }
