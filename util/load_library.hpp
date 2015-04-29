@@ -2,58 +2,60 @@
 
 #ifdef linux
     #include <dlfcn.h>
-#ifdef _WIN32
+#elif _WIN32
     #include <windows.h>
     #include <strsafe.h>
     #include "windows_strings.hpp"
     #include <cstdlib>
-    #include <string>
 #endif
 
+#include <string>
 #include <memory>
 
 // filenames must be a utf-8 strings!
+// std::string or char* are allowed
 
 namespace obi { namespace util {
 // types
     #ifdef linux
-        typedef void*   DLHandle;
-        typedef void*   DLAddress;
-        typedef int     DLRv;
-    #ifdef _WIN32
-        typedef HMODULE DLHandle;
-        typedef FARPROC DLAddress;
-        typedef BOOL    DLRv;
+        typedef void*   dl_handle;
+        typedef void*   dl_address;
+        typedef int     dl_rv;
+    #elif _WIN32
+        typedef HMODULE dl_handle;
+        typedef FARPROC dl_address;
+        typedef BOOL    dl_rv;
     #endif
-    typedef char*       UTF8Str;
-    typedef std::string DLError;
+    typedef char*       utf8_e_str;
+
 
 // open
 // returns NULL on fail
-    DLHandle dl_open(const UTF8Str filename, int flag=TRLD_LAZY){
+    dl_handle dl_open(const utf8_e_str filename, int flag=TRLD_LAZY){
     #ifdef linux
         return ::dlopen(filename, flag);
-    #ifdef _WIN32
+    #elif _WIN32
         #ifdef UNICODE
-            SPLPWSTR tmp = string_to_win(std::string(*filename));
-            DLHandle rv  = ::LoadLibrary(tmp.get());
+            SPLPWSTR tmp = string_to_win(std::string(filename));
+            dl_handle rv  = ::LoadLibrary(tmp.get());
             return rv;
         #else
             //Requires LPSTR!! - todo use multibyte to wide
-            return ::LoadLibraryA(filename);
+            return ::LoadLibrary(filename);
         #endif
     #endif
     }
 
     //utf-8 encoded std::string
-    DLHandle dl_open(const std::string& filename, int flag=TRLD_LAZY){
+    dl_handle dl_open(const std::string& filename, int flag=TRLD_LAZY){
         dl_open(filename.c_str(), flag);
     }
+
 
 // error
 // returns UFT8Str - todo
 // NOTE - you need to free the returned buffer on windows!!!
-    DLError dl_error(void){
+    std::string dl_error(void){
     #ifdef linux
         //returns a static buffer - do not free!!!!
         char* buffer = ::dlerror();
@@ -62,7 +64,7 @@ namespace obi { namespace util {
         } else {
             return std::string("");
         }
-    #ifdef _WIN32
+    #elif _WIN32
         LPVOID lpMsgBuf;
         DWORD  dw_error_num = ::GetLastError();
 
@@ -77,7 +79,7 @@ namespace obi { namespace util {
         #ifdef UNICODE
             std::string rv = string_from_win(lpMsgBuf)
         #else
-            std::string rv(*lpMsgBuf);
+            std::string rv(lpMsgBuf);
         #endif
         LocalFree(lpMsgBuf);
         return rv;
@@ -87,21 +89,29 @@ namespace obi { namespace util {
 
 // get symbol
 // returns NULL on fail
-    DLAddress dl_sym(DLHandle handle, const UTF8Str symbol){
+    dl_address dl_sym(dl_handle handle, const utf8_e_str symbol){
     #ifdef linux
         return ::dlsym(handle, symbol);
-    #ifdef _WIN32
-        return ::GetProcAddress(handle, symbol);
+    #elif _WIN32
+        #ifdef UNICODE
+            std::wstring tmp = string_to_win(symbol);
+            return ::GetProcAddress(handle, tmp.c_str());
+        #else
+            return ::GetProcAddress(handle, symbol);
+        #endif
     #endif
     }
 
+    dl_address dl_sym(dl_handle handle, const std::string& symbol){
+        return dl_sym(handle, symbol.cstr());
+    }
 
 // close
 // returns 0 on fail
-    DLRv dl_close(DLHandle handle){
+    dl_rv dl_close(dl_handle handle){
     #ifdef linux
         return ::dlclose(handle);
-    #ifdef _WIN32
+    #elif _WIN32
         return ::FreeLibrary(handle);
     #endif
     }
