@@ -1,5 +1,6 @@
 // The code is taken from: "Anthony Williams: C++ Concurrency in Action"
 // c++11 only
+#pragma once
 
 #include <mutex>
 #include <stdexcept>

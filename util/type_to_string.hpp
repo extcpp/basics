@@ -1,3 +1,6 @@
+// Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+#pragma once
+
 #include <utility>
 #include <type_traits>
 #include <memory>

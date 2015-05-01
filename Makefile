@@ -1,3 +1,5 @@
+# Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+
 CPPFLAGS =-std=c++14 -I.. -lpthread
 
 #below all example files are listed
