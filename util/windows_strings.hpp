@@ -1,5 +1,5 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-//
+
 // Collection of functions that convert between utf8 encoded
 // strings (std::string char*) and strings taken by the windows
 // API LPWSTR.
@@ -15,6 +15,8 @@
 //              non UNICODE             UNICODE
 //  LPCTSTR:    LPCSTR (const char*)    LPCWSTR (const wchar)
 //  LPTSTR:     LPSTR (char*)           LPWSTR (wchar)
+//
+//
 #pragma once
 
 #ifdef _WIN32
