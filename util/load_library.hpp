@@ -12,7 +12,7 @@
 
 #pragma once
 
-#ifdef linux
+#ifdef __linux__
     #include <dlfcn.h>
 #elif _WIN32
     #include <windows.h>
@@ -23,7 +23,7 @@
 
 namespace obi { namespace util {
 // types
-    #ifdef linux
+    #ifdef __linux__
         typedef void*   dl_handle;
         typedef void*   dl_address;
         typedef int     dl_rv;
@@ -42,7 +42,7 @@ namespace obi { namespace util {
      * @return                  dl_handle or NULL on fail
      */
     dl_handle dl_open(const utf8_e_str filename, int flag=RTLD_LAZY){
-    #ifdef linux
+    #ifdef __linux__
         return ::dlopen(filename, flag);
     #elif _WIN32
         #ifdef UNICODE
@@ -66,7 +66,7 @@ namespace obi { namespace util {
      * @return  textual description of the error in utf-8 encoded std::string
      */
     std::string dl_error(void){
-    #ifdef linux
+    #ifdef __linux__
         //returns a static buffer - do not free!!!!
         char* buffer = ::dlerror();
         if(buffer){
@@ -106,7 +106,7 @@ namespace obi { namespace util {
      *                          or NULL if symbol is not found
      */
     dl_address dl_sym(dl_handle handle, const utf8_e_str symbol){
-    #ifdef linux
+    #ifdef __linux__
         return ::dlsym(handle, symbol);
     #elif _WIN32
         #ifdef UNICODE
@@ -132,7 +132,7 @@ namespace obi { namespace util {
      *  @return             returns NULL on fail
      */
     dl_rv dl_close(dl_handle handle){
-    #ifdef linux
+    #ifdef __linux__
         return ::dlclose(handle);
     #elif _WIN32
         return ::FreeLibrary(handle);
