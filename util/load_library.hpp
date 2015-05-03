@@ -19,7 +19,6 @@
     #include <strsafe.h>
     #include "windows_strings.hpp"
 #endif
-
 #include <string>
 
 namespace obi { namespace util {
@@ -56,7 +55,7 @@ namespace obi { namespace util {
     }
 
     //! open library - overload for std::string
-    dl_handle dl_open(const std::string& filename, int flag=TRLD_LAZY){
+    dl_handle dl_open(const std::string& filename, int flag=RTLD_LAZY){
         dl_open(filename.c_str(), flag);
     }
 
@@ -121,7 +120,7 @@ namespace obi { namespace util {
 
     //! get address of symbol - overload for std::string
     dl_address dl_sym(dl_handle handle, const std::string& symbol){
-        return dl_sym(handle, symbol.cstr());
+        return dl_sym(handle, symbol.c_str());
     }
 
 
