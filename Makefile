@@ -11,6 +11,7 @@ scoped_timer
 type_to_string
 static_lambda
 meta
+load_library
 
 endef
 #main_multi_array
