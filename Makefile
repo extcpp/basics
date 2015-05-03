@@ -1,6 +1,6 @@
 # Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
-CPPFLAGS =-std=c++14 -I.. -lpthread -ldl
+CPPFLAGS =-std=c++14 -g -ggdb -I.. -lpthread -ldl 
 
 #below all example files are listed
 define unstripped_files =

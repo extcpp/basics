@@ -33,6 +33,7 @@ namespace obi { namespace util {
         typedef BOOL    dl_rv;
     #endif
     typedef char*       utf8_e_str;
+    typedef const char* const_utf8_e_str;
 
     //! open library
     /*!
@@ -41,7 +42,7 @@ namespace obi { namespace util {
      * @param[in]   flag        binding strategy - defaults to RTLD_LAZY (ignored on windows)
      * @return                  dl_handle or NULL on fail
      */
-    dl_handle dl_open(const utf8_e_str filename, int flag=RTLD_LAZY){
+    dl_handle dl_open(const_utf8_e_str filename, int flag=RTLD_LAZY){
     #ifdef __linux__
         return ::dlopen(filename, flag);
     #elif _WIN32
@@ -105,7 +106,7 @@ namespace obi { namespace util {
      *  @return     dl_address  pointer to requested symbol
      *                          or NULL if symbol is not found
      */
-    dl_address dl_sym(dl_handle handle, const utf8_e_str symbol){
+    dl_address dl_sym(dl_handle handle, const_utf8_e_str symbol){
     #ifdef __linux__
         return ::dlsym(handle, symbol);
     #elif _WIN32
