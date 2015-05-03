@@ -1,4 +1,15 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+
+// Collection of functions that allows loading of libraries
+// cross platform for linux and windows. Other platforms are
+// not supported yet. All strings are expected to be be utf-8
+// encoded.
+// For more information please refer to:
+// - man 3 dlopen or http://linux.die.net/man/3/dlopen
+// - https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175.aspx (LoadLibrary)
+// - https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212.aspx (GetProcAdress)
+// - https://msdn.microsoft.com/en-us/library/windows/desktop/ms683152.aspx (FreeLibrary)
+
 #pragma once
 
 #ifdef linux
@@ -10,9 +21,6 @@
 #endif
 
 #include <string>
-
-// filenames must be a utf-8 strings!
-// std::string or char* are allowed
 
 namespace obi { namespace util {
 // types
@@ -27,10 +35,14 @@ namespace obi { namespace util {
     #endif
     typedef char*       utf8_e_str;
 
-
-// open
-// returns NULL on fail
-    dl_handle dl_open(const utf8_e_str filename, int flag=TRLD_LAZY){
+    //! open library
+    /*!
+     * Function that opens dynamic library and loads it into the address space of current process
+     * @param[in]   filename    path to library (null terminated string)
+     * @param[in]   flag        binding strategy - defaults to RTLD_LAZY (ignored on windows)
+     * @return                  dl_handle or NULL on fail
+     */
+    dl_handle dl_open(const utf8_e_str filename, int flag=RTLD_LAZY){
     #ifdef linux
         return ::dlopen(filename, flag);
     #elif _WIN32
@@ -43,13 +55,17 @@ namespace obi { namespace util {
     #endif
     }
 
-    //utf-8 encoded std::string
+    //! open library - overload for std::string
     dl_handle dl_open(const std::string& filename, int flag=TRLD_LAZY){
         dl_open(filename.c_str(), flag);
     }
 
 
-// error
+    //! get error
+    /*!
+     * Functions that returns textual error
+     * @return  textual description of the error in utf-8 encoded std::string
+     */
     std::string dl_error(void){
     #ifdef linux
         //returns a static buffer - do not free!!!!
@@ -76,14 +92,20 @@ namespace obi { namespace util {
         #else
             std::string rv(lpMsgBuf);
         #endif
-        LocalFree(lpMsgBuf);
+        ::LocalFree(lpMsgBuf);
         return rv;
     #endif
     }
 
 
-// get symbol
-// returns NULL on fail
+    //! get address of symbol
+    /*!
+     *  Function that receives address of symbol in dynamic library
+     *  @param[in]  handle      Handle to dynamic library
+     *  @param[in]  symbol      function or variable name to look up
+     *  @return     dl_address  pointer to requested symbol
+     *                          or NULL if symbol is not found
+     */
     dl_address dl_sym(dl_handle handle, const utf8_e_str symbol){
     #ifdef linux
         return ::dlsym(handle, symbol);
@@ -97,12 +119,19 @@ namespace obi { namespace util {
     #endif
     }
 
+    //! get address of symbol - overload for std::string
     dl_address dl_sym(dl_handle handle, const std::string& symbol){
         return dl_sym(handle, symbol.cstr());
     }
 
-// close
-// returns 0 on fail
+
+    //! close library
+    /*!
+     *  Function that decreases reference count on dynamic library and
+     *  and closes the file if reference count drops to 0.
+     *  @param[in]  handle  handle of lib to close
+     *  @return             returns NULL on fail
+     */
     dl_rv dl_close(dl_handle handle){
     #ifdef linux
         return ::dlclose(handle);
@@ -110,5 +139,4 @@ namespace obi { namespace util {
         return ::FreeLibrary(handle);
     #endif
     }
-
 }}
