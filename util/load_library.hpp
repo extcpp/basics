@@ -20,6 +20,7 @@
     #include "windows_strings.hpp"
 #endif
 #include <string>
+#include <stdexcept>
 
 namespace obi { namespace util {
 // types
@@ -122,6 +123,16 @@ namespace obi { namespace util {
     //! get address of symbol - overload for std::string
     dl_address dl_sym(dl_handle handle, const std::string& symbol){
         return dl_sym(handle, symbol.c_str());
+    }
+
+    //! get address of symbol or throw logic_error
+    dl_address dl_sym_e(dl_handle handle, const std::string& symbol){
+        dl_address address = dl_sym(handle, symbol.c_str());
+        if (address == NULL){
+            throw std::logic_error(dl_error());
+        } else {
+            return address;
+        }
     }
 
 

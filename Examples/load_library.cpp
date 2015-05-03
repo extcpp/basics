@@ -15,8 +15,23 @@ int main(){
     } else {
         cout << "handle is " << (long) handle << endl;
     }
+
     auto symbol_address      = dl_sym(handle, symbol);
-    auto symbol_address_fail = dl_sym(handle, symbol_fail);
+    if ( symbol_address == NULL){
+        cout << "could not get symbol" << endl;
+        cout << dl_error() << endl;
+    } else {
+        cout << "symbol is at " << (long) symbol_address << endl;
+    }
+
+    try{
+        symbol_address = dl_sym_e(handle, symbol_fail);
+        cout << "symbol is at " << (long) symbol_address << endl;
+    } catch (logic_error e){
+        cout << e.what() << endl;
+    }
+
     dl_close(handle);
+
     return 0;
 }
