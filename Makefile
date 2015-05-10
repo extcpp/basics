@@ -1,5 +1,6 @@
 # Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
+#CXX = clang++
 CPPFLAGS =-std=c++14 -g -ggdb -I.. -lpthread -ldl 
 
 #below all example files are listed
@@ -12,6 +13,7 @@ type_to_string
 static_lambda
 meta
 load_library
+if
 
 endef
 #main_multi_array
