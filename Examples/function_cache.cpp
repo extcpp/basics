@@ -28,14 +28,14 @@ int main() {
 
     timer.add_step("init - done");
 
-    cout << fib_cache(15) << endl;
+    cout << fib_cache(15ull) << endl;
     timer.add_step("function_cache (without cache) - done");
-    cout << fib_cache(15) << endl;
+    cout << fib_cache(15ull) << endl;
     timer.add_step("function_cache (with cache) - done");
 
-    cout << fib_cache_old(15) << endl;
+    cout << fib_cache_old(15ull) << endl;
     timer.add_step("function_cache_old (without cache) - done");
-    cout << fib_cache_old(15) << endl;
+    cout << fib_cache_old(15ull) << endl;
     timer.add_step("function_cache_old (with cache) - done");
 
     return 0;

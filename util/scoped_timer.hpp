@@ -80,14 +80,14 @@ private:  // variables
     bool m_disableAdd;
 
 private:  // functions
-    static int get_time_diff(const hclock::time_point& t0, const hclock::time_point& t1)
+    static long int get_time_diff(const hclock::time_point& t0, const hclock::time_point& t1)
     {
         return std::chrono::duration_cast<std::chrono::nanoseconds>(t1-t0).count();
     }
 
     intStrVec calculate()
     {
-        int total_time = get_time_diff(
+        long int total_time = get_time_diff(
             m_timePoints.front().first,
             m_timePoints.back().first
         );
@@ -97,7 +97,7 @@ private:  // functions
         );
         if (m_timePoints.size() > 2)
         {
-            for (int i = 1; i < m_timePoints.size(); i++)
+            for (std::size_t i = 1; i < m_timePoints.size(); i++)
             {
                 times.emplace_back(
                         std::make_pair(
@@ -124,12 +124,12 @@ private:  // functions
 
         if (times.size() > 1)
         {
-            for (int i = 1; i < times.size(); i++)
+            for (std::size_t i = 1; i < times.size(); i++)
             {
                 std::cout << "step "  << std::setw(3) << i << ": "
                           << std::setw(width) << times[i].first << " ns"
                           << std::setprecision(1) << std::fixed
-                          << " (" << 100*static_cast<float>(times[i].first)/times[0].first << "%)";
+                          << " (" << 100*static_cast<float>(times[i].first)/static_cast<float>(times[0].first) << "%)";
                 if (!times[i].second.empty())
                 {
                     std::cout << " - " << times[i].second;

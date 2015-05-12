@@ -58,7 +58,7 @@ namespace obi { namespace util {
 
     //! open library - overload for std::string
     dl_handle dl_open(const std::string& filename, int flag=RTLD_LAZY){
-        dl_open(filename.c_str(), flag);
+        return dl_open(filename.c_str(), flag);
     }
 
 

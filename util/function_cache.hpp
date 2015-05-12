@@ -48,6 +48,6 @@ add_function_cache_old(std::function<R(Args...)> fun)
             return search->second;
         }
     };
-};
+}
 
 }}  // namespace obi::util

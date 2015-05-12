@@ -12,8 +12,8 @@ namespace obi { namespace meta {
     struct has_value_var : std::false_type { };
 
     template<typename T>
-    //struct has_value_var<T, void_t<decltype(std::declval<T>().value)>> : std::true_type {};
-    struct has_value_var<T, decltype(std::declval<T>().value, void())> : std::true_type {};
+    struct has_value_var<T, void_t<decltype(std::declval<T>().value)>> : std::true_type {};
+    //struct has_value_var<T, decltype(std::declval<T>().value, void())> : std::true_type {};  // warning unused var
 
 // has_type_member
     template<class, class = void>
