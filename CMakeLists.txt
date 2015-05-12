@@ -4,16 +4,17 @@ cmake_minimum_required(VERSION 3.0.0)
 project(libobi)
 
 ## set os specific flags
-if(UNIX)
-    include(./gcc-warnings.cmake)
+include(./compiler-warnings.cmake)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${stone-warnings}")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
+   CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb -O0")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${stone-warnings}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
     # replace with CMAKE_CXX_STANDARD when a newer cmake becomes
     # available.
     # set(CMAKE_CXX_STANDARD 14)
     # ##set_property(TARGET libobi PROPERTY CXX_STANDARD 14) <-- this would be nice
-endif(UNIX)
+endif()
 
 ## define lib
 add_library(libobi INTERFACE)
