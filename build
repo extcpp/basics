@@ -1,0 +1,27 @@
+#!/bin/bash
+dir=build-dir
+
+args=()
+cm_flags=()
+for arg in $@; do
+    case $arg in
+        -v|--verbose)
+            export VERBOSE=1
+            export V=1
+        ;;
+        -d|--debug)
+            cm_flags+=( '-DCMAKE_BUILD_TYPE=Debug' )
+        ;;
+        -c|--clean)
+            rm -fr $dir
+        ;;
+        *)
+            args+=( "$arg" )
+        ;;
+    esac
+done
+
+test -d $dir || mkdir $dir || { exit 1; }
+cd $dir || { exit 1; }
+cmake "${cm_flags[@]}" "${args[@]}" .. && \
+make -j $(nproc)
