@@ -2,9 +2,10 @@
 
 cmake_minimum_required(VERSION 3.0.0)
 project(libobi)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLib")
 
 ## set os specific flags
-include(./compiler-warnings.cmake)
+include(compiler-warnings)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${stone-warnings}")
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
