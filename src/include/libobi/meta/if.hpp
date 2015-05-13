@@ -4,33 +4,33 @@
 #include <type_traits>
 namespace obi { namespace meta {
 
-// meta_if
+// if_
     template<typename, typename first, typename second>
-    struct meta_if {
+    struct if_ {
         using type = first;
     };
 
     template<typename first, typename second>
-    struct meta_if<std::false_type, first, second> {
+    struct if_<std::false_type, first, second> {
         using type = second;
     };
 
     template<typename cond, typename first, typename second>
-    using meta_if_t = typename meta_if<cond, first, second>::type;
+    using if__t = typename if_<cond, first, second>::type;
 
 
-// meta_ifc
+// if_c
     template<bool, typename first, typename second>
-    struct meta_ifc {
+    struct if_c {
         using type = first;
     };
 
     template<typename first, typename second>
-    struct meta_ifc<false, first, second> {
+    struct if_c<false, first, second> {
         using type = second;
     };
 
     template<bool cond, typename first, typename second>
-    using meta_ifc_t = typename meta_ifc<cond, first, second>::type;
+    using if_c_t = typename if_c<cond, first, second>::type;
 
 }}  // namespace obi::meta
