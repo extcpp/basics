@@ -19,7 +19,7 @@ endif()
 
 ## define lib
 add_library(libobi INTERFACE)
-target_include_directories(libobi INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/..)
+target_include_directories(libobi INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/src/include")
 
 ## define tests
 if(TEST)
