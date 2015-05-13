@@ -17,22 +17,22 @@ struct addr_add
     }
 };
 
-template<class F>
+template<class Functor>
 struct wrapper
 {
-    static_assert(std::is_empty<F>(), "Lambdas must be empty");
+    static_assert(std::is_empty<Functor>(), "Lambdas must be empty");
 
-    template<class... Ts>
-    decltype(auto) operator()(Ts&&... xs) const
+    template<class... XXS>
+    decltype(auto) operator()(XXS&&... xxs) const
     {
-        return reinterpret_cast<const F&>(*this)(std::forward<Ts>(xs)...);
+        return reinterpret_cast<const Functor&>(*this)(std::forward<XXS>(xxs)...);
     }
 };
 
 struct wrapper_factor
 {
-    template<class F>
-    constexpr wrapper<F> operator += (F*)
+    template<class Functor>
+    constexpr wrapper<Functor> operator += (Functor*)
     {
         return {};
     }

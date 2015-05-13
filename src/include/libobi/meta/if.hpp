@@ -16,7 +16,7 @@ namespace obi { namespace meta {
     };
 
     template<typename cond, typename first, typename second>
-    using if__t = typename if_<cond, first, second>::type;
+    using if_t = typename if_<cond, first, second>::type;
 
 
 // if_c
