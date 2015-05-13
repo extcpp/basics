@@ -1,5 +1,12 @@
 #!/bin/bash
+# Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+
+## conf
+#given relative to checkout
 dir=build-dir
+
+## code
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 args=()
 cm_flags=()
