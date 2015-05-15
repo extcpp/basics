@@ -1,12 +1,8 @@
 #!/bin/bash
 # Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
-## conf
-#given relative to checkout
-dir=build-dir
-
-## code
-cd "$(dirname "${BASH_SOURCE[0]}")"
+project_root="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+build_dir="${project_root}-build"
 
 args=()
 cm_flags=()
@@ -20,7 +16,7 @@ for arg in $@; do
             cm_flags+=( '-DCMAKE_BUILD_TYPE=Debug' )
         ;;
         -c|--clean)
-            rm -fr $dir
+            rm -fr $build_dir
         ;;
         *)
             args+=( "$arg" )
@@ -28,7 +24,7 @@ for arg in $@; do
     esac
 done
 
-test -d $dir || mkdir $dir || { exit 1; }
-cd $dir || { exit 1; }
-cmake "${cm_flags[@]}" "${args[@]}" .. && \
+test -d $build_dir || mkdir $build_dir || { exit 1; }
+cd $build_dir || { exit 1; }
+cmake "${cm_flags[@]}" "${args[@]}" "$project_root" && \
 make -j $(nproc)
