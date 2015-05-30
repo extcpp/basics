@@ -89,6 +89,14 @@ namespace obi { namespace util {
         void erase_if_helper(Container& c, Predicate p, vectorlike_tag) {
             c.erase(std::remove_if(c.begin(), c.end(), p), c.end());
         }
+        template <typename Container, class Compare>  // template template would fuck up allocators!!!
+        void sort_helper_comp(Container& c, Compare comp, vectorlike_tag){
+            std::sort(c.begin(), c.end(), comp);
+        }
+        template <typename Container>                // So I rather wirte this twice:P
+        void sort_helper_comp(Container& c, vectorlike_tag){
+            std::sort(c.begin(), c.end());
+        }
         // list like
         template <typename Container, typename X>
         void erase_helper(Container& c, const X& x, listlike_tag) {
@@ -98,7 +106,15 @@ namespace obi { namespace util {
         void erase_if_helper(Container& c, Predicate p, listlike_tag) {
             c.remove_if(p);
         }
-        // assiciative
+        template <typename Container, class Compare>
+        void sort_helper_comp(Container& c, Compare comp, listlike_tag){
+            c.sort(comp);
+        }
+        template <typename Container>
+        void sort_helper(Container& c, listlike_tag){
+            c.sort();
+        }
+        // associative
         template <typename Container, typename X>
         void erase_helper(Container& c, const X& x, associative_tag) {
             c.erase(x);
@@ -120,7 +136,7 @@ namespace obi { namespace util {
         //  But it is not as good extensible so I follow his
         //  suggestion and avoid additional member functions:)
         //  But passing empty structs as Arguments is kind
-        //  of awkward as well:(
+        //  of awkward as well:( - The optimizer will prevail!
 
 
         //  //dispatch category
@@ -175,14 +191,21 @@ namespace obi { namespace util {
     } //namespace _detail
 
     //dispatch tags
+    //erase
     template <typename Container, typename X> void erase(Container& c, const X& x) {
         _detail::erase_helper(c, x, typename _detail::container_traits<Container>::category());
     }
-
     template <typename Container, typename Predicate> void erase_if(Container& c, Predicate p) {
         _detail::erase_if_helper(c, p, typename _detail::container_traits<Container>::category());
     }
 
+    //sort
+    template <typename Container, typename Compare> void sort(Container& c, Compare comp) {
+        _detail::sort_helper_comp(c, comp, typename _detail::container_traits<Container>::category());
+    }
+    template <typename Container> void sort(Container& c) {
+        _detail::sort_helper(c, typename _detail::container_traits<Container>::category());
+    }
     //  template <typename Container, typename X>
     //  void erase(Container& c, const X& x) {
     //      typedef typename _detail::container_traits<Container>::category category;
