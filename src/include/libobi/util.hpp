@@ -6,6 +6,7 @@
 #include "util/type_to_string.hpp"
 #include "util/function_cache.hpp"
 #include "util/tracking_class.hpp"
+#include "util/container_helper.hpp"
 
 #if __cpp_generic_lambdas >= 201304
     #include "util/functional.hpp"

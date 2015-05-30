@@ -46,3 +46,6 @@ target_link_libraries(static_lambda libobi)
 
 add_executable(type_to_string type_to_string.cpp)
 target_link_libraries(type_to_string libobi)
+
+add_executable(container_helper container_helper.cpp)
+target_link_libraries(container_helper libobi)
