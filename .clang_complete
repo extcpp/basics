@@ -1,0 +1,3 @@
+-Dlinux
+-D__linux__
+-I./src/include
