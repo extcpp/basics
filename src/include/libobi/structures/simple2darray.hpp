@@ -18,17 +18,24 @@ public:
         _data.resize(rows * cols);
     }
 
+    template<typename Iterator>
     class SubscriptionProxy{
-        typename data::iterator _begin, _end;
+        typename data::iterator _begin;
     public:
-        SubscriptionProxy(typename data::iterator begin) : _begin(begin) {};
+        SubscriptionProxy(Iterator begin) : _begin(begin) {};
         T& operator[](std::size_t const j){
+            return *(_begin + j);
+        }
+        T const & operator[](std::size_t const j) const {
             return *(_begin + j);
         }
     };
 
-    SubscriptionProxy operator[](std::size_t i){
-        return SubscriptionProxy(_data.begin() + i * _cols);
+    auto operator[](std::size_t i){
+        return SubscriptionProxy<typename data::iterator>(_data.begin() + i * _cols);
+    }
+    auto operator[](std::size_t i) const {
+        return SubscriptionProxy<typename data::const_iterator>(_data.begin() + i * _cols);
     }
 };
 
