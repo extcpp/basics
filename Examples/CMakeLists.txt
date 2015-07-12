@@ -49,3 +49,6 @@ target_link_libraries(type_to_string libobi)
 
 add_executable(container_helper container_helper.cpp)
 target_link_libraries(container_helper libobi)
+
+add_executable(vector vector.cpp)
+target_link_libraries(vector libobi)
