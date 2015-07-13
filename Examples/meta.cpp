@@ -9,6 +9,8 @@ struct leet {
         static const int value = 1337;
 };
 
+struct unleet {};
+
 int main() {
 
     cout << "is_one_of<int,double,float,int>(): "
@@ -26,8 +28,8 @@ int main() {
          <<  has_value_var<leet>()
          <<  endl;
 
-    cout << "has_type_member<leet>()     "
-         <<  has_type_member<leet>()
+    cout << "has_type_member<unleet>()     "
+         <<  has_type_member<unleet>()
          <<  endl;
 
     return 0;
