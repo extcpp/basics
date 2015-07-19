@@ -52,3 +52,6 @@ target_link_libraries(container_helper libobi)
 
 add_executable(vector vector.cpp)
 target_link_libraries(vector libobi)
+
+add_executable(concurrency concurrency.cpp)
+target_link_libraries(concurrency vector libobi)
