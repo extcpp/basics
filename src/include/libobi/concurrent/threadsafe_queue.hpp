@@ -1,9 +1,10 @@
 // From Concurrency in Action - Anthony Williams
 #pragma once
+
+#include <condition_variable>
 #include <memory>
 #include <mutex>
 
-// 6.07
 template<typename T>
 class threadsafe_queue
 {
