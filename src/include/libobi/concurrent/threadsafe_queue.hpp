@@ -5,6 +5,8 @@
 #include <memory>
 #include <mutex>
 
+namespace obi{ namespace concurrent{
+
 template<typename T>
 class threadsafe_queue
 {
@@ -120,3 +122,5 @@ private:
         return pop_head();
     }
 };
+
+}}  // namespace obi::thread
