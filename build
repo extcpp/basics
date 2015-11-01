@@ -15,6 +15,9 @@ for arg in $@; do
         -d|--debug)
             cm_flags+=( '-DCMAKE_BUILD_TYPE=Debug' )
         ;;
+        -e|--examples)
+            cm_flags+=( '-DLIBOBI_EXAMPLES=On' )
+        ;;
         -c|--clean)
             rm -fr $build_dir
         ;;

@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.0.0)
 project(libobi)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLib")
 
+option(LIBOBI_EXAMPLES ON)
+
 ## set os specific flags
 include(compiler-warnings)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${stone-warnings}")
@@ -31,4 +33,6 @@ if(TEST)
 endif()
 
 ## add projects using this lib
-add_subdirectory(Examples)
+if(LIBOBI_EXAMPLES)
+    add_subdirectory(Examples)
+endif()
