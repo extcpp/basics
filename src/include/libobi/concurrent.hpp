@@ -3,3 +3,5 @@
 #pragma once
 
 #include "concurrent/hierarchical_mutex.hpp"
+#include "concurrent/threadsafe_queue.hpp"
+#include "concurrent/threadsafe_stack.hpp"
