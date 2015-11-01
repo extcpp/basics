@@ -38,6 +38,7 @@ auto add_function_cache = [](auto fun, unsigned cache_size=1000000, double delet
                 // TODO no overflow!!
                 // in case of overflow delete
             }
+            (void) delete_on_overflow; //silence warning
             fun_return_type rv = fun(run_args...);
             result_cache[tuple] = rv;
             return rv;
