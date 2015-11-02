@@ -21,6 +21,12 @@ for arg in $@; do
         -c|--clean)
             rm -fr $build_dir
         ;;
+        --gcc)
+            cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
+        ;;
+        --clang)
+            cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++' )
+        ;;
         *)
             args+=( "$arg" )
         ;;

@@ -55,3 +55,6 @@ target_link_libraries(vector libobi)
 
 add_executable(concurrency concurrency.cpp)
 target_link_libraries(concurrency libobi)
+
+add_executable(scope_guard scope_guard.cpp)
+target_link_libraries(scope_guard libobi)

@@ -8,22 +8,22 @@
 // requires: c++17
 
 
-#include <exceptions>
+#include <exception>
 #include <type_traits>
 #include <libobi/macros.hpp>
 
 
 #define OBI_SCOPE_FAIL \
     auto OBI_ANONYMOUS_VARIABLE(OBI_SCOPE_FAIL_STATE) \
-    = obi::util::_detail::scope_gurad_on_fail() + [&]() noexcept
+    = obi::util::_detail::scope_guard_on_fail() + [&]() noexcept
 
 #define OBI_SCOPE_SUCCESS \
     auto OBI_ANONYMOUS_VARIABLE(OBI_SCOPE_FAIL_STATE) \
-    = obi::util::_detail::scope_gurad_on_success() + [&]() noexcept
+    = obi::util::_detail::scope_guard_on_success() + [&]() noexcept
 
 #define OBI_SCOPE_EXIT \
     auto OBI_ANONYMOUS_VARIABLE(OBI_SCOPE_FAIL_STATE) \
-    = obi::util::_detail::scope_gurad_on_exit() + [&]() noexcept
+    = obi::util::_detail::scope_guard_on_exit() + [&]() noexcept
 
 
 namespace obi { namespace util { namespace _detail {
@@ -34,10 +34,11 @@ namespace obi { namespace util { namespace _detail {
         int _exception_count_enter_scope; // number of exceptions at scope enter
     public:
         // functions that allow to check if new exceptions occured
-        uncaught_exception_counter(): _exception_count_enter_scope(std::uncaught_exceptions()) {}
-        bool new_uncaugt_exception noexcept {
-            return std::uncaught_exceptions() > _exception_count_enter_scope;
-        }
+        uncaught_exception_counter(): _exception_count_enter_scope(std::uncaught_exception() ) {}
+        bool new_uncaught_exception() noexcept {
+            //return std::uncaught_exceptions() > _exception_count_enter_scope;
+            return std::uncaught_exception() > _exception_count_enter_scope;
+        };
     }; // uncaught_exception_counter
 
 
@@ -55,48 +56,48 @@ namespace obi { namespace util { namespace _detail {
         // on template parameter (ExecuteOnException) if a given function should be
         // executed
         ~scope_guard_for_exception() noexcept(ExecuteOnException) {
-            if (ExecuteOnException == _exception_counter.new_uncaught_exceptions()) {
+            if (ExecuteOnException == _exception_counter.new_uncaught_exception()) {
                 _function();
             }
         }
     }; // scope_guard_for_exception - end
 
     // scope fail
-    class scope_gurad_on_fail {};
+    class scope_guard_on_fail {};
     template <typename FunctionType>
     scope_guard_for_exception<std::decay_t<FunctionType>, true>
-    operator+(scope_gurad_on_fail, FunctionType&& fn){
+    operator+(scope_guard_on_fail, FunctionType&& fn){
         return scope_guard_for_exception<std::decay_t<FunctionType>, true>(std::forward<FunctionType>(fn));
     }
 
     // scope success
-    class scope_gurad_on_success {};
+    class scope_guard_on_success {};
     template <typename FunctionType>
     scope_guard_for_exception<std::decay_t<FunctionType>, false>
-    operator+(scope_gurad_on_fail, FunctionType&& fn){
+    operator+(scope_guard_on_success, FunctionType&& fn){
         return scope_guard_for_exception<std::decay_t<FunctionType>, false>(std::forward<FunctionType>(fn));
     }
 
 
 
     // equivalent to scope_guard_for_exception
-    template <typename FunctionType, bool ExecuteOnException>
+    template <typename FunctionType>
     class scope_guard_for_exit {
         FunctionType _function;
     public:
         explicit scope_guard_for_exit(FunctionType&  fn) : _function(fn) {}
         explicit scope_guard_for_exit(FunctionType&& fn) : _function(std::move(fn)) {}
-        ~scope_guard_for_exception() noexcept {
+        ~scope_guard_for_exit() noexcept {
             _function();
         }
     }; // scope_guard_for_exit - end
 
     // scope exit
-    class scope_gurad_on_exit {};
+    class scope_guard_on_exit {};
     template <typename FunctionType>
-    scope_gurad_for_exit<std::decay_t<FunctionType>>
-    operator+(detail::scope_gurad_on_fail, FunctionType&& fn) {
-          return scope_gurad_for_exit<std::decay_t<FunctionType>>(std::forward<FunctionType>(fn));
+    scope_guard_for_exit<std::decay_t<FunctionType>>
+    operator+(scope_guard_on_fail, FunctionType&& fn) {
+          return scope_guard_for_exit<std::decay_t<FunctionType>>(std::forward<FunctionType>(fn));
     }
 
 }}} // end namespaces
