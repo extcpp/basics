@@ -85,7 +85,7 @@ private:
     {
         std::unique_lock<std::mutex> head_lock(head_mutex);
         data_cond.wait(head_lock,[&]{return head!=get_tail();});
-        return std::move(head_lock);
+        return head_lock; //copy elision!
     }
 
     std::unique_ptr<node> wait_pop_head()

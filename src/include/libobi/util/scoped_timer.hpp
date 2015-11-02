@@ -107,7 +107,7 @@ private:  // functions
                 );
             }
         }
-        return std::move(times);
+        return times;
     }  // function - calculate
 
     static intStrVec toSting(intStrVec times)
@@ -137,7 +137,7 @@ private:  // functions
                 std::cout << std::endl;
             }
         }
-        return std::move(times);
+        return times;
     }  // function - to_string
 };
 

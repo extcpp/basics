@@ -50,11 +50,11 @@ auto list = [](auto ...xs) {
 };
 
 auto head = [](auto xs) {
-    return xs([](auto y, auto ...ys) { return y; });
+    return xs([](auto y, auto .../*ys*/) { return y; });
 };
 
 auto tail = [](auto xs) {
-    return xs([](auto y, auto ...ys) { return list(ys...); });
+    return xs([](auto /*y*/, auto ...ys) { return list(ys...); });
 };
 
 auto length = [](auto xs) {

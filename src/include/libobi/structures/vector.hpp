@@ -24,7 +24,7 @@ namespace obi { namespace structures {
     class vector_base_arithmetic<T, N, obi::meta::pack<Args...>> {
     public:
         vector_base_arithmetic() = default;
-        vector_base_arithmetic(Args... args) : _values{args...} {}
+        vector_base_arithmetic(Args... args) : _values{{args...}} {}
     private:
         std::array<T, N> _values;
     };
