@@ -7,12 +7,13 @@
 //
 // requires: c++17
 
-
 #include <exception>
 #include <type_traits>
 #include <libobi/macros.hpp>
 
-
+//
+// YOU MUST ADD A ; after the SCOPE as it closes the lambda
+//
 #define OBI_SCOPE_FAIL \
     auto OBI_ANONYMOUS_VARIABLE(OBI_SCOPE_FAIL_STATE) \
     = obi::util::_detail::scope_guard_on_fail() + [&]() noexcept
@@ -34,9 +35,10 @@ namespace obi { namespace util { namespace _detail {
         int _exception_count_enter_scope; // number of exceptions at scope enter
     public:
         // functions that allow to check if new exceptions occured
+#pragma message "This MUST be std::uncaught_exceptions()!!"
         uncaught_exception_counter(): _exception_count_enter_scope(std::uncaught_exception() ) {}
         bool new_uncaught_exception() noexcept {
-            //return std::uncaught_exceptions() > _exception_count_enter_scope;
+#pragma message "This MUST be std::uncaught_exceptions()!!"
             return std::uncaught_exception() > _exception_count_enter_scope;
         };
     }; // uncaught_exception_counter
@@ -96,7 +98,7 @@ namespace obi { namespace util { namespace _detail {
     class scope_guard_on_exit {};
     template <typename FunctionType>
     scope_guard_for_exit<std::decay_t<FunctionType>>
-    operator+(scope_guard_on_fail, FunctionType&& fn) {
+    operator+(scope_guard_on_exit, FunctionType&& fn) {
           return scope_guard_for_exit<std::decay_t<FunctionType>>(std::forward<FunctionType>(fn));
     }
 
