@@ -24,6 +24,10 @@ for arg in $@; do
         --gcc)
             cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
         ;;
+        --gcc-6)
+            cm_flags+=( '-DCMAKE_CXX_COMPILER=g++-6' )
+            cm_flags+=( '-DCMAKE_C_COMPILER=gcc-6' )
+        ;;
         --clang)
             cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++' )
         ;;

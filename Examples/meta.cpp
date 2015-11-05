@@ -1,7 +1,7 @@
 #include <libobi/meta.hpp>
 #include <iostream>
 
-using namespace std;
+//using namespace std;
 using namespace obi::meta;
 
 struct leet {
@@ -13,24 +13,24 @@ struct unleet {};
 
 int main() {
 
-    cout << "is_one_of<int,double,float,int>(): "
+    std::cout << "is_one_of<int,double,float,int>(): "
          <<  is_one_of<int,double,float,int>()
-         <<  endl;
-    cout << "is_one_of<int,double,float>():     "
+         <<  std::endl;
+    std::cout << "is_one_of<int,double,float>():     "
          <<  is_one_of<int,double,float>()
-         <<  endl;
+         <<  std::endl;
 
-    cout << "is_one_of<void_t<int>,int,void>():     "
+    std::cout << "is_one_of<void_t<int>,int,void>():     "
          <<  is_one_of<void_t<int>,int,void>()
-         <<  endl;
+         <<  std::endl;
 
-    cout << "has_value_var<leet>()     "
+    std::cout << "has_value_var<leet>()     "
          <<  has_value_var<leet>()
-         <<  endl;
+         <<  std::endl;
 
-    cout << "has_type_member<unleet>()     "
+    std::cout << "has_type_member<unleet>()     "
          <<  has_type_member<unleet>()
-         <<  endl;
+         <<  std::endl;
 
     return 0;
 }
