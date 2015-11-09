@@ -40,7 +40,7 @@ public:
 
     bool try_pop(T& value){
         std::unique_ptr<node> const old_head=try_pop_head(value);
-        return old_head;
+        return static_cast<bool>(old_head);
     }
 
     std::shared_ptr<T> wait_and_pop(){
@@ -52,9 +52,9 @@ public:
         std::unique_ptr<node> const old_head=wait_pop_head(value);
     }
 
-    void push(T new_value){
+    void push(T&& new_value){
         std::shared_ptr<T> new_data(
-            std::make_shared<T>(std::move(new_value))
+            std::make_shared<T>(new_value)
         );
         std::unique_ptr<node> p(new node);
         {
@@ -65,6 +65,10 @@ public:
             tail=new_tail;
         }
         data_cond.notify_one();
+    }
+
+    void push(T new_value){
+        push(std::move(new_value));
     }
 
 private:
