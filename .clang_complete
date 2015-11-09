@@ -1,3 +1,4 @@
 -Dlinux
 -D__linux__
 -I./src/include
+-std=c++1z
