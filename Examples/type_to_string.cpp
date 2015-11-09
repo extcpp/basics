@@ -1,4 +1,4 @@
-#include <libobi/util.hpp>
+#include <obi/util.hpp>
 
 using namespace obi::util;
 

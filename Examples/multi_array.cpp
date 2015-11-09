@@ -1,4 +1,4 @@
-#include <libobi/structures.hpp>
+#include <obi/structures.hpp>
 #include <iostream>
 
 using namespace obi::structures;

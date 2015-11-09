@@ -1,5 +1,5 @@
 #include <iostream>
-#include <libobi/util/aascopes.hpp>
+#include <obi/util/aascopes.hpp>
 #include <stdexcept>
 
 int main()

@@ -1,4 +1,4 @@
-#include <libobi/structures/vector.hpp>
+#include <obi/structures/vector.hpp>
 
 int main() {
     double d = 10.0;

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <numeric>
 #include <ostream>
-#include <libobi/util/container_helper.hpp>
+#include <obi/util/container_helper.hpp>
 
 using namespace obi;
 using namespace util;

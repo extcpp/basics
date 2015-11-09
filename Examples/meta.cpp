@@ -1,4 +1,4 @@
-#include <libobi/meta.hpp>
+#include <obi/meta.hpp>
 #include <iostream>
 
 //using namespace std;

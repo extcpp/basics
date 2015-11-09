@@ -1,5 +1,5 @@
-#include "libobi/concurrent/threadsafe_queue.hpp"
-#include "libobi/concurrent/threadsafe_stack.hpp"
+#include "obi/concurrent/threadsafe_queue.hpp"
+#include "obi/concurrent/threadsafe_stack.hpp"
 
 int main(){
     obi::concurrent::threadsafe_queue<int> queue;

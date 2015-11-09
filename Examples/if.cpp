@@ -1,4 +1,4 @@
-#include <libobi/meta/if.hpp>
+#include <obi/meta/if.hpp>
 #include <iostream>
 
 using namespace std;

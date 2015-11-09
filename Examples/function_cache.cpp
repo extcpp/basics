@@ -1,5 +1,5 @@
-#include <libobi/util/function_cache.hpp>
-#include <libobi/util/scoped_timer.hpp>
+#include <obi/util/function_cache.hpp>
+#include <obi/util/scoped_timer.hpp>
 #include <iostream>
 #include <future>
 

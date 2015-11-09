@@ -1,4 +1,4 @@
-#include <libobi/meta/static_lambda.hpp>
+#include <obi/meta/static_lambda.hpp>
 #include <iostream>
 
 using namespace std;

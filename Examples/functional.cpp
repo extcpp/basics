@@ -1,5 +1,5 @@
 #include <iostream>
-#include <libobi/util/functional.hpp>
+#include <obi/util/functional.hpp>
 
 using namespace std;
 using namespace obi::util;

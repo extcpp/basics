@@ -9,7 +9,7 @@
 
 #include <exception>
 #include <type_traits>
-#include <libobi/macros.hpp>
+#include "../macros.hpp"
 
 //
 // YOU MUST ADD A ; after the SCOPE as it closes the lambda

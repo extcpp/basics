@@ -1,6 +1,6 @@
 #include <array>
 #include <type_traits>
-#include <libobi/meta/pack.hpp>
+#include "../meta/pack.hpp"
 
 namespace obi { namespace structures {
 

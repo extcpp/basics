@@ -1,5 +1,5 @@
 #include <iostream>
-#include <libobi/util/load_library.hpp>
+#include <obi/util/load_library.hpp>
 
 int main(){
     using namespace std;
