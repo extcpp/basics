@@ -29,7 +29,7 @@ namespace obi { namespace math {
             std::swap(k,nk);
         }
 
-        auto numerator = factors_from_down_to(n,k+T(3));
+        auto numerator = factors_from_down_to(n,k+T(1));
         auto denominator = factorial(nk);
 
         return numerator / denominator;
