@@ -9,7 +9,7 @@ namespace obi { namespace meta {
 
 // has_value_var
     template<typename T, typename = void>
-    struct has_value_var : std::false_type { };
+    struct has_value_var : std::false_type {};
 
     template<typename T>
     struct has_value_var<T, void_t<decltype(std::declval<T>().value)>> : std::true_type {};

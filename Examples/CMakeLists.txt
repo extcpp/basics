@@ -58,3 +58,6 @@ target_link_libraries(concurrency libobi)
 
 add_executable(scope_guard scope_guard.cpp)
 target_link_libraries(scope_guard libobi)
+
+add_executable(show show.cpp)
+target_link_libraries(show libobi)
