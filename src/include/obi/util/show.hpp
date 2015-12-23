@@ -1,22 +1,15 @@
 #include <iostream>
 #include <type_traits>
 #include "container_helper.hpp"
-#include "../meta/void_t.hpp"
+#include "../meta/has_member.hpp"
 #include <string>
 #include <sstream>
 
 namespace obi { namespace util {
 
-    //check for category type
-    template<class, class = void>
-    struct has_category_member : std::false_type {};
-
-    template<class T>
-    struct has_category_member<T, ::obi::meta::void_t<typename T::category> > : std::true_type {};
-
     template <typename Container>
     //if it is a container, that is mentioned in my container traits
-    std::enable_if_t<has_category_member<_detail::container_traits<Container>>::value
+    std::enable_if_t<obi::meta::has_category_member<_detail::container_traits<Container>>::value
                     ,std::ostream&
                     >
     operator<< (std::ostream &out, const Container& container) {
@@ -35,6 +28,13 @@ namespace obi { namespace util {
 
         }
         out << "]";
+        return out;
+    }
+
+    template <typename Key, typename Value>
+    std::ostream& operator<< (std::ostream &out, const std::pair<Key, Value>& pair) {
+        using namespace std;
+        out << "(" << pair.first << "," << pair.second << ")";
         return out;
     }
 
