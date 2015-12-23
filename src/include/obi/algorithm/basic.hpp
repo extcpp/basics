@@ -6,7 +6,7 @@
 
 namespace obi { namespace algorithm {
 
-    //count occurences in containers
+    // count occurences in containers /////////////////////////////////////////
     template<typename Iterator, typename Int = int>
     std::map<typename std::iterator_traits<Iterator>::value_type,Int>
     count_occurrences(Iterator begin, Iterator end) {
@@ -18,13 +18,11 @@ namespace obi { namespace algorithm {
                 found->second++;
             } else {
                 result[*it] = Int(1);
-                //if(! result[*it] = Int(1) ){
-                //    throw std::logic_error("element could not be inserted");
-                //}
             }
         }
         return result;
     }
+
     //add endable if
     template<typename Container, typename Int = int>
     auto count_occurrences(const Container& container) {
@@ -33,10 +31,9 @@ namespace obi { namespace algorithm {
     }
 
 
-    //mege maps
-    //default comparator should be less
+    // mege maps //////////////////////////////////////////////////////////////
     template <typename Map, typename Predicate>
-    auto merge_maps(const Map& in, Map& result, Predicate predicate) {
+    auto& merge_maps(Map& result, const Map& in, Predicate predicate = std::less<>() ) {
         for (auto it = in.begin(); it != in.end(); it++) {
             auto found = result.find(it->first);
             if(found != result.end()){
@@ -47,22 +44,20 @@ namespace obi { namespace algorithm {
                 result[it->first] = it->second;
             }
         }
-        return 0; //TODO: return something useful
+        return result;
     }
-
 
     template <typename Iterator
              ,typename Predicate
              ,typename = std::enable_if_t<obi::meta::is_input_iterator<Iterator>::value>
              >
-    auto merge_maps(Iterator begin, Iterator end, Predicate predicate) {
+    auto merge_maps(Iterator begin, Iterator end, Predicate predicate = std::less<>()) {
         using PairType = typename std::iterator_traits<Iterator>::value_type;
         std::map<typename PairType::T1,typename PairType::T2> result;
         for (auto it = begin; it != end; it++) {
-            merge_maps(*it,result);
+            merge_maps(result, *it);
         }
         return result;
     }
-
 
 }} // obi::algorithm
