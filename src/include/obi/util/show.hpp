@@ -21,17 +21,17 @@ namespace obi { namespace util {
                     >
     operator<< (std::ostream &out, const Container& container) {
         using namespace std;
-        out << "[ ";
+        out << "[";
         if (container.size() == 1) {
-            out <<  *container.begin() << " ";
+            out <<  *container.begin();
         }
         if (container.size() > 1) {
             auto current = container.begin();
             while (next(current) != container.end()) {
-                out << *current << ", ";
+                out << *current << ",";
                 current++;
             }
-            out << *current << " ";
+            out << *current;
 
         }
         out << "]";
