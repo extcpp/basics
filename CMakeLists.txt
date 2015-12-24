@@ -7,17 +7,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLib")
 option(LIBOBI_EXAMPLES ON)
 
 ## set os specific flags
-include(obi_compiler_warnings)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${stone-warnings}")
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
-   CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb -O0")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
-    # replace with CMAKE_CXX_STANDARD when a newer cmake becomes
-    # available.
-    # set(CMAKE_CXX_STANDARD 14) //17 not available in cmake
-    # ##set_property(TARGET libobi PROPERTY CXX_STANDARD 14) <-- this would be nice
-endif()
+include(obi_util)
+obi_settings()
 
 ## define lib
 add_library(libobi INTERFACE)
