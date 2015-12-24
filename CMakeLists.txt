@@ -3,12 +3,11 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(libobi)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLib")
+include(obi_fm_util)
+obi_settings()
+
 
 option(LIBOBI_EXAMPLES ON)
-
-## set os specific flags
-include(obi_util)
-obi_settings()
 
 ## define lib
 add_library(libobi INTERFACE)
