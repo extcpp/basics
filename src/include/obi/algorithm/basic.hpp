@@ -1,3 +1,6 @@
+// Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+#pragma once
+
 #include <iterator>
 #include <map>
 #include <stdexcept>
