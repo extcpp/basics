@@ -153,7 +153,7 @@ namespace obi { namespace math {
      *  @param use_exceptions flag to signal failure by exception
      *  @return Prime struct. result.n holds the nth prime or 0 on failure
     */
-    Prime find_next_prime(Prime current_prime, const ESieve& sieve, bool use_exceptions = false) {
+    Prime& find_next_prime(Prime& current_prime, const ESieve& sieve, bool use_exceptions = false) {
         std::size_t index = current_prime.index + 1;
         current_prime.number = 0;
 
