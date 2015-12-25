@@ -1,11 +1,14 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // TODO enable_if for integral types
+#pragma once
 
 #include <utility>
 #include <algorithm>
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <limits>
+#include <cmath>
 
 namespace obi { namespace math {
 
@@ -38,26 +41,6 @@ namespace obi { namespace math {
         auto denominator = factorial(nk);
 
         return numerator / denominator;
-    }
-
-    template<typename T>
-    std::vector<T> prime_factors_naive(T x, bool debug = false) {
-        std::vector<T> rv;
-        //get rid of the half
-        while(x % T(2) == 0) {
-            x /= T(2);
-            rv.emplace_back(2);
-        }
-        for (T i(3); i <= x; i += T(2)) {
-            if (debug && i % T(1000001) == 0) {
-                std::cerr << "at: " << i << std::endl;
-            }
-            while(x % i == 0) {
-                x /= i;
-                rv.push_back(i);
-            }
-        }
-        return rv;
     }
 
     //checkes if decimal number is a palindrome

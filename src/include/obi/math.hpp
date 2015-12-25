@@ -2,3 +2,4 @@
 #pragma once
 
 #include "math/basic_functions.hpp"
+#include "math/primes.hpp"
