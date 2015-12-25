@@ -60,7 +60,7 @@ int main(){
     timer.add_step("threads - done");
 
     //print result
-    timer.stop_use_cb();
+    timer.disable_dtor_entry();
     std::cout << std::endl;
     for (size_t i = 0; i < numbers.size(); i++ )
     {
