@@ -33,24 +33,25 @@ namespace obi { namespace math {
         return rv;
     }
 
-    struct ESieve {
-        std::vector<bool> sieve;
-        std::size_t max_number;
+    //! struct that holds a sieve of eratosthenes
+    struct sieve_of_eratosthenes {
+        std::vector<bool> sieve;    //!< the sieve
+        std::size_t max_value;     //!< primes are calculated up to this number
     };
 
 
     //! Calculates the sieve of eratosthenes for all primes below a certain number
-    /*  @param max_number maximum size of prime number
+    /*  @param max_value maximum size of prime number
      *  @return pair of nth prime and corresponding index  or  0 on failure
      *
      *  Notes: Just works for size_t and is memory heavy for real stuff I need Quadratic Sieve
     */
-    ESieve sieve_of_eratosthenes(std::size_t max_number) {
-        std::size_t sieve_size = max_number >> 1;
+    sieve_of_eratosthenes create_sieve_of_eratosthenes(std::size_t max_value) {
+        std::size_t sieve_size = max_value >> 1;
 
-        ESieve result;
+        sieve_of_eratosthenes result;
         result.sieve = std::vector<bool>(sieve_size, true);
-        result.max_number = max_number;
+        result.max_value = max_value;
 
         auto& sieve = result.sieve;
 
@@ -72,27 +73,30 @@ namespace obi { namespace math {
         return result;
     }
 
-
-    struct Prime {
-        std::size_t number;
-        std::size_t n;
-        std::size_t index;
+    //! struct that holds primes of maximal size_t size
+    struct prime_number {
+        std::size_t value; //!< numeric value
+        std::size_t n;      //!< position the sequence of primes
+        std::size_t index;  //!< index in the sieve where the number is found
     };
 
     //! Calculates the sieve of eratosthenes for all primes below a certain number
     /*  @param n prime to find
-     *  @param sieve retruned by sieve_of_eratosthenes
+     *  @param sieve returned by sieve_of_eratosthenes
      *  @param use_exceptions flag to signal failure by exception
-     *  @return Prime struct. result.n holds the nth prime or 0 on failure
+     *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    Prime find_nth_prime(std::size_t n, ESieve sieve, bool use_exceptions = false) {
-
-        Prime result;
-        result.number=0;
+    prime_number find_nth_prime(std::size_t n
+                               ,sieve_of_eratosthenes sieve
+                               ,bool use_exceptions = false
+                               )
+    {
+        prime_number result;
+        result.value=0;
         result.n=0;
         result.index=0;
         if(n==1) {
-            result.number = 2;
+            result.value = 2;
             result.n = 1;
             return result;
         }
@@ -109,16 +113,16 @@ namespace obi { namespace math {
             if (sieve.sieve[index]) {
                 ++current;
                 if (current == n) {
-                    result.number = number;
+                    result.value = number;
                     result.index = index;
                     result.n = n;
                     return result;
                 }
             }
 
-            if(number >= sieve.max_number){
+            if(number >= sieve.max_value){
                 if(use_exceptions){
-                    throw std::logic_error("you do not search in the vaild range");
+                    throw std::logic_error("you do not search in the valid range");
                 }
                 return result;
             }
@@ -131,19 +135,22 @@ namespace obi { namespace math {
     /*  @param n prime to find
      *  @param primes above this number will not be calculated in the underlying sieve
      *  @param use_exceptions flag to signal failure by exception
-     *  @return Prime struct. result.n holds the nth prime or 0 on failure
+     *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    Prime find_nth_prime(std::size_t n, std::size_t max_prime, bool use_exceptions = false) {
-
+    prime_number find_nth_prime(std::size_t n
+                               ,std::size_t max_value
+                               ,bool use_exceptions = false
+                               )
+    {
         if(n==1) {
-            Prime result;
-            result.number = 2;
+            prime_number result;
+            result.value = 2;
             result.n = 1;
             result.index=0;
             return result;
         }
 
-        auto sieve = obi::math::sieve_of_eratosthenes(max_prime);
+        auto sieve = obi::math::create_sieve_of_eratosthenes(max_value);
         return find_nth_prime(n, sieve, use_exceptions);
     }
 
@@ -151,25 +158,29 @@ namespace obi { namespace math {
     /*  @param current_prime
      *  @param sieve returned by sieve_of_eratosthenes
      *  @param use_exceptions flag to signal failure by exception
-     *  @return Prime struct. result.n holds the nth prime or 0 on failure
+     *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    Prime& find_next_prime(Prime& current_prime, const ESieve& sieve, bool use_exceptions = false) {
+    prime_number& find_next_prime(prime_number& current_prime
+                                 ,const sieve_of_eratosthenes& sieve
+                                 ,bool use_exceptions = false
+                                 )
+    {
         std::size_t index = current_prime.index + 1;
-        current_prime.number = 0;
+        current_prime.value = 0;
 
         while(true) {
             std::size_t number = 2*index + 1;
 
             if (sieve.sieve[index]) {
                 current_prime.n++;
-                current_prime.number = number;
+                current_prime.value = number;
                 current_prime.index = index;
                 return current_prime;
             }
 
-            if(number >= sieve.max_number){
+            if(number >= sieve.max_value){
                 if(use_exceptions){
-                    throw std::logic_error("you do not search in the vaild range");
+                    throw std::logic_error("you do not search in the valid range");
                 }
                 return current_prime;
             }
