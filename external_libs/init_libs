@@ -1,0 +1,21 @@
+#!/bin/bash
+
+clone_repo(){
+    local repo="$1"
+    local name="${repo#*/}"
+    echo "checking $name ..."
+    if ! [[ -e $name ]]; then
+        git clone "https://github.com/$repo"
+    else
+        echo "$name already exists"
+    fi
+    echo
+}
+
+git_repos=(
+    'google/googletest'
+)
+
+for repo in "${git_repos[@]}"; do
+    clone_repo "$repo"
+done
