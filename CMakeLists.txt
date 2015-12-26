@@ -4,25 +4,18 @@ cmake_minimum_required(VERSION 3.0.0)
 project(libobi)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLib")
 include(obi_fm_util)
-obi_settings()
-
-
-option(LIBOBI_EXAMPLES ON)
+obi_setup_with_test()
 
 ## define lib
 add_library(libobi INTERFACE)
 target_include_directories(libobi INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/src/include")
 
-## define tests
-if(TEST)
-    # build tests
-    # to come
-    # run tests
-    enable_testing()
-    add_Test(NAME "foo" COMMAND do_test arg --arg WORKING_DIRECTORY tests)
-endif()
+obi_testing("google")
 
 ## add projects using this lib
+option(LIBOBI_EXAMPLES ON)
 if(LIBOBI_EXAMPLES)
     add_subdirectory(Examples)
 endif()
+
+obi_install(libobi "src/include/obi")
