@@ -15,7 +15,7 @@ obi_testing("google")
 ## add projects using this lib
 option(LIBOBI_EXAMPLES ON)
 if(LIBOBI_EXAMPLES)
-    add_subdirectory(Examples)
+    add_subdirectory(examples)
 endif()
 
 obi_install(libobi "src/include/obi")
