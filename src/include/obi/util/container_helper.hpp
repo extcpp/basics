@@ -11,10 +11,13 @@
 #include <unordered_set>
 #include <vector>
 
+// TODO - finish array
+
 namespace obi { namespace util {
     namespace _detail {
 
         //possilbe categorys for containers
+        struct arraylike_tag { };
         struct vectorlike_tag { };
         struct listlike_tag { };
         struct associative_tag { };
@@ -23,6 +26,12 @@ namespace obi { namespace util {
         //MTF that returns the category of a container
         template <typename C>
         struct container_traits;
+
+        //array like
+        template <typename T, std::size_t N>
+        struct container_traits<std::array<T, N> > {
+            typedef arraylike_tag category;
+        };
 
         //vector like
         template <typename T, typename A>
