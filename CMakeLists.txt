@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 3.0.0)
 project(libobi)
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLib")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(obi_fm_util)
 obi_setup_with_test()
 
