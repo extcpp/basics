@@ -107,6 +107,7 @@ private:  // functions
         int width = 15;
         std::cout << "\ntotal   : "
                   << std::setw(width) << times[0].first << " ns - "
+                  << std::setprecision(8) << std::fixed << times[0].first / 1000.0 << " μs - "
                   << std::setprecision(8) << std::fixed << times[0].first / 1000000.0 << " ms - "
                   << std::setprecision(8) << std::fixed << times[0].first / 1000000000.0 << " s";
 
