@@ -13,7 +13,7 @@
 namespace obi { namespace math {
 
     //calculates product: n * n-1 * ... * k+1 * k
-    template<typename T>
+    template<typename T> inline
     T factors_from_down_to(T n, T k) {
         T rv(1);
         for(T i = k; i <= n; ++i) {
@@ -23,13 +23,13 @@ namespace obi { namespace math {
     }
 
     //calculates product: n * n-1 * ... * 2 * 1
-    template<typename T>
+    template<typename T> inline
     T factorial(T n) {
         return factors_from_down_to(n,T(1));
     }
 
     //calculates: (n * n-1 * ... * k+1 * k) / ( (n-k) * (n-k-1) * ... * 1)
-    template<typename T>
+    template<typename T> inline
     T binomial_coefficient(T n, T k) {
         T nk(n-k);
 
@@ -44,7 +44,7 @@ namespace obi { namespace math {
     }
 
     //checkes if decimal number is a palindrome
-    template <typename T>
+    template <typename T> inline
     bool is_palindrome_number(T number, T base = T(10)) {
     // ATTENTION: operations need to support the base
         T copy = number, reversed = 0, digit, rev;

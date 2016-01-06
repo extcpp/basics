@@ -1,6 +1,9 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // TODO enable_if for integral types
 #pragma once
+#ifndef _OBI_MATH_PRIMES
+#define _OBI_MATH_PRIMES
+#include "../config.hpp"
 
 #include <utility>
 #include <algorithm>
@@ -13,8 +16,9 @@
 
 namespace obi { namespace math {
 
-    template<typename T>
-    std::vector<T> prime_factors_naive(T x, bool debug = false) {
+    template<typename T> OBI_INLINE
+    std::vector<T>
+    prime_factors_naive(T x, bool debug = false) {
         std::vector<T> rv;
         //get rid of the half
         while(x % T(2) == 0) {
@@ -46,7 +50,8 @@ namespace obi { namespace math {
      *
      *  Notes: Just works for size_t and is memory heavy for real stuff I need Quadratic Sieve
     */
-    sieve_of_eratosthenes create_sieve_of_eratosthenes(std::size_t max_value) {
+    OBI_INLINE sieve_of_eratosthenes
+    create_sieve_of_eratosthenes(std::size_t max_value) {
         std::size_t sieve_size = max_value >> 1;
 
         sieve_of_eratosthenes result;
@@ -86,10 +91,11 @@ namespace obi { namespace math {
      *  @param use_exceptions flag to signal failure by exception
      *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    prime_number find_nth_prime(std::size_t n
-                               ,sieve_of_eratosthenes sieve
-                               ,bool use_exceptions = false
-                               )
+    OBI_INLINE prime_number
+    find_nth_prime(std::size_t n
+                  ,sieve_of_eratosthenes sieve
+                  ,bool use_exceptions = false
+                  )
     {
         prime_number result;
         result.value=0;
@@ -137,10 +143,11 @@ namespace obi { namespace math {
      *  @param use_exceptions flag to signal failure by exception
      *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    prime_number find_nth_prime(std::size_t n
-                               ,std::size_t max_value
-                               ,bool use_exceptions = false
-                               )
+    OBI_INLINE prime_number
+    find_nth_prime(std::size_t n
+                  ,std::size_t max_value
+                  ,bool use_exceptions = false
+                  )
     {
         if(n==1) {
             prime_number result;
@@ -160,7 +167,8 @@ namespace obi { namespace math {
      *  @param use_exceptions flag to signal failure by exception
      *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    prime_number& find_next_prime(prime_number& current_prime
+    OBI_INLINE prime_number&
+    find_next_prime(prime_number& current_prime
                                  ,const sieve_of_eratosthenes& sieve
                                  ,bool use_exceptions = false
                                  )
@@ -190,3 +198,4 @@ namespace obi { namespace math {
     }
 
 }}  // obi::math
+#endif  //  _OBI_MATH_PRIMES
