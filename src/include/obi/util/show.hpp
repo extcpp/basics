@@ -1,13 +1,15 @@
+// Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
+#pragma once
+#include "../meta/has_member.hpp"
+#include "container_helper.hpp"
 #include <iostream>
 #include <type_traits>
-#include "container_helper.hpp"
-#include "../meta/has_member.hpp"
 #include <string>
 #include <sstream>
 
 namespace obi { namespace util {
 
-    template <typename Container>
+    template <typename Container> inline
     //if it is a container, that is mentioned in my container traits
     std::enable_if_t<obi::meta::has_category_member<_detail::container_traits<Container>>::value
                         && !std::is_same<typename   _detail::container_traits<Container>::category ,_detail::associative_tag>::value
@@ -32,14 +34,14 @@ namespace obi { namespace util {
         return out;
     }
 
-    template <typename Key, typename Value>
+    template <typename Key, typename Value> inline
     std::ostream& out_pair_in_map (std::ostream &out, const std::pair<Key, Value>& pair) {
         using namespace std;
         out << pair.first << "=" << pair.second;
         return out;
     }
 
-    template <typename Container>
+    template <typename Container> inline
     std::enable_if_t<obi::meta::has_category_member<_detail::container_traits<Container>>::value
                         && std::is_same<typename    _detail::container_traits<Container>::category ,_detail::associative_tag>::value
                     ,std::ostream&
@@ -48,7 +50,7 @@ namespace obi { namespace util {
         using namespace std;
         out << "{";
         if (container.size() == 1) {
-            out <<  *container.begin();
+            out_pair_in_map(out, *container.begin());
         }
         if (container.size() > 1) {
             auto current = container.begin();
@@ -63,7 +65,7 @@ namespace obi { namespace util {
         return out;
     }
 
-    template <typename Key, typename Value>
+    template <typename Key, typename Value> inline
     std::ostream& operator<< (std::ostream &out, const std::pair<Key, Value>& pair) {
         using namespace std;
         out << "(" << pair.first << "," << pair.second << ")";
@@ -71,7 +73,7 @@ namespace obi { namespace util {
     }
 
 
-    template <typename T>
+    template <typename T> inline
     std::string show(T item){
         std::stringstream ss;
         ss << item;
