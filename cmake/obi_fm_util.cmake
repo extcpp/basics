@@ -9,7 +9,7 @@ macro(obi_setup)
     endif()
 
     include(obi_in_compiler_warnings)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${obi_stone-warnings}")
+    #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${obi_stone-warnings}")
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
        CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
