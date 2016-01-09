@@ -93,7 +93,7 @@ namespace obi { namespace math {
     */
     OBI_INLINE prime_number
     find_nth_prime(std::size_t n
-                  ,sieve_of_eratosthenes sieve
+                  ,const sieve_of_eratosthenes& sieve
                   ,bool use_exceptions = false
                   )
     {
@@ -169,9 +169,9 @@ namespace obi { namespace math {
     */
     OBI_INLINE prime_number&
     find_next_prime(prime_number& current_prime
-                                 ,const sieve_of_eratosthenes& sieve
-                                 ,bool use_exceptions = false
-                                 )
+                   ,const sieve_of_eratosthenes& sieve
+                   ,bool use_exceptions = false
+                   )
     {
         std::size_t index = current_prime.index + 1;
         current_prime.value = 0;
