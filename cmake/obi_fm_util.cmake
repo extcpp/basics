@@ -14,10 +14,17 @@ macro(obi_setup)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
        CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb -O0")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
-        # replace with CMAKE_CXX_STANDARD when a newer cmake becomes
-        # available.
-        # set(CMAKE_CXX_STANDARD 14) //17 not available in cmake
+
+        # replace with CMAKE_CXX_STANDARD when a newer cmake becomes available.
+        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION STREQUAL "6.0.0")
+            set(OBI_CXX_STANDARD 17)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+        else()
+            set(OBI_CXX_STANDARD 14)
+            set(CMAKE_CXX_STANDARD 14) #17 not available in cmake
+        endif()
         # ##set_property(TARGET libobi PROPERTY CXX_STANDARD 14) <-- this would be nice
     endif()
 endmacro(obi_setup)
