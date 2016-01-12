@@ -58,7 +58,7 @@ namespace obi { namespace math {
         result.sieve = std::vector<bool>(sieve_size, true);
         result.max_value = max_value;
 
-        auto& sieve = result.sieve;
+        std::vector<bool>& sieve = result.sieve;
 
         std::size_t current_pos = 1;
         while(current_pos <= std::sqrt(sieve_size)+1) {
@@ -157,7 +157,7 @@ namespace obi { namespace math {
             return result;
         }
 
-        auto sieve = obi::math::create_sieve_of_eratosthenes(max_value);
+        sieve_of_eratosthenes sieve = obi::math::create_sieve_of_eratosthenes(max_value);
         return find_nth_prime(n, sieve, use_exceptions);
     }
 
