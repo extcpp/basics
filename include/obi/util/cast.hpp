@@ -7,11 +7,11 @@ namespace obi { namespace util {
     //! convert From to To without in a safe way where types are of the same size
     template <typename To, typename From>
     inline To type_cast(const From &from){
-        static_assert(sizeof(T) == sizeof(From)
+        static_assert(sizeof(To) == sizeof(From)
                      ,"type_cast requires types with equal size"
                      );
         To to;
-        std::memcpy(&to, &from, sizeof(T));
+        std::memcpy(&to, &from, sizeof(To));
         return to;
     }
 
