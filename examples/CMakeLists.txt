@@ -22,6 +22,7 @@ set(examples
     concurrency
     scope_guard
     show
+    tuple
 )
 
 foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
