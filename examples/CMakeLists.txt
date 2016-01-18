@@ -23,7 +23,7 @@ set(examples
     scope_guard
     show
     tuple
-    if_all_none
+    if_all_any
 )
 
 foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST

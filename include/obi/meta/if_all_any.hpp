@@ -16,7 +16,8 @@ constexpr bool if_all_v = if_all<XS...>::value;
 
 // if_any - logical or (fold expression
 template<bool ...XS>
-//using if_any = std::bool_constant< !if_all<!XS...>::value>; // share constructed types
+// line below works with clang 3.9
+//using if_any = std::bool_constant<!if_all<!XS...>::value>; // share types
 using if_any = std::bool_constant<(XS || ...)>;
 
 template<bool ...XS>
