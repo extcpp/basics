@@ -20,11 +20,16 @@ set(examples
     container_helper
     vector
     concurrency
-    scope_guard
     show
-    tuple
-    if_all_any
 )
+
+if(OBI_CXX_STANDARD EQUAL 17)
+    list(APPEND examples
+        tuple
+        if_all_any
+        scope_guard
+    )
+endif()
 
 foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     set(cpp "${ex}.cpp")
