@@ -1,6 +1,6 @@
 # Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
-cmake_minimum_required(VERSION 3.3.0)
+cmake_minimum_required(VERSION 3.2.3)
 project(libobi)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(obi_fm_util)

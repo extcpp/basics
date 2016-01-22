@@ -34,6 +34,9 @@ for arg in $@; do
         --clang)
             cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++' )
         ;;
+        --travis)
+            travis=true
+        ;;
         *)
             args+=( "$arg" )
         ;;
@@ -42,5 +45,11 @@ done
 
 test -d $build_dir || mkdir $build_dir || { exit 1; }
 cd $build_dir || { exit 1; }
-cmake "${cm_flags[@]}" "${args[@]}" "$project_root" && \
-make -j $(nproc)
+
+if ! [[ $travis ]]; then
+    cmake "${cm_flags[@]}" "${args[@]}" "$project_root" && \
+    make -j $(nproc)
+else
+    cmake "${cm_flags[@]}" "${args[@]}" "$project_root" \
+        -DOBI_UNCAUGHT_EXCEPTIONS=ON
+fi

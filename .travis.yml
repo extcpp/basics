@@ -1,4 +1,5 @@
 language: cpp
+sudo: required
 
 matrix:
   include:
@@ -7,15 +8,27 @@ matrix:
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test','george-edison55-precise-backports']
-          packages: ['g++-5', 'cmake-data', 'cmake']
-      env: COMPILER=/usr/bin/g++-6 CXXSTD=c++1z
+          packages: ['g++-5','g++-6', 'cmake-data', 'cmake']
+      env: COMPILER=g++-5
+
 
 before_script:
-    - cd ..
-    - mkdir build
-    - cd build
-    - cmake -DCMAKE_TESTING=ON -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_CXX_FLAGS=-std=$CXXSTD ../libobi
+    - cd external_libs && ./init_libs && cd ..
+    - ./build --travis --examples --testing -DCMAKE_CXX_COMPILER=$COMPILER
+
+
+## before_script:
+##   - export COMPILER=/usr/bin/g++-6
+##   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+##   - echo 'deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu xenial main' | sudo tee -a /etc/apt/sources.list
+##   - sudo add-apt-repository ppa:george-edison55/precise-backports -y
+##   - sudo apt-get update -q
+##   - sudo apt-get install cmake-data cmake g++-6 gcc-6 libcc1-0 binutils libgcc-6-dev libisl15 libmpc3 libmpfr4 libstdc++6 -y
+##   - cd external_libs && ./init_libs && cd ..
+##   - ./build --travis --examples --testing -DCMAKE_CXX_COMPILER=$COMPILER
+
 
 script:
-    - make -j$(nproc)
-    - make test
+  - cd ../libobi-build
+  - make -j$(nproc)
+  - make test
