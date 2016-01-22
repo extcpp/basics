@@ -24,7 +24,7 @@ elseif("${OBI_TEST_TYPE}" STREQUAL "google")
     set(test_main  "gtest.cpp")
     add_executable("${test_target}" ${test_main} ${test_files_cpp})
     target_include_directories("${test_target}" PRIVATE ${gtest_SOURCE_DIR}/include)
-    target_link_libraries("${test_target}" libobi gtest_main gtest)
+    target_link_libraries("${test_target}" obi gtest_main gtest)
     add_test("${test_target}_run" "${test_target}")
 
 else()
