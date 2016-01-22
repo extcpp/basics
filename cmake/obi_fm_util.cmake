@@ -1,31 +1,37 @@
 #! some basic settings i use really often so lets have them in a macro
 macro(obi_setup)
-    if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-        if(UNIX)
-            set(CMAKE_INSTALL_PREFIX  "$ENV{HOME}/local")
-        else()
-            message("not implemented for other operating systems")
+    if(NOT OBI_SETUP_DONE)
+        set(OBI_SETUP_DONE TRUE)
+        if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+            if(UNIX)
+                set(CMAKE_INSTALL_PREFIX  "$ENV{HOME}/local")
+            else()
+                message("not implemented for other operating systems")
+            endif()
         endif()
-    endif()
 
-    include(obi_in_compiler_warnings)
-    #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${obi_stone-warnings}")
+        include(obi_in_compiler_warnings)
+        #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${obi_stone-warnings}")
 
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
-       CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb -O0")
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
+           CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+            set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb -O0")
 
-        # replace with CMAKE_CXX_STANDARD when a newer cmake becomes available.
-        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
-        if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION STREQUAL "6.0.0")
-            set(OBI_CXX_STANDARD 17)
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
-        else()
-            set(OBI_CXX_STANDARD 14)
-            set(CMAKE_CXX_STANDARD 14) #17 not available in cmake
+            # replace with CMAKE_CXX_STANDARD when a newer cmake becomes available.
+            # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+            # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+            if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION STREQUAL "6.0.0")
+                #set(CMAKE_CXX_STANDARD 17) # not available in cmake
+                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+                set(OBI_CXX_STANDARD 17)
+                add_definitions(-DOBI_CXX_AVAILABLE=17)
+            else()
+                set(CMAKE_CXX_STANDARD 14)
+                set(OBI_CXX_STANDARD 14)
+                add_definitions(-DOBI_CXX_AVAILABLE=17)
+            endif()
+            # ##set_property(TARGET libobi PROPERTY CXX_STANDARD 14) <-- this would be nice
         endif()
-        # ##set_property(TARGET libobi PROPERTY CXX_STANDARD 14) <-- this would be nice
     endif()
 endmacro(obi_setup)
 
