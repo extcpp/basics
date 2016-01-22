@@ -11,9 +11,10 @@ matrix:
       env: COMPILER=/usr/bin/g++-6 CXXSTD=c++1z
 
 before_script:
+    - cd ..
     - mkdir build
     - cd build
-    - cmake -DCMAKE_TESTING=ON -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_CXX_FLAGS=-std=$CXXSTD ..
+    - cmake -DCMAKE_TESTING=ON -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_CXX_FLAGS=-std=$CXXSTD ../libobi
 
 script:
     - make -j$(nproc)
