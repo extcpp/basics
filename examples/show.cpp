@@ -3,7 +3,7 @@
 #include <iostream>
 #include <obi/util/show.hpp>
 
-int main(int argc, const char *argv[]) {
+int main(/*int argc, const char *argv[]*/) {
     // pull in operator
     using obi::util::operator<<;
 
