@@ -27,7 +27,7 @@ for arg in $@; do
         --gcc)
             cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
         ;;
-        --gcc-6)
+        -6|--gcc-6)
             cm_flags+=( '-DCMAKE_CXX_COMPILER=g++-6' )
             cm_flags+=( '-DCMAKE_C_COMPILER=gcc-6' )
         ;;
@@ -36,6 +36,9 @@ for arg in $@; do
         ;;
         --travis)
             travis=true
+        ;;
+        -cd|--change-directory)
+            change_dir=true
         ;;
         *)
             args+=( "$arg" )
@@ -53,3 +56,5 @@ else
     cmake "${cm_flags[@]}" "${args[@]}" "$project_root" \
         -DOBI_UNCAUGHT_EXCEPTIONS=ON
 fi
+
+[[ $change_dir ]] && bash #chage to build dir

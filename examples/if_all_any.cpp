@@ -4,7 +4,7 @@
 #include <obi/util/show.hpp>
 #include <obi/meta/if_all_any.hpp>
 
-int main(int argc, const char *argv[]) {
+int main(/*int argc, const char *argv[]*/) {
     // pull in operator
     using obi::util::operator<<;
 
