@@ -15,6 +15,9 @@ for arg in $@; do
         -d|--debug)
             cm_flags+=( '-DCMAKE_BUILD_TYPE=Debug' )
         ;;
+        -r|--release)
+            cm_flags+=( '-DCMAKE_BUILD_TYPE=Release' )
+        ;;
         -t|--testing)
             cm_flags+=( '-DCMAKE_TESTING=ON' )
         ;;
@@ -57,4 +60,6 @@ else
         -DOBI_UNCAUGHT_EXCEPTIONS=ON
 fi
 
-[[ $change_dir ]] && bash #chage to build dir
+if ${change_dir:-false}; then
+    bash #chage to build dir
+fi
