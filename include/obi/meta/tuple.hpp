@@ -66,4 +66,24 @@ using replace_in_tuple_t =
               >;
 // replace in tuple - end
 
+// for each in tuple
+namespace _detail {
+    template <std::size_t... index, typename Tuple, typename Functor, typename... FArgs>
+    void tuple_apply_helper(std::index_sequence<index...>, Tuple&& t, Functor&& f, FArgs&& ...fargs){
+        using discard = int[];
+        (void) discard{0, (void(f(std::get<index>(t),fargs...)),0) ...};
+    }
+}
+
+template <typename Tuple, typename Functor, typename... FArgs>
+void tuple_apply(Tuple&& t, Functor&& f, FArgs&& ...fargs){
+    constexpr std::size_t size= std::tuple_size<std::decay_t<Tuple>>::value;
+    _detail::tuple_apply_helper(std::make_index_sequence<size>{}
+                               ,std::forward<Tuple>(t)
+                               ,std::forward<Functor>(f)
+                               ,std::forward<FArgs>(fargs)...
+                               );
+}
+// for each in tuple - end
+
 }}  // namespace obi::meta
