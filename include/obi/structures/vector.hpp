@@ -2,6 +2,11 @@
 #include <type_traits>
 #include "../meta/pack.hpp"
 
+// this vector is not meant to be container like
+// std::vector but more a vector in a mathematic
+// sense
+
+
 namespace obi { namespace structures {
 
     // Will this work with 17?

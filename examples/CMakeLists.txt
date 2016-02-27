@@ -21,6 +21,7 @@ set(examples
     vector
     concurrency
     show
+    binary_index_tree
 )
 
 if(OBI_CXX_STANDARD EQUAL 17)
