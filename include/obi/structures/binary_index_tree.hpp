@@ -72,4 +72,16 @@ namespace obi { namespace structures {
     }
 
 
+    template <typename T, typename Iterator, typename Index>
+    inline Iterator bit_find_cumulative(Iterator begin, Iterator end, T cum_value) {
+        Index size = std::distance(begin, end);
+        Index index = Index(0);
+        T mask = T(1);
+        mask << size/2;
+        if(cum_value > *begin) {
+
+        }
+        return begin+index;
+    }
+
 }}  // obi::structures
