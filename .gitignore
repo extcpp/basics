@@ -2,3 +2,4 @@ a.out
 main*.cpp
 Examples/*
 build-dir
+compile_commands.json
