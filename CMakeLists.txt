@@ -3,6 +3,7 @@
 cmake_minimum_required(VERSION 3.2.3)
 project(libobi)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 include(obi_fm_util)
 obi_setup_with_test()
 
@@ -29,3 +30,10 @@ if(LIBOBI_EXAMPLES)
 endif()
 
 obi_install(obi "include/obi")
+
+if( EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json" )
+    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json
+        ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
+    )
+endif()

@@ -2,3 +2,4 @@ external_libs/*
 */.gitignore
 *.ip
 *-ip.*
+compile_commands.json
