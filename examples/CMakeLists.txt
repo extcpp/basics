@@ -9,19 +9,20 @@ find_package(Threads)
 ## examples
 
 set(examples
-    functional
+    binary_index_tree
+    compile_check
+    concurrency
+    container_helper
     function_cache
+    functional
     if
     load_library
     meta
     scoped_timer
+    show
     static_lambda
     type_to_string
-    container_helper
     vector
-    concurrency
-    show
-    binary_index_tree
 )
 
 if(OBI_CXX_STANDARD EQUAL 17)
@@ -37,7 +38,7 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     set(example "${ex}_example")
     add_executable(${example} ${cpp})
     target_include_directories(${example} PRIVATE ${Boost_INCLUDE_DIRS})
-    target_link_libraries(${example} ${CMAKE_THREAD_LIBS_INIT} obi ${BOOST_LIBRARIES})
+    target_link_libraries(${example} ${CMAKE_THREAD_LIBS_INIT} obi_shared ${BOOST_LIBRARIES})
     if(UNIX)
         target_link_libraries(${example} dl)
     endif(UNIX)
