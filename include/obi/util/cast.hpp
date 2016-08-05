@@ -2,6 +2,7 @@
 #pragma once
 
 #include <cstring>
+#include <type_traits>
 namespace obi { namespace util {
 
     //! convert From to To without in a safe way where types are of the same size
@@ -18,7 +19,6 @@ namespace obi { namespace util {
     //! convert From to To without in a safe way where target is bigger
     template <typename To, typename From>
     inline To type_cast_bigger(const From &from){
-    {
         // copy `from` size form `from` to `to` and fill rest with 0
         // FFFF      -> 000 000 => 0000 FFFF
 
@@ -34,7 +34,6 @@ namespace obi { namespace util {
     //! convert From to To without in a safe way where target is smaller
     template <typename To, typename From>
     inline To type_cast_smaller(const From &from){
-    {
         // copy `from` size form `from` to `to` and fill rest with 0
         // 0000 FFFF -> 000 => FFFF
 
@@ -50,7 +49,6 @@ namespace obi { namespace util {
     //! convert From to To without in a safe way where tzpes are of different size
     template <typename To, typename From>
     inline To type_cast_diff(const From &from){
-    {
         // if `to` is less equal only copy `to` size form `from` to `to`
         // otherwise copy `from` size form `from` to `to` and fill rest with 0
         // 0000 FFFF -> 000     =>      FFFF
@@ -60,5 +58,32 @@ namespace obi { namespace util {
         std::memcpy(&to, &from, (sizeof(To) <= sizeof(From)) ? sizeof(To) : sizeof(From));
         return to;
     }
+
+
+
+	namespace _detail {
+        //use underlying type if Type is a enum
+		template <typename E>
+		using enable_enum_t = std::enable_if_t<std::is_enum<E>::v, std::underlying_type_t<E>>;
+	}
+
+	template <typename Enum>
+	inline constexpr _detail::enable_enum_t<Enum>
+	enum_to_underlying(Enum e) noexcept {
+		return static_cast<std::underlying_type_t<Enum>>(e);
+	}
+
+	template <typename Enum, typename T>
+	inline constexpr std::enable_if_t<std::is_enum<Enum>::v && std::is_integral<T>::v, Enum>
+	underlying_to_enum(T value) noexcept {
+		return static_cast<Enum>(value);
+	}
+
+	template <typename EnumOut, typename EnumIn>
+	inline constexpr std::enable_if_t<std::is_enum<EnumIn>::v && std::is_enum<EnumOut>::v, EnumOut>
+	enum_to_enum(EnumIn e) noexcept {
+		return underlying_to_enum<EnumOut>(underlyingValue(e));
+	}
+
 
 }} // obi::util
