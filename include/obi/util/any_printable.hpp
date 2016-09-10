@@ -23,7 +23,7 @@ public:
         return ss.str();
     }
 private:
-    // we want to store a pointer to a base calss that
+    // we want to store a pointer to a base class that
     // does not require a template argument
     struct storage_base {
         virtual ~storage_base() = default;
@@ -46,7 +46,7 @@ private:
 };
 }} // obi::util
 
-std::ostream& operator<<(std::ostream& os, obi::util::any_printable const& any) {
+inline std::ostream& operator<<(std::ostream& os, obi::util::any_printable const& any) {
     return any << os;
 }
 #endif
