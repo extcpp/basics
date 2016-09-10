@@ -6,7 +6,7 @@
 // https://www.youtube.com/watch?v=WjTrfoiB0MQ
 //
 // requires: c++17
-
+#pragma once
 #include <exception>
 #include <type_traits>
 #include "../macros.hpp"
