@@ -13,13 +13,13 @@ public:
     template <typename T>
     any_printable(T value) : data_ptr(new storage<T>(std::move(value))) {}
 
-    std::ostream& operator<<(std::ostream& os) const {
-        return *data_ptr << os;
+    std::ostream& write_to(std::ostream& os) const {
+        return data_ptr->write_to(os);
     }
 
     std::string str(){
         std::stringstream ss;
-        *data_ptr << ss;
+        data_ptr->write_to(ss);
         return ss.str();
     }
 private:
@@ -27,13 +27,13 @@ private:
     // does not require a template argument
     struct storage_base {
         virtual ~storage_base() = default;
-        virtual std::ostream& operator<<(std::ostream&) const = 0;
+        virtual std::ostream& write_to(std::ostream&) const = 0;
     };
 
     template <typename T>
     struct storage : storage_base {
         storage(T value) : data(std::move(value)) {}
-        std::ostream& operator<<(std::ostream& os) const override { return os << data; }
+        std::ostream& write_to(std::ostream& os) const override { return os << data; }
         T data;
     };
 
@@ -47,6 +47,6 @@ private:
 }} // obi::util
 
 inline std::ostream& operator<<(std::ostream& os, obi::util::any_printable const& any) {
-    return any << os;
+    return any.write_to(os);
 }
 #endif
