@@ -23,6 +23,7 @@ set(examples
     static_lambda
     type_to_string
     vector
+    any_printable
 )
 
 if(OBI_CXX_STANDARD EQUAL 17)
