@@ -15,6 +15,7 @@ separate_arguments(obi_stone-warnings)
 ## define shared lib
 add_library(obi_shared SHARED
     "src/math.cpp"
+    "src/logging.cpp"
 )
 target_compile_definitions(obi_shared PUBLIC OBI_LINK_TO_LIB=ON)
 target_include_directories(obi_shared PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")

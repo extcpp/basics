@@ -66,7 +66,7 @@ namespace obi { namespace math {
                 ++current_pos;
             }
 
-            std::size_t distance = (current_pos << 1) + 1;
+            std::size_t distance = current_pos * 2 + 1;
             for(std::size_t i = current_pos + distance; i < sieve_size; i += distance) {
                 if( i >= sieve_size || i < current_pos ){
                     break;

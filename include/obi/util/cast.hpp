@@ -64,7 +64,7 @@ namespace obi { namespace util {
 	namespace _detail {
         //use underlying type if Type is a enum
 		template <typename E>
-		using enable_enum_t = std::enable_if_t<std::is_enum<E>::v, std::underlying_type_t<E>>;
+		using enable_enum_t = std::enable_if_t<std::is_enum<E>::value, std::underlying_type_t<E>>;
 	}
 
 	template <typename Enum>
@@ -74,13 +74,13 @@ namespace obi { namespace util {
 	}
 
 	template <typename Enum, typename T>
-	inline constexpr std::enable_if_t<std::is_enum<Enum>::v && std::is_integral<T>::v, Enum>
+	inline constexpr std::enable_if_t<std::is_enum<Enum>::value && std::is_integral<T>::value, Enum>
 	underlying_to_enum(T value) noexcept {
 		return static_cast<Enum>(value);
 	}
 
 	template <typename EnumOut, typename EnumIn>
-	inline constexpr std::enable_if_t<std::is_enum<EnumIn>::v && std::is_enum<EnumOut>::v, EnumOut>
+	inline constexpr std::enable_if_t<std::is_enum<EnumIn>::vlaue && std::is_enum<EnumOut>::value, EnumOut>
 	enum_to_enum(EnumIn e) noexcept {
 		return underlying_to_enum<EnumOut>(underlyingValue(e));
 	}

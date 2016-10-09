@@ -24,6 +24,7 @@ set(examples
     type_to_string
     vector
     any_printable
+    logging
 )
 
 if(OBI_CXX_STANDARD EQUAL 17)
