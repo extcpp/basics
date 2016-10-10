@@ -4,18 +4,18 @@
 
 #define OBI_LOG_TOPIC(level_,topic)                      \
   !obi::util::logging::logger::is_active((level_)        \
-										,(topic)         \
-										)                \
+                                        ,(topic)         \
+                                        )                \
       ? (void)nullptr                                    \
       : obi::util::logging::log_stream_consumer{} & (    \
-		obi::util::logging::logger::create_log_stream(   \
-						(topic),                         \
-						(level_),                        \
-						__FILE__,                        \
-						__LINE__,                        \
-						__FUNCTION__                     \
-					)                                    \
-		)
+        obi::util::logging::logger::create_log_stream(   \
+                        (topic),                         \
+                        (level_),                        \
+                        __FILE__,                        \
+                        __LINE__,                        \
+                        __FUNCTION__                     \
+                    )                                    \
+        )
 
 #define OLOG_TOPIC(level_,topic) \
     OBI_LOG_TOPIC((obi::util::logging::level::level_) \
