@@ -35,7 +35,7 @@ for arg in $@; do
             cm_flags+=( '-DCMAKE_C_COMPILER=gcc-6' )
         ;;
         --clang)
-            cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++-3.9' )
+            cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++-4.0' )
         ;;
         --travis)
             travis=true

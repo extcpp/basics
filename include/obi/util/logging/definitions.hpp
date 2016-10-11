@@ -2,10 +2,12 @@
 
 #include <string>
 #include <map>
-#include <vector>
-#include <obi/util/cast.hpp>
 
 namespace obi { namespace  util { namespace logging {
+    namespace _detail {
+        struct logtopic;
+        extern std::map<int,logtopic*> topics_map;
+    }
 
     enum class level : int {
         fatal = 0,
@@ -38,24 +40,36 @@ namespace obi { namespace  util { namespace logging {
         }
 
         struct logtopic {
-            logtopic(std::string&& name_, level trigger_level_)
-                :name(std::move(name_))
+            logtopic(int id_, std::string&& name_, level trigger_level_)
+                :id(id_)
                 ,trigger_level(trigger_level_)
-                {}
+                ,name(std::move(name_))
+                {
+                    topics_map[id]=this;
+                }
+
             logtopic(logtopic&& other) = default;
             logtopic(logtopic const& other) = default;
 
-            std::string name;
+            int id;
             level trigger_level;
+            std::string name;
         };
+    } // _detail
 
-        inline bool operator<(logtopic const& lhs, logtopic const& rhs){
-            return lhs.name < rhs.name;
-        }
-
-        inline bool operator==(logtopic const& lhs, logtopic const& rhs){
-            return lhs.name == rhs.name;
-        }
+    namespace configuration {
+        extern std::map<int,_detail::logtopic*> topics;
+        extern level global_level;
+        // logging is configured globally via these varialbes
+        // configure logging before you start logging!!!
+        extern bool do_filename;
+        extern bool do_function;
     }
 
-}}}
+    namespace topic{
+        extern _detail::logtopic no_topic;
+        extern _detail::logtopic network;
+        extern _detail::logtopic engine;
+    }
+
+}}} // obi::util::logging
