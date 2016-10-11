@@ -1,71 +1,66 @@
 #pragma once
 
-#include <string>
-#include <memory>
-#include <map>
-#include <vector>
 #include "log_definitions.hpp"
+#include <memory>
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 
 namespace obi { namespace  util { namespace logging {
-    struct log_topic {
-        log_topic(std::string&& n, level def, level trig) :
-            name(std::move(n)), default_level_(def), trigger_level_(trig){}
-        log_topic(log_topic&& other) = default;
-        log_topic(log_topic const& other) = default;
-
-        std::string name;
-        level default_level_;
-        level trigger_level_;
-    };
-
-    bool operator<(log_topic const& lhs, log_topic const& rhs){
-        return lhs.name < rhs.name;
-    }
-    bool operator==(log_topic const& lhs, log_topic const& rhs){
-        return lhs.name == rhs.name;
-    }
-
-
-    struct logger {
-        logger() = delete;
-        logger(logger const&) = delete;
-        logger(logger&&) = delete;
-
+    namespace configuration {
+        extern level global_level;
         // logging is configured globally via these varialbes
         // configure logging before you start logging!!!
-        static log_topic Default;
-        static log_topic Network;
-        static bool Do_Filename;
-        static bool Do_Function;
+        extern bool do_filename;
+        extern bool do_function;
+    }
 
-        static bool is_active(level level_, log_topic topic = logger::Default){
-            return level_ <= topic.trigger_level_;
+    namespace topic{
+        extern _detail::logtopic unknown;
+        extern _detail::logtopic network;
+    }
+
+    namespace _detail {
+        inline bool level_is_active(level level_, logtopic topic = topic::unknown){
+            //int l  = (int) level_;
+            //int g  = (int) configuration::global_level;
+            //int tt = (int) topic.trigger_level;
+            //int r  = (int) (configuration::global_level > topic.trigger_level
+            //               ? configuration::global_level : topic.trigger_level );
+
+            //std::cout <<"l:" << l << " "
+            //          <<"g:" << g <<" "
+            //          <<"t:" << tt << " "
+            //          <<"r:" << r << " "
+            //          << std::endl;
+
+            return level_ <= (configuration::global_level > topic.trigger_level
+                   ? configuration::global_level : topic.trigger_level );
+
         }
 
-        static std::stringstream create_log_stream(log_topic& topic, level level_,
+        inline std::stringstream create_log_stream(logtopic& topic, level level_,
                                                    const char* file_name, int line_no,
                                                    const char* function){
             std::stringstream ss;
-            if(Do_Filename){
+            if(configuration::do_filename){
                 ss << file_name << ":" << line_no;
             }
-            if(Do_Function){
+            if(configuration::do_function){
                 ss << "(" << function << ") - ";
             }
             ss << level_to_str(level_);
-            if(!(topic == Default)){
+            if(!(topic == topic::unknown)){
                 ss << "(" << topic.name << ")";
             }
             ss << ": ";
             return ss;
         }
-    };
 
-    //here we could write to multiple destinations
-    struct log_stream_consumer{
-        void operator&(std::ostream& ss){ std::cerr << ss.rdbuf() << std::endl; };
-    };
-}}}
+        //here we could write to multiple destinations
+        struct log_stream_consumer{
+            void operator&(std::ostream& ss){ std::cerr << ss.rdbuf() << std::endl; };
+        };
+    } // _detail
+
+}}} // obi::util::logging

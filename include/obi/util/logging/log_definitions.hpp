@@ -10,33 +10,52 @@ namespace obi { namespace  util { namespace logging {
     enum class level : int {
         fatal = 0,
         error = 20,
-        warn = 40,
-        info = 60,
+        warn  = 40,
+        info  = 60,
         debug = 80,
         trace = 100
     };
 
-    std::string level_to_str(int level_){
-        static const std::map<level,std::string> level_map =
-        { {level::fatal, "fatal"}
-        , {level::error, "error"}
-        , {level::warn,  "warn"}
-        , {level::info,  "info"}
-        , {level::debug, "debug"}
-        , {level::trace, "trace"}
+    namespace _detail {
+        inline std::string const level_to_str(level level_){
+            using namespace std::literals::string_literals;
+            switch (level_) {
+                case level::fatal:
+                    return "fatal"s;
+                case level::error:
+                    return "error"s;
+                case level::warn:
+                    return "warning"s;
+                case level::info:
+                    return "info"s;
+                case level::debug:
+                    return "debug"s;
+                case level::trace:
+                    return "trace"s;
+                default:
+                    return "unknown"s;
+            }
+        }
+
+        struct logtopic {
+            logtopic(std::string&& name_, level trigger_level_)
+                :name(std::move(name_))
+                ,trigger_level(trigger_level_)
+                {}
+            logtopic(logtopic&& other) = default;
+            logtopic(logtopic const& other) = default;
+
+            std::string name;
+            level trigger_level;
         };
 
-        auto current_level_ = level_map.begin();
-        while(std::next(current_level_) != level_map.end()){
-            if(obi::util::enum_to_underlying(std::next(current_level_)->first) > level_){
-                break;
-            }
-            current_level_++;
+        inline bool operator<(logtopic const& lhs, logtopic const& rhs){
+            return lhs.name < rhs.name;
         }
-        return current_level_->second;
+
+        inline bool operator==(logtopic const& lhs, logtopic const& rhs){
+            return lhs.name == rhs.name;
+        }
     }
 
-    std::string level_to_str(level level_){
-        return level_to_str(obi::util::enum_to_underlying(level_));
-    }
 }}}
