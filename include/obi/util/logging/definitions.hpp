@@ -55,6 +55,7 @@ namespace obi { namespace  util { namespace logging {
             level trigger_level;
             std::string name;
         };
+
     } // _detail
 
     namespace configuration {
