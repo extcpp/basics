@@ -9,4 +9,5 @@ namespace obi { namespace  util { namespace logging {
     OBI_INIT_PRIORITY_GNU(102) _detail::logtopic topic::engine   {3, std::string("engine"), level::error};
     bool configuration::do_filename{true};
     bool configuration::do_function{true};
+    bool configuration::do_vim{true};
 }}}

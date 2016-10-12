@@ -18,6 +18,9 @@ namespace obi { namespace  util { namespace logging {
                                                    const char* file_name, int line_no,
                                                    const char* function = "none"){
             std::stringstream ss;
+            if (configuration::do_vim){
+                ss << file_name << " +" << line_no << "\n";
+            }
             ss << level_to_str(level_);
             if(topic.id != topic::no_topic.id){
                 ss << "(" << topic.name << ")";
@@ -26,7 +29,7 @@ namespace obi { namespace  util { namespace logging {
                 ss << " - " << basename(file_name) << ":" << line_no;
             }
             if(configuration::do_function){
-                ss << "(" << function << ")";
+                ss << " - " << function << "()";
             }
             ss << ": ";
             return ss;

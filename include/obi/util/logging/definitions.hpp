@@ -65,6 +65,7 @@ namespace obi { namespace  util { namespace logging {
         // configure logging before you start logging!!!
         extern bool do_filename;
         extern bool do_function;
+        extern bool do_vim;
     }
 
     namespace topic{
