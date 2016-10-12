@@ -3,11 +3,11 @@
 #define OBI_MACROS_PLATFORM_HPP
 #include "compiler.hpp"
 
-#ifdef __linux___
+#ifdef __linux__
     #define OBI_LINUX
 #endif
 
-#ifdef __unix___
+#ifdef __unix__
     #define OBI_UNIX
 #elif __WIN32
     #define OBI_WINDOWS

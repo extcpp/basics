@@ -1,6 +1,8 @@
 #pragma once
 
 #include "definitions.hpp"
+#include <obi/util/basic.hpp>
+#include <obi/macros/platform.hpp>
 #include <memory>
 #include <algorithm>
 #include <iostream>
@@ -14,17 +16,17 @@ namespace obi { namespace  util { namespace logging {
 
         inline std::stringstream create_log_stream(logtopic const& topic, level level_,
                                                    const char* file_name, int line_no,
-                                                   const char* function){
+                                                   const char* function = "none"){
             std::stringstream ss;
-            if(configuration::do_filename){
-                ss << file_name << ":" << line_no;
-            }
-            if(configuration::do_function){
-                ss << "(" << function << ") - ";
-            }
             ss << level_to_str(level_);
             if(topic.id != topic::no_topic.id){
                 ss << "(" << topic.name << ")";
+            }
+            if(configuration::do_filename){
+                ss << " - " << basename(file_name) << ":" << line_no;
+            }
+            if(configuration::do_function){
+                ss << "(" << function << ")";
             }
             ss << ": ";
             return ss;
