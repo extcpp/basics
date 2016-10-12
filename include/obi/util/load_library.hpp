@@ -11,10 +11,10 @@
 // - https://msdn.microsoft.com/en-us/library/windows/desktop/ms683152.aspx (FreeLibrary)
 
 #pragma once
-
-#ifdef __linux__
+#include <obi/macros/platform.hpp>
+#ifdef OBI_UNIX
     #include <dlfcn.h>
-#elif _WIN32
+#elif OBI_WINDOWS
     #include <windows.h>
     #include <strsafe.h>
     #include "windows_strings.hpp"
@@ -24,11 +24,11 @@
 
 namespace obi { namespace util {
 // types
-    #ifdef __linux__
+    #ifdef OBI_UNIX
         typedef void*   dl_handle;
         typedef void*   dl_address;
         typedef int     dl_rv;
-    #elif _WIN32
+    #elif OBI_WINDOWS
         typedef HMODULE dl_handle;
         typedef FARPROC dl_address;
         typedef BOOL    dl_rv;
@@ -44,9 +44,9 @@ namespace obi { namespace util {
      * @return                  dl_handle or NULL on fail
      */
     dl_handle dl_open(const_utf8_e_str filename, int flag=RTLD_LAZY){
-    #ifdef __linux__
+    #ifdef OBI_UNIX
         return ::dlopen(filename, flag);
-    #elif _WIN32
+    #elif OBI_WINDOWS
         #ifdef UNICODE
             std::wstring tmp = string_to_win(filename);
             return ::LoadLibrary(tmp.c_str());
@@ -68,7 +68,7 @@ namespace obi { namespace util {
      * @return  textual description of the error in utf-8 encoded std::string
      */
     std::string dl_error(void){
-    #ifdef __linux__
+    #ifdef OBI_UNIX
         //returns a static buffer - do not free!!!!
         char* buffer = ::dlerror();
         if(buffer){
@@ -76,7 +76,7 @@ namespace obi { namespace util {
         } else {
             return std::string("");
         }
-    #elif _WIN32
+    #elif OBI_WINDOWS
         LPVOID lpMsgBuf;
         DWORD  dw_error_num = ::GetLastError();
 
@@ -108,9 +108,9 @@ namespace obi { namespace util {
      *                          or NULL if symbol is not found
      */
     dl_address dl_sym(dl_handle handle, const_utf8_e_str symbol){
-    #ifdef __linux__
+    #ifdef OBI_UNIX
         return ::dlsym(handle, symbol);
-    #elif _WIN32
+    #elif OBI_WINDOWS
         #ifdef UNICODE
             std::wstring tmp = string_to_win(symbol);
             return ::GetProcAddress(handle, tmp.c_str());
@@ -144,9 +144,9 @@ namespace obi { namespace util {
      *  @return             returns NULL on fail
      */
     dl_rv dl_close(dl_handle handle){
-    #ifdef __linux__
+    #ifdef OBI_UNIX
         return ::dlclose(handle);
-    #elif _WIN32
+    #elif OBI_WINDOWS
         return ::FreeLibrary(handle);
     #endif
     }
