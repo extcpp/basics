@@ -71,6 +71,7 @@ namespace obi { namespace  util { namespace logging {
         extern bool filename;
         extern bool function;
         extern bool vim;
+        extern bool gdb;
     }
 
     namespace topic{

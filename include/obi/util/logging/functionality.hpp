@@ -17,7 +17,8 @@ namespace obi { namespace  util { namespace logging {
         }
 
         struct logger {
-            std::stringstream ss;
+            std::stringstream _ss;
+            level _level;
             logger(logtopic const& topic, level level_,
                    const char* file_name, int line_no,
                    const char* function = "none");
@@ -25,7 +26,7 @@ namespace obi { namespace  util { namespace logging {
 
             template<typename T>
             void operator<< (T&& value){
-                ss << std::forward<T>(value);
+                _ss << std::forward<T>(value);
             }
         };
 

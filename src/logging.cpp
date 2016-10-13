@@ -12,25 +12,33 @@ namespace obi { namespace  util { namespace logging {
     bool configuration::filename{true};
     bool configuration::function{true};
     bool configuration::vim{true};
+    bool configuration::gdb{true};
 
     _detail::logger::logger(logtopic const& topic, level level_,
                             const char* file_name, int line_no,
-                            const char* function):ss() {
-        ss << "\n";
+                            const char* function):_ss() {
+        _level = level_;
+        _ss << "\n";
         if (configuration::vim){
-            ss << "vim " << file_name << " +" << line_no << "\n";
+            if(configuration::gdb) _ss << "# ";
+            _ss << "vim " << file_name << " +" << line_no << "\n";
         }
-        ss << level_to_str(level_);
+        if (configuration::gdb){
+            _ss << "break " << basename(file_name) << ":" << line_no << " # ";
+        }
+        _ss << level_to_str(level_);
         if(topic.id != topic::no_topic.id){
-            ss << "(" << topic.name << ")";
+            _ss << "(" << topic.name << ")";
         }
         if(configuration::filename){
-            ss << " - " << basename(file_name) << ":" << line_no;
+            if(!configuration::gdb){
+                _ss << " " << basename(file_name) << ":" << line_no;
+            }
         }
         if(configuration::function){
-            ss << " - " << function << "()";
+            _ss << " in " << function << "()";
         }
-        ss << ": ";
+        _ss << ": '";
     }
 
     _detail::logger::~logger(){
@@ -39,10 +47,12 @@ namespace obi { namespace  util { namespace logging {
             // so other thread releases and prints
             // free memory in same thread?!
             // _detail::add_queue(ss.str());
-        }
-        else{
+        } else {
             std::lock_guard<std::mutex> lock(logmutex);
-            std::cerr << ss.rdbuf() << std::endl;
+            std::cerr << _ss.rdbuf() << "'" << std::endl;
+            if (_level == level::fatal){
+                std::terminate();
+            }
         }
     }
 }}} // obi::util::logging
