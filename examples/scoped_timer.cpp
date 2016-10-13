@@ -1,4 +1,4 @@
-#include <obi/util.hpp>
+#include <obi/util/scoped_timer.hpp>
 #include <thread>
 #include <atomic>
 #include <vector>
@@ -67,6 +67,5 @@ int main(){
         std::cout << i << ": " << numbers[i] << std::endl;
     }
     std::cout << std::endl;
-
     return 0;
 }

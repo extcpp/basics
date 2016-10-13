@@ -5,7 +5,7 @@
 
 int main(/*int argc, const char *argv[]*/) {
     using namespace obi::util::logging;
-    configuration::do_function = true;
+    configuration::function = true;
     std::cout << _detail::level_to_str(level::fatal) << std::endl;
     std::cout << _detail::level_to_str(level::trace) << std::endl;
 
@@ -19,11 +19,9 @@ int main(/*int argc, const char *argv[]*/) {
 
     using namespace obi::util::logging;
     OLOG_TOPIC(trace, network) << "tace network";
-
     for(auto t : _detail::topics_map){
         std::cout << t.first << t.second->name << std::endl;
     }
-
     return 0;
 }
 

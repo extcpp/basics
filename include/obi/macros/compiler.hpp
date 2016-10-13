@@ -1,7 +1,7 @@
 #pragma once
 #ifndef OBI_MACROS_COMPILER_HPP
 #define OBI_MACROS_COMPILER_HPP
-#include "general.hpp"
+#include <obi/macros/general.hpp>
 
 #ifdef __GNUC__
     //gcc or clang

@@ -1,6 +1,8 @@
 // Copyright - 2014 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
 #pragma once
+#ifndef OBI_UTIL_SCOPED_TIMER_HPP
+#define OBI_UTIL_SCOPED_TIMER_HPP
 
 #include <utility>
 #include <vector>
@@ -133,3 +135,4 @@ private:  // functions
 } ;
 
 }}  // namespace obi::util
+#endif // OBI_UTIL_SCOPED_TIMER_HPP

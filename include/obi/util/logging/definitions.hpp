@@ -1,11 +1,15 @@
 #pragma once
+#ifndef OBI_UTIL_LOGGING_DEFINITIONS_HPP
+#define OBI_UTIL_LOGGING_DEFINITIONS_HPP
 
 #include <string>
 #include <map>
+#include <mutex>
 
 namespace obi { namespace  util { namespace logging {
     namespace _detail {
         struct logtopic;
+        extern std::mutex logmutex;
         extern std::map<int,logtopic*> topics_map;
     }
 
@@ -63,9 +67,10 @@ namespace obi { namespace  util { namespace logging {
         extern level global_level;
         // logging is configured globally via these varialbes
         // configure logging before you start logging!!!
-        extern bool do_filename;
-        extern bool do_function;
-        extern bool do_vim;
+        extern bool threads;
+        extern bool filename;
+        extern bool function;
+        extern bool vim;
     }
 
     namespace topic{
@@ -75,3 +80,4 @@ namespace obi { namespace  util { namespace logging {
     }
 
 }}} // obi::util::logging
+#endif // OBI_UTIL_LOGGING_DEFINITIONS_HPP
