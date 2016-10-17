@@ -3,6 +3,7 @@
 
 project_root="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 build_dir="${project_root}-build"
+do_test=false
 
 args=()
 cm_flags=()
@@ -20,6 +21,7 @@ for arg in $@; do
         ;;
         -t|--testing)
             cm_flags+=( '-DCMAKE_TESTING=ON' )
+            do_test=true
         ;;
         -e|--examples)
             cm_flags+=( '-DLIBOBI_EXAMPLES=ON' )
@@ -60,6 +62,11 @@ else
         -DOBI_UNCAUGHT_EXCEPTIONS=ON
 fi
 
+if $do_test; then
+    ctest -VV
+fi
+
 if ${change_dir:-false}; then
     bash #chage to build dir
 fi
+

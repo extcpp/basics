@@ -2,7 +2,7 @@ project(libobi-tests)
 
 set(test_name "libobi")
 set(test_target "test_${test_name}")
-set(test_files "math")
+set(test_files "math" "cast")
 
 if("${OBI_TEST_TYPE}" STREQUAL "boost")
     #builds executable for every test

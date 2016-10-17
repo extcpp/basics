@@ -1,5 +1,5 @@
 -Dlinux
 -D__linux__
--I./src/include
+-I./include
 -I./external_libs/googletest
 -std=c++1z
