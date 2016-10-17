@@ -5,6 +5,18 @@
 #include <type_traits>
 namespace obi { namespace util {
 
+    template <typename To, typename From>
+    std::enable_if_t<!std::is_array<To>::value,void>
+    type_cast_unsafe(const From &from, To &to){
+        std::memcpy(&to, &from, sizeof(To));
+    }
+
+    template <typename To, typename From, int length>
+    std::enable_if_t<std::is_array<To>::value,void>
+    type_cast_unsafe(const From &from, To (&to)[length]){
+        std::memcpy(&to, &from, sizeof(To)*length);
+    }
+
     //! convert From to To without in a safe way where types are of the same size
     template <typename To, typename From>
     inline To type_cast(const From &from){
@@ -20,7 +32,7 @@ namespace obi { namespace util {
     template <typename To, typename From>
     inline To type_cast_bigger(const From &from){
         // copy `from` size form `from` to `to` and fill rest with 0
-        // FFFF      -> 000 000 => 0000 FFFF
+        // FFFF      -> 0000 0000 => 0000 FFFF
 
         static_assert(sizeof(To) >= sizeof(From)
                      ,"type_cast requires target with greater or equal size"
@@ -35,7 +47,7 @@ namespace obi { namespace util {
     template <typename To, typename From>
     inline To type_cast_smaller(const From &from){
         // copy `from` size form `from` to `to` and fill rest with 0
-        // 0000 FFFF -> 000 => FFFF
+        // 0000 FFFF -> 0000 => FFFF
 
         static_assert(sizeof(To) <= sizeof(From)
                      ,"type_cast requires target with less or equal size"
@@ -51,8 +63,8 @@ namespace obi { namespace util {
     inline To type_cast_diff(const From &from){
         // if `to` is less equal only copy `to` size form `from` to `to`
         // otherwise copy `from` size form `from` to `to` and fill rest with 0
-        // 0000 FFFF -> 000     =>      FFFF
-        // FFFF      -> 000 000 => 0000 FFFF
+        // 0000 FFFF ->      0000 =>      FFFF
+        // FFFF      -> 0000 0000 => 0000 FFFF
 
         To to = To(0);
         std::memcpy(&to, &from, (sizeof(To) <= sizeof(From)) ? sizeof(To) : sizeof(From));
@@ -60,7 +72,7 @@ namespace obi { namespace util {
     }
 
 
-
+    // enum conversion
 	namespace _detail {
         //use underlying type if Type is a enum
 		template <typename E>
