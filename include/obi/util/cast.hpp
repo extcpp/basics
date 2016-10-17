@@ -81,6 +81,14 @@ namespace obi { namespace util {
 
 	template <typename EnumOut, typename EnumIn>
 	inline constexpr std::enable_if_t<std::is_enum<EnumIn>::value && std::is_enum<EnumOut>::value, EnumOut>
+	enum_to_enum_unsafe(EnumIn e) noexcept {
+		return underlying_to_enum<EnumOut>(enum_to_underlying(e));
+	}
+
+	template <typename EnumOut, typename EnumIn>
+	inline constexpr std::enable_if_t<std::is_enum<EnumIn>::value &&
+                                      std::is_enum<EnumOut>::value &&
+                                      std::is_same<std::underlying_type_t<EnumIn>,std::underlying_type_t<EnumOut>>::value, EnumOut>
 	enum_to_enum(EnumIn e) noexcept {
 		return underlying_to_enum<EnumOut>(enum_to_underlying(e));
 	}

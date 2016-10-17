@@ -56,15 +56,12 @@ cd $build_dir || { exit 1; }
 
 if ! [[ $travis ]]; then
     cmake "${cm_flags[@]}" "${args[@]}" "$project_root" && \
-    make -j $(nproc)
+    make -j $(nproc) && [[ $do_test ]] && ctest -VV
 else
     cmake "${cm_flags[@]}" "${args[@]}" "$project_root" \
         -DOBI_UNCAUGHT_EXCEPTIONS=ON
 fi
 
-if $do_test; then
-    ctest -VV
-fi
 
 if ${change_dir:-false}; then
     bash #chage to build dir
