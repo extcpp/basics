@@ -55,11 +55,13 @@ namespace obi { namespace math {
         return copy == reversed;
     }
 
-    //create vector of sets form fiven vector
+    //create vector of sets from a given vector
     template<typename T>
     std::vector<std::vector<T>> subsets(std::vector<T> const& in){
         std::vector<std::vector<int>> rv{};
-        rv.push_back(in);
+        if(!in.empty()){
+            rv.push_back(in);
+        }
         rv.push_back({});
         std::size_t in_size = in.size();
         std::vector<char> bit(in.size(),1);
@@ -83,7 +85,7 @@ namespace obi { namespace math {
                     rv.push_back(std::move(tmp1));
                     rv.push_back(std::move(tmp2));
                 }
-                else if(even){
+                else if(even){ //even and split_point
                     rv.push_back(std::move(tmp1));
                 }
             } while (std::next_permutation(bit.begin(),bit.end()));
