@@ -57,7 +57,7 @@ namespace obi { namespace math {
 
     //create vector of sets from a given vector
     template<typename T>
-    std::vector<std::vector<T>> subsets(std::vector<T> const& in){
+    std::vector<std::vector<T>> powersets(std::vector<T> const& in){
         std::vector<std::vector<int>> rv{};
         if(!in.empty()){
             rv.push_back(in);

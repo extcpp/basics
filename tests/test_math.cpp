@@ -11,28 +11,26 @@ TEST(math_find_nth_prime, 10001){
              );
 }
 
-TEST(basic_functions, subsets){
+TEST(basic_functions, powersets){
     std::vector<std::vector<int>> result;
     std::vector<std::vector<int>> expect;
     std::vector<int> in;
 
     in={};
-    result = obi::math::subsets(in);
+    result = obi::math::powersets(in);
     expect = {{}};
     obi::util::sort_all(result,expect);
     EXPECT_EQ(result, expect);
 
     in={1};
-    result = obi::math::subsets(in);
+    result = obi::math::powersets(in);
     expect = {{1},{}};
     obi::util::sort_all(result,expect);
     EXPECT_EQ(result, expect);
 
     in={1,2};
-    result = obi::math::subsets(in);
+    result = obi::math::powersets(in);
     expect = {{},{1},{2},{1,2}};
-    //std::sort(result.begin(),result.end());
-    //std::sort(expect.begin(),expect.end());
     obi::util::sort_all(result,expect);
     EXPECT_EQ(result, expect);
 }
