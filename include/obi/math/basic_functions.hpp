@@ -81,12 +81,11 @@ namespace obi { namespace math {
                         tmp2.push_back(in[j]);
                     }
                 }
-                if((i != split_point-1) || !even){
+                if((i == split_point-1) && even){
+                    rv.push_back(std::move(tmp1));
+                } else {
                     rv.push_back(std::move(tmp1));
                     rv.push_back(std::move(tmp2));
-                }
-                else if(even){ //even and split_point
-                    rv.push_back(std::move(tmp1));
                 }
             } while (std::next_permutation(bit.begin(),bit.end()));
         }

@@ -33,4 +33,10 @@ TEST(basic_functions, powersets){
     expect = {{},{1},{2},{1,2}};
     obi::util::sort_all(result,expect);
     EXPECT_EQ(result, expect);
+
+    in={1,2,3};
+    result = obi::math::powersets(in);
+    expect = {{},{1},{2},{3},{1,2},{1,3},{2,3},{1,2,3}};
+    obi::util::sort_all(result,expect);
+    EXPECT_EQ(result, expect);
 }
