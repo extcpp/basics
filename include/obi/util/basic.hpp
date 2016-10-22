@@ -11,7 +11,7 @@ namespace obi { namespace util {
 template<typename F, typename ...T>
 void for_each_arg(F&& function, T&&... args){
     //(do_it(args), ...); // c++17 fold expression
-    OBI_EXPAND_SIDE_EFFECTS(function(args));
+    OBI_EXPAND_SIDE_EFFECTS(function(std::forward<T>(args)));
 }
 
 template<typename ...T>
