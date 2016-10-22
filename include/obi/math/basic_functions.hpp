@@ -57,34 +57,33 @@ namespace obi { namespace math {
 
     //create vector of sets from a given vector
     template<typename T>
-    std::vector<std::vector<T>> powersets(std::vector<T> const& in){
+    std::vector<std::vector<T>> powersets(std::vector<T> const& input){
         std::vector<std::vector<int>> rv{};
-        if(!in.empty()){
-            rv.push_back(in);
+        if(!input.empty()){
+            rv.push_back(input);
         }
         rv.push_back({});
-        std::size_t in_size = in.size();
-        std::vector<char> bit(in.size(),1);
-        bool even = (in_size % 2 == 0) ? true : false;
-        std::size_t split_point = in_size/2;
+        std::size_t input_size = input.size();
+        std::vector<char> bit(input.size(),1);
+        bool even = (input_size % 2 == 0) ? true : false;
+        std::size_t split_point = input_size/2;
         for(std::size_t i = 0; i < split_point; ++i){
             bit[i]=0;
             do {
                 std::vector<int> tmp1;
                 tmp1.reserve(i+1);
                 std::vector<int> tmp2;
-                tmp2.reserve(in_size-(i+1));
-                for(std::size_t j = 0; j < in.size(); ++j){
+                tmp2.reserve(input_size-(i+1));
+                for(std::size_t j = 0; j < input.size(); ++j){
                     if(bit[j]){
-                        tmp1.push_back(in[j]);
+                        tmp1.push_back(input[j]);
                     } else {
-                        tmp2.push_back(in[j]);
+                        tmp2.push_back(input[j]);
                     }
                 }
-                if((i == split_point-1) && even){
-                    rv.push_back(std::move(tmp1));
-                } else {
-                    rv.push_back(std::move(tmp1));
+
+                rv.push_back(std::move(tmp1));
+                if(!((i == split_point-1) && even)){
                     rv.push_back(std::move(tmp2));
                 }
             } while (std::next_permutation(bit.begin(),bit.end()));
