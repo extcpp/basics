@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 #include <obi/algorithm/string_distances.hpp>
 
-namespace obi::algorithm::distances {
+namespace obi { namespace algorithm { namespace distances {
     class string_distance_fixture : public ::testing::Test {
         protected:
-            typedef std::vector<std::pair<std::string,std::string>> testData_t;
-            testData_t m_testData;
+            typedef std::vector<std::pair<std::string,std::string>> test_data_type;
+            test_data_type test_data;
             string_distance_fixture(){
-                m_testData = {
+                test_data = {
                     {"ulaula", "ohlala"},
                     {"1234567890", "67890"},
                     {"jan", "mann"},
@@ -20,17 +20,17 @@ namespace obi::algorithm::distances {
             virtual void SetUp() {}
             virtual void TearDown() {}
 
-            void testFunction(int distanceFun(const std::string&, const std::string&)
-                             ,std::vector<int> result){
-                for (int i = 0; i < result.size(); ++i){
-                    int j;
+            void test_function(std::size_t distance_fun(const std::string&, const std::string&)
+                             ,std::vector<std::size_t> result){
+                for (std::size_t i = 0; i < result.size(); ++i){
+                    std::size_t j;
                     EXPECT_EQ(
                         result[i],
-                        j = distanceFun(m_testData[i].first, m_testData[i].second)
+                        j = distance_fun(test_data[i].first, test_data[i].second)
                     ) << "\n"
                       << "   index: "  << i << std::endl
-                      << "   input: '" << m_testData[i].first
-                      << "' and '"     << m_testData[i].second << "'\n"
+                      << "   input: '" << test_data[i].first
+                      << "' and '"     << test_data[i].second << "'\n"
                       << "  result: "  << j << std::endl
                       << "expected: "  << result[i]
                       << "\n\n";
@@ -39,15 +39,14 @@ namespace obi::algorithm::distances {
     };
 
     TEST_F(string_distance_fixture, length){
-        testFunction(length, {0, 5, 1 , 1, 0});
+        test_function(length, {0, 5, 1 , 1, 0});
     }
 
     TEST_F(string_distance_fixture, edit_matrix){
-        testFunction(edit_matrix, {3, 5, 2 , 1, 0});
+        test_function(edit_matrix, {3, 5, 2 , 1, 0});
     }
 
     TEST_F(string_distance_fixture, edit_fast){
-        testFunction(edit_fast, {3, 5, 2 , 1, 0});
+        test_function(edit_fast, {3, 5, 2 , 1, 0});
     }
-}
-
+}}}
