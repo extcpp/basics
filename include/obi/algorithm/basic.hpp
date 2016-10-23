@@ -20,24 +20,19 @@ namespace obi { namespace algorithm {
     }
 
 
-    // count occurences in containers /////////////////////////////////////////
-    template<typename Iterator, typename Int = int>
+    // count occurences in vector like containers /////////////////////////////////////////
+    template<typename Iterator, typename Int = std::size_t>
     std::map<typename std::iterator_traits<Iterator>::value_type,Int>
     count_occurrences(Iterator begin, Iterator end) {
         using Key = typename std::iterator_traits<Iterator>::value_type;
         std::map<Key,Int> result;
         for(auto it = begin; it != end; it++) {
-            auto found = result.find(*it);
-            if (found != result.end()) {
-                found->second++;
-            } else {
-                result[*it] = Int(1);
-            }
+                result[*it]++;
         }
         return result;
     }
 
-    //add endable if
+    //add enable if for vector like containers
     template<typename Container, typename Int = int>
     auto count_occurrences(const Container& container) {
         using Iterator = decltype(std::begin(container));
@@ -46,6 +41,8 @@ namespace obi { namespace algorithm {
 
 
     // mege maps //////////////////////////////////////////////////////////////
+    // items that are already in the map get replaced by a later insert if
+    // the predicate evaluates to true
     template <typename Map, typename Predicate = std::less<>>
     auto& merge_maps(Map& result, const Map& in, Predicate predicate = Predicate() ) {
         for (auto it = in.begin(); it != in.end(); it++) {
@@ -61,11 +58,12 @@ namespace obi { namespace algorithm {
         return result;
     }
 
+    //looks like maps are given in a iterator range
     template <typename Iterator
-             ,typename Predicate
+             ,typename Predicate = std::less<>
              ,typename = std::enable_if_t<obi::meta::is_input_iterator<Iterator>::value>
              >
-    auto merge_maps(Iterator begin, Iterator end, Predicate predicate = std::less<>()) {
+    auto merge_maps(Iterator begin, Iterator end, Predicate predicate = Predicate()) {
         using PairType = typename std::iterator_traits<Iterator>::value_type;
         std::map<typename PairType::T1,typename PairType::T2> result;
         for (auto it = begin; it != end; it++) {
