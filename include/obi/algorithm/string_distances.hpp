@@ -4,22 +4,18 @@
 
 #include <string>
 #include <vector>
+#include <obi/algorithm/basic.hpp>
 
 namespace obi { namespace algorithm { namespace distances {
 
     // For Unicode we would require lib ICU
-
-    template<typename T> //chars get copied
-    T min_of_3(T a, T b, T c){
-        return a < b ? std::min(a, c) : std::min(b, c);
-    }
 
 	//simple length
     template<typename T>
     std::size_t length(const T& first, const T& second)
     {
         //needs to be cast to int or subtraction will have a problem!
-        return abs((int)first.size() - (int)second.size());
+        return std::max(first.size(),second.size()) - std::min(first.size(),second.size());
     }
 
     //edit distance fast implementation
@@ -38,7 +34,7 @@ namespace obi { namespace algorithm { namespace distances {
         for (std::size_t j = 1; j <= number_of_cols; j++) {
             current_col[0] = j;
             for (std::size_t i = 1; i <= items_per_col; i++){
-                current_col[i] = min_of_3(
+                current_col[i] = min(
                      current_col[i-1] + 1,  //delete
                     previous_col[ i ] + 1,  //insert
                     previous_col[i-1] + (
@@ -74,7 +70,7 @@ namespace obi { namespace algorithm { namespace distances {
 
         for (std::size_t j = 1; j <= number_of_cols; ++j){
             for (std::size_t i = 1; i <= items_per_col; ++i){
-                matrix[i][j] = min_of_3(
+                matrix[i][j] = min(
                     matrix[i-1][ j ] + 1,
                     matrix[ i ][j-1] + 1,
                     matrix[i-1][j-1] + (first[i-1] == second[j-1] ? 0 : 1)

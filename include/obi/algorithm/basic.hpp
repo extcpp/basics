@@ -9,6 +9,17 @@
 
 namespace obi { namespace algorithm {
 
+    template<typename T, typename Predicate = std::less<>>
+    T& min(T const& a, T const& b, T const& c, Predicate comp = Predicate()){
+        return std::min(a,std::min(b, c, comp), comp);
+    }
+
+    template<typename T, typename Predicate = std::greater<>>
+    T& max(T const& a, T const& b, T const& c, Predicate comp = Predicate()){
+        return std::max(std::max(a, b, comp), c, comp);
+    }
+
+
     // count occurences in containers /////////////////////////////////////////
     template<typename Iterator, typename Int = int>
     std::map<typename std::iterator_traits<Iterator>::value_type,Int>
@@ -35,8 +46,8 @@ namespace obi { namespace algorithm {
 
 
     // mege maps //////////////////////////////////////////////////////////////
-    template <typename Map, typename Predicate>
-    auto& merge_maps(Map& result, const Map& in, Predicate predicate = std::less<>() ) {
+    template <typename Map, typename Predicate = std::less<>>
+    auto& merge_maps(Map& result, const Map& in, Predicate predicate = Predicate() ) {
         for (auto it = in.begin(); it != in.end(); it++) {
             auto found = result.find(it->first);
             if(found != result.end()){
