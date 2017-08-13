@@ -22,6 +22,7 @@ for arg in $@; do
         -t|--testing)
             cm_flags+=( '-DCMAKE_TESTING=ON' )
             do_test=true
+            touch .do_test
         ;;
         -e|--examples)
             cm_flags+=( '-DLIBOBI_EXAMPLES=ON' )
@@ -51,19 +52,49 @@ for arg in $@; do
     esac
 done
 
-test -d $build_dir || mkdir $build_dir || { exit 1; }
-cd $build_dir || { exit 1; }
+msg(){
+    echo "---- $1"
+}
+err(){
+    echo "ERROR: $1"
+}
+
+ferr(){
+    echo "FATAL ERROR: $1"
+    exit ${2:-1}
+}
+
+
+
+msg "create dir if not existenet"
+test -d $build_dir || mkdir $build_dir || ferr "failed to create build dir"
+
+msg "change into build dir"
+cd $build_dir || ferr "failed to change into build dir"
 
 if ! [[ $travis ]]; then
-    cmake "${cm_flags[@]}" "${args[@]}" "$project_root" && \
-    make -j $(nproc) && [[ $do_test ]] && ctest -VV
+    msg "running cmake"
+    cmake "${cm_flags[@]}" "${args[@]}" "$project_root" || ferr "configuring with camke failed"
+    echo
+
+    msg "running make"
+    make -j $(nproc) || ferr "make failed"
+    echo
+
+    if [[ -f .do_test ]]; then
+        msg "running tests"
+        ctest -VV || ferr "tests failed"
+        echo
+    fi
 else
+    echo "building in travis"
+    echo "running cmake"
     cmake "${cm_flags[@]}" "${args[@]}" "$project_root" \
         -DOBI_UNCAUGHT_EXCEPTIONS=ON
 fi
-
+msg "build done"
 
 if ${change_dir:-false}; then
-    bash #chage to build dir
+    echo "starting shell in build directory"
+    bash
 fi
-
