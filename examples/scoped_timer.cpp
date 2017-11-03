@@ -13,7 +13,7 @@ void fun(int n, int& loc){
     while (current < n){
         current+=1;
         bool isPrime=true;
-        for (auto prime : primes){
+        for (auto const& prime : primes){
             if (current % prime == 0){
                 isPrime = false;
                 break;
@@ -30,7 +30,7 @@ int main(){
     obi::util::scoped_timer timer("overall calulation time");
     run = true;
     int n = 100000;
-    size_t vec_len = 10;
+    std::size_t vec_len = 10;
     std::vector<int>numbers(vec_len,0);
 
     // single thread
@@ -62,7 +62,7 @@ int main(){
     //print result
     timer.disable_dtor_entry();
     std::cout << std::endl;
-    for (size_t i = 0; i < numbers.size(); i++ )
+    for (std::size_t i = 0; i < numbers.size(); i++ )
     {
         std::cout << i << ": " << numbers[i] << std::endl;
     }

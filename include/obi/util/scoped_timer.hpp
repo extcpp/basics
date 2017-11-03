@@ -9,129 +9,145 @@
 #include <chrono>
 #include <functional>
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 
 namespace obi{ namespace util {
 
 class scoped_timer {
 public:  // defines
-    using hclock    = std::chrono::high_resolution_clock;
-    using hrcStrVec = std::vector<std::pair<hclock::time_point,std::string>>;
-    using intStrVec = std::vector<std::pair<int,std::string>>;
+    using high_clock    = std::chrono::high_resolution_clock;
+    using clock_string_vec = std::vector<std::pair<high_clock::time_point,std::string>>;
+    using int_string_vec = std::vector<std::pair<int,std::string>>;
+    using callback_type = std::function<void(int_string_vec const&)>;
 
 private:  // variables
-    hrcStrVec m_timePoints;
-    std::function<intStrVec(intStrVec)> m_callback;
-    bool m_enabled;
-    bool m_add_dtor_entry;
+    callback_type callback;
+    clock_string_vec timepoints_with_description;
+    bool enabled_in_dtor;
+    bool add_dtor_entry;
 
 public:  // functions
-    scoped_timer(std::function<intStrVec(intStrVec)> callback = &scoped_timer::toSting)
-        : m_callback(callback)
-        , m_enabled(true)
-        , m_add_dtor_entry(true)
+    scoped_timer(callback_type cb = &scoped_timer::show_internal)
+                :callback(cb)
+                ,enabled_in_dtor(true)
+                ,add_dtor_entry(true)
     {
-        m_timePoints.reserve(10);  //if you want time more than 10 - add template param?
-        m_timePoints.emplace_back(hclock::time_point(),"");
-        m_timePoints.back().first=hclock::now(); //defeats the purpose of emplace a bit :/
+        timepoints_with_description.reserve(10);  //if you want time more than 10 - add template param?
+        timepoints_with_description.emplace_back(high_clock::time_point(),"");
+        timepoints_with_description.back().first=high_clock::now(); //defeats the purpose of emplace a bit :/
     }
 
-    scoped_timer(std::string name) : m_callback(&scoped_timer::toSting)
-                                   , m_enabled(true)
-                                   , m_add_dtor_entry(true)
+    scoped_timer(std::string name)
+                :callback(&scoped_timer::show_internal)
+                ,enabled_in_dtor(true)
+                ,add_dtor_entry(true)
     {
-        m_timePoints.reserve(10);
-        m_timePoints.emplace_back(hclock::time_point(), name);
-        m_timePoints.back().first=hclock::now();
+        timepoints_with_description.reserve(10);
+        timepoints_with_description.emplace_back(high_clock::time_point(), name);
+        timepoints_with_description.back().first=high_clock::now();
     }
 
     ~scoped_timer(void) {
-        if(m_add_dtor_entry) {
-            m_timePoints.emplace_back(hclock::now(),"dtor");
+        if(add_dtor_entry) {
+            timepoints_with_description.emplace_back(high_clock::now(),"destructor");
         }
-        if(m_enabled) {
-            m_callback(calculate());
+        if(enabled_in_dtor) {
+            callback(calculate());
         }
+    }
+
+    void add_step(std::string const& str = "") {
+        timepoints_with_description.emplace_back(high_clock::now(),std::move(str));
     }
 
     void add_step(std::string&& str = "") {
-        m_timePoints.emplace_back(hclock::now(),str);
+        timepoints_with_description.emplace_back(high_clock::now(),std::move(str));
     }
 
     void disable_dtor_entry() {
-        m_add_dtor_entry = false;
-    }
-
-    intStrVec show() {
-        return m_callback(calculate());
-    }
-    void disable() {
-        m_enabled=false;
-    }
-
-    intStrVec show_and_disable() {
-        disable();
-        return show();
+        add_dtor_entry = false;
     }
 
     void set_name(std::string name) {
-        m_timePoints[0].second = name;
+        timepoints_with_description[0].second = name;
     }
 
 private:  // functions
-    static long int
-    get_time_diff(const hclock::time_point& t0, const hclock::time_point& t1) {
+    static long int get_time_diff(high_clock::time_point const& t0, high_clock::time_point const& t1) {
         return std::chrono::duration_cast<std::chrono::nanoseconds>(t1-t0).count();
     }
 
-    intStrVec calculate() {
-        long int total_time = get_time_diff(m_timePoints.front().first
-                                           ,m_timePoints.back().first
+    int_string_vec calculate() const {
+        long int total_time = get_time_diff(timepoints_with_description.front().first
+                                           ,timepoints_with_description.back().first
                                            );
-        intStrVec times;
-        times.emplace_back(std::make_pair(total_time
-                                         ,m_timePoints.front().second
-                                         )
-                          );
-        if (m_timePoints.size() > 2) {
-            for (std::size_t i = 1; i < m_timePoints.size(); i++) {
-                times.emplace_back(std::make_pair(get_time_diff(m_timePoints[i-1].first
-                                                               ,m_timePoints[i].first)
-                                                 ,m_timePoints[i].second
-                                                 )
-                                  );
+        int_string_vec times;
+        times.emplace_back(std::make_pair(total_time ,timepoints_with_description.front().second));
+        if (timepoints_with_description.size() > 2) {
+            for (std::size_t i = 1; i < timepoints_with_description.size(); i++) {
+                auto duration = get_time_diff(timepoints_with_description[i-1].first
+                                             ,timepoints_with_description[i].first
+                                             );
+                auto entry = std::make_pair(std::move(duration)
+                                           ,timepoints_with_description[i].second
+                                           );
+                times.emplace_back(std::move(entry));
             }
         }
         return times;
     }  // function - calculate
 
-    static intStrVec toSting(intStrVec times) {
+    static std::stringstream to_string_stream_internal(int_string_vec const& times) {
+        std::stringstream ss;
         int width = 15;
-        std::cout << "\ntotal   : "
-                  << std::setw(width) << times[0].first << " ns - "
-                  << std::setprecision(8) << std::fixed << times[0].first / 1000.0 << " μs - "
-                  << std::setprecision(8) << std::fixed << times[0].first / 1000000.0 << " ms - "
-                  << std::setprecision(8) << std::fixed << times[0].first / 1000000000.0 << " s";
+        ss << "\ntotal   : "
+           << std::setw(width) << times[0].first << " ns - "
+           << std::setprecision(8) << std::fixed << times[0].first / 1000.0 << " μs - "
+           << std::setprecision(8) << std::fixed << times[0].first / 1000000.0 << " ms - "
+           << std::setprecision(8) << std::fixed << times[0].first / 1000000000.0 << " s";
 
         if (!times[0].second.empty()) {
-            std::cout << " - " << times[0].second;
+            ss << " - " << times[0].second;
         }
-        std::cout << std::endl;
+        ss << std::endl;
 
         if (times.size() > 1) {
             for (std::size_t i = 1; i < times.size(); i++) {
-                std::cout << "step "  << std::setw(3) << i << ": "
-                          << std::setw(width) << times[i].first << " ns"
-                          << std::setprecision(1) << std::fixed
-                          << " (" << std::setw(5) << 100*static_cast<float>(times[i].first)/static_cast<float>(times[0].first) << "%)";
+                ss << "step "  << std::setw(3) << i << ": "
+                   << std::setw(width) << times[i].first << " ns"
+                   << std::setprecision(1) << std::fixed
+                   << " (" << std::setw(5)
+                   << 100*static_cast<float>(times[i].first)/static_cast<float>(times[0].first)
+                   << "%)";
+
                 if (!times[i].second.empty()) {
-                    std::cout << " - " << times[i].second;
+                    ss << " - " << times[i].second;
                 }
-                std::cout << std::endl;
+                ss << std::endl;
             }
         }
-        return times;
-    }  // function - to_string
+        return ss;
+    }  // function - to_string_stream
+
+    static void show_internal(int_string_vec const& times) {
+        std::cerr << to_string_stream_internal(times).rdbuf();
+    }
+public:
+    void run(bool disable = true) {
+        if (disable) enabled_in_dtor=false;
+        callback(calculate());
+    }
+
+    void show(bool disable = true) {
+        if (disable) enabled_in_dtor=false;
+        show_internal(calculate());
+    }
+
+    std::string to_string(bool disable = true) {
+        if (disable) enabled_in_dtor=false;
+        return to_string_stream_internal(calculate()).str();
+    }
 } ;
 
 }}  // namespace obi::util
