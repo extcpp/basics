@@ -3,3 +3,4 @@ external_libs/*
 *.ip
 *-ip.*
 compile_commands.json
+.do_test
