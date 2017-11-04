@@ -1,0 +1,2 @@
+#!/bin/bash
+cd external_libs && ./init_libs || exit 1

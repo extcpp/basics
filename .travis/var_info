@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "CXX:          $CXX"
+echo "CC:           $CC "
+echo "COMPILER:     $COMPILER"
+echo "IN_TRAVIS:    $IN_TRAVIS"
+echo "project_root: $project_root"
+echo "build_root:   $build_root"

@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "sources list ##################"
+cat /etc/apt/sources.list
+echo "cpu into ######################"
+cat /proc/cpuinfo
+echo "mem info ######################"
+cat /proc/meminfo
+echo "###############################"

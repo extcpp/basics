@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+major="3.9"
+minor="5"
+version="$major.$minor"
+file="cmake-$version-Linux-x86_64.sh"
+
+wget "https://cmake.org/files/v${major}/${file}"
+chmod +x "$file"
+./"$file" --prefix=$HOME/usr --exclude-subdir --skip-license

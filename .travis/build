@@ -1,0 +1,3 @@
+#!/bin/bash
+cd "$project_root" || exit 1
+./build --examples --testing -DCMAKE_CXX_COMPILER=$COMPILER || exit $?

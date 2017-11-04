@@ -1,0 +1,3 @@
+#!/bin/bash
+cd $build_root/current || exit 1
+ctest -VV || exit $?

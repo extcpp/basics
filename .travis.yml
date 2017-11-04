@@ -8,23 +8,24 @@ matrix:
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-7']
-      env: COMPILER=g++-7
-
+          packages: ['gcc-7', 'g++-7']
+      env: OCXX=g++-7 OCC=gcc-7 COMPILER=g++-7 IN_TRAVIS=true
 
 before_install:
-    - cat /etc/apt/sources.list
-    - mkdir $HOME/usr
-    - export PATH="$HOME/usr/bin:$PATH"
-    - wget https://cmake.org/files/v3.9/cmake-3.9.5-Linux-x86_64.sh; chmod +x cmake-3.9.5-Linux-x86_64.sh
-    - ./cmake-3.9.5-Linux-x86_64.sh --prefix=$HOME/usr --exclude-subdir --skip-license
+  - export CXX=$OCXX CC=$OCC
+  - export project_root="$(pwd)"
+  - export build_root="${project_root}-build"
+  - mkdir $HOME/usr
+  - export PATH="$HOME/usr/bin:$PATH"
+  - $project_root/.travis/system_info
 
-## configure step
 before_script:
-    - cd external_libs && ./init_libs && cd ..
-    - ./build --travis --examples --testing -DCMAKE_CXX_COMPILER=$COMPILER
+  - $project_root/.travis/install_cmake
+  - $project_root/.travis/install_3rd_party
 
 script:
-  - cd ../libobi-build/release
-  - make -j$(nproc)
-  - make test
+  - $project_root/.travis/var_info
+  - $project_root/.travis/build
+
+after_success:
+  - $project_root/.travis/test

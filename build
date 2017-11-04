@@ -2,138 +2,145 @@
 # Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
 project_root="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
-build_dir="${project_root}-build"
+build_dir_base="${project_root}-build"
 build_type="release"
 just_make=false
+do_clean=false
 do_test=false
 asan=false
+
+function main(){
 
 args=()
 cm_flags=()
 while [[ -n "$1" ]]; do
-    case "$1" in
-        -j|--just-make)
-            just_make=true
-            shift
-        ;;
-        -v|--verbose)
-            export VERBOSE=1
-            export V=1
-            shift
-        ;;
-        -d|--debug)
-            build_type="debug"
-            shift
-        ;;
-        -r|--release)
-            build_type="release"
-            shift
-        ;;
-        -t|--testing)
-            cm_flags+=( '-DCMAKE_TESTING=ON' )
-            do_test=true
-            touch .do_test
-            shift
-        ;;
-        -e|--examples)
-            cm_flags+=( '-DLIBOBI_EXAMPLES=ON' )
-            shift
-        ;;
-        -c|--clean)
-            rm -fr $build_dir
-            shift
-        ;;
-        --gcc)
-            export CXX=g++
-            export CC=gcc
-            #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
-            shift
-        ;;
-        --clang)
-            export CXX=clang++
-            export CC=clang
-            #cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++' )
-            shift
-        ;;
-        --travis)
-            travis=true
-            shift
-        ;;
-        -cd|--change-directory)
-            change_dir=true
-            shift
-        ;;
-        -a|--asan)
-            asan=true
-            shift
-        ;;
-        *)
-            args+=( "$1" )
-            shift
-        ;;
-    esac
+  case "$1" in
+    -j|--just-make)
+      just_make=true
+      shift
+    ;;
+    -v|--verbose)
+      export VERBOSE=1
+      export V=1
+      shift
+    ;;
+    -d|--debug)
+      build_type="debug"
+      shift
+    ;;
+    -r|--release)
+      build_type="release"
+      shift
+    ;;
+    -t|--testing)
+      cm_flags+=( '-DCMAKE_TESTING=ON' )
+      do_test=true
+      shift
+    ;;
+    -e|--examples)
+      cm_flags+=( '-DLIBOBI_EXAMPLES=ON' )
+      shift
+    ;;
+    -c|--clean)
+      do_clean=true
+      shift
+    ;;
+    --gcc)
+      export CXX=g++
+      export CC=gcc
+      #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
+      shift
+    ;;
+    --clang)
+      export CXX=clang++
+      export CC=clang
+      #cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++' )
+      shift
+    ;;
+    --travis)
+      travis=true
+      shift
+    ;;
+    -cd|--change-directory)
+      change_dir=true
+      shift
+    ;;
+    -a|--asan)
+      asan=true
+      shift
+    ;;
+    *)
+      args+=( "$1" )
+      shift
+    ;;
+  esac
 done
 
 case $build_type in
-    release)
-        cm_flags+=( '-DCMAKE_BUILD_TYPE=Release' )
-    ;;
-    debug)
-        cm_flags+=( '-DCMAKE_BUILD_TYPE=Debug' )
-    ;;
-    *)
-        ferr "build type $build_type not supported!"
-    ;;
+  release)
+    cm_flags+=( '-DCMAKE_BUILD_TYPE=Release' )
+  ;;
+  debug)
+    cm_flags+=( '-DCMAKE_BUILD_TYPE=Debug' )
+  ;;
+  *)
+    ferr "build type $build_type not supported!"
+  ;;
 esac
 
-build_dir="$build_dir/$build_type"
+build_dir="$build_dir_base/$build_type"
 
-msg(){
-    echo "---- $1"
-}
-err(){
-    echo "ERROR: $1"
-}
-
-ferr(){
-    echo "FATAL ERROR: $1"
-    exit ${2:-1}
-}
-
-
+if $do_clean; then
+  rm -fr $build_dir || ferr "failed to clean build dir"
+fi
 
 msg "create dir if not existenet"
 test -d $build_dir || mkdir -p $build_dir || ferr "failed to create build dir"
 
+rm -fr $build_dir_base/current
+ln -s $build_dir $build_dir_base/current
+
 msg "change into build dir"
 cd $build_dir || ferr "failed to change into build dir"
 
-if ! [[ $travis ]]; then
-    if ! $just_make || ! [[ -f makefile && -f Makefile ]]; then
-        msg "running cmake"
-        cmake "${cm_flags[@]}" "${args[@]}" "$project_root" || ferr "configuring with camke failed"
-        echo
-    fi
-
-    msg "running make"
-    make -j $(nproc) || ferr "make failed"
-    echo
-
-    if [[ -f .do_test ]]; then
-        msg "running tests"
-        ctest -VV || ferr "tests failed"
-        echo
-    fi
-else
-    echo "building in travis"
-    echo "running cmake"
-    cmake "${cm_flags[@]}" "${args[@]}" "$project_root" \
-        -DOBI_UNCAUGHT_EXCEPTIONS=ON || ferr "configuration failed"
-    msg "configuration done"
+if [[ $do_test && ! $IN_TRAVIS ]]; then
+  touch .do_test
 fi
+
+if ! $just_make || ! [[ -f makefile && -f Makefile ]]; then
+  msg "running cmake"
+  cmake "${cm_flags[@]}" "${args[@]}" "$project_root" || ferr "configuring with camke failed"
+  echo
+fi
+
+msg "running make"
+make -j $(nproc) || ferr "make failed"
+echo
+
+if [[ -f .do_test ]]; then
+  msg "running tests"
+  ctest -VV || ferr "tests failed"
+  echo
+fi
+
 msg "build done"
 
 if ${change_dir:-false}; then
-    echo "starting shell in build directory"
-    bash
+  echo "starting shell in build directory"
+  exec bash
 fi
+}
+
+msg(){
+  echo "---- $1"
+}
+err(){
+  echo "ERROR: $1"
+}
+
+ferr(){
+  echo "FATAL ERROR: $1"
+  exit ${2:-1}
+}
+
+main "$@"
