@@ -30,8 +30,13 @@ set(examples
 if(OBI_CXX_STANDARD EQUAL 17)
     list(APPEND examples
         tuple
-        if_all_any
         scope_guard
+    )
+endif()
+
+if(OBI_CXX_FOLDS_AVAILABLE)
+    list(APPEND examples
+        if_all_any
     )
 endif()
 

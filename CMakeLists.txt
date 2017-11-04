@@ -4,8 +4,13 @@ cmake_minimum_required(VERSION 3.2.3)
 project(libobi)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+#message(FATAL_ERROR "## ${CMAKE_FIND_LIBRARY_SUFFIXES}")
 include(obi_fm_util)
-obi_setup_with_test()
+
+if(COMMAND obi_setup_with_test)
+    obi_setup_with_test()
+endif()
 
 ## define header only lib
 add_library(obi INTERFACE)
@@ -30,7 +35,9 @@ if(LIBOBI_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-obi_install(obi "include/obi")
+if(COMMAND obi_install)
+    obi_install(obi "include/obi")
+endif()
 
 if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json" )
    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy_if_different
