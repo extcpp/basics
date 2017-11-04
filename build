@@ -128,7 +128,8 @@ else
     echo "building in travis"
     echo "running cmake"
     cmake "${cm_flags[@]}" "${args[@]}" "$project_root" \
-        -DOBI_UNCAUGHT_EXCEPTIONS=ON
+        -DOBI_UNCAUGHT_EXCEPTIONS=ON || ferr "configuration failed"
+    msg "configuration done"
 fi
 msg "build done"
 
