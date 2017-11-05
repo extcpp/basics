@@ -103,7 +103,8 @@ ln -s $build_dir $build_dir_base/current
 msg "change into build dir"
 cd $build_dir || ferr "failed to change into build dir"
 
-if [[ $do_test && ! $IN_TRAVIS ]]; then
+if $do_test && ! ${IN_TRAVIS:-false}; then
+  echo "endable testing"
   touch .do_test
 fi
 
