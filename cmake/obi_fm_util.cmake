@@ -24,6 +24,7 @@ macro(obi_setup)
                 add_definitions(-DOBI_GCC)
             endif()
 
+            # this must go
             if(OBI_CXX_COMPILER_IS_GCC OR OBI_CXX_COMPILER_IS_CLANG)
                 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb -O0")
             endif()
@@ -31,15 +32,14 @@ macro(obi_setup)
             # replace with CMAKE_CXX_STANDARD when a newer cmake becomes available.
             if(OBI_CXX_COMPILER_IS_GCC AND
                CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "6.0.0")
-                #set(CMAKE_CXX_STANDARD 17) # not available in cmake
                 message(STATUS "enable c++ 17")
-                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+                set(CMAKE_CXX_STANDARD 17)
                 set(OBI_CXX_STANDARD 17)
                 add_definitions(-DOBI_CXX_AVAILABLE=17)
             elseif(OBI_CXX_COMPILER_IS_CLANG AND
                    CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "4.0.0")
                 message(STATUS "enable c++ 17")
-                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+                set(CMAKE_CXX_STANDARD 17)
                 set(OBI_CXX_STANDARD 17)
                 set(OBI_CXX_FOLDS_AVAILABLE TRUE)
                 add_definitions(-DOBI_CXX_AVAILABLE=17)
@@ -50,7 +50,6 @@ macro(obi_setup)
                 set(OBI_CXX_STANDARD 14)
                 add_definitions(-DOBI_CXX_AVAILABLE=14)
             endif()
-            # ##set_property(TARGET libobi PROPERTY CXX_STANDARD 14) <-- this would be nice
 
             set(OBI_SETUP_DONE TRUE)
         endif()
