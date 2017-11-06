@@ -17,15 +17,15 @@ before_install:
   - export build_root="${project_root}-build"
   - mkdir $HOME/usr
   - export PATH="$HOME/usr/bin:$PATH"
-  - $project_root/.travis/system_info
+  - $project_root/.build_scripts/system_info
 
 before_script:
-  - $project_root/.travis/install_cmake
-  - $project_root/.travis/install_3rd_party
+  - $project_root/.build_scripts/install_cmake
+  - $project_root/.build_scripts/install_3rd_party
 
 script:
-  - $project_root/.travis/var_info
-  - $project_root/.travis/build
+  - $project_root/.build_scripts/var_info
+  - $project_root/.build_scripts/build
 
 after_success:
-  - $project_root/.travis/test
+  - $project_root/.build_scripts/test
