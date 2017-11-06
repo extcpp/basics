@@ -5,16 +5,21 @@ msg(){
 }
 
 err(){
-  echo "ERROR: $1"
+  echo "$(tput setaf 1)ERROR: $1"
+  tput sgr0
 }
 
 ferr(){
-  echo "FATAL ERROR: $1"
+  echo "$(tput setaf 1)FATAL ERROR: $1"
+  tput sgr0
+  echo
   exit ${2:-1}
 }
 
 fserr(){
-  section "FATAL ERROR: $1"
+  section "$(tput setaf 1)FATAL ERROR: $1"
+  tput sgr0
+  echo
   exit ${2:-1}
 }
 

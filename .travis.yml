@@ -11,7 +11,7 @@ matrix:
           packages: ['gcc-7', 'g++-7']
       env: OCXX=g++-7 OCC=gcc-7 COMPILER=g++-7 IN_TRAVIS=true
 
-beforeinstall:
+before_install:
   - export CXX=$OCXX CC=$OCC
   - export build_type=release
   - export project_root="$(pwd)"
@@ -19,15 +19,19 @@ beforeinstall:
   - export build_root="${build_base}/$build_type"
   - export install_root="$HOME/usr"
   - export PATH="$install_root/bin:$PATH"
-  - mkdir $install_root
+  - export build_prefix='<>'
   - $project_root/.build_scripts/system_info
+  - $project_root/.build_scripts/var_info
 
 before_script:
+  - mkdir "$install_root"
+  - mkdir -p "$build_root"
+  - ln -s "$build_root" "$build_base/current"
   - $project_root/.build_scripts/install_cmake
   - $project_root/.build_scripts/install_3rd_party
 
 script:
-  - $project_root/.build_scripts/var_info
+  - $project_root/.build_scripts/configure -DCMAKE_TESTING=ON -DLIBOBI_EXAMPLES=ON
   - $project_root/.build_scripts/build
 
 after_success:

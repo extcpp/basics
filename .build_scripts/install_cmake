@@ -1,4 +1,16 @@
 #!/bin/bash
+
+lib=$project_root/.build_scripts/build_lib
+if [[ -f "$lib" ]]; then
+    . "$lib"
+else
+    echo "${build_prefix}unable to source build_lib"
+    exit 1
+fi
+
+#prepare
+section "install cmake"
+#command
 set -e
 major="3.9"
 minor="5"
@@ -8,3 +20,5 @@ file="cmake-$version-Linux-x86_64.sh"
 wget "https://cmake.org/files/v${major}/${file}"
 chmod +x "$file"
 ./"$file" --prefix="${install_root}" --exclude-subdir --skip-license
+#end
+echo

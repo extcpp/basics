@@ -1,3 +1,17 @@
 #!/bin/bash
-cd $build_root/current || exit 1
-ctest -VV || exit $?
+
+lib=$project_root/.build_scripts/build_lib
+if [[ -f "$lib" ]]; then
+    . "$lib"
+else
+    echo "${build_prefix}unable to source build_lib"
+    exit 1
+fi
+
+#prepare
+section "running tests"
+cd $build_base/current || ferr "unable to change into current build dir"
+#command
+ctest -VV || fserr "running tests - failed" $?
+#end
+echo

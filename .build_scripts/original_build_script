@@ -1,6 +1,7 @@
 #!/bin/bash
 # Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
+
 project_root="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 build_base="${project_root}-build"
 build_type="release"
@@ -10,16 +11,17 @@ do_test=false
 asan=false
 build_prefix="<> "
 
+
 lib=$project_root/.build_scripts/build_lib
 if [[ -f "$lib" ]]; then
     . "$lib"
 else
     echo "${build_prefix}unable to source build_lib"
-    exit 1
 fi
 
 function main(){
-section "parse arguments"
+section "prepare build"
+msg "parse arguments"
 args=()
 cm_flags=()
 while [[ -n "$1" ]]; do
@@ -85,8 +87,6 @@ while [[ -n "$1" ]]; do
   esac
 done
 
-section "prepare build"
-
 msg "set build type"
 case $build_type in
   release)
@@ -113,27 +113,34 @@ msg "create symlinks"
 rm -fr $build_base/current
 ln -s $build_root $build_base/current
 
-# export vars
-export build_prefix
-export project_root
-export build_root
-export build_base
-export do_test
-
-## build prepared
-
-"$project_root"/.build_scripts/var_info || exit $?
-"$project_root"/.build_scripts/install_3rd_party || exit $?
+msg "change into build dir"
+cd $build_root || ferr "failed to change into build dir"
 
 if ! $just_make || ! [[ -f makefile && -f Makefile ]]; then
-  "$project_root/.build_scripts/configure" "${cm_flags[@]}" "${args[@]}" || exit $?
+  section "running cmake"
+  cmake "${cm_flags[@]}" "${args[@]}" "$project_root" || ferr "configuring with camke failed"
+  echo
+  if $do_test && ! ${IN_TRAVIS:-false}; then
+    msg "enable testing"
+    touch .do_test
+  fi
 fi
 
-"$project_root"/.build_scripts/build || exit $?
+section "running make"
+make -j $(nproc) || ferr "make failed"
 
-if [[ -f "$build_root/.do_test" ]]; then
-  "$project_root"/.build_scripts/test || exit $?
+echo
+section "build done"
+echo
+
+if [[ -f .do_test ]]; then
+  section "running tests"
+  ctest -VV || fserr $?
+  echo
+  section "tests done"
+  echo
 fi
+
 
 if ${change_dir:-false}; then
   msg "starting shell in build directory"

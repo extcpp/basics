@@ -1,7 +1,24 @@
 #!/bin/bash
+
+lib=$project_root/.build_scripts/build_lib
+if [[ -f "$lib" ]]; then
+    . "$lib"
+else
+    echo "${build_prefix}unable to source build_lib"
+    exit 1
+fi
+
+#prepare
+section "variable info"
+#command
+echo "project_root: $project_root"
+echo "build_base:   $build_base"
+echo "build_root:   $build_root"
+echo
+echo "PATH:         $PATH"
 echo "CXX:          $CXX"
 echo "CC:           $CC "
 echo "COMPILER:     $COMPILER"
 echo "IN_TRAVIS:    $IN_TRAVIS"
-echo "project_root: $project_root"
-echo "build_root:   $build_root"
+#end
+echo

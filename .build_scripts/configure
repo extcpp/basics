@@ -9,9 +9,15 @@ else
 fi
 
 #prepare
-section "running make"
+section "running cmake"
 cd $build_root || ferr "failed to change into build dir"
 #command
-make -j $(nproc) || ferr "running make - failed" $?
+cmake "$@" "$project_root" || fserr "running cmake - failed" $?
+
+if $do_test && ! ${IN_TRAVIS:-false}; then
+  echo
+  msg "enable testing"
+  touch .do_test
+fi
 #end
 echo
