@@ -1,0 +1,39 @@
+#!/bin/bash
+
+msg(){
+  echo "${build_prefix}$1"
+}
+
+err(){
+  echo "ERROR: $1"
+}
+
+ferr(){
+  echo "FATAL ERROR: $1"
+  exit ${2:-1}
+}
+
+fserr(){
+  section "FATAL ERROR: $1"
+  exit ${2:-1}
+}
+
+section(){
+  local fill_symbol="="
+  local title=" $* "
+  local lname="$build_prefix"
+
+  local width=80
+  local fill=$(( width-${#title} ))
+  local rest=$(( fill % 2 ))
+  fill=$(( fill / 2))
+  local front_fill=$(( fill-${#lname} ))
+
+  echo -n "$lname"
+  for (( n=1 ; n <= front_fill ; n++ )); do echo -n "$fill_symbol" ; done
+  tput bold
+  echo -n "$title"
+  tput sgr0
+  for (( n=1 ; n <= (fill+rest) ; n++ )); do echo -n "$fill_symbol" ; done
+  echo
+}

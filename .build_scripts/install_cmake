@@ -7,4 +7,4 @@ file="cmake-$version-Linux-x86_64.sh"
 
 wget "https://cmake.org/files/v${major}/${file}"
 chmod +x "$file"
-./"$file" --prefix=$HOME/usr --exclude-subdir --skip-license
+./"$file" --prefix="${install_root}" --exclude-subdir --skip-license

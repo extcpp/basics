@@ -1,14 +1,23 @@
 #!/bin/bash
 # Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
+
 project_root="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
-build_dir_base="${project_root}-build"
+build_base="${project_root}-build"
 build_type="release"
 just_make=false
 do_clean=false
 do_test=false
 asan=false
 build_prefix="<> "
+
+
+lib=$project_root/.build_scripts/build_lib
+if [[ -f "$lib" ]]; then
+    . "$lib"
+else
+    echo "${build_prefix}unable to source build_lib"
+fi
 
 function main(){
 section "prepare build"
@@ -90,22 +99,22 @@ case $build_type in
     ferr "build type $build_type not supported!"
   ;;
 esac
-build_dir="$build_dir_base/$build_type"
+build_root="$build_base/$build_type"
 
 
 msg "create build directories"
 if $do_clean; then
-  rm -fr $build_dir || ferr "failed to clean build dir"
+  rm -fr $build_root || ferr "failed to clean build dir"
 fi
 
-test -d $build_dir || mkdir -p $build_dir || ferr "failed to create build dir"
+test -d $build_root || mkdir -p $build_root || ferr "failed to create build dir"
 
 msg "create symlinks"
-rm -fr $build_dir_base/current
-ln -s $build_dir $build_dir_base/current
+rm -fr $build_base/current
+ln -s $build_root $build_base/current
 
 msg "change into build dir"
-cd $build_dir || ferr "failed to change into build dir"
+cd $build_root || ferr "failed to change into build dir"
 
 if ! $just_make || ! [[ -f makefile && -f Makefile ]]; then
   section "running cmake"
@@ -138,44 +147,6 @@ if ${change_dir:-false}; then
   echo
   exec bash
 fi
-}
-
-msg(){
-  echo "${build_prefix}$1"
-}
-
-err(){
-  echo "ERROR: $1"
-}
-
-ferr(){
-  echo "FATAL ERROR: $1"
-  exit ${2:-1}
-}
-
-fserr(){
-  section "FATAL ERROR: $1"
-  exit ${2:-1}
-}
-
-section(){
-  local fill_symbol="="
-  local title=" $* "
-  local lname="$build_prefix"
-
-  local width=80
-  local fill=$(( width-${#title} ))
-  local rest=$(( fill % 2 ))
-  fill=$(( fill / 2))
-  local front_fill=$(( fill-${#lname} ))
-
-  echo -n "$lname"
-  for (( n=1 ; n <= front_fill ; n++ )); do echo -n "$fill_symbol" ; done
-  tput bold
-  echo -n "$title"
-  tput sgr0
-  for (( n=1 ; n <= (fill+rest) ; n++ )); do echo -n "$fill_symbol" ; done
-  echo
 }
 
 main "$@"

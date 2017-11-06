@@ -1,2 +1,3 @@
 #!/bin/bash
+cd "$project_root" || exit 1
 cd external_libs && ./init_libs || exit 1

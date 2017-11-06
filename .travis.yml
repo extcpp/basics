@@ -11,12 +11,15 @@ matrix:
           packages: ['gcc-7', 'g++-7']
       env: OCXX=g++-7 OCC=gcc-7 COMPILER=g++-7 IN_TRAVIS=true
 
-before_install:
+beforeinstall:
   - export CXX=$OCXX CC=$OCC
+  - export build_type=release
   - export project_root="$(pwd)"
-  - export build_root="${project_root}-build"
-  - mkdir $HOME/usr
-  - export PATH="$HOME/usr/bin:$PATH"
+  - export build_base="${project_root}-build"
+  - export build_root="${build_base}/$build_type"
+  - export install_root="$HOME/usr"
+  - export PATH="$install_root/bin:$PATH"
+  - mkdir $install_root
   - $project_root/.build_scripts/system_info
 
 before_script:
