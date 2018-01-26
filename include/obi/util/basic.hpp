@@ -21,10 +21,15 @@ void sort_all(T&... args){
 }
 
 inline std::string
-basename(std::string const& pathname){
+basename(std::string const& pathname, bool is_linux = true, bool both = false){
     return std::string(std::find_if(pathname.rbegin()
                                    ,pathname.rend()
-                                   ,[](char c) { return c == '/' || c =='\\';}
+                                   ,[is_linux, both](char c) {
+                                        return (
+                                            ((both || linux)  && c == '/') ||
+                                            ((both || !linux) && c == '\\')
+                                        );
+                                    }
                                    ).base()
                       ,pathname.end());
 }
