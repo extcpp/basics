@@ -2,13 +2,14 @@ project(libobi-tests)
 
 set(test_name "libobi")
 set(test_target "test_${test_name}")
-set(test_files
-    "ascii_string_helper"
-    "cast"
-    "math"
-    "string_distances"
-)
 
+set(test_files 
+    "algorithm_string_distances"
+    "math"
+    "util_ascii_string_helper"
+    "util_cast"
+    "util_result"
+)
 
 if("${OBI_TEST_TYPE}" STREQUAL "boost")
     #builds executable for every test

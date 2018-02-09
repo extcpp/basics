@@ -8,6 +8,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #message(FATAL_ERROR "## ${CMAKE_FIND_LIBRARY_SUFFIXES}")
 include(obi_fm_util)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 if(COMMAND obi_setup_with_test)
     obi_setup_with_test()
 endif()
