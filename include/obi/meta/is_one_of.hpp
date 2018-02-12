@@ -21,6 +21,6 @@ namespace obi { namespace meta {
 
     //alias
     template<class T, class ...XXS>
-    using is_one_of_t = typename is_one_of<T, XXS...>::type;
+    inline constexpr bool is_one_of_v = is_one_of<T, XXS...>::value;
 
 }}  // namespace obi::meta
