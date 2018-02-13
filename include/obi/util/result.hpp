@@ -221,6 +221,7 @@ public:
 
     // handling rvalue / copy
     template <std::uint32_t x = !std::is_reference_v<T> &&
+                                !std::is_pointer_v<T> &&
                                  std::is_move_constructible_v<T>
              ,typename std::enable_if_t<x,int> = 0
              >
@@ -237,6 +238,7 @@ public:
     }
 
     template <std::uint32_t x = !std::is_reference_v<T> &&
+                                !std::is_pointer_v<T> &&
                                  std::is_move_constructible_v<T>
              ,typename std::enable_if_t<x,int> = 0
              >
@@ -256,6 +258,7 @@ public:
 
     // handling rvalue / assign
     template <std::uint64_t x = !std::is_reference_v<T> &&
+                                !std::is_pointer_v<T> &&
                                 !std::is_move_constructible_v<T> &&
                                  std::is_move_assignable_v<T>
              ,typename std::enable_if_t<x,int> = 0
@@ -274,6 +277,7 @@ public:
     }
 
     template <std::uint64_t x = !std::is_reference_v<T> &&
+                                !std::is_pointer_v<T> &&
                                 !std::is_move_constructible_v<T> &&
                                  std::is_move_assignable_v<T>
              ,typename std::enable_if_t<x,int> = 0

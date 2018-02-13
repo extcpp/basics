@@ -83,18 +83,18 @@ struct base {
     std::size_t default_ctor = 0;
     std::size_t non_default_ctor = 0;
     std::size_t copy_ctor = 0;
-    std::size_t copy_op = 0;
+    std::size_t copy_assign = 0;
     std::size_t move_ctor = 0;
-    std::size_t move_op = 0;
+    std::size_t move_assign = 0;
 
     void print() const {
         std::cout << std::boolalpha
                   << "default ctor:     " << default_ctor << std::endl
                   << "non default ctor: " << non_default_ctor << std::endl
                   << "copy ctor:        " << copy_ctor << std::endl
-                  << "copy assign:      " << copy_op << std::endl
+                  << "copy assign:      " << copy_assign << std::endl
                   << "move ctor:        " << move_ctor << std::endl
-                  << "move assign:      " << move_op << std::endl
+                  << "move assign:      " << move_assign << std::endl
                   ;
     }
 
@@ -102,18 +102,24 @@ struct base {
         default_ctor = 0;
         non_default_ctor = 0;
         copy_ctor = 0;
-        copy_op = 0;
+        copy_assign = 0;
         move_ctor = 0;
-        move_op = 0;
+        move_assign = 0;
     }
 
     void copy_values(base const* other) {
         default_ctor = other->default_ctor;
         non_default_ctor = other->non_default_ctor;
         copy_ctor = other->copy_ctor;
-        copy_op = other->copy_op;
+        copy_assign = other->copy_assign;
         move_ctor = other->move_ctor;
-        move_op = other->move_op;
+        move_assign = other->move_assign;
+    }
+
+    std::size_t opearations() {
+        return default_ctor + non_default_ctor +
+               copy_ctor + copy_assign +
+               move_ctor + move_assign ;
     }
 };
 
@@ -137,7 +143,7 @@ struct all : base {
     all& operator=(all& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++copy_op;
+        ++copy_assign;
         return *this;
     }
 
@@ -150,7 +156,7 @@ struct all : base {
     all& operator=(all&& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++move_op;
+        ++move_assign;
         return *this;
     }
 };
@@ -172,7 +178,7 @@ struct no_default : base {
     no_default& operator=(no_default& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++copy_op;
+        ++copy_assign;
         return *this;
     }
 
@@ -185,7 +191,7 @@ struct no_default : base {
     no_default& operator=(no_default&& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++move_op;
+        ++move_assign;
         return *this;
     }
 };
@@ -213,7 +219,7 @@ struct no_move : base {
     no_move& operator=(no_move& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++copy_op;
+        ++copy_assign;
         return *this;
     }
 };
@@ -240,14 +246,14 @@ struct no_move_ctor : base {
     no_move_ctor& operator=(no_move_ctor& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++copy_op;
+        ++copy_assign;
         return *this;
     }
 
     no_move_ctor& operator=(no_move_ctor&& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++move_op;
+        ++move_assign;
         return *this;
     }
 };
@@ -274,7 +280,7 @@ struct no_move_assign : base {
     no_move_assign& operator=(no_move_assign& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++copy_op;
+        ++copy_assign;
         return *this;
     }
 
@@ -308,7 +314,7 @@ struct no_copy : base {
     no_copy& operator=(no_copy&& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++move_op;
+        ++move_assign;
         return *this;
     }
 };
@@ -329,7 +335,7 @@ struct no_copy_ctor : base {
     no_copy_ctor& operator=(no_copy_ctor& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++copy_op;
+        ++copy_assign;
         return *this;
     }
 
@@ -342,7 +348,7 @@ struct no_copy_ctor : base {
     no_copy_ctor& operator=(no_copy_ctor&& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++move_op;
+        ++move_assign;
         return *this;
     }
 };
@@ -375,7 +381,7 @@ struct no_copy_assign : base {
     no_copy_assign& operator=(no_copy_assign&& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        ++move_op;
+        ++move_assign;
         return *this;
     }
 };
