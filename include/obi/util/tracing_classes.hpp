@@ -80,102 +80,305 @@ namespace obi { namespace util {
 namespace tracing {
 
 struct base {
-    bool default_ctor = false;
-    bool copy_ctor = false;
-    bool copy_op = false;
-    bool move_ctor = false;
-    bool move_op = false;
+    std::size_t default_ctor = 0;
+    std::size_t non_default_ctor = 0;
+    std::size_t copy_ctor = 0;
+    std::size_t copy_op = 0;
+    std::size_t move_ctor = 0;
+    std::size_t move_op = 0;
 
     void print() const {
         std::cout << std::boolalpha
-                  << "default ctor: " << default_ctor << std::endl
-                  << "copy ctor:    " << copy_ctor << std::endl
-                  << "copy assign:  " << copy_op << std::endl
-                  << "move ctor:    " << move_ctor << std::endl
-                  << "move assign:  " << move_op << std::endl
+                  << "default ctor:     " << default_ctor << std::endl
+                  << "non default ctor: " << non_default_ctor << std::endl
+                  << "copy ctor:        " << copy_ctor << std::endl
+                  << "copy assign:      " << copy_op << std::endl
+                  << "move ctor:        " << move_ctor << std::endl
+                  << "move assign:      " << move_op << std::endl
                   ;
     }
 
     void reset() {
-        default_ctor = false;
-        copy_ctor = false;
-        copy_op = false;
-        move_ctor = false;
-        move_op = false;
+        default_ctor = 0;
+        non_default_ctor = 0;
+        copy_ctor = 0;
+        copy_op = 0;
+        move_ctor = 0;
+        move_op = 0;
     }
 
     void copy_values(base const* other) {
         default_ctor = other->default_ctor;
+        non_default_ctor = other->non_default_ctor;
         copy_ctor = other->copy_ctor;
         copy_op = other->copy_op;
         move_ctor = other->move_ctor;
         move_op = other->move_op;
     }
-
 };
 
 struct all : base {
     all() : base() {
         OBI_FUNCTION_NAME
-        default_ctor = true;
+        ++default_ctor;
+    }
+
+    all(base b) : base(b) {
+        OBI_FUNCTION_NAME
+        ++non_default_ctor;
     }
 
     all(all const& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        copy_ctor = true;
+        ++copy_ctor;
     }
 
     all& operator=(all& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        copy_op = true;
+        ++copy_op;
         return *this;
     }
+
     all(all&& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        move_ctor = true;
+        ++move_ctor;
     }
 
     all& operator=(all&& other) {
         OBI_FUNCTION_NAME
         copy_values(&other);
-        move_op = true;
+        ++move_op;
         return *this;
     }
 };
 
 struct no_default : base {
     no_default() = delete;
+
+    no_default(base b) : base(b) {
+        OBI_FUNCTION_NAME
+        ++non_default_ctor;
+    }
+
+    no_default(no_default const& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_ctor;
+    }
+
+    no_default& operator=(no_default& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_op;
+        return *this;
+    }
+
+    no_default(no_default&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_ctor;
+    }
+
+    no_default& operator=(no_default&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_op;
+        return *this;
+    }
 };
 
 struct no_move : base {
     no_move(no_move&&) = delete;
     no_move& operator=(no_move&&) = delete;
+
+    no_move() : base() {
+        OBI_FUNCTION_NAME
+        ++default_ctor;
+    }
+
+    no_move(base b) : base(b) {
+        OBI_FUNCTION_NAME
+        ++non_default_ctor;
+    }
+
+    no_move(no_move const& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_ctor;
+    }
+
+    no_move& operator=(no_move& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_op;
+        return *this;
+    }
 };
 
 struct no_move_ctor : base {
     no_move_ctor(no_move_ctor&&) = delete;
+
+    no_move_ctor() : base() {
+        OBI_FUNCTION_NAME
+        ++default_ctor;
+    }
+
+    no_move_ctor(base b) : base(b) {
+        OBI_FUNCTION_NAME
+        ++non_default_ctor;
+    }
+
+    no_move_ctor(no_move_ctor const& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_ctor;
+    }
+
+    no_move_ctor& operator=(no_move_ctor& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_op;
+        return *this;
+    }
+
+    no_move_ctor& operator=(no_move_ctor&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_op;
+        return *this;
+    }
 };
 
 struct no_move_assign : base {
     no_move_assign& operator=(no_move_assign&&) = delete;
+
+    no_move_assign() : base() {
+        OBI_FUNCTION_NAME
+        ++default_ctor;
+    }
+
+    no_move_assign(base b) : base(b) {
+        OBI_FUNCTION_NAME
+        ++non_default_ctor;
+    }
+
+    no_move_assign(no_move_assign const& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_ctor;
+    }
+
+    no_move_assign& operator=(no_move_assign& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_op;
+        return *this;
+    }
+
+    no_move_assign(no_move_assign&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_ctor;
+    }
 };
 
 struct no_copy : base {
     no_copy(no_copy const&) = delete;
     no_copy& operator=(no_copy&) = delete;
+
+    no_copy() : base() {
+        OBI_FUNCTION_NAME
+        ++default_ctor;
+    }
+
+    no_copy(base b) : base(b) {
+        OBI_FUNCTION_NAME
+        ++non_default_ctor;
+    }
+
+    no_copy(no_copy&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_ctor;
+    }
+
+    no_copy& operator=(no_copy&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_op;
+        return *this;
+    }
 };
 
 struct no_copy_ctor : base {
     no_copy_ctor(no_copy_ctor const&) = delete;
+
+    no_copy_ctor() : base() {
+        OBI_FUNCTION_NAME
+        ++default_ctor;
+    }
+
+    no_copy_ctor(base b) : base(b) {
+        OBI_FUNCTION_NAME
+        ++non_default_ctor;
+    }
+
+    no_copy_ctor& operator=(no_copy_ctor& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_op;
+        return *this;
+    }
+
+    no_copy_ctor(no_copy_ctor&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_ctor;
+    }
+
+    no_copy_ctor& operator=(no_copy_ctor&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_op;
+        return *this;
+    }
 };
 
 struct no_copy_assign : base {
     no_copy_assign& operator=(no_copy_assign&) = delete;
-};
 
+    no_copy_assign() : base() {
+        OBI_FUNCTION_NAME
+        ++default_ctor;
+    }
+
+    no_copy_assign(base b) : base(b) {
+        OBI_FUNCTION_NAME
+        ++non_default_ctor;
+    }
+
+    no_copy_assign(no_copy_assign const& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++copy_ctor;
+    }
+
+    no_copy_assign(no_copy_assign&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_ctor;
+    }
+
+    no_copy_assign& operator=(no_copy_assign&& other) {
+        OBI_FUNCTION_NAME
+        copy_values(&other);
+        ++move_op;
+        return *this;
+    }
+};
 
 }  // namespace tracing
 }} // namespace obi::util
