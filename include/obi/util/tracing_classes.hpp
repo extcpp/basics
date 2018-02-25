@@ -68,7 +68,7 @@ public:
 };
 }}  // namespace obi::util
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && defined(OBI_DEBUG)
 #define OBI_FUNCTION_NAME { \
     std::cout << __PRETTY_FUNCTION__ << std::endl; \
 }
