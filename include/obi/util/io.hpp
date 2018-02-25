@@ -9,7 +9,7 @@
 
 namespace obi { namespace util {
 
-    OBI_INLINE std::string
+    inline std::string
     istream_to_string(std::istream &in, bool remove_spaces = false) {
         std::string result;
         char buffer[4096];
@@ -29,7 +29,7 @@ namespace obi { namespace util {
         return result;
     }
 
-    OBI_INLINE std::string
+    inline std::string
     ifstream_to_string(std::ifstream &in, bool remove_spaces = false) {
         if(! in.is_open()) {
             throw std::logic_error("You try to read from a closed stream!");

@@ -3,7 +3,6 @@
 #pragma once
 #ifndef _OBI_MATH_PRIMES
 #define _OBI_MATH_PRIMES
-#include "../config.hpp"
 
 #include <utility>
 #include <algorithm>
@@ -16,7 +15,7 @@
 
 namespace obi { namespace math {
 
-    template<typename T> OBI_INLINE
+    template<typename T>
     std::vector<T>
     prime_factors_naive(T x, bool debug = false) {
         std::vector<T> rv;
@@ -50,7 +49,7 @@ namespace obi { namespace math {
      *
      *  Notes: Just works for size_t and is memory heavy for real stuff I need Quadratic Sieve
     */
-    OBI_INLINE sieve_of_eratosthenes
+    inline sieve_of_eratosthenes
     create_sieve_of_eratosthenes(std::size_t max_value) {
         std::size_t sieve_size = max_value >> 1;
 
@@ -91,7 +90,7 @@ namespace obi { namespace math {
      *  @param use_exceptions flag to signal failure by exception
      *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    OBI_INLINE prime_number
+    inline prime_number
     find_nth_prime(std::size_t n
                   ,const sieve_of_eratosthenes& sieve
                   ,bool use_exceptions = false
@@ -143,7 +142,7 @@ namespace obi { namespace math {
      *  @param use_exceptions flag to signal failure by exception
      *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    OBI_INLINE prime_number
+    inline prime_number
     find_nth_prime(std::size_t n
                   ,std::size_t max_value
                   ,bool use_exceptions = false
@@ -167,7 +166,7 @@ namespace obi { namespace math {
      *  @param use_exceptions flag to signal failure by exception
      *  @return prime_number struct. result.n holds the nth prime or 0 on failure
     */
-    OBI_INLINE prime_number&
+    inline prime_number&
     find_next_prime(prime_number& current_prime
                    ,const sieve_of_eratosthenes& sieve
                    ,bool use_exceptions = false
