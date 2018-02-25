@@ -10,8 +10,6 @@ find_package(Threads)
 
 set(examples
     binary_index_tree
-    compile_check
-    concurrency
     container_helper
     function_cache
     functional

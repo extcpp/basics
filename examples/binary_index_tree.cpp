@@ -20,11 +20,11 @@ int main(/*int argc, const char *argv[]*/) {
     auto begin = std::begin(arr);
     auto end = std::end(arr);
 
-    std::array<unsigned, 16> input = { 0
-                                     , 2, 0, 1, 1, 1
-                                     , 0, 4, 4, 0, 1
-                                     , 0, 1, 2, 3, 0
-                                     };
+    std::array<unsigned, 16> input = {{ 0, 2, 0, 1
+                                      , 1, 1, 0, 4
+                                      , 4, 0, 1, 0
+                                      , 1, 2, 3, 0
+                                     }};
 
     for(auto it = input.begin(); it != input.end(); it++) {
         obi::structures::bit_modify(begin
