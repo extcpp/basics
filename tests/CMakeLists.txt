@@ -6,6 +6,7 @@ set(test_target "test_${test_name}")
 set(test_files 
     "algorithm_string_distances"
     "math"
+    "meta_if"
     "util_ascii_string_helper"
     "util_cast"
     "util_result"

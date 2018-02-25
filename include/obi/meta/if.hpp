@@ -4,6 +4,9 @@
 #include <type_traits>
 namespace obi { namespace meta {
 
+// if first value / expession is true the `first` type is returned otherwise
+// the `second`
+
 // if_
     template<typename, typename first, typename second>
     struct if_ {
