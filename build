@@ -10,6 +10,7 @@ do_test=false
 asan=false
 build_prefix="<> "
 
+# source build lib
 lib=$project_root/.build_scripts/build_lib
 if [[ -f "$lib" ]]; then
     . "$lib"
@@ -125,12 +126,15 @@ export do_test
 "$project_root"/.build_scripts/var_info || exit $?
 "$project_root"/.build_scripts/install_3rd_party || exit $?
 
+# calls configure step - e.g. cmake
 if ! $just_make || ! [[ -f makefile && -f Makefile ]]; then
   "$project_root/.build_scripts/configure" "${cm_flags[@]}" "${args[@]}" || exit $?
 fi
 
+# runs the actual build step - e.g. make
 "$project_root"/.build_scripts/build || exit $?
 
+# runs unit tests
 if [[ -f "$build_root/.do_test" ]]; then
   "$project_root"/.build_scripts/test || exit $?
 fi
