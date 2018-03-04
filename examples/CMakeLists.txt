@@ -37,6 +37,8 @@ if(OBI_CXX_FOLDS_AVAILABLE)
     )
 endif()
 
+separate_arguments(obi_stone-warnings)
+
 foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     set(cpp "${ex}.cpp")
     set(example "${ex}_example")
@@ -46,16 +48,10 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     if(UNIX)
         target_link_libraries(${example} dl)
     endif(UNIX)
-    separate_arguments(obi_stone-warnings)
     target_compile_options(${example} PRIVATE ${obi_stone-warnings})
 endforeach()
-    
+
 
 add_executable(any_printable_example any_printable_main.cpp any_printable_use_impl.cpp)
-target_include_directories(any_printable_example PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(any_printable_example ${CMAKE_THREAD_LIBS_INIT} obi_shared ${BOOST_LIBRARIES})
-if(UNIX)
-    target_link_libraries(any_printable_example dl)
-endif(UNIX)
-separate_arguments(obi_stone-warnings)
+target_link_libraries(any_printable_example obi)
 target_compile_options(any_printable_example PRIVATE ${obi_stone-warnings})
