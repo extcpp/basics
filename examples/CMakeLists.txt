@@ -15,14 +15,13 @@ set(examples
     functional
     if
     load_library
+    logging
     meta
     scoped_timer
     show
     static_lambda
     type_to_string
     vector
-    any_printable
-    logging
 )
 
 if(OBI_CXX_STANDARD EQUAL 17)
@@ -50,3 +49,13 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     separate_arguments(obi_stone-warnings)
     target_compile_options(${example} PRIVATE ${obi_stone-warnings})
 endforeach()
+    
+
+add_executable(any_printable_example any_printable_main.cpp any_printable_use_impl.cpp)
+target_include_directories(any_printable_example PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(any_printable_example ${CMAKE_THREAD_LIBS_INIT} obi_shared ${BOOST_LIBRARIES})
+if(UNIX)
+    target_link_libraries(any_printable_example dl)
+endif(UNIX)
+separate_arguments(obi_stone-warnings)
+target_compile_options(any_printable_example PRIVATE ${obi_stone-warnings})

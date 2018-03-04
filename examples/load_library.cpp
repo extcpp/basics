@@ -10,14 +10,14 @@ int main(){
 
     cout << "now trying to open:" << lib << endl;
     auto handle = dl_open(lib);
-    if ( handle == NULL){
+    if ( handle == nullptr){
         cout << "handle is NULL" << endl;
     } else {
         cout << "handle is " << reinterpret_cast<long>(handle) << endl;
     }
 
     auto symbol_address      = dl_sym(handle, symbol);
-    if ( symbol_address == NULL){
+    if ( symbol_address == nullptr){
         cout << "could not get symbol" << endl;
         cout << dl_error() << endl;
     } else {
