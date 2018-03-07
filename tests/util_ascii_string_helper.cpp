@@ -16,16 +16,17 @@ TEST(ascii_string_helper, ends_with){
 }
 
 TEST(ascii_string_helper, split_on){
-    ASSERT_EQ(split_on("foo::bar", "::")
+    ASSERT_EQ(split_on<std::string>("foo::bar", "::")
                 ,std::vector<std::string>({"foo","bar"})
                 );
-    ASSERT_EQ(split_on("foo::bar::", "::")
+    ASSERT_EQ(split_on<std::string>("foo::bar::", "::")
                 ,std::vector<std::string>({"foo","bar"})
                 );
-    ASSERT_EQ(split_on("::foo::::bar::", "::")
+    ASSERT_EQ(split_on<std::string>("::foo::::bar::", "::")
                 ,std::vector<std::string>({"foo","bar"})
                 );
-    ASSERT_EQ(split_on("::foo::::bar::", "::", true /* add_empty*/)
+    ASSERT_EQ(split_on<std::string>("::foo::::bar::", "::", true /* add_empty*/)
                 ,std::vector<std::string>({"","foo","","bar",""})
                 );
 }
+

@@ -29,12 +29,13 @@ ends_with(std::string_view const& str
     return str_short == suffix;
 }
 
+template <typename StringType>
 inline auto
 split_on(std::string_view const& str
         ,std::string_view const& seq
         ,bool add_empty = false)
--> std::vector<std::string> {
-    auto rv = std::vector<std::string>{};
+-> std::vector<StringType> {
+    auto rv = std::vector<StringType>{};
     std::size_t start_pos = 0;
     auto len = str.size();
 
