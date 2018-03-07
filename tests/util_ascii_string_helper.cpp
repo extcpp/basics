@@ -30,3 +30,10 @@ TEST(ascii_string_helper, split_on){
                 );
 }
 
+TEST(ascii_string_helper, replace){
+    ASSERT_EQ(replace("/this/is/path", "/", "\\"), std::string("\\this\\is\\path"));
+    ASSERT_EQ(replace("/this/is/path/", "/", "\\"), std::string("\\this\\is\\path\\"));
+    ASSERT_EQ(replace("this/is/path/", "/", "\\"), std::string("this\\is\\path\\"));
+    ASSERT_EQ(replace("Der Hund hat 3 Beine", "3", "4"), std::string("Der Hund hat 4 Beine"));
+    ASSERT_EQ(replace("Der Hund hat Beine", "Beine", "ne Leine"), std::string("Der Hund hat ne Leine"));
+}

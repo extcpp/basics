@@ -56,4 +56,22 @@ split_on(std::string_view const& str
     return rv;
 }
 
+inline auto
+replace(std::string_view const& str
+       ,std::string_view const& seq
+       ,std::string_view const& replacement
+       )
+-> std::string {
+    auto rv = std::string{};
+    auto tmp = split_on<std::string_view>(str,seq,true);
+    rv.reserve(str.size()+(replacement.size()-seq.size())*tmp.size());
+    if (tmp.size() > 0) {
+        for (auto it = tmp.begin(); it+1 != tmp.end(); it++) {
+            rv.append(it->begin(),it->end());
+            rv.append(replacement.begin(),replacement.end());
+        }
+    }
+    rv.append(tmp.back().begin(),tmp.back().end());
+    return rv;
+}
 }} // obi::util
