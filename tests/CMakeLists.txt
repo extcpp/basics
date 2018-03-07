@@ -18,7 +18,7 @@ set(test_files_shared
 
 foreach(suffix IN ITEMS "" "_shared")
     #build one executable
-    foreach(test_name IN LISTS test_files_${suffix}) # <- DO NOT EXPAND LIST
+    foreach(test_name IN LISTS test_files${suffix}) # <- DO NOT EXPAND LIST
         list(APPEND test_files_cpp "${test_name}.cpp")
     endforeach()
 
