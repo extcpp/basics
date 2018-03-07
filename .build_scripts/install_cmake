@@ -1,6 +1,6 @@
 #!/bin/bash
 
-lib=$project_root/.build_scripts/build_lib
+lib=${project_root:=.}/.build_scripts/build_lib
 if [[ -f "$lib" ]]; then
     . "$lib"
 else
@@ -19,6 +19,6 @@ file="cmake-$version-Linux-x86_64.sh"
 
 wget "https://cmake.org/files/v${major}/${file}"
 chmod +x "$file"
-./"$file" --prefix="${install_root}" --exclude-subdir --skip-license
+./"$file" --prefix="${install_root:=/usr/local}" --exclude-subdir --skip-license
 #end
 echo
