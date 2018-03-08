@@ -17,17 +17,17 @@ TEST(ascii_string_helper, ends_with){
 
 TEST(ascii_string_helper, split_on){
     ASSERT_EQ(split_on<std::string>("foo::bar", "::")
-                ,std::vector<std::string>({"foo","bar"})
-                );
+             ,std::vector<std::string>({"foo","bar"})
+             );
     ASSERT_EQ(split_on<std::string>("foo::bar::", "::")
-                ,std::vector<std::string>({"foo","bar"})
-                );
+             ,std::vector<std::string>({"foo","bar"})
+             );
     ASSERT_EQ(split_on<std::string>("::foo::::bar::", "::")
-                ,std::vector<std::string>({"foo","bar"})
-                );
+             ,std::vector<std::string>({"foo","bar"})
+             );
     ASSERT_EQ(split_on<std::string>("::foo::::bar::", "::", true /* add_empty*/)
-                ,std::vector<std::string>({"","foo","","bar",""})
-                );
+             ,std::vector<std::string>({"","foo","","bar",""})
+             );
 }
 
 TEST(ascii_string_helper, replace){
@@ -35,5 +35,11 @@ TEST(ascii_string_helper, replace){
     ASSERT_EQ(replace("/this/is/path/", "/", "\\"), std::string("\\this\\is\\path\\"));
     ASSERT_EQ(replace("this/is/path/", "/", "\\"), std::string("this\\is\\path\\"));
     ASSERT_EQ(replace("Der Hund hat 3 Beine", "3", "4"), std::string("Der Hund hat 4 Beine"));
-    ASSERT_EQ(replace("Der Hund hat Beine", "Beine", "ne Leine"), std::string("Der Hund hat ne Leine"));
+    ASSERT_EQ(replace("Der Hund hat 3 Beine", "3 Beine", "ne Leine"), std::string("Der Hund hat ne Leine"));
+    ASSERT_EQ(replace("Der Hund hat 3 Beine", "", ""), std::string("Der Hund hat 3 Beine"));
+    ASSERT_EQ(replace("Der Hund hat 3 Beine", "", "Leine"), std::string("Der Hund hat 3 Beine"));
+    ASSERT_EQ(replace("Der Hund hat 3 Beine", "Z", ""), std::string("Der Hund hat 3 Beine"));
+    ASSERT_EQ(replace("", "", ""), std::string(""));
+    ASSERT_EQ(replace("", "", "y"), std::string(""));
+    ASSERT_EQ(replace("", "x", "y"), std::string(""));
 }

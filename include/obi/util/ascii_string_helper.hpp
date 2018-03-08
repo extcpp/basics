@@ -29,6 +29,7 @@ ends_with(std::string_view const& str
     return str_short == suffix;
 }
 
+// StringType should behave like string /  string_view
 template <typename StringType>
 inline auto
 split_on(std::string_view const& str
@@ -36,22 +37,27 @@ split_on(std::string_view const& str
         ,bool add_empty = false)
 -> std::vector<StringType> {
     auto rv = std::vector<StringType>{};
-    std::size_t start_pos = 0;
-    auto len = str.size();
 
-    while (start_pos < len) {
-        std::size_t new_pos = str.find(seq,start_pos);
-        if (new_pos == std::string::npos) break;
-        std::size_t substr_len = new_pos - start_pos;
+    if (seq.size()){
+        std::size_t start_pos = 0;
+        auto len = str.size();
+
+        while (start_pos < len) {
+            std::size_t new_pos = str.find(seq,start_pos);
+            if (new_pos == std::string::npos) break;
+            std::size_t substr_len = new_pos - start_pos;
+            if (substr_len || add_empty) {
+                rv.emplace_back(str.substr(start_pos, substr_len));
+            }
+            start_pos = new_pos + seq.size();
+        }
+
+        std::size_t substr_len = len - start_pos;
         if (substr_len || add_empty) {
             rv.emplace_back(str.substr(start_pos, substr_len));
         }
-        start_pos = new_pos + seq.size();
-    }
-
-    std::size_t substr_len = len - start_pos;
-    if (substr_len || add_empty) {
-        rv.emplace_back(str.substr(start_pos, substr_len));
+    } else {
+        rv.emplace_back(str);
     }
     return rv;
 }
@@ -65,13 +71,15 @@ replace(std::string_view const& str
     auto rv = std::string{};
     auto tmp = split_on<std::string_view>(str,seq,true);
     rv.reserve(str.size()+(replacement.size()-seq.size())*tmp.size());
-    if (tmp.size() > 0) {
+    if (seq.size() && tmp.size() > 1) {
         for (auto it = tmp.begin(); it+1 != tmp.end(); it++) {
             rv.append(it->begin(),it->end());
             rv.append(replacement.begin(),replacement.end());
         }
     }
+    assert(tmp.size()); // tmp must contain at least one element
     rv.append(tmp.back().begin(),tmp.back().end());
     return rv;
 }
+
 }} // obi::util
