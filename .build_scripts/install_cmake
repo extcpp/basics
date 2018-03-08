@@ -1,5 +1,11 @@
 #!/bin/bash
 
+major="3.10"
+minor="2"
+version="$major.$minor"
+required_version="3.10"
+file="cmake-$version-Linux-x86_64.sh"
+
 lib=${project_root:=.}/.build_scripts/build_lib
 if [[ -f "$lib" ]]; then
     . "$lib"
@@ -8,17 +14,51 @@ else
     exit 1
 fi
 
-#prepare
-section "install cmake"
-#command
-set -e
-major="3.9"
-minor="5"
-version="$major.$minor"
-file="cmake-$version-Linux-x86_64.sh"
+get_and_install(){
+    mkdir -p "$install_root" || ferr "failed to create '$install_root'"
+    local install_dir="$1"
+    obi_cmake_tmp_dir="$(mktemp --dir)"
+    [[ -d "$obi_cmake_tmp_dir" ]] || ferr "could not create tmp dir"
+    finish(){
+        echo "deleting $obi_cmake_tmp_dir"
+        rm -fr "$obi_cmake_tmp_dir"
+    }
+    trap finish EXIT
 
-wget "https://cmake.org/files/v${major}/${file}"
-chmod +x "$file"
-./"$file" --prefix="${install_root:=/usr/local}" --exclude-subdir --skip-license
+    wget -P "$obi_cmake_tmp_dir" "https://cmake.org/files/v${major}/${file}"
+    chmod +x "$obi_cmake_tmp_dir/$file"
+    "$obi_cmake_tmp_dir/$file" --prefix="${install_root}" --exclude-subdir --skip-license
+}
+
+main(){
+    #prepare
+    section "install cmake"
+
+    local install_dir="$(get_parent_dir "$(get_source_dir)")-build/install"
+    install_root="${install_root:-${install_dir}}"
+
+    # check if installed
+    local installed=false
+    local installed_version="$(cmake_get_version)"
+    if [[ -n "$installed_version" ]]; then
+        local installed_version="$(cmake --version | head -1 | awk '{print $3}')"
+        echo "cmake version is $installed_version"
+        check_version "$installed_version" "$required_version"
+        if (( $? < 2 )) ; then
+            echo "installed version ($installed_version) matches version requirement ($required_version)"
+            installed=true
+        else
+            echo "installed version ($installed_version) is less than required version ($required_version)"
+        fi
+    else
+        echo "cmake is not in PATH or it is not installed"
+    fi
+
+    if ! $installed; then
+        get_and_install
+    fi
+}
+
+main
 #end
 echo
