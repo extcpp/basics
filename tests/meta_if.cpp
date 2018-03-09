@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
-
 #include <obi/meta/if.hpp>
-#include <iostream>
 
 using namespace std;
 using namespace obi::meta;

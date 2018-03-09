@@ -68,6 +68,11 @@ while [[ -n "$1" ]]; do
       #cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++' )
       shift
     ;;
+    --clang-6.0)
+      export CXX=clang++-6.0
+      export CC=clang-6.0
+      shift
+    ;;
     --travis)
       travis=true
       shift

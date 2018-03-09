@@ -14,6 +14,12 @@ set(test_files
     "util_result"
 )
 
+if(OBI_CXX_FOLDS_AVAILABLE)
+    list(APPEND test_files
+        "meta_if_all_any"
+    )
+endif()
+
 set(test_files_shared
     #"logging"
 )
