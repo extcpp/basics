@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 
 namespace obi{ namespace util {
 
@@ -103,9 +104,9 @@ private:  // functions
         int width = 15;
         ss << "\ntotal   : "
            << std::setw(width) << times[0].first << " ns - "
-           << std::setprecision(8) << std::fixed << times[0].first / 1000.0 << " μs - "
-           << std::setprecision(8) << std::fixed << times[0].first / 1000000.0 << " ms - "
-           << std::setprecision(8) << std::fixed << times[0].first / 1000000000.0 << " s";
+           << std::setprecision(3) << std::fixed << times[0].first / std::pow(10.0,3) << " μs - "
+           << std::setprecision(6) << std::fixed << times[0].first / std::pow(10.0,6) << " ms - "
+           << std::setprecision(9) << std::fixed << times[0].first / std::pow(10.0,9) << " s";
 
         if (!times[0].second.empty()) {
             ss << " - " << times[0].second;
@@ -115,7 +116,9 @@ private:  // functions
         if (times.size() > 1) {
             for (std::size_t i = 1; i < times.size(); i++) {
                 ss << "step "  << std::setw(3) << i << ": "
-                   << std::setw(width) << times[i].first << " ns"
+                   << std::setw(width) << std::setprecision(6)
+                   //<< times[i].first << " ns"
+                   << times[i].first / std::pow(10.0,6)<< " ms"
                    << std::setprecision(1) << std::fixed
                    << " (" << std::setw(5)
                    << 100*static_cast<float>(times[i].first)/static_cast<float>(times[0].first)
@@ -148,7 +151,7 @@ public:
         if (disable) enabled_in_dtor=false;
         return to_string_stream_internal(calculate()).str();
     }
-} ;
+};
 
 }}  // namespace obi::util
 #endif // OBI_UTIL_SCOPED_TIMER_HPP
