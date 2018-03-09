@@ -8,6 +8,7 @@ set(test_files
     "math"
     "meta_has_member"
     "meta_if"
+    "meta_is_one_of"
     "util_ascii_string_helper"
     "util_cast"
     "util_result"
