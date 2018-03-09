@@ -10,8 +10,8 @@
 namespace obi { namespace util {
 
     template <typename Container> inline
-    std::enable_if_t<obi::meta::has_category_member<_detail::container_traits<Container>>::value
-                        && std::is_same<typename    _detail::container_traits<Container>::category ,_detail::associative_tag>::value
+    std::enable_if_t<obi::meta::has_type_category_v<_detail::container_traits<Container>>
+                        && std::is_same_v<typename    _detail::container_traits<Container>::category ,_detail::associative_tag>
                     ,std::ostream&
                     >
     operator<< (std::ostream &out, const Container& container);
@@ -19,8 +19,8 @@ namespace obi { namespace util {
 
     template <typename Container> inline
     //if it is a container, that is mentioned in my container traits
-    std::enable_if_t<obi::meta::has_category_member<_detail::container_traits<Container>>::value
-                        && !std::is_same<typename   _detail::container_traits<Container>::category ,_detail::associative_tag>::value
+    std::enable_if_t<obi::meta::has_type_category_v<_detail::container_traits<Container>>
+                        && !std::is_same_v<typename   _detail::container_traits<Container>::category ,_detail::associative_tag>
                     ,std::ostream&
                     >
     operator<< (std::ostream &out, const Container& container) {
@@ -50,8 +50,8 @@ namespace obi { namespace util {
     }
 
     template <typename Container> inline
-    std::enable_if_t<obi::meta::has_category_member<_detail::container_traits<Container>>::value
-                        && std::is_same<typename    _detail::container_traits<Container>::category ,_detail::associative_tag>::value
+    std::enable_if_t<obi::meta::has_type_category_v<_detail::container_traits<Container>>
+                        && std::is_same_v<typename    _detail::container_traits<Container>::category ,_detail::associative_tag>
                     ,std::ostream&
                     >
     operator<< (std::ostream &out, const Container& container) {

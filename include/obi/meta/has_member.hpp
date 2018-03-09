@@ -9,27 +9,41 @@ namespace obi { namespace meta {
 
 // has_value_var
     template<typename T, typename = void>
-    struct has_value_var : std::false_type {};
+    struct has_var_value : std::false_type {};
 
     template<typename T>
-    struct has_value_var<T, void_t<decltype(std::declval<T>().value)>> : std::true_type {};
-    //struct has_value_var<T, decltype(std::declval<T>().value, void())> : std::true_type {};  // warning unused var
+    struct has_var_value<T, void_t<decltype(std::declval<T>().value)>> : std::true_type {};
+    //struct has_var_value<T, decltype(std::declval<T>().value, void())> : std::true_type {};  // warning unused var
+
+    template<typename T>
+    inline constexpr bool has_var_value_v = has_var_value<T>::value;
+
 
 // has_type_member
     template<class, class = void>
-    struct has_type_member : std::false_type {};
+    struct has_type_type : std::false_type {};
 
     template<class T>
-    struct has_type_member<T, void_t<typename T::type> > : std::true_type {};
-    //struct has_type_member<T, decltype(typename T::type(),void())> : std::true_type {};
+    struct has_type_type<T, void_t<typename T::type> > : std::true_type {};
+    //struct has_type_type<T, decltype(typename T::type(),void())> : std::true_type {};
 
-    //check for category type
+    template<typename T>
+    inline constexpr bool has_type_type_v = has_type_type<T>::value;
+
+
+// has_category_member
     template<class, class = void>
-    struct has_category_member : std::false_type {};
+    struct has_type_category : std::false_type {};
 
     template<class T>
-    struct has_category_member<T, ::obi::meta::void_t<typename T::category> > : std::true_type {};
+    struct has_type_category<T, ::obi::meta::void_t<typename T::category> > : std::true_type {};
 
+
+    template<typename T>
+    inline constexpr bool has_type_category_v = has_type_category<T>::value;
+
+
+// is_input_iterator
     template <class T, class = void>
     struct is_input_iterator : std::false_type  {};
 
@@ -39,5 +53,8 @@ namespace obi { namespace meta {
                                       , decltype(std::declval<T&>() == std::declval<T&>())  //compare
                                       >
                             > : std::true_type {};
+
+    template<typename T>
+    inline constexpr bool is_input_iterator_v = is_input_iterator<T>::value;
 
 }}  // namespace obi::meta

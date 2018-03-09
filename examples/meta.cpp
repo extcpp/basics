@@ -25,11 +25,11 @@ int main() {
          <<  std::endl;
 
     std::cout << "has_value_var<leet>()     "
-         <<  has_value_var<leet>()
+         <<  has_var_value_v<leet>
          <<  std::endl;
 
     std::cout << "has_type_member<unleet>()     "
-         <<  has_type_member<unleet>()
+         <<  has_type_type_v<unleet>
          <<  std::endl;
 
     return 0;
