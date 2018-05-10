@@ -85,7 +85,7 @@ struct result {
 
     auto get_message() const
     -> std::string {
-        if (!message.empty()) {
+        if (message.empty()) {
             if(code != OBI_OK) {
                 message = error_code_vo_string(code);
             }
@@ -140,7 +140,7 @@ template <typename T>
 struct typed_result {
     using value_type = T;
     value_type value;
-    bool valid = false;
+    bool valid = true;
 
 private:
     result _result;
