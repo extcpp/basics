@@ -12,9 +12,9 @@
 
 namespace obi { namespace util {
 
-int OBI_OK = 0;
-int OBI_FAIL = 1;
-int OBI_NET = 10;
+inline int OBI_OK = 0;
+inline int OBI_FAIL = 1;
+inline int OBI_ERROR_NET = 10;
 
 }} // obi::util
 
@@ -23,9 +23,9 @@ int OBI_NET = 10;
 #ifdef OBI_RESULT_NOT_FINISHED
 #include <map>
 // should be in cpp
-std::string error_code_vo_string(int code) {
+inline std::string error_code_vo_string(int code) {
   static const std::map<int,std::string> error_map = {
-      { obi::util::OBI_NET, "network error" }
+      { obi::util::OBI_ERROR_NET, "network error" }
   };
 
   auto found = error_map.find(code);
@@ -298,12 +298,16 @@ public:
 
 
     // forward to result's functions
+    int code() const { return _result.get_code(); }
     int get_code() const { return _result.get_code(); }
+    std::string message() const& { return _result.get_message(); }
+    std::string message() && { return std::move(std::move(_result).get_message()); }
     std::string get_message() const& { return _result.get_message(); }
     std::string get_message() && { return std::move(std::move(_result).get_message()); }
 
     bool ok()   const { return _result.ok(); }
     bool fail() const { return !ok(); }
+    operator bool() { return ok(); }
     bool is(int code)    const { return _result.get_code() == code; }
     bool isNot(int code) const { return !is(code); }
 
@@ -316,10 +320,12 @@ public:
     }
 
     // some functions to retrieve the internal result
-    result  copyresult() const & { return _result; }             // object is lvalue
-    result  copyresult()      && { return std::move(_result); }  // object is rvalue
-    result  takeresult()         { return std::move(_result); }  // all value types
-    result&  getresult() const & { return _result; }             // get only on lvalues
+    result  copy_result() const & { return _result; }             // object is lvalue
+    result  copy_result()      && { return std::move(_result); }  // object is rvalue
+    result  take_result()         { return std::move(_result); }  // all value types
+
+    result&       get_result()       & { return _result; }             // get only on lvalues
+    result const& get_result() const & { return _result; }             // get only on lvalues
 };
 
 }} // obi::util
