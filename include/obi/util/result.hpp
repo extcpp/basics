@@ -94,6 +94,7 @@ struct result {
     auto get_code() const -> int { return code; }
     auto ok()   const -> bool { return code == OBI_OK; }
     auto fail() const -> bool { return !ok(); }
+    explicit operator bool() { return ok(); }
 
     auto reset(int num = OBI_OK)
     -> result& {
@@ -305,7 +306,7 @@ public:
 
     bool ok()   const { return _result.ok(); }
     bool fail() const { return !ok(); }
-    operator bool() { return ok(); }
+    explicit operator bool() { return ok() && valid; }
     bool is(int code)    const { return _result.get_code() == code; }
     bool isNot(int code) const { return !is(code); }
 
