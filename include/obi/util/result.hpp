@@ -5,10 +5,8 @@
 #include <type_traits>
 #include <memory>
 #include <cstdint>
-
-#ifdef OBI_DEBUG
+#include <string>
 #include <iostream>
-#endif
 
 namespace obi { namespace util {
 
@@ -327,6 +325,26 @@ public:
     result&       get_result()       & { return _result; }             // get only on lvalues
     result const& get_result() const & { return _result; }             // get only on lvalues
 };
+
+inline std::ostream& operator<< (std::ostream &out, obi::util::result const& res) {
+    out << std::boolalpha
+        << ", ok:" << res.ok()
+        << ", code:" << res.code
+        << ", message:'" << res.message << "'"
+        ;
+    return out;
+}
+
+template <typename T>
+std::ostream& operator<< (std::ostream &out, obi::util::typed_result<T> const& res) {
+    out << std::boolalpha
+        << ", ok:" << res.ok()
+        << ", code:" << res.code()
+        << ", message:'" << res.message() << "'"
+        << ", vaild:" << res.valid
+        ;
+    return out;
+}
 
 }} // obi::util
 #endif
