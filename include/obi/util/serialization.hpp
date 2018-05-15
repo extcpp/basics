@@ -4,7 +4,7 @@
 
 namespace obi { namespace util {
 
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>, std::byte*>
 integral_to_little_storage(T in, std::byte* out) {
     in = endian::host_to_little(in);
@@ -12,7 +12,7 @@ integral_to_little_storage(T in, std::byte* out) {
     return out + sizeof(std::decay_t<T>);
 }
 
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>, std::byte*>
 integral_to_big_storage(T in, std::byte* out) {
     in = endian::host_to_big(in);
@@ -20,7 +20,7 @@ integral_to_big_storage(T in, std::byte* out) {
     return out + sizeof(std::decay_t<T>);
 }
 
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
 integral_from_little_storage(std::byte const* in, T& out){
     std::memcpy(&out, in, sizeof(std::decay_t<T>));
@@ -28,7 +28,7 @@ integral_from_little_storage(std::byte const* in, T& out){
     return in + sizeof(std::decay_t<T>);
 }
 
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
 integral_from_little_storage(std::byte const*& in, bool advance = true){
     std::decay_t<T> out;
@@ -36,7 +36,7 @@ integral_from_little_storage(std::byte const*& in, bool advance = true){
     return out;
 }
 
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
 integral_from_big_storage(std::byte const*& in, T& out){
     std::memcpy(&out, in, sizeof(std::decay_t<T>));
@@ -44,7 +44,7 @@ integral_from_big_storage(std::byte const*& in, T& out){
     return in + sizeof(std::decay_t<T>);
 }
 
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
 integral_from_big_storage(std::byte const*& in, bool advance = true){
     std::decay_t<T> out;

@@ -39,7 +39,7 @@ constexpr void byte_swap(void *ptr, std::size_t bytes) {
 } // unamed namespace - end
 
 // host to little unsinged
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 host_to_little(T in){
 #ifdef __APPLE__
@@ -56,7 +56,7 @@ host_to_little(T in){
         case 8:  { return htole64(in); };
         default: { throw  std::logic_error("not implemented"); };
     }
-#ifdef _WIN32
+#elif _WIN32
     if(!is_little()) {
         byte_swap(&in, sizeof(T));
     }
@@ -65,19 +65,19 @@ host_to_little(T in){
 }
 
 // host to little singed
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 host_to_little(T in){
     std::make_unsigned_t<std::decay_t<T>> tmp;
     std::memcpy(&tmp, &in, sizeof(T));
-    host_to_little(tmp);
+    tmp = host_to_little(tmp);
     std::memcpy(&in, &tmp, sizeof(T));
     return in;
 }
 
 
 // little to host unsinged
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 little_to_host(T in){
 #ifdef __APPLE__
@@ -89,9 +89,9 @@ little_to_host(T in){
     }
 #elif __linux__
     switch(sizeof(T)) {
-        case 2:  { return letoh16(in); };
-        case 4:  { return letoh32(in); };
-        case 8:  { return letoh64(in); };
+        case 2:  { return le16toh(in); };
+        case 4:  { return le32toh(in); };
+        case 8:  { return le64toh(in); };
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32
@@ -103,12 +103,12 @@ little_to_host(T in){
 }
 
 // little to host unsinged
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 little_to_host(T in){
     std::make_unsigned_t<std::decay_t<T>> tmp;
     std::memcpy(&tmp, &in, sizeof(T));
-    little_to_host(tmp);
+    tmp = little_to_host(tmp);
     std::memcpy(&in, &tmp, sizeof(T));
     return in;
 }
@@ -116,7 +116,7 @@ little_to_host(T in){
 
 
 // host to big unsinged
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 host_to_big(T in){
 #ifdef __APPLE__
@@ -142,18 +142,18 @@ host_to_big(T in){
 }
 
 // host to big singed
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 host_to_big(T in){
     std::make_unsigned_t<T>  tmp;
     std::memcpy(&tmp, &in, sizeof(T));
-    host_to_big(tmp);
+    tmp = host_to_big(tmp);
     std::memcpy(&in, &tmp, sizeof(T));
     return in;
 }
 
 // big to host unsinged
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 big_to_host(T in){
 #ifdef __APPLE__
@@ -165,9 +165,9 @@ big_to_host(T in){
     }
 #elif __linux__
     switch(sizeof(T)) {
-        case 2:  { return betoh16(in); };
-        case 4:  { return betoh32(in); };
-        case 8:  { return betoh64(in); };
+        case 2:  { return be16toh(in); };
+        case 4:  { return be32toh(in); };
+        case 8:  { return be64toh(in); };
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32
@@ -179,12 +179,12 @@ big_to_host(T in){
 }
 
 // big to host unsinged
-template <typename T> constexpr
+template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T> ,T>
 big_to_host(T in){
     std::make_unsigned_t<std::decay_t<T>> tmp;
     std::memcpy(&tmp, &in, sizeof(T));
-    big_to_host(tmp);
+    tmp = big_to_host(tmp);
     std::memcpy(&in, &tmp, sizeof(T));
     return in;
 }
