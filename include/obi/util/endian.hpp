@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <cstddef>
 #include <type_traits>
 #include <stdexcept>
 
@@ -15,31 +16,31 @@
     #pragma messsage("unsupported os or compiler")
 #endif
 
-namespace obi { namespace util { namespace endian {
+namespace obi::util::endian {
 
 
-// helper
-inline bool is_little() {
-    int num = 42;
-    static bool rv = (*(char*) &num == 42);
-    return rv;
+// evaluated during compile time!!!
+constexpr bool is_little() {
+    constexpr uint32_t const num = 0x01020304;
+    return (static_cast<char const&>(num) == 0x04); // why does std::byte not work
+    //              ^ above is the same as:  `*(char const *)&num`
+    // integral type with bigger alignment may be casted to cahr, unsigned char, byte
 }
 
-inline constexpr void byte_swap(void *ptr, std::size_t bytes) {
-    for( std::size_t pos = 0; pos < bytes/2; pos++ ) {
-        auto couter_pos = bytes - pos - 1;
-        uint8_t swap = ((uint8_t*) ptr)[pos];
-        ((uint8_t*)ptr)[pos] = ((uint8_t*) ptr)[couter_pos];
-        ((uint8_t*)ptr)[couter_pos] = swap;
+namespace {
+constexpr void byte_swap(void *ptr, std::size_t bytes) {
+    for(std::size_t pos = 0; pos < bytes/2; pos++) {
+        auto counter_pos = bytes - pos - 1;
+        uint8_t swap = ((char*) ptr)[pos];
+        ((char*)ptr)[pos] = ((char*) ptr)[counter_pos];
+        ((char*)ptr)[counter_pos] = swap;
     }
 }
+} // unamed namespace - end
 
 // host to little unsinged
-template <typename T>
-#ifndef _WIN32
-constexpr
-#endif
-std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>,T>
+template <typename T> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 host_to_little(T in){
 #ifdef __APPLE__
     switch(sizeof(T)) {
@@ -56,8 +57,7 @@ host_to_little(T in){
         default: { throw  std::logic_error("not implemented"); };
     }
 #ifdef _WIN32
-    static bool is_little_endian = is_little();
-    if(!is_little_endian){
+    if(!is_little()) {
         byte_swap(&in, sizeof(T));
     }
 #endif
@@ -65,26 +65,20 @@ host_to_little(T in){
 }
 
 // host to little singed
-template <typename T>
-#ifndef _WIN32
-constexpr
-#endif
-std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>,T>
+template <typename T> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 host_to_little(T in){
-    std::make_unsigned_t<T>  tmp;
-    std::memcpy(&tmp,&in,sizeof(T));
+    std::make_unsigned_t<std::decay_t<T>> tmp;
+    std::memcpy(&tmp, &in, sizeof(T));
     host_to_little(tmp);
-    std::memcpy(&in,&tmp,sizeof(T));
-return in;
+    std::memcpy(&in, &tmp, sizeof(T));
+    return in;
 }
 
 
 // little to host unsinged
-template <typename T>
-#ifndef _WIN32
-constexpr
-#endif
-std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>,T>
+template <typename T> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 little_to_host(T in){
 #ifdef __APPLE__
     switch(sizeof(T)) {
@@ -101,8 +95,7 @@ little_to_host(T in){
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32
-    static bool is_little_endian = is_little();
-    if(!is_little_endian){
+    if(!is_little()){
         byte_swap(&in, sizeof(T));
     }
 #endif
@@ -110,27 +103,21 @@ little_to_host(T in){
 }
 
 // little to host unsinged
-template <typename T>
-#ifndef _WIN32
-constexpr
-#endif
-std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>,T>
+template <typename T> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 little_to_host(T in){
-    std::make_unsigned_t<T>  tmp;
-    std::memcpy(&tmp,&in,sizeof(T));
+    std::make_unsigned_t<std::decay_t<T>> tmp;
+    std::memcpy(&tmp, &in, sizeof(T));
     little_to_host(tmp);
-    std::memcpy(&in,&tmp,sizeof(T));
-return in;
+    std::memcpy(&in, &tmp, sizeof(T));
+    return in;
 }
 
 
 
 // host to big unsinged
-template <typename T>
-#ifndef _WIN32
-constexpr
-#endif
-std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>,T>
+template <typename T> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 host_to_big(T in){
 #ifdef __APPLE__
     switch(sizeof(T)) {
@@ -147,8 +134,7 @@ host_to_big(T in){
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32
-    static bool is_little_endian = is_little();
-    if(is_little_endian){
+    if(is_little()) {
         byte_swap(&in, sizeof(T));
     }
 #endif
@@ -156,26 +142,19 @@ host_to_big(T in){
 }
 
 // host to big singed
-template <typename T>
-#ifndef _WIN32
-constexpr
-#endif
-std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>,T>
+template <typename T> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 host_to_big(T in){
     std::make_unsigned_t<T>  tmp;
-    std::memcpy(&tmp,&in,sizeof(T));
+    std::memcpy(&tmp, &in, sizeof(T));
     host_to_big(tmp);
-    std::memcpy(&in,&tmp,sizeof(T));
-return in;
+    std::memcpy(&in, &tmp, sizeof(T));
+    return in;
 }
 
-
 // big to host unsinged
-template <typename T>
-#ifndef _WIN32
-constexpr
-#endif
-std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>,T>
+template <typename T> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 big_to_host(T in){
 #ifdef __APPLE__
     switch(sizeof(T)) {
@@ -192,8 +171,7 @@ big_to_host(T in){
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32
-    static bool is_little_endian = is_little();
-    if(is_little_endian){
+    if(is_little()) {
         byte_swap(&in, sizeof(T));
     }
 #endif
@@ -201,17 +179,14 @@ big_to_host(T in){
 }
 
 // big to host unsinged
-template <typename T>
-#ifndef _WIN32
-constexpr
-#endif
-std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>,T>
+template <typename T> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T> ,T>
 big_to_host(T in){
-    std::make_unsigned_t<T>  tmp;
-    std::memcpy(&tmp,&in,sizeof(T));
+    std::make_unsigned_t<std::decay_t<T>> tmp;
+    std::memcpy(&tmp, &in, sizeof(T));
     big_to_host(tmp);
-    std::memcpy(&in,&tmp,sizeof(T));
-return in;
+    std::memcpy(&in, &tmp, sizeof(T));
+    return in;
 }
 
-}}}
+} // namespace obi::util::endian - end
