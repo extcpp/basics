@@ -31,9 +31,9 @@ namespace {
 constexpr void byte_swap(void *ptr, std::size_t bytes) {
     for(std::size_t pos = 0; pos < bytes/2; pos++) {
         auto counter_pos = bytes - pos - 1;
-        uint8_t swap = ((char*) ptr)[pos];
-        ((char*)ptr)[pos] = ((char*) ptr)[counter_pos];
-        ((char*)ptr)[counter_pos] = swap;
+        char swap = static_cast<char*>(ptr)[pos];
+        static_cast<char*>(ptr)[pos] = static_cast<char*>(ptr)[counter_pos];
+        static_cast<char*>(ptr)[counter_pos] = swap;
     }
 }
 } // unamed namespace - end
@@ -51,9 +51,15 @@ host_to_little(T in){
     }
 #elif __linux__
     switch(sizeof(T)) {
-        case 2:  { return htole16(in); };
-        case 4:  { return htole32(in); };
-        case 8:  { return htole64(in); };
+        case 2:  {  using P = decltype(htole16(0));
+                    return static_cast<T>(htole16(static_cast<P>(in)));
+                 };
+        case 4:  {  using P = decltype(htole32(0));
+                    return static_cast<T>(htole32(static_cast<P>(in)));
+                 };
+        case 8:  {  using P = decltype(htole64(0));
+                    return static_cast<T>(htole64(static_cast<P>(in)));
+                 };
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32
@@ -89,9 +95,15 @@ little_to_host(T in){
     }
 #elif __linux__
     switch(sizeof(T)) {
-        case 2:  { return le16toh(in); };
-        case 4:  { return le32toh(in); };
-        case 8:  { return le64toh(in); };
+        case 2:  {  using P = decltype(le16toh(0));
+                    return static_cast<T>(le16toh(static_cast<P>(in)));
+                 };
+        case 4:  {  using P = decltype(le32toh(0));
+                    return static_cast<T>(le32toh(static_cast<P>(in)));
+                 };
+        case 8:  {  using P = decltype(le64toh(0));
+                    return static_cast<T>(le64toh(static_cast<P>(in)));
+                 };
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32
@@ -128,9 +140,15 @@ host_to_big(T in){
     }
 #elif __linux__
     switch(sizeof(T)) {
-        case 2:  { return htobe16(in); };
-        case 4:  { return htobe32(in); };
-        case 8:  { return htobe64(in); };
+        case 2:  {  using P = decltype(htobe16(0));
+                    return static_cast<T>(htobe16(static_cast<P>(in)));
+                 };
+        case 4:  {  using P = decltype(htobe32(0));
+                    return static_cast<T>(htobe32(static_cast<P>(in)));
+                 };
+        case 8:  {  using P = decltype(htobe64(0));
+                    return static_cast<T>(htobe64(static_cast<P>(in)));
+                 };
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32
@@ -165,9 +183,15 @@ big_to_host(T in){
     }
 #elif __linux__
     switch(sizeof(T)) {
-        case 2:  { return be16toh(in); };
-        case 4:  { return be32toh(in); };
-        case 8:  { return be64toh(in); };
+        case 2:  {  using P = decltype(be16toh(0));
+                    return static_cast<T>(be16toh(static_cast<P>(in)));
+                 };
+        case 4:  {  using P = decltype(be32toh(0));
+                    return static_cast<T>(be32toh(static_cast<P>(in)));
+                 };
+        case 8:  {  using P = decltype(be64toh(0));
+                    return static_cast<T>(be64toh(static_cast<P>(in)));
+                 };
         default: { throw  std::logic_error("not implemented"); };
     }
 #elif _WIN32

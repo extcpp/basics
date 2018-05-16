@@ -35,7 +35,7 @@ inline std::string error_code_vo_string(int code) {
   } else {
       return std::string();
   }
-};
+}
 #endif
 // REMOVE - END /////////////////////////////////////////////////////
 
@@ -156,10 +156,10 @@ public:
                        std::is_pointer_v<T>
              ,typename std::enable_if_t<x,int> = 0
              >
-    typed_result(value_type value
+    typed_result(value_type val
                 ,result const& res = {}
                 )
-    :value(value)
+    :value(val)
     ,valid(true)
     ,_result(res)
     {
@@ -172,10 +172,10 @@ public:
                        std::is_pointer_v<T>
              ,typename std::enable_if_t<x,int> = 0
              >
-    typed_result(value_type value
+    typed_result(value_type val
                 ,result&& res
                 )
-    :value(value)
+    :value(val)
     ,valid(true)
     ,_result(std::move(res))
     {
@@ -191,10 +191,10 @@ public:
                       !std::is_pointer_v<T>
              ,typename std::enable_if_t<x,int> = 0
              >
-    typed_result(value_type const& value
+    typed_result(value_type const& val
                 ,result const& res = {}
                 )
-    :value(value) //copy here
+    :value(val) //copy here
     ,valid(true)
     ,_result(res)
     {
@@ -207,10 +207,10 @@ public:
                       !std::is_pointer_v<T>
              ,typename std::enable_if_t<x,int> = 0
              >
-    typed_result(value_type const& value
+    typed_result(value_type const& val
                 ,result&& res
                 )
-    :value(value) //copy here
+    :value(val) //copy here
     ,valid(true)
     ,_result(std::move(res))
     {
@@ -227,10 +227,10 @@ public:
                                  std::is_move_constructible_v<T>
              ,typename std::enable_if_t<x,int> = 0
              >
-    typed_result(value_type&& value
+    typed_result(value_type&& val
                 ,result const& res = {}
                 )
-    : value(std::move(value))
+    : value(std::move(val))
     , valid(true)
     , _result(res)
     {
@@ -244,10 +244,10 @@ public:
                                  std::is_move_constructible_v<T>
              ,typename std::enable_if_t<x,int> = 0
              >
-    typed_result(value_type&& value
+    typed_result(value_type&& val
                 ,result && res
                 )
-    :value(std::move(value))
+    :value(std::move(val))
     ,valid(true)
     ,_result(std::move(res))
     {

@@ -60,7 +60,7 @@ namespace obi { namespace math {
         std::vector<bool>& sieve = result.sieve;
 
         std::size_t current_pos = 1;
-        while(current_pos <= std::sqrt(sieve_size)+1) {
+        while(current_pos <= std::size_t(std::sqrt(sieve_size)) + 1) {
             while(sieve[current_pos] == false && current_pos < sieve_size) {
                 ++current_pos;
             }

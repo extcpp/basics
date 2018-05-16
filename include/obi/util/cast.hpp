@@ -11,7 +11,7 @@ namespace obi { namespace util {
         std::memcpy(&to, &from, sizeof(To));
     }
 
-    template <typename To, typename From, int length>
+    template <typename To, typename From, std::size_t length>
     std::enable_if_t<std::is_array<To>::value,void>
     type_cast_unsafe(const From &from, To (&to)[length]){
         std::memcpy(&to, &from, sizeof(To)*length);

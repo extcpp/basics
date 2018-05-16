@@ -27,7 +27,7 @@ int main(){
     try{
         symbol_address = dl_sym_e(handle, symbol_fail);
         cout << "symbol is at " << reinterpret_cast<long>(symbol_address) << endl;
-    } catch (logic_error e){
+    } catch (logic_error& e){
         cout << e.what() << endl;
     }
 
