@@ -12,6 +12,7 @@ set(test_files
     "util_ascii_string_helper"
     "util_cast"
     "util_result"
+    "util_endian_serialization"
 )
 
 if(OBI_CXX_FOLDS_AVAILABLE)

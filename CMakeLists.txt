@@ -11,12 +11,16 @@ include(obi_fm_util)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include (TestBigEndian)
+TEST_BIG_ENDIAN(obi_is_big_endian)
+
 if(COMMAND obi_setup_with_test)
     obi_setup_with_test()
 endif()
 
 ## define header only lib
 add_library(obi INTERFACE)
+target_compile_definitions(obi INTERFACE $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>)
 target_include_directories(obi INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_compile_features(obi INTERFACE cxx_std_17)
 separate_arguments(obi_stone-warnings)
