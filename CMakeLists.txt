@@ -18,18 +18,21 @@ if(COMMAND obi_setup_with_test)
     obi_setup_with_test()
 endif()
 
+separate_arguments(obi_stone-warnings)
+
 ## define header only lib
 add_library(obi INTERFACE)
 target_compile_definitions(obi INTERFACE $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>)
 target_include_directories(obi INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_compile_features(obi INTERFACE cxx_std_17)
-separate_arguments(obi_stone-warnings)
+target_compile_options(obi INTERFACE $<$<CONFIG:Debug>:${obi_stone-warnings}>)
 
 ## define shared lib
 add_library(obi_shared SHARED
     "src/logging.cpp"
 )
 target_compile_definitions(obi_shared PUBLIC OBI_LINK_TO_LIB=ON)
+target_compile_definitions(obi_shared PUBLIC $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>)
 target_include_directories(obi_shared PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_compile_features(obi_shared PUBLIC cxx_std_17)
 target_compile_options(obi_shared PRIVATE $<$<CONFIG:Debug>:${obi_stone-warnings}>)
