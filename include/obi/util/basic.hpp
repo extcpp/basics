@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <obi/macros/general.hpp>
 #include <iostream>
+#include <type_traits>
+
 namespace obi { namespace util {
 
 template<typename F, typename ...T>
@@ -18,6 +20,18 @@ template<typename ...T>
 void sort_all(T&&... args){
     static auto do_it = [](auto& container) { std::sort(std::begin(container), std::end(container)); };
     for_each_arg(do_it, std::forward<T>(args) ...);
+}
+
+template <typename T, typename S = std::make_unsigned_t<T>> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, S>
+to_unsigned(T in){
+    return S(in);
+}
+
+template <typename T, typename S = std::make_signed_t<T>> constexpr
+std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, S>
+to_signed(T in){
+    return S(in);
 }
 
 inline std::string_view
@@ -36,8 +50,9 @@ filename(std::string const& pathname, bool is_linux = true, bool both = false){
     auto len = std::distance(start_word_itr, pathname.end());
 
     return std::string_view(pathname.data() + start_pos
-                           ,std::make_unsigned_t<decltype(len)>(len)
+                           ,::obi::util::to_unsigned(len)
                            );
 }
+
 }} // obi::util
 #endif
