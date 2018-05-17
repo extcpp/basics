@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <obi/util/basic.hpp>
-
+#include <string>
+using namespace std::literals;
 
 TEST(util_basic, for_each_arg){
     std::vector<int> result;
@@ -16,4 +17,8 @@ TEST(util_basic, sort_all){
     obi::util::sort_all(a, b);
     ASSERT_EQ(a, (std::vector<int>{1, 2, 3, 4}));
     ASSERT_EQ(b, (std::vector<int>{1, 2, 3, 4}));
+}
+
+TEST(util_basic, filename){
+    ASSERT_EQ( ::obi::util::filename("/home/user/foo.bar"), "foo.bar");
 }

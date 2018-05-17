@@ -21,7 +21,7 @@ void sort_all(T&&... args){
 }
 
 inline std::string
-basename(std::string const& pathname, bool is_linux = true, bool both = false){
+filename(std::string const& pathname, bool is_linux = true, bool both = false){
     return std::string(std::find_if(pathname.rbegin()
                                    ,pathname.rend()
                                    ,[is_linux, both](char c) {

@@ -24,7 +24,7 @@ namespace obi { namespace  util { namespace logging {
             _ss << "vim " << file_name << " +" << line_no << "\n";
         }
         if (configuration::gdb){
-            _ss << "break " << basename(file_name) << ":" << line_no << " # ";
+            _ss << "break " << filename(file_name) << ":" << line_no << " # ";
         }
         _ss << level_to_str(level_);
         if(topic.id != topic::no_topic.id){
@@ -32,7 +32,7 @@ namespace obi { namespace  util { namespace logging {
         }
         if(configuration::filename){
             if(!configuration::gdb){
-                _ss << " " << basename(file_name) << ":" << line_no;
+                _ss << " " << filename(file_name) << ":" << line_no;
             }
         }
         if(configuration::function){
