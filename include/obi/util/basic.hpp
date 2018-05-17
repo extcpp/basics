@@ -32,10 +32,12 @@ filename(std::string const& pathname, bool is_linux = true, bool both = false){
                                       ,pathname.rend()
                                       ,sep_predicate
                                       ).base();
-    std::size_t start_pos = std::distance(pathname.begin(), start_word_itr);
-    std::size_t len = std::distance(start_word_itr, pathname.end());
+    auto start_pos = std::distance(pathname.begin(), start_word_itr);
+    auto len = std::distance(start_word_itr, pathname.end());
 
-    return { pathname.data() + start_pos, len};
+    return std::string_view(pathname.data() + start_pos
+                           ,std::make_unsigned_t<decltype(len)>(len)
+                           );
 }
 }} // obi::util
 #endif

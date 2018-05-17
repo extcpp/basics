@@ -19,7 +19,7 @@ class scoped_timer {
 public:  // defines
     using high_clock    = std::chrono::high_resolution_clock;
     using clock_string_vec = std::vector<std::pair<high_clock::time_point,std::string>>;
-    using int_string_vec = std::vector<std::pair<int,std::string>>;
+    using int_string_vec = std::vector<std::pair<std::uint64_t,std::string>>;
     using callback_type = std::function<void(int_string_vec const&)>;
 
 private:  // variables
@@ -75,14 +75,14 @@ public:  // functions
     }
 
 private:  // functions
-    static long int get_time_diff(high_clock::time_point const& t0, high_clock::time_point const& t1) {
-        return std::chrono::duration_cast<std::chrono::nanoseconds>(t1-t0).count();
+    static std::uint64_t get_time_diff(high_clock::time_point const& t0, high_clock::time_point const& t1) {
+        return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(t1-t0).count());
     }
 
     int_string_vec calculate() const {
-        long int total_time = get_time_diff(timepoints_with_description.front().first
-                                           ,timepoints_with_description.back().first
-                                           );
+        std::uint64_t total_time = get_time_diff(timepoints_with_description.front().first
+                                                ,timepoints_with_description.back().first
+                                                );
         int_string_vec times;
         times.emplace_back(std::make_pair(total_time ,timepoints_with_description.front().second));
         if (timepoints_with_description.size() > 2) {
@@ -101,12 +101,12 @@ private:  // functions
 
     static std::stringstream to_string_stream_internal(int_string_vec const& times) {
         std::stringstream ss;
-        int width = 15;
+        int  width = 15;
         ss << "\ntotal   : "
            << std::setw(width) << times[0].first << " ns - "
-           << std::setprecision(3) << std::fixed << times[0].first / std::pow(10.0,3) << " μs - "
-           << std::setprecision(6) << std::fixed << times[0].first / std::pow(10.0,6) << " ms - "
-           << std::setprecision(9) << std::fixed << times[0].first / std::pow(10.0,9) << " s";
+           << std::setprecision(3) << std::fixed << static_cast<double>(times[0].first) / std::pow(10.0,3.0) << " μs - "
+           << std::setprecision(6) << std::fixed << static_cast<double>(times[0].first) / std::pow(10.0,6.0) << " ms - "
+           << std::setprecision(9) << std::fixed << static_cast<double>(times[0].first) / std::pow(10.0,9.0) << " s";
 
         if (!times[0].second.empty()) {
             ss << " - " << times[0].second;
@@ -118,10 +118,10 @@ private:  // functions
                 ss << "step "  << std::setw(3) << i << ": "
                    << std::setw(width) << std::setprecision(6)
                    //<< times[i].first << " ns"
-                   << times[i].first / std::pow(10.0,6)<< " ms"
+                   << static_cast<double>(times[i].first) / std::pow(10.0,6.0)<< " ms"
                    << std::setprecision(1) << std::fixed
                    << " (" << std::setw(5)
-                   << 100*static_cast<float>(times[i].first)/static_cast<float>(times[0].first)
+                   << 100*static_cast<double>(times[i].first)/static_cast<double>(times[0].first)
                    << "%)";
 
                 if (!times[i].second.empty()) {
