@@ -20,18 +20,22 @@ void sort_all(T&&... args){
     for_each_arg(do_it, std::forward<T>(args) ...);
 }
 
-inline std::string
+inline std::string_view
 filename(std::string const& pathname, bool is_linux = true, bool both = false){
-    return std::string(std::find_if(pathname.rbegin()
-                                   ,pathname.rend()
-                                   ,[is_linux, both](char c) {
-                                        return (
-                                            ((both || is_linux)  && c == '/') ||
-                                            ((both || !is_linux) && c == '\\')
-                                        );
-                                    }
-                                   ).base()
-                      ,pathname.end());
+    static const auto sep_predicate = [&](char c) {
+        bool lin = ((both ||  is_linux) && c == '/');
+        bool win = ((both || !is_linux) && c == '\\');
+        return lin || win;
+    };
+
+    auto start_word_itr = std::find_if(pathname.rbegin()
+                                      ,pathname.rend()
+                                      ,sep_predicate
+                                      ).base();
+    std::size_t start_pos = std::distance(pathname.begin(), start_word_itr);
+    std::size_t len = std::distance(start_word_itr, pathname.end());
+
+    return { pathname.data() + start_pos, len};
 }
 }} // obi::util
 #endif
