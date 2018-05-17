@@ -10,14 +10,14 @@ namespace obi { namespace util {
 
 template<typename F, typename ...T>
 void for_each_arg(F&& function, T&&... args){
-    //(do_it(args), ...); // c++17 fold expression
-    OBI_EXPAND_SIDE_EFFECTS(function(std::forward<T>(args)));
+    (function(std::forward<T>(args)), ...); // c++17 fold expression
+    //OBI_EXPAND_SIDE_EFFECTS(function(std::forward<T>(args)));
 }
 
 template<typename ...T>
-void sort_all(T&... args){
+void sort_all(T&&... args){
     static auto do_it = [](auto& container) { std::sort(std::begin(container), std::end(container)); };
-    for_each_arg(do_it, args...);
+    for_each_arg(do_it, std::forward<T>(args) ...);
 }
 
 inline std::string
@@ -26,8 +26,8 @@ basename(std::string const& pathname, bool is_linux = true, bool both = false){
                                    ,pathname.rend()
                                    ,[is_linux, both](char c) {
                                         return (
-                                            ((both || linux)  && c == '/') ||
-                                            ((both || !linux) && c == '\\')
+                                            ((both || is_linux)  && c == '/') ||
+                                            ((both || !is_linux) && c == '\\')
                                         );
                                     }
                                    ).base()

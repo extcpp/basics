@@ -10,6 +10,7 @@ set(test_files
     "meta_if"
     "meta_is_one_of"
     "util_ascii_string_helper"
+    "util_basic"
     "util_cast"
     "util_result"
     "util_endian_serialization"
