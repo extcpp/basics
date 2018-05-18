@@ -2,10 +2,11 @@
 #ifndef OBI_UTIL_BASIC_HPP
 #define OBI_UTIL_BASIC_HPP
 
-#include <string>
-#include <algorithm>
 #include <obi/macros/general.hpp>
-#include <iostream>
+#include <obi/util/cast.hpp>
+
+#include <algorithm>
+#include <string>
 #include <type_traits>
 
 namespace obi { namespace util {
@@ -20,18 +21,6 @@ template<typename ...T>
 void sort_all(T&&... args){
     static auto do_it = [](auto& container) { std::sort(std::begin(container), std::end(container)); };
     for_each_arg(do_it, std::forward<T>(args) ...);
-}
-
-template <typename T, typename S = std::make_unsigned_t<T>> constexpr
-std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, S>
-to_unsigned(T in){
-    return S(in);
-}
-
-template <typename T, typename S = std::make_signed_t<T>> constexpr
-std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, S>
-to_signed(T in){
-    return S(in);
 }
 
 inline std::string_view
