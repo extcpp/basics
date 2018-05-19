@@ -6,6 +6,8 @@
 #include <type_traits>
 #include <stdexcept>
 
+#include <obi/util/cast.hpp>
+
 #ifdef __APPLE__
     #include <machine/endian.h>
     #include <libkern/OSByteOrder.h>
@@ -43,24 +45,27 @@ template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 host_to_little(T in){
 #ifdef __APPLE__
-    switch(sizeof(T)) {
-        case 2:  { return OSSwapHostToLittleInt16(in); };
-        case 4:  { return OSSwapHostToLittleInt32(in); };
-        case 8:  { return OSSwapHostToLittleInt64(in); };
-        default: { throw  std::logic_error("not implemented") };
+    if constexpr( sizeof(T) == 2 ) {
+        return OSSwapHostToLittleInt16(in);
+    } else if constexpr(sizeof(T) == 4) {
+        return OSSwapHostToLittleInt32(in);
+    } else if constexpr(sizeof(T) == 8) {
+        return OSSwapHostToLittleInt64(in);
+    } else {
+        throw std::logic_error("not implemented");
     }
 #elif __linux__
-    switch(sizeof(T)) {
-        case 2:  {  using P = decltype(htole16(0));
-                    return static_cast<T>(htole16(static_cast<P>(in)));
-                 };
-        case 4:  {  using P = decltype(htole32(0));
-                    return static_cast<T>(htole32(static_cast<P>(in)));
-                 };
-        case 8:  {  using P = decltype(htole64(0));
-                    return static_cast<T>(htole64(static_cast<P>(in)));
-                 };
-        default: { throw  std::logic_error("not implemented"); };
+    if constexpr( sizeof(T) == 2 ) {
+        using P = decltype(htole16(0));
+        return static_cast<T>(htole16(static_cast<P>(in)));
+    } else if constexpr(sizeof(T) == 4) {
+        using P = decltype(htole32(0));
+        return static_cast<T>(htole32(static_cast<P>(in)));
+    } else if constexpr(sizeof(T) == 8) {
+        using P = decltype(htole64(0));
+        return static_cast<T>(htole64(static_cast<P>(in)));
+    } else {
+        throw std::logic_error("not implemented");
     }
 #elif _WIN32
     if(!is_little()) {
@@ -74,11 +79,7 @@ host_to_little(T in){
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 host_to_little(T in){
-    std::make_unsigned_t<std::decay_t<T>> tmp;
-    std::memcpy(&tmp, &in, sizeof(T));
-    tmp = host_to_little(tmp);
-    std::memcpy(&in, &tmp, sizeof(T));
-    return in;
+    return to_signed(host_to_little(to_unsigned(in)));
 }
 
 
@@ -87,24 +88,27 @@ template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 little_to_host(T in){
 #ifdef __APPLE__
-    switch(sizeof(T)) {
-        case 2:  { return OSSwapLittleToHostInt16(in); };
-        case 4:  { return OSSwapLittleToHostInt32(in); };
-        case 8:  { return OSSwapLittleToHostInt64(in); };
-        default: { throw  std::logic_error("not implemented") };
+    if constexpr( sizeof(T) == 2 ) {
+        return OSSwapLittleToHostInt16(in);
+    } else if constexpr(sizeof(T) == 4) {
+        return OSSwapLittleToHostInt32(in);
+    } else if constexpr(sizeof(T) == 8) {
+        return OSSwapLittleToHostInt64(in);
+    } else {
+        throw std::logic_error("not implemented");
     }
 #elif __linux__
-    switch(sizeof(T)) {
-        case 2:  {  using P = decltype(le16toh(0));
-                    return static_cast<T>(le16toh(static_cast<P>(in)));
-                 };
-        case 4:  {  using P = decltype(le32toh(0));
-                    return static_cast<T>(le32toh(static_cast<P>(in)));
-                 };
-        case 8:  {  using P = decltype(le64toh(0));
-                    return static_cast<T>(le64toh(static_cast<P>(in)));
-                 };
-        default: { throw  std::logic_error("not implemented"); };
+    if constexpr( sizeof(T) == 2 ) {
+        using P = decltype(le16toh(0));
+        return static_cast<T>(le16toh(static_cast<P>(in)));
+    } else if constexpr(sizeof(T) == 4) {
+        using P = decltype(le32toh(0));
+        return static_cast<T>(le32toh(static_cast<P>(in)));
+    } else if constexpr(sizeof(T) == 8) {
+        using P = decltype(le64toh(0));
+        return static_cast<T>(le64toh(static_cast<P>(in)));
+    } else {
+        throw std::logic_error("not implemented");
     }
 #elif _WIN32
     if(!is_little()){
@@ -118,11 +122,7 @@ little_to_host(T in){
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 little_to_host(T in){
-    std::make_unsigned_t<std::decay_t<T>> tmp;
-    std::memcpy(&tmp, &in, sizeof(T));
-    tmp = little_to_host(tmp);
-    std::memcpy(&in, &tmp, sizeof(T));
-    return in;
+    return to_signed(little_to_host(to_unsigned(in)));
 }
 
 
@@ -132,24 +132,27 @@ template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 host_to_big(T in){
 #ifdef __APPLE__
-    switch(sizeof(T)) {
-        case 2:  { return OSSwapHostToBigInt16(in); };
-        case 4:  { return OSSwapHostToBigInt32(in); };
-        case 8:  { return OSSwapHostToBigInt64(in); };
-        default: { throw  std::logic_error("not implemented") };
+    if constexpr( sizeof(T) == 2 ) {
+        return OSSwapHostToBigInt16(in);
+    } else if constexpr(sizeof(T) == 4) {
+        return OSSwapHostToBigInt32(in);
+    } else if constexpr(sizeof(T) == 8) {
+        return OSSwapHostToBigInt64(in);
+    } else {
+        throw std::logic_error("not implemented");
     }
 #elif __linux__
-    switch(sizeof(T)) {
-        case 2:  {  using P = decltype(htobe16(0));
-                    return static_cast<T>(htobe16(static_cast<P>(in)));
-                 };
-        case 4:  {  using P = decltype(htobe32(0));
-                    return static_cast<T>(htobe32(static_cast<P>(in)));
-                 };
-        case 8:  {  using P = decltype(htobe64(0));
-                    return static_cast<T>(htobe64(static_cast<P>(in)));
-                 };
-        default: { throw  std::logic_error("not implemented"); };
+    if constexpr( sizeof(T) == 2 ) {
+        using P = decltype(htobe16(0));
+        return static_cast<T>(htobe16(static_cast<P>(in)));
+    } else if constexpr(sizeof(T) == 4) {
+        using P = decltype(htobe32(0));
+        return static_cast<T>(htobe32(static_cast<P>(in)));
+    } else if constexpr(sizeof(T) == 8) {
+        using P = decltype(htobe64(0));
+        return static_cast<T>(htobe64(static_cast<P>(in)));
+    } else {
+        throw std::logic_error("not implemented");
     }
 #elif _WIN32
     if(is_little()) {
@@ -163,11 +166,7 @@ host_to_big(T in){
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T>
 host_to_big(T in){
-    std::make_unsigned_t<T>  tmp;
-    std::memcpy(&tmp, &in, sizeof(T));
-    tmp = host_to_big(tmp);
-    std::memcpy(&in, &tmp, sizeof(T));
-    return in;
+    return to_signed(host_to_big(to_unsigned(in)));
 }
 
 // big to host unsinged
@@ -175,24 +174,27 @@ template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T>
 big_to_host(T in){
 #ifdef __APPLE__
-    switch(sizeof(T)) {
-        case 2:  { return OSSwapBigToHostInt16(in); };
-        case 4:  { return OSSwapBigToHostInt32(in); };
-        case 8:  { return OSSwapBigToHostInt64(in); };
-        default: { throw  std::logic_error("not implemented") };
+    if constexpr( sizeof(T) == 2 ) {
+        return OSSwapBigToHostInt16(in);
+    } else if constexpr(sizeof(T) == 4) {
+        return OSSwapBigToHostInt32(in);
+    } else if constexpr(sizeof(T) == 8) {
+        return OSSwapBigToHostInt64(in);
+    } else {
+        throw std::logic_error("not implemented");
     }
 #elif __linux__
-    switch(sizeof(T)) {
-        case 2:  {  using P = decltype(be16toh(0));
-                    return static_cast<T>(be16toh(static_cast<P>(in)));
-                 };
-        case 4:  {  using P = decltype(be32toh(0));
-                    return static_cast<T>(be32toh(static_cast<P>(in)));
-                 };
-        case 8:  {  using P = decltype(be64toh(0));
-                    return static_cast<T>(be64toh(static_cast<P>(in)));
-                 };
-        default: { throw  std::logic_error("not implemented"); };
+    if constexpr( sizeof(T) == 2 ) {
+        using P = decltype(be16toh(0));
+        return static_cast<T>(be16toh(static_cast<P>(in)));
+    } else if constexpr(sizeof(T) == 4) {
+        using P = decltype(be32toh(0));
+        return static_cast<T>(be32toh(static_cast<P>(in)));
+    } else if constexpr(sizeof(T) == 8) {
+        using P = decltype(be64toh(0));
+        return static_cast<T>(be64toh(static_cast<P>(in)));
+    } else {
+        throw std::logic_error("not implemented");
     }
 #elif _WIN32
     if(is_little()) {
@@ -206,11 +208,7 @@ big_to_host(T in){
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T> ,T>
 big_to_host(T in){
-    std::make_unsigned_t<std::decay_t<T>> tmp;
-    std::memcpy(&tmp, &in, sizeof(T));
-    tmp = big_to_host(tmp);
-    std::memcpy(&in, &tmp, sizeof(T));
-    return in;
+    return to_signed(big_to_host(to_unsigned(in)));
 }
 
 } // namespace obi::util::endian - end
