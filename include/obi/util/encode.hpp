@@ -9,7 +9,7 @@ namespace obi { namespace util {
 //// HEX
 template<typename T>
 std::enable_if_t<std::is_integral_v<T>,std::string>
-hexify(T i){
+encode_hex(T i){
     std::stringbuf buf;
     std::ostream os(&buf);
 
@@ -21,7 +21,7 @@ hexify(T i){
     return buf.str().c_str();
 }
 
-inline std::string hexify(char const* in, std::size_t len){
+inline std::string encode_hex(char const* in, std::size_t len){
     static char const* hex_values = "0123456789abcdef";
 
 	std::string rv;
@@ -38,15 +38,15 @@ inline std::string hexify(char const* in, std::size_t len){
 	return rv;
 }
 
-inline std::string hexify(std::string const& in){
-	return hexify(in.data(),in.size());
+inline std::string encode_hex(std::string const& in){
+	return encode_hex(in.data(),in.size());
 }
 
-inline std::string hexify(std::string_view const& in){
-	return hexify(in.data(),in.size());
+inline std::string encode_hex(std::string_view const& in){
+	return encode_hex(in.data(),in.size());
 }
 
-inline std::string dehexify(char const* in, size_t len) {
+inline std::string decode_hex(char const* in, size_t len) {
     std::string rv;
 
 	if (!len) { return rv; }; // no input
@@ -87,12 +87,12 @@ inline std::string dehexify(char const* in, size_t len) {
 	return rv;
 }
 
-inline std::string dehexify(std::string const& in) {
-    return dehexify(in.data(), in.size());
+inline std::string decode_hex(std::string const& in) {
+    return decode_hex(in.data(), in.size());
 }
 
-inline std::string dehexify(std::string_view const& in) {
-    return dehexify(in.data(), in.size());
+inline std::string decode_hex(std::string_view const& in) {
+    return decode_hex(in.data(), in.size());
 }
 //// HEX - end
 
