@@ -8,6 +8,12 @@
 
 namespace obi { namespace util {
 
+template <typename ...T> inline constexpr
+std::size_t size_of(){
+    return (sizeof(T) + ...);
+}
+
+
 //// singed <-> unsingend - conversion
 
 template <typename T, typename S = std::make_unsigned_t<T>> constexpr
