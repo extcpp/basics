@@ -17,8 +17,8 @@ integral_to_little_storage(T in, std::string& out) {
 }
 
 template <typename T> //constexpr
-std::enable_if_t<std::is_integral_v<T>, std::byte*>
-integral_to_little_storage(T in, std::byte* out) {
+std::enable_if_t<std::is_integral_v<T>, char*>
+integral_to_little_storage(T in, char* out) {
     in = endian::host_to_little(in);
     std::memcpy(out, &in, sizeof(std::decay_t<T>));
     return out + sizeof(std::decay_t<T>);
@@ -26,8 +26,8 @@ integral_to_little_storage(T in, std::byte* out) {
 
 // to big storage
 template <typename T> //constexpr
-std::enable_if_t<std::is_integral_v<T>, std::byte*>
-integral_to_big_storage(T in, std::byte* out) {
+std::enable_if_t<std::is_integral_v<T>, char*>
+integral_to_big_storage(T in, char* out) {
     in = endian::host_to_big(in);
     std::memcpy(out, &in, sizeof(std::decay_t<T>));
     return out + sizeof(std::decay_t<T>);
@@ -35,8 +35,8 @@ integral_to_big_storage(T in, std::byte* out) {
 
 // from little storage
 template <typename T> //constexpr
-std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
-integral_from_little_storage(std::byte const* in, T& out){
+std::enable_if_t<std::is_integral_v<T>,char const*>
+integral_from_little_storage(char const* in, T& out){
     std::memcpy(&out, in, sizeof(std::decay_t<T>));
     out = endian::little_to_host(out);
     return in + sizeof(std::decay_t<T>);
@@ -44,7 +44,7 @@ integral_from_little_storage(std::byte const* in, T& out){
 
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
-integral_from_little_storage_advance(std::byte const*& in){
+integral_from_little_storage_advance(char const*& in){
     std::decay_t<T> out;
     in = integral_from_little_storage(in,out);
     return out;
@@ -52,8 +52,8 @@ integral_from_little_storage_advance(std::byte const*& in){
 
 // from big storage
 template <typename T> //constexpr
-std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
-integral_from_big_storage(std::byte const*& in, T& out){
+std::enable_if_t<std::is_integral_v<T>,char const*>
+integral_from_big_storage(char const*& in, T& out){
     std::memcpy(&out, in, sizeof(std::decay_t<T>));
     out = endian::big_to_host(out);
     return in + sizeof(std::decay_t<T>);
@@ -61,7 +61,7 @@ integral_from_big_storage(std::byte const*& in, T& out){
 
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
-integral_from_big_storage_advance(std::byte*& in){
+integral_from_big_storage_advance(char*& in){
     std::decay_t<T> out;
     in = integral_from_big_storage(in,out);
     return out;
