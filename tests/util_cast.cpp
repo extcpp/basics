@@ -10,32 +10,56 @@ TEST(util_cast, size_of){
     std::uint16_t& cr = c;
     std::uint64_t& ar = a;
 
-    {
+    {   // two
         std::size_t obi = ou::size_of<std::uint64_t,std::uint32_t>();
         std::size_t norm = sizeof(std::uint64_t) + sizeof(std::uint32_t);
         ASSERT_EQ(obi, norm);
         ASSERT_EQ(obi, 12);
     }
 
-    {
+    {   // many
         std::size_t obi = ou::size_of(a,b,c);
         std::size_t norm = sizeof(a) + sizeof(b) + sizeof(c);
         ASSERT_EQ(obi, norm);
         ASSERT_EQ(obi, 14);
     }
 
-    {
+    {   // reference
         std::size_t obi = ou::size_of(ar);
         std::size_t norm = sizeof(ar);
         ASSERT_EQ(obi, norm);
         ASSERT_EQ(obi, 8);
     }
 
-    {
+    {   // reference
         std::size_t obi = ou::size_of(cr);
         std::size_t norm = sizeof(cr);
         ASSERT_EQ(obi, norm);
         ASSERT_EQ(obi, 2);
+    }
+
+    {   // string
+        std::string foo = "Agathe Bauer";
+        std::size_t obi = ou::size_of(foo);
+        std::size_t norm = sizeof(foo.front()) * foo.size();
+        ASSERT_EQ(obi, norm);
+        ASSERT_EQ(obi, 12);
+    }
+
+    {   // array
+        std::array<std::uint64_t, 3> foo;
+        std::size_t obi = ou::size_of(foo);
+        std::size_t norm = sizeof(foo.front()) * foo.size();
+        ASSERT_EQ(obi, norm);
+        ASSERT_EQ(obi, 24);
+    }
+
+    {   // carray
+        std::uint32_t foo[3];
+        std::size_t obi = ou::size_of(foo);
+        std::size_t norm = sizeof(foo[0]) * 3;
+        ASSERT_EQ(obi, norm);
+        ASSERT_EQ(obi, 12);
     }
 }
 

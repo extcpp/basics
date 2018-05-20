@@ -4,19 +4,71 @@
 #include <cstring>
 #include <type_traits>
 #include <limits>
+#include <array>
 #include <stdexcept>
 
 namespace obi { namespace util {
 
+//// size calcuation for important types
+template <typename T, std::size_t N> inline constexpr
+std::size_t size(T(&)[N]){
+    return N;
+}
+
+namespace _detail {
+    template <typename T> inline constexpr
+    std::size_t size_of(){
+        return (sizeof(T));
+    }
+
+    template <typename T> inline constexpr
+    std::size_t size_of(T const& arg){
+        return (sizeof(decltype(arg)));
+    }
+
+    template <typename T, std::size_t N> inline constexpr
+    std::size_t size_of(){
+        return (sizeof(T) * N);
+    }
+
+    template <typename T, std::size_t N> inline constexpr
+    std::size_t size_of(T(&)[N]){
+        return N * size_of<T>();
+    }
+
+    template <typename T, std::size_t N> inline constexpr
+    std::size_t size_of(std::array<T,N> const&){
+        return (sizeof(T) * N);
+    }
+
+    template <typename C,typename T, typename A > inline constexpr
+    std::size_t size_of(std::basic_string<C,T,A> const& arg){
+        return (sizeof(T) * arg.size());
+    }
+
+    template <typename C,typename T> inline constexpr
+    std::size_t size_of(std::basic_string_view<C,T> const& arg){
+        return (sizeof(T) * arg.size());
+    }
+}
+
+
 template <typename ...T> inline constexpr
 std::size_t size_of(){
-    return (sizeof(T) + ...);
+    return (_detail::size_of<T>() + ...);
 }
 
 template <typename ...T> inline constexpr
-std::size_t size_of(T ...args){
-    return (sizeof(decltype(args)) + ...);
+std::size_t size_of(T const& ...args){
+    return (_detail::size_of(args) + ...);
 }
+
+// use this if not all args size_of functions
+// are constexpr
+//template <typename ...T> inline
+//std::size_t size_of_all(T const& ...args){
+//    return (_detail::size_of(args) + ...);
+//}
 
 //// singed <-> unsingend - conversion
 
