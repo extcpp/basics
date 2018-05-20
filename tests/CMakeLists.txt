@@ -9,11 +9,12 @@ set(test_files
     "meta_has_member"
     "meta_if"
     "meta_is_one_of"
-    "util_string"
     "util_basic"
     "util_cast"
-    "util_result"
+    "util_encode"
     "util_endian_serialization"
+    "util_result"
+    "util_string"
 )
 
 if(OBI_CXX_FOLDS_AVAILABLE)
