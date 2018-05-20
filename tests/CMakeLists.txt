@@ -9,7 +9,7 @@ set(test_files
     "meta_has_member"
     "meta_if"
     "meta_is_one_of"
-    "util_ascii_string_helper"
+    "util_string"
     "util_basic"
     "util_cast"
     "util_result"

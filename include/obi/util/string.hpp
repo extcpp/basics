@@ -5,6 +5,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <cassert>
 
 namespace obi { namespace util {
 

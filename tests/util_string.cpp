@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <obi/util/ascii_string_helper.hpp>
+#include <obi/util/string.hpp>
 
 using namespace obi::util;
 
