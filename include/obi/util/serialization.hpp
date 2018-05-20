@@ -4,6 +4,18 @@
 
 namespace obi { namespace util {
 
+// to little storage
+template <typename T> //constexpr
+std::enable_if_t<std::is_integral_v<T>>
+integral_to_little_storage(T in, std::string& out) {
+    in = endian::host_to_little(in);
+    std::size_t len = 0;
+    do {
+        out.push_back(static_cast<char>(in & 0xffU));
+        in >>= 8;
+    } while (++len < sizeof(T));
+}
+
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>, std::byte*>
 integral_to_little_storage(T in, std::byte* out) {
@@ -12,6 +24,7 @@ integral_to_little_storage(T in, std::byte* out) {
     return out + sizeof(std::decay_t<T>);
 }
 
+// to big storage
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>, std::byte*>
 integral_to_big_storage(T in, std::byte* out) {
@@ -20,6 +33,7 @@ integral_to_big_storage(T in, std::byte* out) {
     return out + sizeof(std::decay_t<T>);
 }
 
+// from little storage
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
 integral_from_little_storage(std::byte const* in, T& out){
@@ -30,12 +44,13 @@ integral_from_little_storage(std::byte const* in, T& out){
 
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
-integral_from_little_storage(std::byte const*& in, bool advance = true){
+integral_from_little_storage_advance(std::byte const*& in){
     std::decay_t<T> out;
     in = integral_from_little_storage(in,out);
     return out;
 }
 
+// from big storage
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
 integral_from_big_storage(std::byte const*& in, T& out){
@@ -46,7 +61,7 @@ integral_from_big_storage(std::byte const*& in, T& out){
 
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::decay_t<T>>
-integral_from_big_storage(std::byte const*& in, bool advance = true){
+integral_from_big_storage_advance(std::byte*& in){
     std::decay_t<T> out;
     in = integral_from_big_storage(in,out);
     return out;
