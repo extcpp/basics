@@ -13,6 +13,10 @@ std::size_t size_of(){
     return (sizeof(T) + ...);
 }
 
+template <typename ...T> inline constexpr
+std::size_t size_of(T ...args){
+    return (sizeof(decltype(args)) + ...);
+}
 
 //// singed <-> unsingend - conversion
 

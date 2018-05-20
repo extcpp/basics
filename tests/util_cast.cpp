@@ -4,10 +4,39 @@
 namespace ou = ::obi::util;
 
 TEST(util_cast, size_of){
-    std::size_t obi = ou::size_of<std::uint64_t,std::uint32_t>();
-    std::size_t norm = sizeof(std::uint64_t) + sizeof(std::uint32_t);
-    ASSERT_EQ(obi, norm);
-    ASSERT_EQ(obi, 12);
+    std::uint64_t a = 1;
+    std::uint32_t b = 2;
+    std::uint16_t c = 2;
+    std::uint16_t& cr = c;
+    std::uint64_t& ar = a;
+
+    {
+        std::size_t obi = ou::size_of<std::uint64_t,std::uint32_t>();
+        std::size_t norm = sizeof(std::uint64_t) + sizeof(std::uint32_t);
+        ASSERT_EQ(obi, norm);
+        ASSERT_EQ(obi, 12);
+    }
+
+    {
+        std::size_t obi = ou::size_of(a,b,c);
+        std::size_t norm = sizeof(a) + sizeof(b) + sizeof(c);
+        ASSERT_EQ(obi, norm);
+        ASSERT_EQ(obi, 14);
+    }
+
+    {
+        std::size_t obi = ou::size_of(ar);
+        std::size_t norm = sizeof(ar);
+        ASSERT_EQ(obi, norm);
+        ASSERT_EQ(obi, 8);
+    }
+
+    {
+        std::size_t obi = ou::size_of(cr);
+        std::size_t norm = sizeof(cr);
+        ASSERT_EQ(obi, norm);
+        ASSERT_EQ(obi, 2);
+    }
 }
 
 TEST(util_cast, enum_to_underlying){
