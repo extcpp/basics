@@ -335,6 +335,22 @@ public:
 } //namespace v1
 
 namespace v2 {
+// WIP
+// TODO
+// - needs constructors taking result<bool>
+// - probaly should have static error / success functions
+//   always passing {} is odd
+//
+// typed_result<bool> success() { return typed_result<bool>(); }
+// typed_result<bool> fail() { return typed_result<bool>(); }
+//
+// what is the best way to create one typed_result from another
+// with a different T?
+// typed_result<A>({},result(std::move(result_of_type_B)))
+//
+// template<typename X>
+// typed_result::reset(typed_result<X>&& res)
+
 
 template <typename T = bool>
 struct typed_result {
@@ -386,6 +402,40 @@ struct typed_result {
     #endif
     }
 
+    template <typename V
+             ,int x = !std::is_reference_v<T> &&
+                      !std::is_pointer_v<T> &&
+                      !std::is_same_v<V,T>
+             ,typename std::enable_if_t<x,int> = 0
+             >
+    typed_result(value_type const& val
+                ,typed_result<V>&& res
+                )
+    :message(std::move(res.message))
+    ,code(res.code)
+    ,value(val) //copy here
+    {
+    #ifdef OBI_DEBUG
+       std::cerr << "ctor: lvalue - 1 copy" << std::endl;
+    #endif
+    }
+
+    template <typename V
+             ,int x = !std::is_reference_v<T> &&
+                      !std::is_pointer_v<T> &&
+                      std::is_same_v<V,T>
+             ,typename std::enable_if_t<x,int> = 0
+             >
+    typed_result(typed_result<V> const& res
+                )
+    :message(res.message)
+    ,code(res.code)
+    ,value(res.value) //copy here
+    {
+    #ifdef OBI_DEBUG
+       std::cerr << "ctor: lvalue - 1 copy" << std::endl;
+    #endif
+    }
     // handling lvalues - end
 
 
@@ -449,13 +499,41 @@ struct typed_result {
     auto fail() const -> bool { return !ok(); }
     explicit operator bool() { return ok(); }
 
-    explicit operator typed_result<bool>() {
+    explicit operator typed_result<bool>() const & {
         if constexpr(std::is_same_v<value_type,bool>){
             return typed_result<bool>{value, code, message};
         } else {
             return typed_result<bool>{false, code, message};
         }
     }
+
+    explicit operator typed_result<bool>() && {
+        if constexpr(std::is_same_v<value_type,bool>){
+            return typed_result<bool>{value, code, std::move(message)};
+        } else {
+            return typed_result<bool>{false, code, std::move(message)};
+        }
+    }
+
+    typed_result<bool> to_result() const & {
+        if constexpr(std::is_same_v<value_type,bool>){
+            return typed_result<bool>{value, code, message};
+        } else {
+            return typed_result<bool>{false, code, message};
+        }
+    }
+
+    typed_result<bool> to_result() && {
+        if constexpr(std::is_same_v<value_type,bool>){
+            return typed_result<bool>{value, code, std::move(message)};
+        } else {
+            return typed_result<bool>{false, code, std::move(message)};
+        }
+    }
+
+    typed_result success() { return typed_result({}); }
+    typed_result error(int co = OBI_FAIL, std::string mes = "") { return typed_result({}, co, mes); }
+    typed_result error(std::string mes = "", int co = OBI_FAIL) { return typed_result({}, co, mes); }
 
     // reset does not modify vlaue
     auto reset(int num = OBI_OK)
@@ -479,14 +557,16 @@ struct typed_result {
         return *this;
     }
 
-    auto reset(typed_result const& other)
+    template<typename V>
+    auto reset(typed_result<V> const& other)
     -> typed_result& {
         code = other.code;
         message = other.message;
         return *this;
     }
 
-    auto reset(typed_result&& other) noexcept
+    template<typename V>
+    auto reset(typed_result<V>&& other) noexcept
     -> typed_result& {
         code = other.code;
         message = std::move(other.message);
