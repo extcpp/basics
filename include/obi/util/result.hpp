@@ -41,6 +41,8 @@ inline std::string error_code_vo_string(int code) {
 
 namespace obi { namespace util {
 
+namespace v1 {
+
 struct result {
     result() noexcept
         :code(OBI_OK)
@@ -330,5 +332,192 @@ public:
     result const& get_result() const & { return _result; }             // get only on lvalues
 };
 
+} //namespace v1
+
+namespace v2 {
+
+template <typename T = bool>
+struct typed_result {
+    using value_type = T;
+private:
+    mutable std::string message; //lazy message assignment
+    int code;
+public:
+    value_type value;
+
+public:
+    //// constructors
+    typed_result() = default;
+
+    // handling lvalue references and pointers
+    template <bool x = std::is_lvalue_reference_v<T> ||
+                       std::is_pointer_v<T>
+             ,typename std::enable_if_t<x,int> = 0
+             >
+    typed_result(value_type val //required
+                ,int co = OBI_OK
+                ,std::string const& msg = ""
+                )
+
+    :message(msg)
+    ,code(co)
+    ,value(val)
+    {
+    #ifdef OBI_DEBUG
+        std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
+    #endif
+    }
+
+    // handling lvalue references and pointers - end
+
+
+    // handling lvalues
+    template <int x = !std::is_reference_v<T> &&
+                      !std::is_pointer_v<T>
+             ,typename std::enable_if_t<x,int> = 0
+             >
+    typed_result(value_type const& val
+                ,int co = OBI_OK
+                ,std::string const& msg = ""
+                )
+    :message(msg)
+    ,code(co)
+    ,value(val) //copy here
+    {
+    #ifdef OBI_DEBUG
+       std::cerr << "ctor: lvalue - 1 copy" << std::endl;
+    #endif
+    }
+
+    // handling lvalues - end
+
+
+    // handling rvalue / copy
+    template <std::uint32_t x = !std::is_reference_v<T> &&
+                                !std::is_pointer_v<T> &&
+                                 std::is_move_constructible_v<T>
+             ,typename std::enable_if_t<x,int> = 0
+             >
+    typed_result(value_type&& val
+                ,int co = OBI_OK
+                ,std::string const& msg = ""
+                )
+    :message(msg)
+    ,code(co)
+    ,value(std::move(val)) //copy here
+    {
+    #ifdef OBI_DEBUG
+        std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
+    #endif
+    }
+
+    // handling rvalue / copy - end
+
+
+    // handling rvalue / assign
+    template <std::uint64_t x = !std::is_reference_v<T> &&
+                                !std::is_pointer_v<T> &&
+                                !std::is_move_constructible_v<T> &&
+                                 std::is_move_assignable_v<T>
+             ,typename std::enable_if_t<x,int> = 0
+             >
+    typed_result(value_type&& val
+                ,int co = OBI_OK
+                ,std::string const& msg = ""
+                )
+    :message(msg)
+    ,code(co)
+    ,value()
+    {
+        value = std::move(val);
+    #ifdef OBI_DEBUG
+        std::cerr << "ctor: rvalue (move assign) - 0 copy" << std::endl;
+    #endif
+    }
+
+    // handling rvalue / assign - end
+
+
+    //auto operator=(typed_result const& other)
+    //-> typed_result& {
+    //    code = other.code;
+    //    message = other.message;
+    //    return *this;
+    //}
+
+    //auto operator=(typed_result&& other) noexcept
+    //-> typed_result& {
+    //    code = other.code;
+    //    message = std::move(other.message);
+    //    return *this;
+    //}
+
+    //auto get_message() const
+    //-> std::string {
+    //    if (message.empty()) {
+    //        if(code != OBI_OK) {
+    //            message = error_code_vo_string(code);
+    //        }
+    //    }
+    //    return message;
+    //}
+
+    auto get_code() const -> int { return code; }
+    auto ok()   const -> bool { return code == OBI_OK; }
+    auto fail() const -> bool { return !ok(); }
+
+    // conversion
+    explicit operator bool() { return ok(); }
+    explicit operator typed_result<bool>() {
+        if constexpr(std::is_same_v<value_type,bool>){
+            return typed_result<bool>{value, code, message};
+        } else {
+            return typed_result<bool>{false, code, message};
+        }
+    }
+
+    // reset does not modify vlaue
+    auto reset(int num = OBI_OK)
+    -> typed_result& {
+        code = num;
+        message.clear();
+        return *this;
+    }
+
+    auto reset(int num, std::string const& msg)
+    -> typed_result& {
+        code = num;
+        message = msg;
+        return *this;
+    }
+
+    auto reset(int num, std::string&& msg) noexcept
+    -> typed_result& {
+        code = num;
+        message = std::move(msg);
+        return *this;
+    }
+
+    auto reset(typed_result const& other)
+    -> typed_result& {
+        code = other.code;
+        message = other.message;
+        return *this;
+    }
+
+    auto reset(typed_result&& other) noexcept
+    -> typed_result& {
+        code = other.code;
+        message = std::move(other.message);
+        return *this;
+    }
+
+};
+
+using result = typed_result<bool>;
+
+}
+
+using namespace v1;
 }} // obi::util
 #endif
