@@ -66,8 +66,7 @@ TEST(util_serialization, little_storage_multi){
     {
         std::uint64_t a_out = 0;
         std::uint32_t b_out = 0;
-        std::byte const* cursor = array.data();
-        from_little_storage(cursor, a_out, b_out);
+        from_little_storage(array.data(), a_out, b_out);
         ASSERT_EQ(a_in, a_out);
         ASSERT_EQ(b_in, b_out);
     }

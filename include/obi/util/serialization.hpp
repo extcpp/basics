@@ -115,8 +115,9 @@ from_little_storage_advance(std::byte const*& in, T& out){
 }
 
 template <typename ...T> //constexpr
-void from_little_storage(std::byte const* in, T& ...outs){
+std::byte const* from_little_storage(std::byte const* in, T& ...outs){
     (from_little_storage_advance(in,outs), ...);
+    return in;
 }
 //// from little storage - end
 
@@ -139,8 +140,9 @@ from_big_storage_advance(std::byte*& in,T& out){
 }
 
 template <typename ...T> //constexpr
-void from_big_storage(std::byte const* in, T& ...outs){
+std::byte const* from_big_storage(std::byte const* in, T& ...outs){
     (from_big_storage_advance(in,outs), ...);
+    return in;
 }
 //// from big storage - end
 
