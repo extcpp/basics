@@ -12,7 +12,8 @@ set(test_files
     "util_basic"
     "util_cast"
     "util_encode"
-    "util_endian_serialization"
+    "util_endian"
+    "util_serialization"
     "util_result"
     "util_string"
 )
