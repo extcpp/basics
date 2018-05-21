@@ -339,13 +339,10 @@ namespace v2 {
 template <typename T = bool>
 struct typed_result {
     using value_type = T;
-private:
     mutable std::string message; //lazy message assignment
     int code;
-public:
     value_type value;
 
-public:
     //// constructors
     typed_result() = default;
 
@@ -437,37 +434,21 @@ public:
 
     // handling rvalue / assign - end
 
-
-    //auto operator=(typed_result const& other)
-    //-> typed_result& {
-    //    code = other.code;
-    //    message = other.message;
-    //    return *this;
-    //}
-
-    //auto operator=(typed_result&& other) noexcept
-    //-> typed_result& {
-    //    code = other.code;
-    //    message = std::move(other.message);
-    //    return *this;
-    //}
-
-    //auto get_message() const
-    //-> std::string {
-    //    if (message.empty()) {
-    //        if(code != OBI_OK) {
-    //            message = error_code_vo_string(code);
-    //        }
-    //    }
-    //    return message;
-    //}
-
     auto get_code() const -> int { return code; }
+    auto get_message() const
+    -> std::string {
+        if (message.empty()) {
+            if(code != OBI_OK) {
+                message = error_code_vo_string(code);
+            }
+        }
+        return message;
+    }
+
     auto ok()   const -> bool { return code == OBI_OK; }
     auto fail() const -> bool { return !ok(); }
-
-    // conversion
     explicit operator bool() { return ok(); }
+
     explicit operator typed_result<bool>() {
         if constexpr(std::is_same_v<value_type,bool>){
             return typed_result<bool>{value, code, message};
