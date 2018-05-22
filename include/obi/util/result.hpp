@@ -41,6 +41,7 @@ inline std::string error_code_vo_string(int code) {
 
 namespace obi { namespace util {
 
+inline
 namespace v1 {
 
 struct result {
@@ -579,6 +580,5 @@ using result = typed_result<bool>;
 
 }
 
-using namespace v1;
 }} // obi::util
 #endif
