@@ -14,8 +14,8 @@
 #include <iostream>
 
 namespace obi { namespace util {
-
 namespace _detail {
+
 //! class that counts exceptions that are thrown within a scope
 struct uncaught_exception_counter {
     uncaught_exception_counter()
@@ -25,7 +25,7 @@ struct uncaught_exception_counter {
     // function that allow to check if new exceptions occurred
     bool exception_occurred() noexcept {
         return std::uncaught_exceptions() > exceptions_on_enter_scope;
-    };
+    }
 
     std::int32_t count() {
         if (exception_occurred()) {
@@ -33,8 +33,7 @@ struct uncaught_exception_counter {
         } else {
             return std::uint32_t(0);
         }
-    };
-
+    }
 };
 
 } //namespace _detail - end
@@ -51,7 +50,7 @@ template <typename FunctionType
          >
 struct scope_guard {
     using decayed_type = std::decay_t<FunctionType>;
-    FunctionType callback;
+    decayed_type callback;
     _detail::uncaught_exception_counter counter;
     bool active = true;
     void deactivate(){ active = false; }
@@ -68,23 +67,14 @@ struct scope_guard {
     void execute_and_terminate_on_exception() noexcept {
         try {
             callback();
-        } catch (std::exception& ex) {
-            std::ios_base::Init ioInit;
-            std::cerr << "This program will now terminate because a "
-                      << "a scope_gurad callback threw an execption: "
-                      << ex.what()
-                      << std::endl;
-            std::terminate();
         } catch (...) {
             std::ios_base::Init ioInit;
             std::cerr << "This program will now terminate because a "
-                      << "a scope_gurad callback threw an execption."
+                      << "scope_gurad callback threw an execption."
                       << std::endl;
             std::terminate();
         }
-
-
-    };
+    }
 
     void execute()
     noexcept (policy != scope_guard_execution_policy::on_no_exception) {
@@ -101,9 +91,8 @@ struct scope_guard {
         }
     }
 
-
     ~scope_guard()
-    noexcept (policy != scope_guard_execution_policy::on_no_exception) {
+    noexcept (noexcept(execute())) {
         if(active) {
             execute();
         }
@@ -165,7 +154,6 @@ operator+(Helper, FunctionType&& fn){
         std::terminate();
     }
 }
-
 
 } // namespace _detail - end
 }} // namespace ::obi::util - end
