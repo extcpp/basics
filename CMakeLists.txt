@@ -50,9 +50,13 @@ if(COMMAND obi_install)
     obi_install(obi "include/obi")
 endif()
 
-if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json" )
-   EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json
-        ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
-   )
-endif()
+# Tooling is now able to find the file. This file was not copied
+# reliable because the file did not always exist when the CMakeLists.txt
+# was parsed.
+
+#if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json" )
+#   EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#        ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json
+#        ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
+#   )
+#endif()
