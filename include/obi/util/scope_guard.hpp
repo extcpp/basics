@@ -6,12 +6,14 @@
 // https://www.youtube.com/watch?v=WjTrfoiB0MQ
 //
 // requires: c++17
+
 #pragma once
 #include <exception>
 #include <type_traits>
-#include "../macros.hpp"
 #include <cstdint>
-#include <iostream>
+#include <iostream> // iostream to different TU?
+
+#include <obi/macros/general.hpp>
 
 namespace obi { namespace util {
 namespace _detail {
@@ -92,7 +94,13 @@ struct scope_guard {
     }
 
     ~scope_guard()
+#if (defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 8)
+    // noexcept (noexcept(execute())) does not work with older clang (pre8)
+    // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#1207
+    noexcept (policy != scope_guard_execution_policy::on_no_exception) { // FIXME - update travis compiler
+#else
     noexcept (noexcept(execute())) {
+#endif
         if(active) {
             execute();
         }
@@ -108,7 +116,7 @@ struct scope_guard {
 
 //
 // YOU MUST ADD A ; after the SCOPE as it closes the lambda
-// ALL LAMBDAS CAPTURE BY REF!!! (use scope_guard as alternative)
+// ALL LAMBDAS CAPTURE BY REF!!! (use plain scope_guard as alternative)
 //
 
 #define OBI_SCOPE_FAIL \

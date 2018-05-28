@@ -50,13 +50,13 @@ int main()
     std::cout << std::endl;
 
     try {
-        std::cout << "enter scope 2" << std::endl;
+        std::cout << "enter scope 3" << std::endl;
         OBI_SCOPE_EXIT    { std::cout << "exit callback" << std::endl;
                             throw std::logic_error ("throw during exit callback");
                           };
         OBI_SCOPE_SUCCESS { std::cout << "success callback" << std::endl; };
         OBI_SCOPE_FAIL    { std::cout << "fail callback" << std::endl; };
-        std::cout << "exit scope 2" << std::endl;
+        std::cout << "exit scope 3" << std::endl;
     } catch (const std::exception& e) {
         std::cout << "caught - " << e.what() << std::endl;
     }
