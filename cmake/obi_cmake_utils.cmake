@@ -1,13 +1,13 @@
 #! some basic settings i use really often so lets have them in a macro
 macro(obi_setup)
     # TODO - test this macro in other libs
-    # TODO - should not add definitions
     # execute macro only in top-level CMakeLists.txt
     if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
         # execute this setup just once
         if(NOT OBI_SETUP_DONE) 
-            set(OBI_SETUP_DONE TRUE)
-
+            
+            include(CTest)
+            
             # set / modify default install prefix
             if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
                 if(UNIX)
@@ -17,16 +17,14 @@ macro(obi_setup)
                 endif()
             endif()
 
-            include(obi_in_compiler_warnings)
+            include(obi_cmake_compiler_warnings)
 
             set(OBI_CXX_COMPILER_IS_GCC FALSE)
             set(OBI_CXX_COMPILER_IS_CLANG FALSE)
             if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
                 set(OBI_CXX_COMPILER_IS_GCC TRUE)
-                add_definitions(-DOBI_CLANG)
             elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
                 set(OBI_CXX_COMPILER_IS_CLANG TRUE)
-                add_definitions(-DOBI_GCC)
             endif()
 
             set(OBI_SETUP_DONE TRUE)
@@ -34,8 +32,7 @@ macro(obi_setup)
     endif()
 endmacro(obi_setup)
 
-macro(obi_testing type)
-    enable_testing()
+macro(obi_add_test_subdirectory type)
     set(OBI_TEST_TYPE "${type}")
 
     set(dir "${ARGV1}")
@@ -46,19 +43,13 @@ macro(obi_testing type)
     if(CMAKE_TESTING)
         if("${type}" STREQUAL "google") # <-- expand type here!
             add_subdirectory(external_libs/googletest/googletest)
-        elseif("${type}" STREQUAL "boost")
-            if(NOT Boost_FOUND)
-                find_package(Boost COMPONENTS unit_test_framework REQUIRED)
-            endif()
         else()
             message(ERROR "unknown test type")
         endif()
 
         add_subdirectory("${dir}")
     endif()
-## TODO
-## add_Test(NAME "foo" COMMAND do_test arg --arg WORKING_DIRECTORY tests)
-endmacro(obi_testing)
+endmacro(obi_add_test_subdirectory)
 
 #! prefix string with provided symbol(s) until is has given length
 #

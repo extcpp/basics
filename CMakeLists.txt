@@ -5,23 +5,27 @@ project(libobi)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+## OPTIONS
 option(LIBOBI_EXAMPLES ON)
+option(LIBOBI_TESTS ON)
 
-include(CTest)
+## general setup and includes
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include (TestBigEndian)
 TEST_BIG_ENDIAN(obi_is_big_endian)
 
-include(obi_fm_util)
+include(obi_cmake_utils)
 obi_setup()
-separate_arguments(obi_stone-warnings)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ## define header only lib
 add_library(obi INTERFACE)
-target_compile_definitions(obi INTERFACE $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>)
+target_compile_definitions(obi INTERFACE
+    $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>
+    $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
+    $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
+)
 target_include_directories(obi INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_compile_features(obi INTERFACE cxx_std_17)
 target_compile_options(obi INTERFACE $<$<CONFIG:Debug>:${obi_stone-warnings}>)
@@ -31,19 +35,27 @@ add_library(obi_shared SHARED
     "src/logging.cpp"
 )
 target_compile_definitions(obi_shared PUBLIC OBI_LINK_TO_LIB=ON)
-target_compile_definitions(obi_shared PUBLIC $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>)
+target_compile_definitions(obi_shared PUBLIC
+    $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>
+    $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
+    $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
+)
 target_include_directories(obi_shared PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_compile_features(obi_shared PUBLIC cxx_std_17)
 target_compile_options(obi_shared PRIVATE $<$<CONFIG:Debug>:${obi_stone-warnings}>)
 
+
 ## testing
-obi_testing("google")
+if(LIBOBI_EXAMPLES)
+    obi_add_test_subdirectory("google" tests)
+endif()
 
 ## add projects using this lib
 if(LIBOBI_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
+## installation
 if(COMMAND obi_install)
     obi_install(obi "include/obi")
 endif()
