@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(obi_examples)
 
 ## required libs
-find_package(Threads)
+find_package(Threads REQUIRED)
 
 ## examples
 
@@ -14,28 +14,18 @@ set(examples
     function_cache
     functional
     if
+    #if_all_any
     load_library
     logging
     meta
+    scope_guard
     scoped_timer
     show
     static_lambda
+    tuple
     type_to_string
     vector
 )
-
-if(OBI_CXX_STANDARD EQUAL 17)
-    list(APPEND examples
-        tuple
-        scope_guard
-    )
-endif()
-
-if(OBI_CXX_FOLDS_AVAILABLE)
-    list(APPEND examples
-        if_all_any
-    )
-endif()
 
 separate_arguments(obi_stone-warnings)
 

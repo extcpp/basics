@@ -1,18 +1,23 @@
 #! some basic settings i use really often so lets have them in a macro
 macro(obi_setup)
+    # TODO - test this macro in other libs
+    # TODO - should not add definitions
+    # execute macro only in top-level CMakeLists.txt
     if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
-        if(NOT OBI_SETUP_DONE)
+        # execute this setup just once
+        if(NOT OBI_SETUP_DONE) 
             set(OBI_SETUP_DONE TRUE)
+
+            # set / modify default install prefix
             if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
                 if(UNIX)
                     set(CMAKE_INSTALL_PREFIX  "$ENV{HOME}/local")
                 else()
-                    message("not implemented for other operating systems")
+                    # do not change the default for other operating systems
                 endif()
             endif()
 
             include(obi_in_compiler_warnings)
-            #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${obi_stone-warnings}")
 
             set(OBI_CXX_COMPILER_IS_GCC FALSE)
             set(OBI_CXX_COMPILER_IS_CLANG FALSE)
@@ -24,37 +29,10 @@ macro(obi_setup)
                 add_definitions(-DOBI_GCC)
             endif()
 
-            # this must go
-            if(OBI_CXX_COMPILER_IS_GCC OR OBI_CXX_COMPILER_IS_CLANG)
-                set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb -O0")
-            endif()
-
-            # replace with CMAKE_CXX_STANDARD when a newer cmake becomes available.
-            if(OBI_CXX_COMPILER_IS_GCC AND
-               CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "6.0.0")
-                message(STATUS "enable c++ 17")
-                set(CMAKE_CXX_STANDARD 17)
-                set(OBI_CXX_STANDARD 17)
-                add_definitions(-DOBI_CXX_AVAILABLE=17)
-            elseif(OBI_CXX_COMPILER_IS_CLANG AND
-                   CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "4.0.0")
-                message(STATUS "enable c++ 17")
-                set(CMAKE_CXX_STANDARD 17)
-                set(OBI_CXX_STANDARD 17)
-                set(OBI_CXX_FOLDS_AVAILABLE TRUE)
-                add_definitions(-DOBI_CXX_AVAILABLE=17)
-                add_definitions(-DOBI_CXX_FOLDS_AVAILABLE)
-            endif()
-
             set(OBI_SETUP_DONE TRUE)
         endif()
     endif()
 endmacro(obi_setup)
-
-macro(obi_setup_with_test)
-    obi_setup()
-    include(CTest)
-endmacro(obi_setup_with_test)
 
 macro(obi_testing type)
     enable_testing()
