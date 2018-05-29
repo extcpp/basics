@@ -2,7 +2,7 @@
 #include <obi/util/scope_guard.hpp>
 #include <stdexcept>
 
-void fun(){ std::cout << "fun" << std::endl; };
+void fun(){ std::cout << "fun" << std::endl; }
 struct functor{
     void operator()(){
         std::cout << "functor " << std::endl;

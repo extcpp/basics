@@ -94,11 +94,12 @@ struct scope_guard {
     }
 
     ~scope_guard()
-#if (defined(__GNUC__) && !defined(__clang__) && __GNUC__ < 8)
-    // noexcept (noexcept(execute())) does not work with older clang (pre8)
+#if (defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 8)
+    // noexcept (noexcept(execute())) does not work with older gcc
     // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#1207
     noexcept (policy != scope_guard_execution_policy::on_no_exception) { // FIXME - update travis compiler
 #else
+    // does it really work with with cl?
     noexcept (noexcept(execute())) {
 #endif
         if(active) {
