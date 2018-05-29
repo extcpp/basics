@@ -14,7 +14,7 @@ set(examples
     function_cache
     functional
     if
-    #if_all_any
+    if_all_any
     load_library
     logging
     meta
@@ -40,7 +40,6 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     endif(UNIX)
     target_compile_options(${example} PRIVATE ${obi_stone-warnings})
 endforeach()
-
 
 add_executable(any_printable_example any_printable_main.cpp any_printable_use_impl.cpp)
 target_link_libraries(any_printable_example obi)

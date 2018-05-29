@@ -10,12 +10,12 @@ int main(/*int argc, const char *argv[]*/) {
 
 
     std::cout << std::boolalpha
-              << obi::meta::if_all<true,true>() << std::endl
-              << obi::meta::if_all_t<true,true>::value << std::endl
+              << obi::meta::if_all_v<true,true> << std::endl
+              << obi::meta::if_all_v<true,true> << std::endl
               << obi::meta::if_all_v<true,true,false> << std::endl
 
-              << obi::meta::if_any<true,true>() << std::endl
-              << obi::meta::if_any_t<false,false>::value << std::endl
+              << obi::meta::if_any_v<true,true> << std::endl
+              << obi::meta::if_any_v<false,false> << std::endl
               << obi::meta::if_any_v<true,false,true> << std::endl
 
               << std::endl;

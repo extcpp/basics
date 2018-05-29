@@ -8,33 +8,18 @@ namespace obi { namespace meta {
 
 // if_all  - logical and (fold expression)
 template<bool ...XS>
-using if_all = std::bool_constant<(XS && ...)>;
-
-template<bool ...XS>
-using if_all_t = typename if_all<XS...>::type;
-
-template<bool ...XS>
-constexpr bool if_all_v = if_all<XS...>::value;
-
+constexpr bool if_all_v = std::bool_constant<(XS && ...)>::value;
 
 // if_any - logical or (fold expression)
 template<bool ...XS>
-//using if_any = std::bool_constant<(XS || ...)>;
-using if_any = std::bool_constant<!if_all<!XS...>::value>; // share types
-
-template<bool ...XS>
-using if_any_t = typename if_any<XS...>::type;
-
-template<bool ...XS>
-constexpr bool if_any_v = if_any<XS...>::value;
-
+constexpr bool if_any_v = !if_all_v<!XS...>;
 
 // enable if helper
 template<typename T, bool ...XS>
-using enable_if_all_t = typename std::enable_if<(XS && ...),T>::type;
+using enable_if_all_t = std::enable_if_t<(if_all_v<XS...>),T>;
 
 template<typename T, bool ...XS>
-using enable_if_any_t = typename std::enable_if<(XS || ...),T>::type;
+using enable_if_any_t = std::enable_if_t<(if_any_v<XS...>),T>;
 
 
 }}  // namespace obi::meta
