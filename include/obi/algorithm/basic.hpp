@@ -67,7 +67,7 @@ namespace obi { namespace algorithm {
         using PairType = typename std::iterator_traits<Iterator>::value_type;
         std::map<typename PairType::T1,typename PairType::T2> result;
         for (auto it = begin; it != end; it++) {
-            merge_maps(result, *it);
+            merge_maps(result, *it, predicate);
         }
         return result;
     }

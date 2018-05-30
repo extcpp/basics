@@ -33,16 +33,16 @@ TEST(util_serialization, little_storage_integrals){
 
     {   // not cursor advancing method
         std::uint32_t num_out = 0;
-        from_little_storage((std::byte*)str.data(), num_out);
+        from_little_storage(reinterpret_cast<std::byte*>(str.data()), num_out);
         ASSERT_EQ(num, num_out);
     }
 
     {   // cursor advancing method
-        std::byte const* cursor = (std::byte*)str.data();
+        std::byte const* cursor = reinterpret_cast<std::byte*>(str.data());
         std::uint32_t num_out;
         from_little_storage_advance(cursor,num_out);
         ASSERT_EQ(num, num_out);
-        ASSERT_EQ(cursor ,(std::byte*)str.data()+sizeof(std::uint32_t));
+        ASSERT_EQ(cursor ,reinterpret_cast<std::byte*>(str.data()) + sizeof(std::uint32_t));
     }
 }
 

@@ -13,7 +13,6 @@ TEST(util_basic, for_each_arg){
 TEST(util_basic, sort_all){
     std::vector<int> a = {2, 1, 4, 3};
     std::vector<int> b = {2, 3, 4, 1};
-    auto fun = [&](auto& c) -> void { std::sort(c.begin(),c.end()); };
     obi::util::sort_all(a, b);
     ASSERT_EQ(a, (std::vector<int>{1, 2, 3, 4}));
     ASSERT_EQ(b, (std::vector<int>{1, 2, 3, 4}));

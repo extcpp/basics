@@ -57,19 +57,20 @@ inline std::string decode_hex(char const* in, size_t len) {
 
 	rv.reserve(len / 2);
 
+
 	unsigned char const* start = reinterpret_cast<unsigned char const*>(in);
 	unsigned char const* end = start + len;
-	unsigned char insert_char = 0;
+	int insert_char = 0;
     int offset = 0;
-	for(unsigned const char* itr = start; itr < end; itr++) {
+	for(unsigned char const* itr = start; itr < end; itr++) {
         bool even = !(offset & 0b1);
         if (even) { insert_char = 0; }
 
-		unsigned char current_char = *itr ;
+		u_char current_char = *itr ;
 		if (current_char >= '0' && current_char <= '9') {
 		    insert_char += (current_char - '0');
 		} else if (current_char >= 'a' && current_char <= 'f') {
-		    insert_char += (current_char - 'a' + 10);
+		    insert_char += (current_char - u_char('a') + 10);
 		} else if (current_char >= 'A' && current_char <= 'F') {
 		    insert_char += (current_char - 'A' + 10);
 		} else {
@@ -79,7 +80,7 @@ inline std::string decode_hex(char const* in, size_t len) {
         if (even){
             insert_char <<= 4;
         } else {
-            rv.push_back(insert_char);
+            rv.push_back(char(insert_char));
         }
 
         offset++;
