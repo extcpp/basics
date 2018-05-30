@@ -43,9 +43,13 @@ while [[ -n "$1" ]]; do
       build_type="release"
       shift
     ;;
-    -t|--testing)
+    -t|--tests)
       cm_flags+=( '-DCMAKE_TESTING=ON' )
       do_test=true
+      shift
+    ;;
+    -bt|--build-tests)
+      cm_flags+=( '-DCMAKE_TESTING=ON' )
       shift
     ;;
     -e|--examples)
