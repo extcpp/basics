@@ -66,11 +66,11 @@ inline std::string decode_hex(char const* in, size_t len) {
         bool even = !(offset & 0b1);
         if (even) { insert_char = 0; }
 
-		u_char current_char = *itr ;
+		unsigned char current_char = *itr ;
 		if (current_char >= '0' && current_char <= '9') {
 		    insert_char += (current_char - '0');
 		} else if (current_char >= 'a' && current_char <= 'f') {
-		    insert_char += (current_char - u_char('a') + 10);
+		    insert_char += (current_char - 'a' + 10);
 		} else if (current_char >= 'A' && current_char <= 'F') {
 		    insert_char += (current_char - 'A' + 10);
 		} else {
