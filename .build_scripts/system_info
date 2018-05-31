@@ -13,7 +13,7 @@ section "system info"
 #command
 echo "sources list ##################"
 cat /etc/apt/sources.list
-echo "cpu into ######################"
+echo "cpu info ######################"
 cat /proc/cpuinfo
 echo "mem info ######################"
 cat /proc/meminfo

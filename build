@@ -151,9 +151,7 @@ fi
 "$project_root"/.build_scripts/build || exit $?
 
 # runs unit tests
-if [[ -f "$build_root/.do_test" ]]; then
-  "$project_root"/.build_scripts/test || exit $?
-fi
+"$project_root"/.build_scripts/test || exit $?
 
 if ${change_dir:-false}; then
   msg "starting shell in build directory"

@@ -8,6 +8,13 @@ else
     exit 1
 fi
 
+if [[ -f "$build_root/.do_test" ]]; then
+    rm "$build_root/.do_test"
+else
+    # no tests required
+    exit 0
+fi
+
 #prepare
 section "running tests"
 cd $build_base/current || ferr "unable to change into current build dir"
