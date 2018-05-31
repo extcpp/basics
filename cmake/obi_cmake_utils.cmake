@@ -5,7 +5,7 @@ macro(obi_setup)
     if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
         # execute this setup just once
         if(NOT OBI_SETUP_DONE)
-            include(CTest)
+            set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
             # set / modify default install prefix
             if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
                 if(UNIX)
@@ -40,7 +40,7 @@ macro(obi_add_test_subdirectory type)
 
     if(BUILD_TESTING) #activated by `include(CTest)`
         if("${type}" STREQUAL "google") # <-- expand type here!
-            add_subdirectory(external_libs/googletest/googletest)
+            add_subdirectory(${CMAKE_SOURCE_DIR}/external_libs/googletest/googletest)
         else()
             message(ERROR "unknown test type")
         endif()
