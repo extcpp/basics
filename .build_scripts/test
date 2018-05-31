@@ -8,10 +8,7 @@ else
     exit 1
 fi
 
-if [[ -f "$build_root/.do_test" ]]; then
-    rm "$build_root/.do_test"
-else
-    # no tests required
+if ! $do_test; then
     exit 0
 fi
 

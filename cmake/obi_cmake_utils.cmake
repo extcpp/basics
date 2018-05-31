@@ -4,10 +4,8 @@ macro(obi_setup)
     # execute macro only in top-level CMakeLists.txt
     if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
         # execute this setup just once
-        if(NOT OBI_SETUP_DONE) 
-            
+        if(NOT OBI_SETUP_DONE)
             include(CTest)
-            
             # set / modify default install prefix
             if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
                 if(UNIX)
@@ -40,7 +38,7 @@ macro(obi_add_test_subdirectory type)
         set(dir "tests")
     endif()
 
-    if(CMAKE_TESTING)
+    if(BUILD_TESTING) #activated by `include(CTest)`
         if("${type}" STREQUAL "google") # <-- expand type here!
             add_subdirectory(external_libs/googletest/googletest)
         else()

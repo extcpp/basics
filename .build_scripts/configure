@@ -14,10 +14,5 @@ cd $build_root || ferr "failed to change into build dir"
 #command
 cmake "$@" "$project_root" || fserr "running cmake - failed" $?
 
-if $do_test && ! ${IN_TRAVIS:-false}; then
-  echo
-  msg "enable testing"
-  touch .do_test
-fi
 #end
 echo

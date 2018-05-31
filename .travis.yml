@@ -31,8 +31,9 @@ before_script:
   - $project_root/.build_scripts/install_3rd_party
 
 script:
-  - $project_root/.build_scripts/configure -DCMAKE_TESTING=ON -DLIBOBI_EXAMPLES=ON
+  - $project_root/.build_scripts/configure -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON
   - $project_root/.build_scripts/build
 
 after_success:
+  - export do_test=true
   - $project_root/.build_scripts/test

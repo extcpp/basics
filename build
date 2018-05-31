@@ -44,12 +44,12 @@ while [[ -n "$1" ]]; do
       shift
     ;;
     -t|--tests)
-      cm_flags+=( '-DCMAKE_TESTING=ON' )
+      cm_flags+=( '-DLIBOBI_TESTS=ON' )
       do_test=true
       shift
     ;;
     -bt|--build-tests)
-      cm_flags+=( '-DCMAKE_TESTING=ON' )
+      cm_flags+=( '-DLIBOBI_TESTS=ON' )
       shift
     ;;
     -e|--examples)

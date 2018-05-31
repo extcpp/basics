@@ -48,7 +48,7 @@ target_compile_definitions(obi_shared PUBLIC
 )
 
 ## testing
-if(LIBOBI_EXAMPLES)
+if(LIBOBI_TESTS)
     obi_add_test_subdirectory("google" tests)
 endif()
 
