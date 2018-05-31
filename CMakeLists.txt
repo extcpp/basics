@@ -23,9 +23,9 @@ obi_setup()
 ## define header only lib
 add_library(obi INTERFACE)
 target_include_directories(obi INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-if(LIBOBI_WARNINGS)
-    target_compile_options(obi INTERFACE $<$<CONFIG:Debug>:${obi_stone-warnings}>)
-endif()
+target_compile_options(obi INTERFACE
+    $<$<AND:$<CONFIG:Debug>,$<BOOL:LIBOBI_WARNINGS>>:${obi_stone-warnings}>
+)
 target_compile_features(obi INTERFACE cxx_std_17)
 target_compile_definitions(obi INTERFACE
     $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>
@@ -46,7 +46,6 @@ target_compile_definitions(obi_shared PUBLIC
     $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
 )
-
 
 ## testing
 if(LIBOBI_EXAMPLES)

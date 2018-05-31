@@ -7,7 +7,6 @@ project(obi_examples)
 find_package(Threads REQUIRED)
 
 ## examples
-
 set(examples
     binary_index_tree
     container_helper
@@ -26,8 +25,6 @@ set(examples
     type_to_string
     vector
 )
-
-separate_arguments(obi_stone-warnings)
 
 foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     set(cpp "${ex}.cpp")
