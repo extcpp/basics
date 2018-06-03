@@ -44,6 +44,6 @@ inline typed_result<stat> get_stat(std::filesystem::path const& path) {
     rv.value.nlink = statbuff.st_nlink;
 
     return rv;
-};
+}
 
 } // namespace obi::util - end

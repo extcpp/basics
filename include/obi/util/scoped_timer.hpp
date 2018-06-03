@@ -137,6 +137,10 @@ private:  // functions
         std::cerr << to_string_stream_internal(times).rdbuf();
     }
 public:
+    void dismiss() {
+        enabled_in_dtor=false;
+    }
+
     void run(bool disable = true) {
         if (disable) enabled_in_dtor=false;
         callback(calculate());
