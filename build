@@ -43,6 +43,10 @@ while [[ -n "$1" ]]; do
       build_type="release"
       shift
     ;;
+    -rd|--rel-wiht-deb-info)
+      build_type="relwithdeb"
+      shift
+    ;;
     -t|--tests)
       cm_flags+=( '-DLIBOBI_TESTS=ON' )
       do_test=true
@@ -111,6 +115,9 @@ case $build_type in
   ;;
   debug)
     cm_flags+=( '-DCMAKE_BUILD_TYPE=Debug' )
+  ;;
+  relwithdeb)
+    cm_flags+=( '-DCMAKE_BUILD_TYPE=RelWithDebInfo' )
   ;;
   *)
     ferr "build type $build_type not supported!"
