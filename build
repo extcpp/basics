@@ -76,6 +76,12 @@ while [[ -n "$1" ]]; do
       #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
       shift
     ;;
+    --gcc-8)
+      export CXX=g++-8
+      export CC=gcc-8
+      #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
+      shift
+    ;;
     --clang)
       export CXX=clang++
       export CC=clang
