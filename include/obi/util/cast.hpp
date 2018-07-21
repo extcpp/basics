@@ -96,7 +96,7 @@ to_unsigned_checked(T in){
 template <typename T, typename S = std::make_signed_t<T>> constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, S>
 to_signed_checked(T in){
-    if (in > T(std::numeric_limits<S>::max)) {
+    if (in > T(std::numeric_limits<S>::max())) {
         throw std::logic_error("conversion to_sigend not possible");
     }
     return S(in);

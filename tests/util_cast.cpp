@@ -112,3 +112,21 @@ TEST(util_cast, enum_to_enum){
 
     ASSERT_EQ(ou::enum_to_enum<enum_b>(enum_a::three), enum_b::three);
 }
+
+TEST(util_cast, to_un_signed){
+    int32_t  value = 5;
+    uint32_t uvalue = 5;
+
+    ASSERT_EQ(ou::to_signed(uvalue), value);
+    ASSERT_EQ(ou::to_signed_checked(uvalue), value);
+
+    ASSERT_EQ(ou::to_unsigned(value), uvalue);
+    ASSERT_EQ(ou::to_unsigned_checked(value), uvalue);
+
+    ASSERT_EQ(value, ou::to_signed(ou::to_unsigned(value)));
+    ASSERT_EQ(uvalue, ou::to_unsigned(ou::to_signed(uvalue)));
+
+    ASSERT_THROW(ou::to_unsigned_checked(-1), std::logic_error);
+    ASSERT_THROW(ou::to_unsigned_checked(std::numeric_limits<int32_t>::min()), std::logic_error);
+    ASSERT_THROW(ou::to_signed_checked(std::numeric_limits<uint32_t>::max()), std::logic_error);
+}
