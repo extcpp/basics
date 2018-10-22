@@ -24,6 +24,7 @@ set(examples
     tuple
     type_to_string
     vector
+    serialize
 )
 
 foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
