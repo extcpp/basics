@@ -1,0 +1,10 @@
+{
+    "repositories": [
+        {
+            "location": "git@github.com:google/googletest",
+            "directory": null,
+            "branch": null
+        }
+    ]
+}
+

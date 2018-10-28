@@ -12,6 +12,6 @@ fi
 section "install external libs"
 cd "$project_root" || exit 1
 #command
-cd external_libs && ./init_libs || exit 1
+cd external_libs && ./init_libs.py || exit 1
 #end
 echo
