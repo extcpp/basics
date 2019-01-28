@@ -10,6 +10,7 @@ do_clean=false
 do_test=false
 asan=false
 build_prefix="<> "
+rpath=
 
 # source build lib
 lib=$project_root/.build_scripts/build_lib
@@ -80,6 +81,15 @@ while [[ -n "$1" ]]; do
       export CXX=g++-8
       export CC=gcc-8
       #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
+      shift
+    ;;
+    --gcc-head)
+      gcc_exe="$(readlink -e $(type gcc-head))"
+      gcc_dir="${gcc_exe%/*}/../"
+      export RPATH="$gcc_dir/lib64"
+      export CXX=g++-head
+      export CC=gcc-head
+      #cm_flags+=( "-DCMAKE_INSTALL_RPATH=$gcc_lib_dir" )
       shift
     ;;
     --clang)

@@ -8,6 +8,12 @@ else
     exit 1
 fi
 
+if [[ -n "$RPATH" ]]; then
+    flags="-Wl,-rpath,$RPATH"
+    export CXXFLAGS="$flags"
+    export CCLAGS="$flags"
+fi
+
 #prepare
 section "running cmake"
 cd $build_root || ferr "failed to change into build dir"
