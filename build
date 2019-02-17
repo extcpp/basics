@@ -1,9 +1,20 @@
 #!/bin/bash
 # Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
-project_root="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+if [[ -f ".build_conf" ]]; then
+		echo "sourceing custom .build_conf"
+    . .build_conf
+fi
+
+# the following variables can be configured in the '.build_conf' file
+project_root="${project_root:-"$(realpath -s "$(dirname "$(readlink -s -f "${BASH_SOURCE[0]}")")")"}"
+cmake_var_tests="${cmake_var_tests-'-DLIBOBI_TESTS=ON'}"
+cmake_var_examples="${cmake_var_examples-'-DLIBOBI_EXAMPLES=ON'}"
+
+# these variables are deduced automatically
 build_base="${project_root}-build"
 export PATH="$build_base/install/bin:$PATH"
+
 build_type="release"
 just_make=false
 do_clean=false
@@ -49,16 +60,16 @@ while [[ -n "$1" ]]; do
       shift
     ;;
     -t|--tests)
-      cm_flags+=( '-DLIBOBI_TESTS=ON' )
+      cm_flags+=( "$cmake_var_tests" )
       do_test=true
       shift
     ;;
     -bt|--build-tests)
-      cm_flags+=( '-DLIBOBI_TESTS=ON' )
+      cm_flags+=( "$cmake_var_tests" )
       shift
     ;;
     -e|--examples)
-      cm_flags+=( '-DLIBOBI_EXAMPLES=ON' )
+      cm_flags+=( "$cmake_var_examples" )
       shift
     ;;
     -c|--clean)
