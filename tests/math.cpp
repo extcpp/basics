@@ -4,6 +4,14 @@
 #include <obi/util/basic.hpp>
 #include <algorithm>
 
+TEST(binomial_coefficient, std){
+    EXPECT_EQ(obi::math::binomial_coefficient(5,3),10);
+}
+
+TEST(binomial_coefficient, better){
+    EXPECT_EQ(obi::math::binomial_coefficient_dynamic(5,3),10);
+}
+
 TEST(math_find_nth_prime, 10001){
     auto sieve = obi::math::create_sieve_of_eratosthenes(40000000);
     EXPECT_EQ(obi::math::find_nth_prime(10001, sieve).value

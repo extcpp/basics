@@ -43,6 +43,17 @@ namespace obi { namespace math {
         return numerator / denominator;
     }
 
+    // suggested by CrossLuna@github
+    // less likely to overflow
+    template <typename T> std::enable_if_t<std::is_integral_v<T>,T>
+    binomial_coefficient_dynamic(T n, T k) {
+        assert(n >= 0 && k >= 0);
+        if (n == k || k == 0) { return T(1); }
+        else if (k > n) { return T(0); }
+        return binomial_coefficient_dynamic(n-T(1), k-T(1)) +
+               binomial_coefficient_dynamic(n-T(1), k);
+    }
+
     //checkes if decimal number is a palindrome
     template <typename T>
     bool is_palindrome_number(T number, T base = T(10)) {
