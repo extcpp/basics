@@ -6,9 +6,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ## OPTIONS
-option(LIBOBI_EXAMPLES ON)
-option(LIBOBI_TESTS ON)
-option(LIBOBI_WARNINGS ON)
+option(LIBOBI_EXAMPLES "build examples" OFF)
+option(LIBOBI_TESTS "build tests" OFF)
+option(LIBOBI_WARNINGS "enable warnings" ON)
+
+message("${LIBOBI_TESTS}")
 
 ## general setup and includes
 set(CMAKE_CXX_STANDARD 17)
@@ -49,13 +51,19 @@ target_compile_definitions(obi_shared PUBLIC
 
 ## testing
 if(LIBOBI_TESTS)
+    message("libobi tests enabled")
     include(CTest)
     obi_add_test_subdirectory("google" tests)
+else()
+    message("libobi tests disabled")
 endif()
 
 ## add projects using this lib
 if(LIBOBI_EXAMPLES)
+    message("libobi examples enabled")
     add_subdirectory(examples)
+else()
+    message("libobi examples disabled")
 endif()
 
 ## installation

@@ -8,8 +8,8 @@ fi
 
 # the following variables can be configured in the '.build_conf' file
 project_root="${project_root:-"$(realpath -s "$(dirname "$(readlink -s -f "${BASH_SOURCE[0]}")")")"}"
-cmake_var_tests="${cmake_var_tests-'-DLIBOBI_TESTS=ON'}"
-cmake_var_examples="${cmake_var_examples-'-DLIBOBI_EXAMPLES=ON'}"
+cmake_var_tests="${cmake_var_tests:-"-DLIBOBI_TESTS=ON"}"
+cmake_var_examples="${cmake_var_examples:-"-DLIBOBI_EXAMPLES=ON"}"
 
 # these variables are deduced automatically
 build_base="${project_root}-build"
