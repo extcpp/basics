@@ -11,13 +11,17 @@ fi
 #prepare
 section "install external libs"
 cd "$project_root" || exit 1
+
 #command
-if [[ -e ./external_libs/init_libs  ]]; then
+# init_libs    - first stage to get libobi
+# init_libs.py - second stage
+if [[ -e ./external_libs/init_libs.py  ]]; then
+    cd external_libs && ./init_libs.py || echo "could not run init_libs.py_"
+elif [[ -e ./external_libs/init_libs  ]]; then
     cd external_libs && ./init_libs || exit 1
-#else if [[ -e ./external_libs/init_libs.py  ]]; then
-#    echo "geil!"
 else
     echo "no external libs specified"
 fi
+
 #end
 echo
