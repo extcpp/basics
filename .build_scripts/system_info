@@ -1,5 +1,6 @@
 #!/bin/bash
 
+project_root=${project_root:-..}
 lib=$project_root/.build_scripts/build_lib
 if [[ -f "$lib" ]]; then
     . "$lib"

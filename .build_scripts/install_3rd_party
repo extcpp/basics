@@ -1,5 +1,6 @@
 #!/bin/bash
 
+project_root=${project_root:-..}
 lib=$project_root/.build_scripts/build_lib
 if [[ -f "$lib" ]]; then
     . "$lib"
@@ -11,16 +12,19 @@ fi
 #prepare
 section "install external libs"
 cd "$project_root" || exit 1
+cd external_libs || exit 1
 
 #command
 # init_libs    - first stage to get libobi
 # init_libs.py - second stage
-if [[ -e ./external_libs/init_libs.py  ]]; then
-    cd external_libs && ./init_libs.py || echo "could not run init_libs.py_"
-elif [[ -e ./external_libs/init_libs  ]]; then
-    cd external_libs && ./init_libs || exit 1
+if [[ -e ./init_libs  ]]; then
+    ./init_libs || exit 1
 else
     echo "no external libs specified"
+fi
+
+if [[ -e ./init_libs.py  ]]; then
+    ./init_libs.py || echo "could not run init_libs.py_"
 fi
 
 #end

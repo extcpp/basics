@@ -6,6 +6,7 @@ version="$major.$minor"
 required_version="3.11"
 file="cmake-$version-Linux-x86_64.sh"
 
+project_root=${project_root:-..}
 lib=${project_root:=.}/.build_scripts/build_lib
 if [[ -f "$lib" ]]; then
     . "$lib"
