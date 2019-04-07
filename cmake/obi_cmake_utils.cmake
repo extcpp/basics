@@ -1,4 +1,13 @@
 #! some basic settings i use really often so lets have them in a macro
+
+function(obi_log)
+    message(STATUS "INFO -- " ${ARGV}) 
+endfunction(obi_log)
+
+function(obi_fatal)
+    message(FATAL_ERROR "INFO -- " ${ARGV}) 
+endfunction(obi_fatal)
+
 macro(obi_setup)
     # TODO - test this macro in other libs
     # execute macro only in top-level CMakeLists.txt
