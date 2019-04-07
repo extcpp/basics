@@ -22,6 +22,12 @@ TEST_BIG_ENDIAN(obi_is_big_endian)
 include(obi_cmake_utils)
 obi_setup()
 
+if(UNIX)
+    execute_process(COMMAND getconf LEVEL1_DCACHE_LINESIZE OUTPUT_VARIABLE obi_l1_cache_line_size)
+    string(STRIP ${obi_l1_cache_line_size} obi_l1_cache_line_size)
+    obi_log("cache line size: '${obi_l1_cache_line_size}'")
+endif()
+
 ## define header only lib
 add_library(obi INTERFACE)
 target_include_directories(obi INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -33,6 +39,7 @@ target_compile_definitions(obi INTERFACE
     $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
+    $<$<BOOL:$obi_l1_cache_line_size>:OBI_KNOWN_L1_CACHE_LINE_SIZE=${obi_l1_cache_line_size}>
 )
 
 ## define shared lib
@@ -47,6 +54,7 @@ target_compile_definitions(obi_shared PUBLIC
     $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
+    $<$<BOOL:$obi_l1_cache_line_size>:OBI_KNOWN_L1_CACHE_LINE_SIZE=${obi_l1_cache_line_size}>
 )
 
 ## testing
