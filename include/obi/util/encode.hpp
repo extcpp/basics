@@ -3,6 +3,7 @@
 #include <type_traits>
 #include <iostream>
 #include <iomanip>
+#include <bitset>
 
 namespace obi { namespace util {
 
@@ -21,9 +22,10 @@ encode_hex(T i){
     return buf.str().c_str();
 }
 
+namespace {
+    inline char const* hex_values = "0123456789abcdef";
+}
 inline std::string encode_hex(char const* in, std::size_t len){
-    static char const* hex_values = "0123456789abcdef";
-
 	std::string rv;
 	rv.reserve(len * 2);
 
@@ -96,5 +98,13 @@ inline std::string decode_hex(std::string_view const& in) {
     return decode_hex(in.data(), in.size());
 }
 //// HEX - end
+
+//// BINARY
+template<typename T>
+std::enable_if_t<std::is_integral_v<T>,std::string>
+encode_binary(T integer){
+    return std::bitset<sizeof(T) * 8>(integer).to_string();
+}
+//// BINARY - end
 
 }} // namespace obi::util
