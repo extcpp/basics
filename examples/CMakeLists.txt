@@ -19,12 +19,13 @@ set(examples
     meta
     scope_guard
     scoped_timer
+    serialize
     show
     static_lambda
+    tagged_pointer
     tuple
     type_to_string
     vector
-    serialize
 )
 
 foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
