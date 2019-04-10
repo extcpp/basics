@@ -32,13 +32,14 @@ public:
     static constexpr std::uintptr_t alignment = Alignment;
     static constexpr std::uintptr_t mask = Alignment - 1;
 
+    // A default constructed tagged_pointer is as *real* pointer uninitialized.
+    // Note: Becauase of asserts (in debug mode) you need to set the tag first
+    // if you are not setting both at the same time.
+    tagged_pointer() noexcept = default;
     tagged_pointer(tagged_pointer const&) noexcept = default;
-    tagged_pointer(tagged_pointer&&) noexcept = default;
+    tagged_pointer(tagged_pointer&&) noexcept = delete;
     tagged_pointer& operator=(tagged_pointer const&) noexcept = default;
-    tagged_pointer& operator=(tagged_pointer&&) noexcept = default;
-
-    tagged_pointer() noexcept
-        : _pointer(create(nullptr, 0)) {};
+    tagged_pointer& operator=(tagged_pointer&&) noexcept = delete;
 
     tagged_pointer(T* pointer, std::uintptr_t tag) noexcept
         : _pointer(create(pointer, tag)) {};
