@@ -1,9 +1,10 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_MEMORY_TAGGED_POINTER_HPP
-#define OBI_MEMORY_TAGGED_POINTER_HPP
+#ifndef OBI_MEMORY_TAGGED_POINTER_HEADER
+#define OBI_MEMORY_TAGGED_POINTER_HEADER
 
 #include <obi/memory/align.hpp>
+#include <memory>
 #include <cassert>
 
 namespace obi { namespace memory {

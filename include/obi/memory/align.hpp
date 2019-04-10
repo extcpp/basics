@@ -1,4 +1,7 @@
+// Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_MEMORY_TAGGED_ALIGN_HEADER
+#define OBI_MEMORY_TAGGED_ALIGN_HEADER
 
 #include <obi/config.hpp>
 #include <memory>
@@ -21,5 +24,5 @@ is_alignment(T number) {
     return (number != 0) && ( (number & (number - 1)) == 0 );
 }
 
-
 }}
+#endif
