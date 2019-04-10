@@ -48,7 +48,7 @@ public:
         return get_pointer(_pointer);
     }
 
-    uintptr_t tag() const {
+    std::uintptr_t tag() const {
         return get_tag(_pointer);
     }
 
