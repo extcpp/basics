@@ -1,5 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_ALGORITHM_BASIC_HEADER
+#define OBI_ALGORITHM_BASIC_HEADER
 
 #include <iterator>
 #include <map>
@@ -73,3 +75,4 @@ namespace obi { namespace algorithm {
     }
 
 }} // obi::algorithm
+#endif

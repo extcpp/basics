@@ -1,6 +1,7 @@
+// Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_ALGORITHM_STRING_DISTANCES
-#define OBI_ALGORITHM_STRING_DISTANCES
+#ifndef OBI_ALGORITHM_STRING_DISTANCES_HEADER
+#define OBI_ALGORITHM_STRING_DISTANCES_HEADER
 
 #include <string>
 #include <vector>
