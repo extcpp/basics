@@ -52,6 +52,10 @@ public:
         return get_tag(_pointer);
     }
 
+    std::uintptr_t tag_next() const {
+        return (get_tag(_pointer) + 1) & mask ;
+    }
+
     void set(T* pointer, std::uintptr_t tag) {
         _pointer = create_tag(pointer, tag);
     }

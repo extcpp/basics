@@ -45,5 +45,11 @@ int main() {
     cout << "           size: " << sizeof(atomic_pointer) << endl;
     cout << endl;
 
+    auto current = pointer.tag();
+    do{
+        cout << "  pointer.tag(): " << pointer.tag() << endl;
+        pointer.set(pointer.tag_next());
+    } while (pointer.tag() != current);
+
     return 0;
 }
