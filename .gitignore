@@ -1,7 +1,12 @@
 external_libs/*
-include/obi/test.hpp
 */.gitignore
-*.ip
-*-ip.*
+include/obi/test.hpp
+
 compile_commands.json
 .do_test
+
+__pycache__
+*.pyc
+
+*.ip
+*-ip.*

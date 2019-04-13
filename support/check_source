@@ -1,0 +1,34 @@
+#!/usr/bin/python3
+
+import sys
+import os
+
+current_dir = os.path.dirname(__file__)
+project_dir = os.path.abspath(current_dir + os.path.sep + os.pardir)
+modules_dir = os.path.abspath(current_dir + os.path.sep + "python_modules")
+
+#add modules dir
+sys.path.insert(0,modules_dir)
+#print(project_dir)
+
+from codecheck.walk import check_modify_source;
+from codecheck.state import StateAndConfiguration
+
+if __name__ == "__main__":
+    """
+    FIXME
+
+    Note:
+    `check_only` must be set to true for normal operation mode.
+    """
+
+    check_only = True
+    state = StateAndConfiguration(project_dir, check_only)
+
+    rv = check_modify_source(
+            ["include", "examples"] #dirs to include
+            ,[] #dirs and files to exclude (does not purge the dir)
+            ,state
+        )
+
+    sys.exit(rv)
