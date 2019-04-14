@@ -1,8 +1,8 @@
 import sys
 import os
 
-from codecheck.common import AccessType
-from codecheck.include_guards import IncludeGurad
+from .common import AccessType
+from .include_guards import IncludeGuard
 
 from enum import Enum
 
@@ -20,7 +20,7 @@ class Configuration():
     def create_operation_list(self):
         self.operations = []
         if self.fix_include_guards:
-            self.operations.append(IncludeGurad(self.fix_include_guards))
+            self.operations.append(IncludeGuard(self.fix_include_guards))
 
 class StateAndConfiguration():
     def __init__(self, project_root, check_only):

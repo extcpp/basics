@@ -22,7 +22,7 @@ if __name__ == "__main__":
     `check_only` must be set to true for normal operation mode.
     """
 
-    check_only = True
+    check_only = False
     state = StateAndConfiguration(project_dir, check_only)
 
     rv = check_modify_source(
