@@ -1,7 +1,10 @@
-from codecheck import logger as log
 import re
 import sys
+from pathlib import Path
+from typing import Dict, Tuple, Sequence, List, IO
 
+from obi.util.path_helper import remove_from_front, change_ext
+from . import logger as log
 from .common import AccessType, Status
 from .common import Operation, OperationState, AccessType
 
@@ -18,7 +21,7 @@ class IncludeGuardState(OperationState):
 class IncludeGuard(Operation):
     def __init__(self, op):
         super(IncludeGuard, self).__init__(op, "IncludeGuard")
-        self.file_types = ( "h", "hpp" ) # must be tuple
+        self.file_types = ( ".h", ".hpp" ) # must be tuple
         self.do_log = False
         self.mark_start = True
 
@@ -29,7 +32,7 @@ class IncludeGuard(Operation):
     #def do_line(self, line, cnt, full_path, project_path, target_file_handle, state)
     #def do(self, full_path, project_path, target_file_handle, state)
 
-    def check(self, full_path, project_path, state):
+    def check(self, full_path: Path, project_path: Path, state: OperationState):
         if self.mark_start:
             log.info(project_path)
         if self.do_log:
@@ -42,11 +45,15 @@ class IncludeGuard(Operation):
         state.starting = True
 
         ## hpp h to header
-        guard = project_path.replace('include/obi','obi')
-        guard = guard.replace('.','_').replace('/','_').upper()
+        path = project_path
+        if path.parts[1] == 'obi':
+            path = remove_from_front(project_path, 'include')
+        path = change_ext(path,'.header')
+
+        guard = "_".join(path.parts).replace('.','_').upper()
         state.guard = guard
 
-    def check_line(self, line, cnt, full_path, project_path, state):
+    def check_line(self, line: str, cnt, full_path: Path, project_path: Path, state: OperationState):
         if state.found or state.abort:
             return
 
@@ -68,14 +75,15 @@ class IncludeGuard(Operation):
                     state.abort = True
                     state.access = []
                 else:
+                    pass
 
 
-    def modify(self, full_path, project_path, target_file_handle, state):
+    def modify(self, full_path: Path, project_path: Path, target_file_handle: IO, state: OperationState):
         if self.do_log:
             log.info("modify ===================================================")
 
 
-    def modify_line(self, line, cnt, full_path, project_path, target_file_handle, state):
+    def modify_line(self, line: str, cnt, full_path: Path, project_path: Path, target_file_handle: IO, state: OperationState):
         #if do_log:
         #    log.info("modify line ==============================================")
         #out = target_file_handle

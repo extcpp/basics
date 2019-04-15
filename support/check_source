@@ -2,14 +2,14 @@
 
 import sys
 import os
+from pathlib import Path
 
-current_dir = os.path.dirname(__file__)
-project_dir = os.path.abspath(current_dir + os.path.sep + os.pardir)
-modules_dir = os.path.abspath(current_dir + os.path.sep + "python_modules")
+current_dir = Path(__file__).parent.resolve()
+project_dir = current_dir.parent
+modules_dir = current_dir.joinpath("python_modules")
 
 #add modules dir
-sys.path.insert(0,modules_dir)
-#print(project_dir)
+sys.path.insert(0,str(modules_dir))
 
 from codecheck.walk import check_modify_source;
 from codecheck.state import StateAndConfiguration

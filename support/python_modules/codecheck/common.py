@@ -1,6 +1,11 @@
 import sys
 import os
+from typing import Dict, Tuple, Sequence, List, IO
 from enum import Enum
+from pathlib import Path
+
+from obi.util.path_helper import remove_from_front, change_ext
+
 from . import logger as log
 
 class AccessType(Enum):
@@ -48,7 +53,7 @@ class Operation():
         elif op_type == AccessType.READ:
             self.access.append( AccessType.READ )
 
-    def do_line(self, line, cnt, full_path, project_path, target_file_handle, state):
+    def do_line(self, line, cnt, full_path: Path, project_path: Path, target_file_handle: IO, state):
         if self.do_log_detail:
             l = log.info
             l("{} {}".format(cnt,line))
@@ -58,11 +63,10 @@ class Operation():
         else:
             return self.check_line(line, cnt, full_path, project_path, state)
 
-    def do(self, full_path, project_path, target_file_handle, state):
+    def do(self, full_path: Path, project_path: Path, target_file_handle: IO, state):
         if self.do_log:
             l = log.info
             l("{}".format(self.name))
-            #l("{}".format(full_path))
             l("{}".format(project_path))
 
         if target_file_handle:
