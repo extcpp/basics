@@ -4,6 +4,7 @@ from codecheck.common import *
 from codecheck.state import StateAndConfiguration
 
 def handle_file(full_path: Path, state_and_config: StateAndConfiguration):
+    log.info("---> " + str(full_path))
     #log.info("--------------------------------> handle file")
     operation = state_and_config.current_operation
     conf = state_and_config.configuration
@@ -16,40 +17,56 @@ def handle_file(full_path: Path, state_and_config: StateAndConfiguration):
 
     while state.access:
         access = state.access.pop()
-        if access == AccessType.MODIFY:
-            target_file = change_ext(full_path, ".replacement")
-            with open(target_file, 'w') as target_file_handle:
-                status = do_operation(full_path, project_path, target_file_handle, state_and_config)
 
-            if status == Status.OK_REPLACED:
-                os.rename(target_file, full_path)
+        if access == AccessType.MODIFY:
+            target_file = full_path.parent.joinpath(full_path.name + ".replacement")
+
+            if operation.dry_run:
+                #log.info("dryrun on target {}".format(target_file))
+                status = do_operation(full_path, project_path, sys.stdout, state_and_config, state)
             else:
-                os.unlink(target_file)
+                with open(target_file, 'w') as target_file_handle:
+                    status = do_operation(full_path, project_path, target_file_handle, state_and_config, state)
+
+                if status == Status.OK_REPLACED:
+                    os.rename(target_file, full_path)
+                else:
+                    os.unlink(target_file)
 
         elif access == AccessType.READ:
-            #not modifying operation
-            status = do_operation(full_path, project_path, None, state_and_config)
+            status = do_operation(full_path, project_path, None, state_and_config, state)
+
+        else:
+            pass
+
+        if Status.is_done(status):
+            break
 
         if not Status.is_good(status):
-            #log.info("<-------------------------------- handle file " + status.name)
-            return status # filter OK_REPLACED
+            break
 
     #log.info("<-------------------------------- handle file " + status.name)
-    status = Status.good_to_ok(status)
-    return status # filter OK_REPLACED
+    return Status.good_to_ok(status)
 
-def do_operation(full_path: Path, project_path: Path, target_file_handle: IO, state_and_config: StateAndConfiguration):
+def do_operation(full_path: Path, project_path: Path, target_file_handle: IO, state_and_config: StateAndConfiguration, state) -> Status:
     full_path.parts
     project_path.parts
     operation = state_and_config.current_operation
-    state = state_and_config.state.get(operation.name, dict())
 
-    status = Status.OK
-    operation.do(full_path, project_path, target_file_handle, state_and_config)
+    status = operation.do(full_path, project_path, target_file_handle, state)
+    if not Status.is_good(status) and not Status.is_done(status):
+        return Status.good_to_ok(Status)
+
     with open(full_path) as source_file_handle:
         for cnt, line in enumerate(source_file_handle):
-            operation.do_line(line, cnt, full_path, project_path, target_file_handle, state_and_config)
-        operation.do_line("", "EOF", full_path, project_path, target_file_handle, state_and_config)
+            if Status.is_done(status, True): #done linewise
+                break
+            status = operation.do_line(line, cnt, full_path, project_path, target_file_handle, state)
+            if Status.is_done(status, True): #done linewise
+                return status
+        status = operation.do_line("", "EOF", full_path, project_path, target_file_handle, state)
+        if status == None:
+            raise ValueError("status can not be None")
 
     return status
 

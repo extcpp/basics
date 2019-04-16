@@ -15,18 +15,37 @@ class AccessType(Enum):
 class Status(Enum):
     OK = 0
     OK_REPLACED = 1
-    FAIL = 2
+    OK_SKIP_FILE = 2
+    OK_SKIP_LINEWISE_ACCESS = 3
+    FAIL = 4
+    FAIL_FATAL = 5
 
     @classmethod
     def is_good(cls, status):
-        return status in (Status.OK, Status.OK_REPLACED)
+        cls.check(status)
+        return status in (Status.OK, Status.OK_REPLACED, Status.OK_SKIP_FILE, Status.OK_SKIP_LINEWISE_ACCESS)
+
+    @classmethod
+    def is_done(cls, status, linewise = False):
+        cls.check(status)
+        if linewise:
+            return status == Status.OK_SKIP_LINEWISE_ACCESS
+        else:
+            return status in (Status.OK_REPLACED, Status.OK_SKIP_FILE, Status.FAIL_FATAL, Status.FAIL_FATAL)
+
 
     @classmethod
     def good_to_ok(cls, status):
+        cls.check(status)
         if cls.is_good(status):
             return Status.OK
         else:
             return status
+
+    @classmethod
+    def check(cls, status):
+        if status == None:
+            raise ValueError("status can not be None")
 
 class OperationState():
     def __init__(self, access):
@@ -41,6 +60,7 @@ class Operation():
     def __init__(self, op_type, name):
         log.info("create {} with {}".format(name, op_type))
         self.name = name
+        self.dry_run = True
         self.do_log = False
         self.do_log_detail = False
         self.access = [  ]
