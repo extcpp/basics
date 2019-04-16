@@ -8,12 +8,7 @@ from . import logger as log
 from .common import AccessType, Status
 from .common import Operation, OperationState, AccessType
 
-##from .common import OperationResult
-##class IncludeGuardResult(OperationResult):
-##    pass
-
-g_guard_re = re.compile(r'#ifndef\s+(?P<guard>OBI_.*(HEADER|HPP|H))')
-
+g_guard_re = re.compile(r'#ifndef\s+_?(?P<guard>OBI_.*(HEADER|HPP|H))')
 
 class IncludeGuardState(OperationState):
     def __init__(self, access):
@@ -44,9 +39,9 @@ class IncludeGuard(Operation):
         if path.parts[1] == 'obi':
             path = remove_from_front(project_path, 'include')
         path = change_ext(path,'_HEADER')
-
         guard = "_".join(path.parts).upper()
         state.guard = guard
+
         return Status.OK
 
     def check_line(self, line: str, cnt, full_path: Path, project_path: Path, state: OperationState):
@@ -56,48 +51,53 @@ class IncludeGuard(Operation):
             state.starting = False
 
         if line.startswith('#'):
-            if line.startswith("#pragma once"):
-                print("found once")
+            if line.startswith("#pragma once") and state.insert_new:
                 state.line_for_infdef = cnt  # insert after prama once
 
             match = g_guard_re.search(line)
 
             if match:
-                state.line = cnt
+                state.line_for_infdef = cnt
                 if match['guard'] == state.guard:
-                    print("GUARD MATCHED")
                     state.access = []
                     return Status.OK_SKIP_FILE
                 else:
-                    print("FIXX")
+                    state.insert_new = False #do not insert but fix
                     return Status.OK_SKIP_LINEWISE_ACCESS
 
         return Status.OK
 
-
     def modify(self, full_path: Path, project_path: Path, target_file_handle: IO, state: OperationState):
         return Status.OK
 
-
     def modify_line(self, line: str, cnt, full_path: Path, project_path: Path, target_file_handle: IO, state: IncludeGuardState):
         out = target_file_handle
-        if state.line_for_infdef== cnt and state.insert_new:
-            log.info("insert new gurad")
-            out.write(line)
-            out.write("#ifndef {}\n".format(state.guard))
-            out.write("#define {}\n".format(state.guard))
-            return Status.OK
-        if state.line_for_infdef == cnt and not state.insert_new:
-            out.write("#ifndef {}\n".format(state.guard))
-            return Status.OK_SKIP_FILE
 
-        elif cnt == "EOF" and state.insert_new:
-            # insert `#endif` for new guard
-            out.write("#endif // {}".format(state.guard))
-            return Status.OK_REPLACED
+        ## insert new
+        if state.insert_new:
+            if state.line_for_infdef == cnt:
+                log.info("insert new gurad in")
+                out.write(line)
+                out.write("#ifndef {}\n".format(state.guard))
+                out.write("#define {}\n".format(state.guard))
+                return Status.OK
+            elif cnt == "EOF":
+                out.write("#endif // {}".format(state.guard))
+                return Status.OK_REPLACED
 
-        else:
-            #just copy rest of file
-            out.write(line)
-            return Status.OK
+        ## fix old
+        if not state.insert_new:
+            if state.line_for_infdef == cnt:
+                out.write("#ifndef {}\n".format(state.guard))
+                out.write("#define {}\n".format(state.guard))
+                return Status.OK
+            elif state.line_for_infdef + 1 == cnt:
+                return Status.OK
+            elif cnt == "EOF":
+                return Status.OK_REPLACED
+
+
+        #just copy rest of file
+        out.write(line)
+        return Status.OK
 
