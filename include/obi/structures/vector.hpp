@@ -1,7 +1,9 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <array>
+#pragma once
 #ifndef OBI_STRUCTURES_VECTOR_HEADER
 #define OBI_STRUCTURES_VECTOR_HEADER
+
+#include <array>
 #include <type_traits>
 #include "../meta/pack.hpp"
 
@@ -59,4 +61,5 @@ namespace obi { namespace structures {
     };
 
 }}  // obi::structures
+
 #endif // OBI_STRUCTURES_VECTOR_HEADER
