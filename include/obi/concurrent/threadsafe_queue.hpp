@@ -1,5 +1,7 @@
 // From Concurrency in Action - Anthony Williams
 #pragma once
+#ifndef OBI_CONCURRENT_THREADSAFE_QUEUE_HEADER
+#define OBI_CONCURRENT_THREADSAFE_QUEUE_HEADER
 
 #include <condition_variable>
 #include <memory>
@@ -128,3 +130,4 @@ private:
 };
 
 }}  // namespace obi::thread
+#endif // OBI_CONCURRENT_THREADSAFE_QUEUE_HEADER

@@ -1,5 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_UTIL_FUNCTION_CACHE_HEADER
+#define OBI_UTIL_FUNCTION_CACHE_HEADER
 
 #include <functional>
 #include <type_traits>
@@ -69,3 +71,4 @@ add_function_cache_old(std::function<R(Args...)> fun)
 }
 
 }}  // namespace obi::util
+#endif // OBI_UTIL_FUNCTION_CACHE_HEADER

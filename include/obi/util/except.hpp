@@ -1,5 +1,7 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_UTIL_EXCEPT_HEADER
+#define OBI_UTIL_EXCEPT_HEADER
 
 #include <stdexcept>
 
@@ -56,3 +58,4 @@ namespace obi { namespace util {
   };
 
 }} // obi::util
+#endif // OBI_UTIL_EXCEPT_HEADER

@@ -1,5 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_UTIL_TRACING_CLASSES_HEADER
+#define OBI_UTIL_TRACING_CLASSES_HEADER
 #include <iostream>
 #include <iomanip>
 #include <obi/meta/is_one_of.hpp>
@@ -388,3 +390,4 @@ struct no_copy_assign : base {
 
 }  // namespace tracing
 }} // namespace obi::util
+#endif // OBI_UTIL_TRACING_CLASSES_HEADER

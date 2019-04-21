@@ -1,8 +1,8 @@
 // Copyright - 2014 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
 #pragma once
-#ifndef OBI_UTIL_SCOPED_TIMER_HPP
-#define OBI_UTIL_SCOPED_TIMER_HPP
+#ifndef OBI_UTIL_SCOPED_TIMER_HEADER
+#define OBI_UTIL_SCOPED_TIMER_HEADER
 
 #include <utility>
 #include <vector>

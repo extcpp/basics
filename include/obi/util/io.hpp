@@ -1,5 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_UTIL_IO_HEADER
+#define OBI_UTIL_IO_HEADER
 #include "../config.hpp"
 
 #include <iostream>
@@ -38,3 +40,4 @@ namespace obi { namespace util {
     }
 
 }}
+#endif // OBI_UTIL_IO_HEADER

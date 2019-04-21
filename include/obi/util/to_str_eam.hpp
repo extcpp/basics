@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_UTIL_TO_STR_EAM_HEADER
+#define OBI_UTIL_TO_STR_EAM_HEADER
 #include <filesystem>
 #include <obi/util/result.hpp>
 
@@ -39,3 +41,4 @@ inline std::string to_type_string(::std::filesystem::recursive_directory_iterato
 }
 
 }}
+#endif // OBI_UTIL_TO_STR_EAM_HEADER

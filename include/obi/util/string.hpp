@@ -1,6 +1,8 @@
 // Copyright - 2018 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // requires c++17 (string_view)
 #pragma once
+#ifndef OBI_UTIL_STRING_HEADER
+#define OBI_UTIL_STRING_HEADER
 
 #include <string>
 #include <string_view>
@@ -84,3 +86,4 @@ replace(std::string_view const& str
 }
 
 }} // obi::util
+#endif // OBI_UTIL_STRING_HEADER

@@ -8,6 +8,8 @@
 // requires: c++17
 
 #pragma once
+#ifndef OBI_UTIL_SCOPE_GUARD_HEADER
+#define OBI_UTIL_SCOPE_GUARD_HEADER
 #include <exception>
 #include <type_traits>
 #include <cstdint>
@@ -166,3 +168,4 @@ operator+(Helper, FunctionType&& fn){
 
 } // namespace _detail - end
 }} // namespace ::obi::util - end
+#endif // OBI_UTIL_SCOPE_GUARD_HEADER

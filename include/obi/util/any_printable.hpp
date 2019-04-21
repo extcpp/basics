@@ -1,7 +1,7 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_ANY_HPP
-#define OBI_ANY_HPP
+#ifndef OBI_UTIL_ANY_PRINTABLE_HEADER
+#define OBI_UTIL_ANY_PRINTABLE_HEADER
 
 #include <memory>
 #include <iostream>

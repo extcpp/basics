@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_STRUCTURES_MULTI_ARRAY_HEADER
+#define OBI_STRUCTURES_MULTI_ARRAY_HEADER
 
 #include <array>
 #include <type_traits>
@@ -52,3 +54,4 @@ private:
 };
 
 }}  // obi::structures
+#endif // OBI_STRUCTURES_MULTI_ARRAY_HEADER

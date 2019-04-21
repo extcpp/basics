@@ -1,6 +1,8 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // TODO enable_if for integral types
 #pragma once
+#ifndef OBI_MATH_BASIC_FUNCTIONS_HEADER
+#define OBI_MATH_BASIC_FUNCTIONS_HEADER
 
 #include <utility>
 #include <algorithm>
@@ -104,3 +106,4 @@ namespace obi { namespace math {
 
 
 }}  // obi::math
+#endif // OBI_MATH_BASIC_FUNCTIONS_HEADER

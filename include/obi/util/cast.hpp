@@ -1,5 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_UTIL_CAST_HEADER
+#define OBI_UTIL_CAST_HEADER
 
 #include <cstring>
 #include <type_traits>
@@ -217,3 +219,4 @@ enum_to_enum(EnumIn e) noexcept {
 }
 
 }} // obi::util
+#endif // OBI_UTIL_CAST_HEADER

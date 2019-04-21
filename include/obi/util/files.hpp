@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_UTIL_FILES_HEADER
+#define OBI_UTIL_FILES_HEADER
 
 #include <filesystem>
 #include <algorithm>
@@ -39,3 +41,4 @@ bool files_equal(std::filesystem::path const& file1
 }
 
 }
+#endif // OBI_UTIL_FILES_HEADER

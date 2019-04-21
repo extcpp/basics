@@ -1,5 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_UTIL_FUNCTIONAL_HEADER
+#define OBI_UTIL_FUNCTIONAL_HEADER
 
 namespace obi { namespace util {
 
@@ -62,3 +64,4 @@ auto length = [](auto xs) {
 };
 
 }}  // namespace obi::functional
+#endif // OBI_UTIL_FUNCTIONAL_HEADER

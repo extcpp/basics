@@ -1,6 +1,8 @@
 // Idea and code from STL
 // http://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-3-of-n
 #pragma once
+#ifndef OBI_UTIL_CONTAINER_HELPER_HEADER
+#define OBI_UTIL_CONTAINER_HELPER_HEADER
 
 #include <algorithm>
 #include <deque>
@@ -229,3 +231,4 @@ namespace obi { namespace util {
     //  }
 
 }} // namespace obi::util
+#endif // OBI_UTIL_CONTAINER_HELPER_HEADER

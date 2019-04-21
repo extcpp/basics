@@ -1,6 +1,8 @@
 // The code is taken from: "Anthony Williams: C++ Concurrency in Action"
 // c++11 only
 #pragma once
+#ifndef OBI_CONCURRENT_HIERARCHICAL_MUTEX_HEADER
+#define OBI_CONCURRENT_HIERARCHICAL_MUTEX_HEADER
 
 #include <mutex>
 #include <stdexcept>
@@ -62,3 +64,4 @@ thread_local unsigned long
 hierarchical_mutex::this_thread_hierarchy_value(std::numeric_limits<unsigned long>::max());
 
 }}  // namespace obi::thread
+#endif // OBI_CONCURRENT_HIERARCHICAL_MUTEX_HEADER

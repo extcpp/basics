@@ -1,8 +1,8 @@
 // get gcc macros
 // gcc -dM -E - < /dev/null
 #pragma once
-#ifndef OBI_CONFIG_HPP
-#define OBI_CONFIG_HPP
+#ifndef OBI_CONFIG_HEADER
+#define OBI_CONFIG_HEADER
 
 #ifdef __linux
 // define fallback for linux if cmak is not able to figure out

@@ -1,8 +1,8 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // TODO enable_if for integral types
 #pragma once
-#ifndef _OBI_MATH_PRIMES
-#define _OBI_MATH_PRIMES
+#ifndef OBI_MATH_PRIMES_HEADER
+#define OBI_MATH_PRIMES_HEADER
 
 #include <utility>
 #include <algorithm>

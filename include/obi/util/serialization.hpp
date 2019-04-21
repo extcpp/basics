@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_UTIL_SERIALIZATION_HEADER
+#define OBI_UTIL_SERIALIZATION_HEADER
 
 #include <obi/util/endian.hpp>
 
@@ -147,3 +149,4 @@ std::byte const* from_big_storage(std::byte const* in, T& ...outs){
 //// from big storage - end
 
 }} // namespace obi::util
+#endif // OBI_UTIL_SERIALIZATION_HEADER

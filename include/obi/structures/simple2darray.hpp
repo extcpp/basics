@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_STRUCTURES_SIMPLE2DARRAY_HEADER
+#define OBI_STRUCTURES_SIMPLE2DARRAY_HEADER
 
 #include <vector>
 #include <type_traits>
@@ -65,3 +67,4 @@ std::ostream& operator <<(std::ostream& stream, obi::structures::array2d<T> cons
 }
 
 }}  // obi::structures
+#endif // OBI_STRUCTURES_SIMPLE2DARRAY_HEADER

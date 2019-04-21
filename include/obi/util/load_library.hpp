@@ -11,6 +11,8 @@
 // - https://msdn.microsoft.com/en-us/library/windows/desktop/ms683152.aspx (FreeLibrary)
 
 #pragma once
+#ifndef OBI_UTIL_LOAD_LIBRARY_HEADER
+#define OBI_UTIL_LOAD_LIBRARY_HEADER
 #include <obi/macros/platform.hpp>
 #ifdef OBI_UNIX
     #include <dlfcn.h>
@@ -151,3 +153,4 @@ namespace obi { namespace util {
     #endif
     }
 }}
+#endif // OBI_UTIL_LOAD_LIBRARY_HEADER

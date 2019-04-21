@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_UTIL_LOGGING_HEADER
+#define OBI_UTIL_LOGGING_HEADER
 #include <iostream>
 #include <obi/util/logging/functionality.hpp>
 
@@ -17,3 +19,4 @@
 
 #define OBI_LOG(level_) \
     OBI_LOG_TOPIC(level_,no_topic)
+#endif // OBI_UTIL_LOGGING_HEADER

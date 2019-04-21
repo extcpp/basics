@@ -1,6 +1,6 @@
 #pragma once
-#ifndef OBI_UTIL_LOGGING_FUNCTIONALITY_HPP
-#define OBI_UTIL_LOGGING_FUNCTIONALITY_HPP
+#ifndef OBI_UTIL_LOGGING_FUNCTIONALITY_HEADER
+#define OBI_UTIL_LOGGING_FUNCTIONALITY_HEADER
 
 #include <obi/util/logging/definitions.hpp>
 #include <obi/util/basic.hpp>

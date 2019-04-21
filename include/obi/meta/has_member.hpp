@@ -1,6 +1,8 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
 #pragma once
+#ifndef OBI_META_HAS_MEMBER_HEADER
+#define OBI_META_HAS_MEMBER_HEADER
 
 #include <type_traits>
 #include "void_t.hpp"
@@ -58,3 +60,4 @@ namespace obi { namespace meta {
     inline constexpr bool is_input_iterator_v = is_input_iterator<T>::value;
 
 }}  // namespace obi::meta
+#endif // OBI_META_HAS_MEMBER_HEADER

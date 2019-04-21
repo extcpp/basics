@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_CONCURRENT_THREADSAFE_STACK_HEADER
+#define OBI_CONCURRENT_THREADSAFE_STACK_HEADER
 
 #include <exception>
 #include <stack>
@@ -59,3 +61,4 @@ public:
 };
 
 }}  // namespace obi::concurrent
+#endif // OBI_CONCURRENT_THREADSAFE_STACK_HEADER

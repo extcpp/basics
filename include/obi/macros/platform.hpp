@@ -1,6 +1,6 @@
 #pragma once
-#ifndef OBI_MACROS_PLATFORM_HPP
-#define OBI_MACROS_PLATFORM_HPP
+#ifndef OBI_MACROS_PLATFORM_HEADER
+#define OBI_MACROS_PLATFORM_HEADER
 #include "compiler.hpp"
 
 #ifdef __linux__

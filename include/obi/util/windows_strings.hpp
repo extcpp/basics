@@ -18,6 +18,8 @@
 //
 //
 #pragma once
+#ifndef OBI_UTIL_WINDOWS_STRINGS_HEADER
+#define OBI_UTIL_WINDOWS_STRINGS_HEADER
 
 #ifdef _WIN32
 #include <windows.h>
@@ -152,3 +154,4 @@ namespace obi { namespace util {
     }
 }}
 #endif
+#endif // OBI_UTIL_WINDOWS_STRINGS_HEADER

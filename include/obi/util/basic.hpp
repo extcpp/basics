@@ -1,6 +1,6 @@
 #pragma once
-#ifndef OBI_UTIL_BASIC_HPP
-#define OBI_UTIL_BASIC_HPP
+#ifndef OBI_UTIL_BASIC_HEADER
+#define OBI_UTIL_BASIC_HEADER
 
 #include <obi/macros/general.hpp>
 #include <obi/util/cast.hpp>

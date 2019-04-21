@@ -1,6 +1,6 @@
 #pragma once
-#ifndef OBI_UTIL_RESULT_HPP
-#define OBI_UTIL_RESULT_HPP
+#ifndef OBI_UTIL_RESULT_HEADER
+#define OBI_UTIL_RESULT_HEADER
 
 #include <type_traits>
 #include <memory>

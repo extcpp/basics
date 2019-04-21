@@ -1,6 +1,6 @@
 #pragma once
-#ifndef OBI_MACROS_COMPILER_HPP
-#define OBI_MACROS_COMPILER_HPP
+#ifndef OBI_MACROS_COMPILER_HEADER
+#define OBI_MACROS_COMPILER_HEADER
 #include <obi/macros/general.hpp>
 
 #ifdef __GNUC__

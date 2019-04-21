@@ -1,5 +1,7 @@
 // taken from http://pfultz2.com/blog/2014/09/02/static-lambda/
 #pragma once
+#ifndef OBI_META_STATIC_LAMBDA_HEADER
+#define OBI_META_STATIC_LAMBDA_HEADER
 
 #include <type_traits>
 #include <utility>
@@ -39,3 +41,4 @@ struct wrapper_factor
 };
 
 }}  // namespace obi::meta
+#endif // OBI_META_STATIC_LAMBDA_HEADER

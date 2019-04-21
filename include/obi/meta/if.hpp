@@ -1,5 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_META_IF_HEADER
+#define OBI_META_IF_HEADER
 
 #include <type_traits>
 namespace obi { namespace meta {
@@ -37,3 +39,4 @@ namespace obi { namespace meta {
     using if_c_t = typename if_c<cond, first, second>::type;
 
 }}  // namespace obi::meta
+#endif // OBI_META_IF_HEADER

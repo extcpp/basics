@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_UTIL_ENCODE_HEADER
+#define OBI_UTIL_ENCODE_HEADER
 
 #include <type_traits>
 #include <iostream>
@@ -108,3 +110,4 @@ encode_binary(T integer){
 //// BINARY - end
 
 }} // namespace obi::util
+#endif // OBI_UTIL_ENCODE_HEADER

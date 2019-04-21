@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_UTIL_STAT_HEADER
+#define OBI_UTIL_STAT_HEADER
 
 #include <obi/util/result.hpp>
 #include <filesystem>
@@ -47,3 +49,4 @@ inline typed_result<stat> get_stat(std::filesystem::path const& path) {
 }
 
 } // namespace obi::util - end
+#endif // OBI_UTIL_STAT_HEADER

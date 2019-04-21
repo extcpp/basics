@@ -1,4 +1,6 @@
 #pragma once
+#ifndef OBI_UTIL_ENDIAN_HEADER
+#define OBI_UTIL_ENDIAN_HEADER
 
 #include <cstdint>
 #include <cstring>
@@ -212,3 +214,4 @@ big_to_host(T in){
 }
 
 } // namespace obi::util::endian - end
+#endif // OBI_UTIL_ENDIAN_HEADER

@@ -1,4 +1,6 @@
 #include <array>
+#ifndef OBI_STRUCTURES_VECTOR_HEADER
+#define OBI_STRUCTURES_VECTOR_HEADER
 #include <type_traits>
 #include "../meta/pack.hpp"
 
@@ -56,3 +58,4 @@ namespace obi { namespace structures {
     };
 
 }}  // obi::structures
+#endif // OBI_STRUCTURES_VECTOR_HEADER

@@ -1,5 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
+#ifndef OBI_UTIL_TYPE_TO_STRING_HEADER
+#define OBI_UTIL_TYPE_TO_STRING_HEADER
 
 #include <utility>
 #include <type_traits>
@@ -77,3 +79,4 @@ type_to_string()
     } while(0);
 
 }}  // namespace obi::util
+#endif // OBI_UTIL_TYPE_TO_STRING_HEADER
