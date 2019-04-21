@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // get gcc macros
 // gcc -dM -E - < /dev/null
 #pragma once

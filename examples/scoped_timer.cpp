@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <obi/util/scoped_timer.hpp>
 #include <thread>
 #include <atomic>

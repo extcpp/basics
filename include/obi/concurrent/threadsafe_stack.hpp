@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef OBI_CONCURRENT_THREADSAFE_STACK_HEADER
 #define OBI_CONCURRENT_THREADSAFE_STACK_HEADER

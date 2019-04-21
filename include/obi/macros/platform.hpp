@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef OBI_MACROS_PLATFORM_HEADER
 #define OBI_MACROS_PLATFORM_HEADER

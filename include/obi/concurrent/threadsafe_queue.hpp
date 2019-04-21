@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // From Concurrency in Action - Anthony Williams
 #pragma once
 #ifndef OBI_CONCURRENT_THREADSAFE_QUEUE_HEADER

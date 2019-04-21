@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <array>
 #ifndef OBI_STRUCTURES_VECTOR_HEADER
 #define OBI_STRUCTURES_VECTOR_HEADER

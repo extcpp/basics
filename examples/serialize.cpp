@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <obi/util/serialization.hpp>
 
 int main(/*int argc, const char *argv[]*/) {

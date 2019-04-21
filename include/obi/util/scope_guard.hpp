@@ -1,4 +1,4 @@
-// Jan Christoph Uhde <Jan@UhdeJC.com> 2015-2018
+// Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 //
 // idea taken form:
 // Andrei Alexandrescu - CppCon 2015 - Declarative Control Flow

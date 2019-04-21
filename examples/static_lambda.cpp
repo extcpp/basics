@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <obi/meta/static_lambda.hpp>
 #include <iostream>
 

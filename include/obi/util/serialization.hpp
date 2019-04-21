@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef OBI_UTIL_SERIALIZATION_HEADER
 #define OBI_UTIL_SERIALIZATION_HEADER

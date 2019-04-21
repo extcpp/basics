@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef OBI_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
 #define OBI_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER

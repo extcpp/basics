@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // The code is taken from: "Anthony Williams: C++ Concurrency in Action"
 // c++11 only
 #pragma once

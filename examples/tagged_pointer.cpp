@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <obi/memory/tagged_pointer.hpp>
 #include <obi/util/encode.hpp>
 
