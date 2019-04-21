@@ -28,17 +28,22 @@ def handle_file(full_path: Path, state_and_config: StateAndConfiguration):
             if operation.dry_run:
                 log.info("dryrun on target {}".format(target_file))
                 status = do_operation(full_path, project_path, sys.stdout, state_and_config, state)
+                assert status.name
             else:
                 with open(target_file, 'w') as target_file_handle:
                     status = do_operation(full_path, project_path, target_file_handle, state_and_config, state)
+                    assert status.name
 
                 if status == Status.OK_REPLACED:
+                    log.info("replace {}".format(project_path))
                     os.rename(target_file, full_path)
+                    break
                 else:
                     os.unlink(target_file)
 
         elif access == AccessType.READ:
             status = do_operation(full_path, project_path, None, state_and_config, state)
+            assert status.name
 
         else:
             pass
@@ -58,17 +63,25 @@ def do_operation(full_path: Path, project_path: Path, target_file_handle: IO, st
     operation = state_and_config.current_operation
 
     status = operation.do(full_path, project_path, target_file_handle, state)
-    if not Status.is_good(status) and not Status.is_done(status):
-        return Status.good_to_ok(Status)
+    assert status.name
+
+    if not Status.is_good(status) or Status.is_done(status):
+        return status
 
     with open(full_path) as source_file_handle:
         for cnt, line in enumerate(source_file_handle):
             if Status.is_done(status, True): #done linewise
                 break
+
             status = operation.do_line(line, cnt, full_path, project_path, target_file_handle, state)
+            assert status.name
+
             if Status.is_done(status, True): #done linewise
                 return status
+
         status = operation.do_line("", "EOF", full_path, project_path, target_file_handle, state)
+        assert status.name
+
         if status == None:
             raise ValueError("status can not be None")
 
@@ -129,6 +142,7 @@ def check_modify_source(directories_to_include, directories_or_files_to_exclude,
 
                 if (filename.suffix in operation.file_types):
                     status = handle_file(full_path, state_and_config)
+                    assert status.name
 
                 if not Status.is_good(status):
                     return status
