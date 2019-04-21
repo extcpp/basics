@@ -53,8 +53,8 @@ def handle_file(full_path: Path, state_and_config: StateAndConfiguration):
     return Status.good_to_ok(status)
 
 def do_operation(full_path: Path, project_path: Path, target_file_handle: IO, state_and_config: StateAndConfiguration, state) -> Status:
-    full_path.parts
-    project_path.parts
+    assert full_path.parts
+    assert project_path.parts
     operation = state_and_config.current_operation
 
     status = operation.do(full_path, project_path, target_file_handle, state)

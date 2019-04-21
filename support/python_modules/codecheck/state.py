@@ -3,6 +3,7 @@ import os
 
 from .common import AccessType
 from .include_guards import IncludeGuard
+from .copyright import Copyright
 
 from enum import Enum
 
@@ -14,13 +15,15 @@ class Configuration():
 
         self.project_root = project_root
         self.fix_include_guards = access
-        self.fix_copy_right = access
+        self.fix_copyright = access
         self.create_operation_list()
 
     def create_operation_list(self):
         self.operations = []
         if self.fix_include_guards:
             self.operations.append(IncludeGuard(self.fix_include_guards))
+        if self.fix_copyright:
+            self.operations.append(Copyright(self.fix_copyright))
 
 class StateAndConfiguration():
     def __init__(self, project_root, check_only):

@@ -24,11 +24,11 @@ if __name__ == "__main__":
 
     check_only = False
     state = StateAndConfiguration(project_dir, check_only)
+    state.fix_include_guards = None
 
-    rv = check_modify_source(
-            ["include", "examples"] #dirs to include
-            ,[] #dirs and files to exclude (does not purge the dir)
-            ,state
-        )
+    rv = check_modify_source(["include", "examples"] #dirs to include
+                            ,[] #dirs and files to exclude (does not purge the dir)
+                            ,state
+                            )
 
     sys.exit(rv)
