@@ -51,11 +51,6 @@ class OperationState():
     def __init__(self, access):
         self.access = list(access)
 
-#class OperationResult():
-#    def __init__(self):
-#        self.status = Status.OK
-#        self.state = None
-
 class Operation():
     def __init__(self, op_type, name):
         log.info("create {} with {}".format(name, op_type))
