@@ -7,7 +7,6 @@ def handle_file(full_path: Path, state_and_config: StateAndConfiguration):
     conf = state_and_config.configuration
     project_path = full_path.relative_to(conf.project_root)
 
-    log.info("handle file {}".format(project_path) )
     log.debug("---> " + str(full_path))
 
     operation = state_and_config.current_operation
@@ -119,6 +118,9 @@ def check_modify_source(directories_to_include, directories_or_files_to_exclude,
     log.debug("to exclude: {} ".format(exclude))
 
     for operation in conf.operations:
+        if not operation.access:
+            continue
+
         log.info(operation.name)
         state_and_config.current_operation = operation
 

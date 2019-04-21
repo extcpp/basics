@@ -2,8 +2,10 @@ import sys
 import os
 
 from .common import AccessType
+
 from .include_guards import IncludeGuard
 from .copyright import Copyright
+from .ifdef import IfDef
 
 from enum import Enum
 
@@ -16,6 +18,7 @@ class Configuration():
         self.project_root = project_root
         self.fix_include_guards = access
         self.fix_copyright = access
+        self.fix_ifdef = access
         self.create_operation_list()
 
     def create_operation_list(self):
@@ -24,6 +27,8 @@ class Configuration():
             self.operations.append(IncludeGuard(self.fix_include_guards))
         if self.fix_copyright:
             self.operations.append(Copyright(self.fix_copyright))
+        if self.fix_ifdef:
+            self.operations.append(IfDef(self.fix_ifdef))
 
 class StateAndConfiguration():
     def __init__(self, project_root, check_only):

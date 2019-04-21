@@ -22,13 +22,22 @@ if __name__ == "__main__":
     `check_only` must be set to true for normal operation mode.
     """
 
+    debug = False
     check_only = False
-    state = StateAndConfiguration(project_dir, check_only)
-    state.fix_include_guards = None
+    state_and_conf = StateAndConfiguration(project_dir, check_only)
+
+    if debug:
+        conf = state_and_conf.configuration
+
+        #conf.fix_include_guards = None
+        #conf.fix_copyright = None
+        #conf.fix_ifdef = None
+
+        conf.create_operation_list()
 
     rv = check_modify_source(["include", "examples"] #dirs to include
                             ,[] #dirs and files to exclude (does not purge the dir)
-                            ,state
+                            ,state_and_conf
                             )
 
     sys.exit(rv)
