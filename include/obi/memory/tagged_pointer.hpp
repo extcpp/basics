@@ -100,4 +100,4 @@ public:
 };
 
 }}
-#endif //OBI_MEMORY_TAGGED_POINTER_HPP
+#endif // OBI_MEMORY_TAGGED_POINTER_HEADER

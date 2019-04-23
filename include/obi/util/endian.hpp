@@ -19,7 +19,7 @@
     #include <endian.h>
 #else
     #pragma messsage("unsupported os or compiler")
-#endif
+#endif // __APPLE__
 
 namespace obi::util::endian {
 
@@ -74,7 +74,7 @@ host_to_little(T in){
     if(!is_little()) {
         byte_swap(&in, sizeof(T));
     }
-#endif
+#endif // __APPLE__
     return in;
 }
 
@@ -117,7 +117,7 @@ little_to_host(T in){
     if(!is_little()){
         byte_swap(&in, sizeof(T));
     }
-#endif
+#endif // __APPLE__
     return in;
 }
 
@@ -161,7 +161,7 @@ host_to_big(T in){
     if(is_little()) {
         byte_swap(&in, sizeof(T));
     }
-#endif
+#endif // __APPLE__
     return in;
 }
 
@@ -203,7 +203,7 @@ big_to_host(T in){
     if(is_little()) {
         byte_swap(&in, sizeof(T));
     }
-#endif
+#endif // __APPLE__
     return in;
 }
 

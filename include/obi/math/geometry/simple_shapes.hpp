@@ -113,4 +113,4 @@ namespace obi { namespace math { namespace geometry {
     };
 
 }}}
-#endif
+#endif // OBI_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER

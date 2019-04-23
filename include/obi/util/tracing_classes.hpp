@@ -76,7 +76,7 @@ public:
 }
 #else
     #define OBI_FUNCTION_NAME
-#endif
+#endif // defined(__GNUC__) && defined(OBI_DEBUG)
 
 namespace obi { namespace util {
 namespace tracing {

@@ -45,4 +45,4 @@ filename(std::string const& pathname, bool is_linux = true, bool both = false){
 }
 
 }} // obi::util
-#endif
+#endif // OBI_UTIL_BASIC_HEADER

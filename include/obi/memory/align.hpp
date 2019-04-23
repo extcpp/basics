@@ -13,7 +13,7 @@ inline constexpr std::size_t cache_line_size() {
     return OBI_KNOWN_L1_CACHE_LINE_SIZE;
 #else
     return ::std::hardware_destructive_interference_size;
-#endif
+#endif // OBI_KNOWN_L1_CACHE_LINE_SIZE
 }
 
 template <typename T>
@@ -25,4 +25,4 @@ is_alignment(T number) {
 }
 
 }}
-#endif
+#endif // OBI_MEMORY_ALIGN_HEADER

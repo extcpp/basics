@@ -197,4 +197,4 @@ namespace obi { namespace math {
     }
 
 }}  // obi::math
-#endif  //  _OBI_MATH_PRIMES
+#endif // OBI_MATH_PRIMES_HEADER

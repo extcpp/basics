@@ -103,7 +103,7 @@ struct scope_guard {
 #else
     // does it really work with with cl?
     noexcept (noexcept(execute())) {
-#endif
+#endif // (defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 8)
         if(active) {
             execute();
         }

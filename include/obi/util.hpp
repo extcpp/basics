@@ -12,5 +12,5 @@
 
 #if __cpp_generic_lambdas >= 201304
     #include "util/functional.hpp"
-#endif
+#endif // __cpp_generic_lambdas >= 201304
 #endif // OBI_UTIL_HEADER

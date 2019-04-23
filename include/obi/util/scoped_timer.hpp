@@ -158,4 +158,4 @@ public:
 };
 
 }}  // namespace obi::util
-#endif // OBI_UTIL_SCOPED_TIMER_HPP
+#endif // OBI_UTIL_SCOPED_TIMER_HEADER

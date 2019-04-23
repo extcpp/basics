@@ -20,7 +20,7 @@
     #include <windows.h>
     #include <strsafe.h>
     #include "windows_strings.hpp"
-#endif
+#endif // OBI_UNIX
 #include <string>
 #include <stdexcept>
 

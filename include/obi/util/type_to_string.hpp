@@ -10,7 +10,7 @@
 
 #ifdef __GNUC__
     #include <cxxabi.h>
-#endif
+#endif // __GNUC__
 
 namespace obi { namespace util {
 

@@ -49,4 +49,4 @@ private:
 inline std::ostream& operator<<(std::ostream& os, obi::util::any_printable const& any) {
     return any.write_to(os);
 }
-#endif
+#endif // OBI_UTIL_ANY_PRINTABLE_HEADER

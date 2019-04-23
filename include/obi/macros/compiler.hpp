@@ -12,7 +12,7 @@
     //visual studio
     #define OBI_COMPILER_VC
     #define OBI_DO_PRAGMA(x) __pragma (x)
-#endif
+#endif // __GNUC__
 
 // Warnings
 #ifdef OBI_COMPILER_GNU
@@ -21,7 +21,7 @@
     #define OBI_WARNING(msg) OBI_DO_PRAGMA(message #msg)
 #else
     #define OBI_WARNING(msg) OBI_NO_IMPL
-#endif
+#endif // OBI_COMPILER_GNU
 
 
 // Dynamic initizlization of static vars
@@ -34,7 +34,7 @@
     #define OBI_INIT_PRIORITY_GNU(prio)
     #define OBI_INIT_PRIORITY_GNU_HIGH
     #define OBI_INIT_PRIORITY_GNU_LOW
-#endif
+#endif // OBI_COMPILER_GNU
 
 #ifdef OBI_COMPILER_VC
     // init_set: https://msdn.microsoft.com/en-us/library/7977wcck.aspx
@@ -43,6 +43,6 @@
 #else
     #define OBI_INIT_PRIORITY_VC_HIGH
     #define OBI_INIT_PRIORITY_VC_LOW
-#endif
+#endif // OBI_COMPILER_VC
 
-#endif // OBI_MACROS_COMPILER_HPP
+#endif // OBI_MACROS_COMPILER_HEADER

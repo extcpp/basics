@@ -13,10 +13,10 @@
     #define OBI_ANONYMOUS_VARIABLE(str) OBI_CONCATENATE(str, __COUNTER__)
 #else
     #define OBI_ANONYMOUS_VARIABLE(str) OBI_CONCATENATE(str, __COUNTER__)
-#endif
+#endif // __COUNTER__
 namespace obi { namespace macros { namespace _detail{
         using expand_type = int[];
 }}}
 #define OBI_EXPAND_SIDE_EFFECTS(expression) int pass[]{ ((expression), 0)... }; (void)pass;
 
-#endif // OBI_MACROS_GENERAL_HPP
+#endif // OBI_MACROS_GENERAL_HEADER

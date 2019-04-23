@@ -86,4 +86,4 @@ namespace obi { namespace algorithm { namespace distances {
         return edit_matrix(first, second);
     }
 }}} // obi::algorithm::distances
-#endif
+#endif // OBI_ALGORITHM_STRING_DISTANCES_HEADER

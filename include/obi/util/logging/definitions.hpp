@@ -82,4 +82,4 @@ namespace obi { namespace  util { namespace logging {
     }
 
 }}} // obi::util::logging
-#endif // OBI_UTIL_LOGGING_DEFINITIONS_HPP
+#endif // OBI_UTIL_LOGGING_DEFINITIONS_HEADER

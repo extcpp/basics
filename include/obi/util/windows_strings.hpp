@@ -153,5 +153,5 @@ namespace obi { namespace util {
         return string_to_win(in_string.c_str());
     }
 }}
-#endif
+#endif // _WIN32
 #endif // OBI_UTIL_WINDOWS_STRINGS_HEADER

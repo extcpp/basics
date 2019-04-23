@@ -10,7 +10,7 @@
 
 #ifdef OBI_DEBUG
     #include <iostream>
-#endif
+#endif // OBI_DEBUG
 
 namespace obi { namespace util {
 
@@ -37,7 +37,7 @@ inline std::string error_code_vo_string(int code) {
       return std::string();
   }
 }
-#endif
+#endif // OBI_RESULT_NOT_FINISHED
 // REMOVE - END /////////////////////////////////////////////////////
 
 namespace obi { namespace util {
@@ -582,4 +582,4 @@ using result = typed_result<bool>;
 }
 
 }} // obi::util
-#endif
+#endif // OBI_UTIL_RESULT_HEADER

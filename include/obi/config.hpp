@@ -10,7 +10,7 @@
 // FIXME - add architecture check
 #ifndef OBI_KNOWN_L1_CACHE_LINE_SIZE
 #define OBI_KNOWN_L1_CACHE_LINE_SIZE 64
-#endif
-#endif
+#endif // OBI_KNOWN_L1_CACHE_LINE_SIZE
+#endif // __linux
 
-#endif // OBI_CONFIG_HPP
+#endif // OBI_CONFIG_HEADER

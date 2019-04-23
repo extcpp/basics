@@ -5,4 +5,4 @@
 
 #include "algorithm/basic.hpp"
 
-#endif
+#endif // OBI_ALGORITHM_HEADER

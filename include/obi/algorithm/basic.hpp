@@ -75,4 +75,4 @@ namespace obi { namespace algorithm {
     }
 
 }} // obi::algorithm
-#endif
+#endif // OBI_ALGORITHM_BASIC_HEADER
