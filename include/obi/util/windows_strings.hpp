@@ -1,20 +1,17 @@
-// Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
 // Collection of functions that convert between utf8 encoded
-// strings (std::string char*) and strings taken by the windows
-// API LPWSTR.
+// strings (std::string and char*) and strings taken by the Windows
+// API (std::wstring wchar_t*).
 // For more information please refer to:
-// - https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072.aspx (MultiByteToWideChar)
-// - https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130.aspx (WideCharToMultiByte)
-//
-// Notes:
-// the order out in is not lucky but instring_size is the only optional argument
-// think about possible normalization
+// - https://docs.microsoft.com/en-us/windows/desktop/api/stringapiset/nf-stringapiset-widechartomultibyte
+// - https://docs.microsoft.com/en-us/windows/desktop/api/stringapiset/nf-stringapiset-multibytetowidechar
 //
 //
-//              non UNICODE             UNICODE
-//  LPCTSTR:    LPCSTR (const char*)    LPCWSTR (const wchar)
-//  LPTSTR:     LPSTR (char*)           LPWSTR (wchar)
+//          | non UNICODE          | UNICODE
+//  --------|----------------------|-----------------------
+//  LPCTSTR | LPCSTR (const char*) | LPCWSTR (const wchar*)
+//  LPTSTR  | LPSTR (char*)        | LPWSTR (wchar*)
 //
 //
 #pragma once
@@ -25,10 +22,16 @@
 #include <windows.h>
 #include <string>
 
+// FIXME FIXME FIXME -- needs tests and must be build
+
+static_assert(std::is_same_v<LPCSTR, char const*>);
+static_assert(std::is_same_v<LPSTR, char*>);
+static_assert(std::is_same_v<LPCWSTR, wchar_t const*>);
+static_assert(std::is_same_v<LPWSTR, wchar_t*>);
+
 namespace obi { namespace util {
-
-
-// form windows to utf8 encoded std::string
+namespace _detail {
+    // From windows to utf8 encoded std::string
 
     //! get size of utf8 encoded string
     /*!
@@ -37,7 +40,7 @@ namespace obi { namespace util {
      * @param[in]   in_string_size  size of in_string if it is not null-terminated
      * @return                      size of in_string if it would be converted to utf8 string
      */
-    int string_from_win_get_size(LPCWSTR in_string, int in_string_size=-1){
+    inline int string_from_win_get_size(wchar_t const* in_string, int const in_string_size=-1){
         return ::WideCharToMultiByte(
             CP_UTF8,                // UNIT    CodePage
             WC_ERR_INVALID_CHARS,   // DOWRD   dwFlags
@@ -60,7 +63,7 @@ namespace obi { namespace util {
      * @param[in]       in_string_size      size of in_string if it is not null-terminated
      * @return                              number of written bytes or 0 on failure
      */
-    int string_from_win(char* out_string, int out_string_size, LPCWSTR in_string, int in_string_size=-1){
+    inline int string_from_win(char* out_string, int out_string_size, wchar_t const* in_string, int const in_string_size=-1){
         return ::WideCharToMultiByte(
             CP_UTF8,                // UNIT    CodePage
             WC_ERR_INVALID_CHARS,   // DOWRD   dwFlags
@@ -73,27 +76,10 @@ namespace obi { namespace util {
         );
     };
 
-    //! convert LPWSTR into utf8 encoded std::string
-    /*!
-     * Functions that converts a given LPCWSTR into an utf8 encoded std::string
-     * @param[in]       in_string           LPCWSTR that will be converted to utf8 encoded std::string
-     * @param[in]       in_string_size      size of in_string if it is not null-terminated
-     * @return                              utf8 encoded std::string
-     */
-    std::string string_from_win(LPCWSTR in_string, int in_string_size=-1){
-        int size = string_from_win_get_size(in_string, in_string_size);
-        std::string rv(size, '');
-        string_from_win(&rv[0], size, in_string, instring_size);
-        return rv;
-    }
-
-    // overload for std::wstring
-    std::string string_from_win(const std::wstring& in_string){
-        return string_from_win(in_string.c_str());
-    }
-
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
+
+    // From utf8 to windows encoded std::wstring
 
     //! get size of resulting LPWSTR string (utf16)
     /*!
@@ -102,7 +88,7 @@ namespace obi { namespace util {
      * @param[in]   in_string_size  size of in_string if it is not null-terminated
      * @return                      size of in_string if it would be converted to LPWSTR
      */
-    int string_to_win_get_size(const char* in_string, int in_string_size=-1){
+    inline int string_to_win_get_size(const char* in_string, int const in_string_size=-1){
         return ::MultiByteToWideChar(
             CP_UTF8,                // UINT     CodePage
             MB_PRECOMPOSED,         // DWORD    dwFlags
@@ -123,7 +109,7 @@ namespace obi { namespace util {
      * @param[in]       in_string_size      size of in_string if it is not null-terminated
      * @return                              number of written bytes or 0 on failure
      */
-    int string_to_win(LPWSTR out_string, int out_string_size, const char* in_string, int in_string_size=-1){
+    inline int string_to_win(wchar_t const* out_string, int out_string_size, const char* in_string, int const in_string_size=-1){
         return ::MultiByteToWideChar(
             CP_UTF8,                // UINT     CodePage
             MB_PRECOMPOSED,         // DWORD    dwFlags
@@ -134,6 +120,29 @@ namespace obi { namespace util {
         );
     };
 
+} // _detail
+
+    //! convert LPWSTR into utf8 encoded std::string
+    /*!
+     * Functions that converts a given LPCWSTR into an utf8 encoded std::string
+     * @param[in]       in_string           LPCWSTR that will be converted to utf8 encoded std::string
+     * @param[in]       in_string_size      size of in_string if it is not null-terminated
+     * @return                              utf8 encoded std::string
+     */
+    inline std::string string_from_win(wchar_t const* in_string, int const in_string_size=-1){
+        int out_size = _detail::string_from_win_get_size(in_string, in_string_size);
+        std::string rv(out_size, '');
+        int status = _detail::string_from_win(&rv[0], out_size, in_string, instring_size);
+        if (status != 0) {
+            //throw runtime error - ToFancyWindowsErrorString(GetLastError())
+        }
+        return rv;
+    }
+
+    inline std::string string_from_win(const std::wstring& in_string){
+        return string_from_win(in_string.c_str());
+    }
+
     //! convert const char* into windows encoded std::wstring
     /*!
      * Functions that converts a given utf8 encoded char* into an std::wstring (data [LPWSTR])
@@ -141,15 +150,17 @@ namespace obi { namespace util {
      * @param[in]       in_string_size      size of in_string if it is not null-terminated
      * @return                              windows encoded encoded std::wstring
      */
-    std::wstring string_to_win(const char* in_string, int in_string_size=-1){
-        int size = string_to_win_get_size(in_string, in_string_size);
+    inline std::wstring string_to_win(const char* in_string, int const in_string_size=-1){
+        int out_size = _detail::string_to_win_get_size(in_string, in_string_size);
         std::wstring rv(size, L'');
-        string_to_win(&rv[0], size, in_string, in_string_size);
+        int status = _detail::string_to_win(&rv[0], out_size, in_string, in_string_size);
+        if (status != 0) {
+            //throw runtime error - ToFancyWindowsErrorString(GetLastError())
+        }
         return rv;
     }
 
-    // overload for std::string
-    std::wstring string_to_win(const std::string& in_string){
+    inline std::wstring string_to_win(const std::string& in_string){
         return string_to_win(in_string.c_str());
     }
 }}
