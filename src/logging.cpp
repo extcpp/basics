@@ -16,7 +16,7 @@ namespace obi { namespace  util { namespace logging {
 
     _detail::logger::logger(logtopic const& topic, level level_,
                             const char* file_name, int line_no,
-                            const char* function):_ss() {
+                            const char* function): _ss() {
         _level = level_;
         _ss << "\n";
         if (configuration::vim){
@@ -24,7 +24,11 @@ namespace obi { namespace  util { namespace logging {
             _ss << "vim " << file_name << " +" << line_no << "\n";
         }
         if (configuration::gdb){
-            _ss << "break " << filename(file_name) << ":" << line_no << " # ";
+            _ss << "break "
+#ifndef _WIN32
+                << filename(file_name)
+#endif
+                << ":" << line_no << " # ";
         }
         _ss << level_to_str(level_);
         if(topic.id != topic::no_topic.id){
@@ -32,7 +36,11 @@ namespace obi { namespace  util { namespace logging {
         }
         if(configuration::filename){
             if(!configuration::gdb){
-                _ss << " " << filename(file_name) << ":" << line_no;
+                _ss << " "
+#ifndef _WIN32
+                    << filename(file_name)
+#endif
+                    << ":" << line_no;
             }
         }
         if(configuration::function){

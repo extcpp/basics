@@ -1,5 +1,10 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <iostream>
+
+#ifndef _WIN32
+
+// FIXME FIXME -- get it working for WIN32
+
 #include <obi/util/load_library.hpp>
 
 int main(){
@@ -36,3 +41,6 @@ int main(){
 
     return 0;
 }
+#else
+int main() { return 0;}
+#endif

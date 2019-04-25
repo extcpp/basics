@@ -5,6 +5,12 @@ project(libobi)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# verbose windows linking
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /VERBOSE:LIB")
+
+# move into target
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+
 ## OPTIONS
 option(LIBOBI_EXAMPLES "build examples" OFF)
 option(LIBOBI_TESTS "build tests" OFF)
@@ -26,6 +32,8 @@ if(UNIX)
     execute_process(COMMAND getconf LEVEL1_DCACHE_LINESIZE OUTPUT_VARIABLE obi_l1_cache_line_size)
     string(STRIP ${obi_l1_cache_line_size} obi_l1_cache_line_size)
     obi_log("cache line size: '${obi_l1_cache_line_size}'")
+else()
+    set(obi_l1_cache_line_size FALSE)
 endif()
 
 ## define header only lib
@@ -39,7 +47,7 @@ target_compile_definitions(obi INTERFACE
     $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
-    $<$<BOOL:$obi_l1_cache_line_size>:OBI_KNOWN_L1_CACHE_LINE_SIZE=${obi_l1_cache_line_size}>
+    $<$<BOOL:${obi_l1_cache_line_size}>:OBI_KNOWN_L1_CACHE_LINE_SIZE=${obi_l1_cache_line_size}>
 )
 
 ## define shared lib
@@ -54,13 +62,14 @@ target_compile_definitions(obi_shared PUBLIC
     $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
-    $<$<BOOL:$obi_l1_cache_line_size>:OBI_KNOWN_L1_CACHE_LINE_SIZE=${obi_l1_cache_line_size}>
+    $<$<BOOL:${obi_l1_cache_line_size}>:OBI_KNOWN_L1_CACHE_LINE_SIZE=${obi_l1_cache_line_size}>
 )
 
 ## testing
 if(LIBOBI_TESTS)
     message("libobi tests enabled")
     include(CTest)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     obi_add_test_subdirectory("google" tests)
 else()
     message("libobi tests disabled")

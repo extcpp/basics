@@ -14,8 +14,11 @@ int main() {
 
     cout << curry(add,1)(1) << endl;
 
+// FIXME
+#ifndef _WIN32
     cout << rv1 << endl
          << rv2 << endl;
+#endif
 
     return 0;
 }

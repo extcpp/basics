@@ -32,7 +32,7 @@ int main() {
     cout << "           size: " << sizeof(pointer) << endl;
     cout << endl;
 
-
+#ifndef _WIN32
     std::atomic<memory::tagged_pointer<uint64_t>>  atomic_pointer(pointer);
     cout << "---- atomic tagged_pointer --------------------------" << endl;
     cout << "  pointer.get(): " << atomic_pointer.load().get() << endl;
@@ -45,6 +45,7 @@ int main() {
     cout << "standard layout: " << std::is_standard_layout_v<decltype(atomic_pointer)> << endl;
     cout << "           size: " << sizeof(atomic_pointer) << endl;
     cout << endl;
+#endif
 
     auto current = pointer.tag();
     do{
