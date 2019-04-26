@@ -15,10 +15,13 @@ section "variable info"
 echo "project_root: $project_root"
 echo "build_base:   $build_base"
 echo "build_root:   $build_root"
+echo "build_type:   $build_type"
 echo
 echo "PATH:         $PATH"
 echo "CXX:          $CXX"
 echo "CC:           $CC "
+echo "CXXFLAGS:     $CXXFLAGS"
+echo "CFLAGS:       $CFLAGS"
 echo "COMPILER:     $COMPILER"
 echo "IN_TRAVIS:    $IN_TRAVIS"
 #end

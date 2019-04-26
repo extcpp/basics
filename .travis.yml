@@ -7,23 +7,54 @@ matrix:
       compiler: gcc
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['gcc-7', 'g++-7']
-      env: OCXX=g++-7 OCC=gcc-7 COMPILER=g++-7 IN_TRAVIS=true
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
+          packages: ['gcc-8', 'g++-8']
+      env:
+        - OBUILD_TYPE=Release
+        - OTESTS=ON
+        - OEXAMPLES=ON
+        - OCXX=g++-8
+        - OCC=gcc-8
+        - COMPILER=g++-8
+        - IN_TRAVIS=true
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
+          packages: ['gcc-8', 'g++-8']
+      env:
+        - OBUILD_TYPE=Debug
+        - OTESTS=ON
+        - OEXAMPLES=OFF
+        - OCXX=g++-8
+        - OCC=gcc-8
+        - COMPILER=g++-8
+        - OCXXFLAGS="-O0 --coverage"
+        - IN_TRAVIS=true
+      after_success:
+        - export do_test=true
+        - $project_root/.build_scripts/test
+        - cd "$build_root"
+        - pip install --user cpp-coveralls
+        - coveralls -r "$project_root" --verbose --gcov gcov-8 --gcov-options '\-lp' --include include --include src
 
 before_install:
+  - export CXXFLAGS=$OCXXFLAGS
   - export CXX=$OCXX CC=$OCC
-  - export build_type=release
+  - export build_type=$OBUILD_TYPE
   - export project_root="$(pwd)"
-  - export build_base="${project_root}-build"
+# coveralls requires us to build in source!!! WTF
+  - export build_base="${project_root}/build_directory"
   - export build_root="${build_base}/$build_type"
   - export install_root="$HOME/usr"
   - export PATH="$install_root/bin:$PATH"
   - export build_prefix='<>'
   - $project_root/.build_scripts/system_info
-  - $project_root/.build_scripts/var_info
 
 before_script:
+  - $project_root/.build_scripts/var_info
   - mkdir "$install_root"
   - mkdir -p "$build_root"
   - ln -s "$build_root" "$build_base/current"
@@ -31,7 +62,7 @@ before_script:
   - $project_root/.build_scripts/install_3rd_party
 
 script:
-  - $project_root/.build_scripts/configure -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON
+  - $project_root/.build_scripts/configure -DCMAKE_BUILD_TYPE=$OBUILD_TYPE -DLIBOBI_TESTS=$OTESTS -DLIBOBI_EXAMPLES=$OEXAMPLES
   - $project_root/.build_scripts/build
 
 after_success:
