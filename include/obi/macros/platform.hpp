@@ -11,7 +11,7 @@
 
 #ifdef __unix__
     #define OBI_UNIX
-#elif defined __WIN32
+#elif defined _WIN32
     #define OBI_WINDOWS
 #endif // __unix__
 

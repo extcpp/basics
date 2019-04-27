@@ -43,4 +43,4 @@ int main(){
 }
 #else
 int main() { return 0;}
-#endif
+#endif // _WIN32

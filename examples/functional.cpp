@@ -18,7 +18,7 @@ int main() {
 #ifndef _WIN32
     cout << rv1 << endl
          << rv2 << endl;
-#endif
+#endif // _WIN32
 
     return 0;
 }

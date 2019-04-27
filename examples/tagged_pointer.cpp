@@ -45,7 +45,7 @@ int main() {
     cout << "standard layout: " << std::is_standard_layout_v<decltype(atomic_pointer)> << endl;
     cout << "           size: " << sizeof(atomic_pointer) << endl;
     cout << endl;
-#endif
+#endif // _WIN32
 
     auto current = pointer.tag();
     do{

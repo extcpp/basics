@@ -7,7 +7,6 @@ include/obi/test.hpp
 compile_commands.json
 coverage.info
 
-test*
 git_*
 
 __pycache__

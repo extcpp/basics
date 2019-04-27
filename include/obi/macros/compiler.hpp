@@ -6,11 +6,11 @@
 
 #ifdef __GNUC__
     //gcc or clang
-    #define OBI_COMPILER_GNU OBI_NOTHING
+    #define OBI_COMPILER_GNU 1
     #define OBI_DO_PRAGMA(x) _Pragma (#x)
 #elif defined _MSC_VER
     //visual studio
-    #define OBI_COMPILER_VC OBI_NOTHING
+    #define OBI_COMPILER_VC 1
     #define OBI_DO_PRAGMA(x) __pragma (x)
 #endif // __GNUC__
 
@@ -44,7 +44,7 @@
     #define OBI_UNUSED OBI_NOTHING
     #define OBI_HOT    OBI_NOTHING
     #define OBI_COLD   OBI_NOTHING
-#endif
+#endif // OBI_COMPILER_GNU
 
 
 // Dynamic initizlization of static vars

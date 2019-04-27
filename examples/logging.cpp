@@ -15,7 +15,7 @@ int main(/*int argc, const char *argv[]*/) {
     OBI_LOG(fatal) << "General Excoption";
 #else
 int main(/*int argc, const char *argv[]*/) {
-#endif
+#endif // _WIN32
     return 0;
 }
 
