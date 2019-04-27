@@ -1,11 +1,15 @@
+branches:
+  only:
+    - master
+
 version: '{branch}-{build}'
 
 os:
-- Visual Studio 2019 Preview
+  - Visual Studio 2019 Preview
 
 configuration:
-- Release
-- Debug
+  #- Debug
+  - Release
 
 skip_commits:
   files:
@@ -14,24 +18,24 @@ skip_commits:
 
 environment:
   matrix:
-    - GENERATOR: Visual Studio 15 2017
     - GENERATOR: Visual Studio 15 2017 Win64
+    #- GENERATOR: Visual Studio 16 2019 Win64
 
 init: []
 
 install:
-- cd external_libs
-- git clone https://github.com/google/googletest
-- cd ..
+  - cd external_libs
+  - git clone https://github.com/google/googletest
+  - cd ..
 
 before_build:
-- if defined BINDIR (set "PATH=%BINDIR%;%PATH:C:\Program Files\Git\usr\bin;=%")
-- md build_dir
-- cd build_dir
-- cmake -Wno-dev -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON --config "%CONFIGURATION%" -G "%GENERATOR%" ..
+  - if defined BINDIR (set "PATH=%BINDIR%;%PATH:C:\Program Files\Git\usr\bin;=%")
+  - md build_dir
+  - cd build_dir
+  - cmake -Wno-dev -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON --config "%CONFIGURATION%" -G "%GENERATOR%" ..
 
 build_script:
-- cmake --build . --config "%CONFIGURATION%"
+  - cmake --build . --config "%CONFIGURATION%"
 
 test_script:
-- ctest -C "%CONFIGURATION%" --output-on-failure
+  - ctest -C "%CONFIGURATION%" --output-on-failure
