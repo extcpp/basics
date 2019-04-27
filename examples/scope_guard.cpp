@@ -52,6 +52,7 @@ int main()
 
     try {
         std::cout << "enter scope 3" << std::endl;
+        // will result in termination
         OBI_SCOPE_EXIT    { std::cout << "exit callback" << std::endl;
                             throw std::logic_error ("throw during exit callback");
                           };

@@ -1,0 +1,79 @@
+#!/bin/bash
+
+build=false
+debug=false
+examples=false
+
+IN_TRAVIS=${IN_TRAVIS:-false}
+
+while [[ -n "$1" ]]; do
+    case $1 in
+        --build)
+            build=true
+        ;;
+        --debug)
+            debug=true
+        ;;
+        --examples)
+            examples=true
+        ;;
+        *)
+        ;;
+    esac
+    shift
+done
+
+project_root="${project_root:-$(realpath . )}"
+build_root="${build_root:-$(realpath ../libobi-build/current)}"
+
+if $build; then
+    e=""
+    if $examples; then
+        e="-e"
+    fi
+
+    CXXFLAGS="--coverage -O0 " ./build -v -c -d -t $e || exit $?
+
+    if $examples; then
+        (
+            cd $build_root/examples
+            for ex in *example; do
+                echo "----- $ex -----"
+                ./$ex
+            done
+        )
+    fi
+fi
+
+if $debug; then
+    echo "############## gcdas ##############"
+    find -L ../libobi-build/current -iname "*.gcda" || exit $?
+fi
+
+echo "############## extract coverage.info  ##############"
+    lcov --directory "$build_root" \
+         --capture --output-file coverage.info || exit $?
+
+if $debug; then
+    echo "############## list info ##############"
+    lcov --list coverage.info || exit $?
+fi
+
+echo "############## remove info ##############"
+lcov --remove coverage.info \
+     '/usr/*' \
+     "$project_root"'/examples*' \
+     "$project_root"'/tests*' \
+     "$project_root"'/external_libs/*' \
+     --output-file coverage.info \
+     || exit $?
+
+if $debug; then
+    echo "############## list info ##############"
+    lcov --list coverage.info || exit $?
+fi
+
+if $IN_TRAVIS; then
+    bash <(curl -s https://codecov.io/bash) -f coverage.info || \
+        echo "Codecov did not collect coverage reports"
+fi
