@@ -1,14 +1,18 @@
-external_libs/*
 */.gitignore
+
+external_libs/*
 include/obi/test.hpp
 
 .coveralls.yml
 compile_commands.json
-.do_test
+coverage.info
 
 test*
+git_*
+
 __pycache__
 *.pyc
-
 *.ip
 *-ip.*
+
+.do_test

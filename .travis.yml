@@ -3,58 +3,70 @@ sudo: required
 
 matrix:
   include:
-    - os: linux
-      compiler: gcc
-      addons:
+    - addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
           packages: ['gcc-8', 'g++-8']
+      compiler: g++-8
       env:
-        - OBUILD_TYPE=Release
-        - OTESTS=ON
-        - OEXAMPLES=ON
-        - OCXX=g++-8
-        - OCC=gcc-8
-        - COMPILER=g++-8
+        - export OCXX=g++-8
+        - export OCC=gcc-8
+        - export build_type=Release
+        - export tests=ON
+        - export examples=ON
+        - export COMPILER=g++-8
         - IN_TRAVIS=true
 
-    - os: linux
-      compiler: gcc
-      addons:
+    - addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
-          packages: ['gcc-8', 'g++-8']
+          #we need gcc7 for lcov to work
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
+          packages: ['gcc-7', 'g++-7', 'lcov']
+      compiler: g++-7
       env:
-        - OBUILD_TYPE=Debug
-        - OTESTS=ON
-        - OEXAMPLES=OFF
-        - OCXX=g++-8
-        - OCC=gcc-8
-        - COMPILER=g++-8
-        - OCXXFLAGS="-O0 --coverage"
+        - export OCXX=g++-7
+        - export OCC=gcc-7
+        - export build_type=Debug
+        - export tests=ON
+        - export examples=OFF
+        - export COMPILER=g++-7
+        - export CXXFLAGS="-O0 --coverage"
         - IN_TRAVIS=true
+
       after_success:
-        - export do_test=true
+        - if [[ $test == "ON" ]]; then export do_test=true; fi
         - $project_root/.build_scripts/test
-        - cd "$build_root"
-        - pip install --user cpp-coveralls
-        - coveralls -r "$project_root" --verbose --gcov gcov-8 --gcov-options '\-lp' --include include --include src
+        #### Create lcov report ####
+        # capture coverage info
+        - lcov --directory "$build_root" --capture --output-file coverage.info
+        # filter out system and extra files.
+        # To also not include test code in coverage add them with full path to the patterns: '*/tests/*'
+        - lcov --remove coverage.info '/usr/*' "$project_root"'/examples*' "$project_root"'/tests*' "$project_root"'/external_libs/*' --output-file coverage.info
+        ## output coverage data for debugging (optional)
+        ##- find  "$build_root" -iname "*gcda"
+        ##- lcov --list coverage.info
+        # Uploading to CodeCov
+        # '-f' specifies file(s) to use and disables manual coverage gathering and file search which has already been done above
+        - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+
+os: linux
 
 before_install:
-  - export CXXFLAGS=$OCXXFLAGS
-  - export CXX=$OCXX CC=$OCC
-  - export build_type=$OBUILD_TYPE
+  # for some reason CXX and CC can not be set in env
+  - export CXX=$OCXX
+  - export CC=$OCC
+  # calculate pojects paths
   - export project_root="$(pwd)"
-# coveralls requires us to build in source!!! WTF
-  - export build_base="${project_root}/build_directory"
+  - export build_base="${project_root}-build"
   - export build_root="${build_base}/$build_type"
   - export install_root="$HOME/usr"
   - export PATH="$install_root/bin:$PATH"
   - export build_prefix='<>'
+  # system info
   - $project_root/.build_scripts/system_info
+  - $project_root/.build_scripts/var_info
 
 before_script:
-  - $project_root/.build_scripts/var_info
   - mkdir "$install_root"
   - mkdir -p "$build_root"
   - ln -s "$build_root" "$build_base/current"
@@ -62,7 +74,8 @@ before_script:
   - $project_root/.build_scripts/install_3rd_party
 
 script:
-  - $project_root/.build_scripts/configure -DCMAKE_BUILD_TYPE=$OBUILD_TYPE -DLIBOBI_TESTS=$OTESTS -DLIBOBI_EXAMPLES=$OEXAMPLES
+  - $project_root/.build_scripts/var_info
+  - $project_root/.build_scripts/configure -DCMAKE_BUILD_TYPE="$build_type" -DLIBOBI_TESTS="$tests" -DLIBOBI_EXAMPLES="$examples"
   - $project_root/.build_scripts/build
 
 after_success:
