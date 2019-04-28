@@ -5,7 +5,6 @@ include/obi/test.hpp
 
 .coveralls.yml
 compile_commands.json
-coverage.info
 
 git_*
 

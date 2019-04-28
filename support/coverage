@@ -1,9 +1,9 @@
 #!/bin/bash
 
+## setup vars
 build=false
 debug=false
 examples=false
-
 IN_TRAVIS=${IN_TRAVIS:-false}
 
 while [[ -n "$1" ]]; do
@@ -26,6 +26,13 @@ done
 project_root="${project_root:-$(realpath . )}"
 build_root="${build_root:-$(realpath ../libobi-build/current)}"
 
+## skip coverage when not on branch master
+if $IN_TRAVIS && [[ $TRAVIS_BRANCH != master ]] ; then
+    cd $build_root; ctest --output-on-failure
+    exit $?
+fi
+
+## build with coverage information
 if $build; then
     e=""
     if $examples; then
@@ -35,9 +42,11 @@ if $build; then
     CXXFLAGS="--coverage -O0 " ./build -v -c -d -t $e || exit $?
 fi
 
+## collect coverage information
+cd "$build_root"
 
 echo "############## extract base coverage ##############"
-lcov --capture -initial --directory "$build_root" \
+lcov --capture --initial --directory "$build_root" \
      --output-file base_coverage.info || exit $?
 
 echo "############## zero counters  ##############"
@@ -90,10 +99,13 @@ if $debug; then
     lcov --list coverage.info || exit $?
 fi
 
+## upload coverage information
 if $IN_TRAVIS; then
-    bash <(curl -s https://codecov.io/bash) -f coverage.info || \
+    cd $project_root
+
+    bash <(curl -s https://codecov.io/bash) -f $build_root/coverage.info || \
         echo "Codecov did not collect coverage reports"
 
     gem install coveralls-lcov
-    coveralls-lcov coverage.info
+    coveralls-lcov $build_root/coverage.info
 fi
