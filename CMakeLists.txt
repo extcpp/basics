@@ -16,8 +16,6 @@ option(LIBOBI_EXAMPLES "build examples" OFF)
 option(LIBOBI_TESTS "build tests" OFF)
 option(LIBOBI_WARNINGS "enable warnings" ON)
 
-message("${LIBOBI_TESTS}")
-
 ## general setup and includes
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

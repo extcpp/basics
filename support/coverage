@@ -33,26 +33,43 @@ if $build; then
     fi
 
     CXXFLAGS="--coverage -O0 " ./build -v -c -d -t $e || exit $?
+fi
 
-    if $examples; then
-        (
-            cd $build_root/examples
-            for ex in *example; do
-                echo "----- $ex -----"
-                ./$ex
-            done
-        )
-    fi
+
+echo "############## extract base coverage ##############"
+lcov --capture -initial --directory "$build_root" \
+     --output-file base_coverage.info || exit $?
+
+echo "############## zero counters  ##############"
+lcov --directory "$build_root" --zerocounters
+
+echo "############## run tests ##############"
+( cd $build_root; ctest ) || exit $?
+
+if $examples; then
+echo "############## run examples ##############"
+    (
+        cd $build_root/examples
+        for ex in *example; do
+            echo "----- $ex -----"
+            ./$ex
+        done
+    )
 fi
 
 if $debug; then
     echo "############## gcdas ##############"
-    find -L ../libobi-build/current -iname "*.gcda" || exit $?
+    find -L "$build_root" -iname "*.gcda" || exit $?
 fi
 
-echo "############## extract coverage.info  ##############"
-    lcov --directory "$build_root" \
-         --capture --output-file coverage.info || exit $?
+echo "############## extract test coverage  ##############"
+lcov --directory "$build_root" \
+     --capture --output-file test_coverage.info || exit $?
+
+echo "############## combine base and test coverage  ##############"
+lcov --add-tracefile base_coverage.info --add-tracefile test_coverage.info \
+     --output-file coverage.info || exit $?
+
 
 if $debug; then
     echo "############## list info ##############"
@@ -76,4 +93,7 @@ fi
 if $IN_TRAVIS; then
     bash <(curl -s https://codecov.io/bash) -f coverage.info || \
         echo "Codecov did not collect coverage reports"
+
+    gem install coveralls-lcov
+    coveralls-lcov coverage.info
 fi
