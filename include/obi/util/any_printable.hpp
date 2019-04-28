@@ -17,7 +17,7 @@ public:
         return data_ptr->write_to(os);
     }
 
-    std::string str(){
+    std::string str() const {
         std::stringstream ss;
         data_ptr->write_to(ss);
         return ss.str();

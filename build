@@ -124,6 +124,7 @@ while [[ -n "$1" ]]; do
     ;;
     -a|--asan)
       asan=true
+      flags_asan="-fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fno-omit-frame-pointer -fno-sanitize=vptr -pthread"
       shift
     ;;
     *)
@@ -132,6 +133,11 @@ while [[ -n "$1" ]]; do
     ;;
   esac
 done
+
+if [[ -n "$flags_asan" ]]; then
+    export CXXFLAGS="$CXXFLAGS $flags_asan"
+    export CFLAGS="$CFLAGS $flags_asan"
+fi
 
 section "prepare build"
 
@@ -170,7 +176,7 @@ export project_root
 export build_root
 export build_base
 export do_test
-
+export asan
 ## build prepared
 
 "$project_root"/.build_scripts/var_info || exit $?
