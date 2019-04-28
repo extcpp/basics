@@ -57,8 +57,11 @@ inline std::string win_error_to_string(DWORD error_number) {
         throw std::runtime_error("could not get error message "s + std::to_string(error_number));
     }
 
+    // make sure buffer is freed
 	auto message_ptr = std::unique_ptr<std::remove_pointer_t<LPSTR>,void(*)(LPSTR c)>(message_buffer, [](LPSTR c){ ::LocalFree(c); });
-    std::string message(message_ptr.get(), size);
+
+    LPSTR pos = std::find(message_buffer, message_buffer + size, '\r');
+    std::string message(message_buffer, pos);
 
     if(message.empty()) {
         throw std::runtime_error("could not get error message (message empty) "s + std::to_string(error_number));

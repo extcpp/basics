@@ -11,7 +11,7 @@ TEST(util_windows_strings, error_to_string){
     ASSERT_EQ(""s , win_error_to_string(0));
 
     ASSERT_EQ(ERROR_INVALID_SID , 1337);
-    ASSERT_EQ("The security ID structure is invalid.\r\n"s, win_error_to_string(ERROR_INVALID_SID));
+    ASSERT_EQ("The security ID structure is invalid."s, win_error_to_string(ERROR_INVALID_SID));
 }
 
 TEST(util_windows_strings, from_to_ucs16){
