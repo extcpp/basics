@@ -2,12 +2,20 @@ dist: xenial
 language: cpp
 sudo: required
 
+env:
+  global:
+    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+    #   via the "travis encrypt" command using the project repo's public key
+    #secure: ""
+
+
 matrix:
   include:
     - addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
           packages: ['gcc-8', 'g++-8']
+
       compiler: g++-8
       env:
         - ARCH=amd64
@@ -26,6 +34,21 @@ matrix:
           #we need gcc7 for lcov to work
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
           packages: ['gcc-7', 'g++-7', 'lcov']
+
+          # coverity_scan:
+          #   project:
+          #     name: obiwahn/libobi
+          #     version: 0.1
+          #     description: libobi
+          #   notification_email: linux@obiwah.org
+          #   build_command_prepend: "mkdir x && cd x && cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON .."
+          #   build_command: "cmake --build ."
+
+          #   # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
+          #   # Take care in resource usage, and consider the build frequency allowances per
+          #   #   https://scan.coverity.com/faq#frequency
+          #   branch_pattern: coverity_scan
+
       compiler: g++-7
       env:
         - ARCH=amd64
@@ -38,6 +61,12 @@ matrix:
         - tests=ON
         - examples=OFF
         - CXXFLAGS="-O0 --coverage"
+
+      before_script:
+        # fix for coverity scans
+        - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+        - sudo curl -s -L https://entrust.com/root-certificates/entrust_l1k.cer -o /usr/local/share/ca-certificates/entrust_l1k.crt
+        - sudo update-ca-certificates
 
       after_success:
         - if [[ $test == "ON" ]]; then export do_test=true; fi
