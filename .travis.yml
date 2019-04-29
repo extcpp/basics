@@ -1,3 +1,4 @@
+dist: xenial
 language: cpp
 sudo: required
 
@@ -9,13 +10,16 @@ matrix:
           packages: ['gcc-8', 'g++-8']
       compiler: g++-8
       env:
-        - IN_TRAVIS=true
-        - export COMPILER=g++-8
-        - export OCXX=g++-8
-        - export OCC=gcc-8
-        - export build_type=Release
-        - export tests=ON
-        - export examples=ON
+        - ARCH=amd64
+        #compiler
+        - COMPILER=g++-8
+        - OCXX=g++-8
+        - OCC=gcc-8
+        #build settings
+        - build_type=Release
+        - tests=ON
+        - examples=ON
+        - SANITIZER=false
 
     - addons:
         apt:
@@ -24,26 +28,36 @@ matrix:
           packages: ['gcc-7', 'g++-7', 'lcov']
       compiler: g++-7
       env:
-        - IN_TRAVIS=true
-        - export COMPILER=g++-7
-        - export OCXX=g++-7
-        - export OCC=gcc-7
-        - export build_type=Debug
-        - export tests=ON
-        - export examples=OFF
-        - export CXXFLAGS="-O0 --coverage"
+        - ARCH=amd64
+        #compiler
+        - COMPILER=g++-7
+        - OCXX=g++-7
+        - OCC=gcc-7
+        #build settings
+        - build_type=Debug
+        - tests=ON
+        - examples=OFF
+        - CXXFLAGS="-O0 --coverage"
 
       after_success:
         - if [[ $test == "ON" ]]; then export do_test=true; fi
-        - e=""; if [[ $examples == "ON" ]]; then e="--examples"; fi
-        - $project_root/support/coverage $e
+        - |
+          e=""; if [[ $examples == "ON" ]]; then
+            e="--examples"
+          fi
+          $project_root/support/coverage $e
 
 os: linux
 
 before_install:
   # for some reason CXX and CC can not be set in env
+  - export IN_TRAVIS=true
+  - export OBI_CI=true
   - export CXX=$OCXX
   - export CC=$OCC
+  # set defaults
+  - export SANITIZER=${SANITIZER:-false}
+  - export ARCH=${ARCH:-amd64}
   # calculate pojects paths
   - export project_root="$(pwd)"
   - export build_base="${project_root}-build"
@@ -51,20 +65,31 @@ before_install:
   - export install_root="$HOME/usr"
   - export PATH="$install_root/bin:$PATH"
   - export build_prefix='<>'
+  # extra stunts
+  - |
+    if $SANITIZER; then
+        #extra_flags="$extra_flags -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold"
+        export CXXFLAGS="$CXXFLAGS -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fno-omit-frame-pointer -fno-sanitize=vptr -pthread"
+    fi
   # system info
   - $project_root/.build_scripts/system_info
   - $project_root/.build_scripts/var_info
 
-before_script:
+install:
   - mkdir "$install_root"
   - mkdir -p "$build_root"
   - ln -s "$build_root" "$build_base/current"
+  - $project_root/support/travis/install-$ARCH
   - $project_root/.build_scripts/install_cmake
   - $project_root/.build_scripts/install_3rd_party
 
+before_script:
+
 script:
   - $project_root/.build_scripts/var_info
-  - $project_root/.build_scripts/configure -DCMAKE_BUILD_TYPE="$build_type" -DLIBOBI_TESTS="$tests" -DLIBOBI_EXAMPLES="$examples"
+  - |
+    $project_root/.build_scripts/configure -DCMAKE_BUILD_TYPE="$build_type" \
+      -DLIBOBI_TESTS="$tests" -DLIBOBI_EXAMPLES="$examples" "$extra_flags"
   - $project_root/.build_scripts/build
 
 after_success:
