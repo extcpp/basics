@@ -21,7 +21,7 @@ namespace obi { namespace util {
     not_implemented_exception& operator=(not_implemented_exception const&) = default;
     not_implemented_exception(not_implemented_exception&&) = default;
     not_implemented_exception& operator=(not_implemented_exception&&) = default;
-    virtual ~not_implemented_exception() noexcept;
+    virtual ~not_implemented_exception() noexcept = default;
   };
 
   class debug_exception : public std::logic_error {
@@ -32,7 +32,7 @@ namespace obi { namespace util {
     debug_exception& operator=(debug_exception const&) = default;
     debug_exception(debug_exception&&) = default;
     debug_exception& operator=(debug_exception&&) = default;
-    virtual ~debug_exception() noexcept;
+    virtual ~debug_exception() noexcept = default;
   };
 
   class permission_denied_exception : public std::runtime_error {
@@ -43,7 +43,7 @@ namespace obi { namespace util {
     permission_denied_exception& operator=(permission_denied_exception const&) = default;
     permission_denied_exception(permission_denied_exception&&) = default;
     permission_denied_exception& operator=(permission_denied_exception&&) = default;
-    virtual ~permission_denied_exception() noexcept;
+    virtual ~permission_denied_exception() noexcept = default;
   };
 
   class cat_not_connect_exception : public std::runtime_error {
@@ -54,7 +54,7 @@ namespace obi { namespace util {
     cat_not_connect_exception& operator=(cat_not_connect_exception const&) = default;
     cat_not_connect_exception(cat_not_connect_exception&&) = default;
     cat_not_connect_exception& operator=(cat_not_connect_exception&&) = default;
-    virtual ~cat_not_connect_exception() noexcept;
+    virtual ~cat_not_connect_exception() noexcept = default;
   };
 
 }} // obi::util

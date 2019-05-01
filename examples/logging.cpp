@@ -11,8 +11,14 @@ int main(/*int argc, const char *argv[]*/) {
         using namespace obi::util::logging;
         configuration::function = false;
     }
-    OBI_LOG_TOPIC(error, network) << "packages lost";
-    OBI_LOG(fatal) << "General Excoption";
+
+    OBI_LOG(trace) << "where is the byte gone";
+    OBI_LOG(debug) << "ohlala";
+    OBI_LOG(info) << "Hi there!";
+    OBI_LOG(warn) << "something is wrong";
+    OBI_LOG_TOPIC(network, error) << "your network is broken";
+    OBI_LOG(fatal) << "your app will terminate";
+
 #else
 int main(/*int argc, const char *argv[]*/) {
 #endif // _WIN32

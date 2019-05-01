@@ -45,9 +45,9 @@ namespace obi { namespace  util { namespace logging {
         }
 
         struct logtopic {
-            logtopic(int id_, std::string&& name_, level trigger_level_)
+            logtopic(int id_, std::string&& name_, level activation_level_)
                 :id(id_)
-                ,trigger_level(trigger_level_)
+                ,activation_level(activation_level_)
                 ,name(std::move(name_))
                 {
                     topics_map[id]=this;
@@ -57,7 +57,7 @@ namespace obi { namespace  util { namespace logging {
             logtopic(logtopic const& other) = default;
 
             int id;
-            level trigger_level;
+            level activation_level;
             std::string name;
         };
 
@@ -66,7 +66,7 @@ namespace obi { namespace  util { namespace logging {
     namespace configuration {
         extern std::map<int,_detail::logtopic*> topics;
         extern level global_level;
-        // logging is configured globally via these varialbes
+        // logging is configured globally via these variables
         // configure logging before you start logging!!!
         extern bool threads;
         extern bool filename;
@@ -75,8 +75,10 @@ namespace obi { namespace  util { namespace logging {
         extern bool gdb;
     }
 
-    namespace topic{
+    namespace topic {
+        // can not be inline as they shall be mutable
         extern _detail::logtopic no_topic;
+        extern _detail::logtopic dev;
         extern _detail::logtopic network;
         extern _detail::logtopic engine;
     }
