@@ -46,6 +46,7 @@ target_compile_definitions(obi INTERFACE
     $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
     $<$<BOOL:${obi_l1_cache_line_size}>:OBI_KNOWN_L1_CACHE_LINE_SIZE=${obi_l1_cache_line_size}>
+    OBI_HEADER_ONLY
 )
 
 ## define shared lib

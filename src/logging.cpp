@@ -30,7 +30,7 @@ namespace obi { namespace  util { namespace logging {
 
     // the logger is a class that creates the log stream and writes
     // it thread safe to a file descriptor
-    _detail::logger::logger(logtopic const& topic, level level_,
+    _detail::logger::logger(char const* id, logtopic const& topic, level level_,
                             const char* file_name, int line_no,
                             const char* function): _ss(), _out(std::cerr) {
         _level = level_;
@@ -47,6 +47,9 @@ namespace obi { namespace  util { namespace logging {
 #endif
         }
 
+        if (true) {
+            _ss << "[" << id << "] ";
+        }
         // log level
         _ss << level_to_str(level_);
 

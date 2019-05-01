@@ -15,12 +15,17 @@ namespace obi { namespace  util { namespace logging {
     namespace _detail {
         extern std::mutex logmutex;
 
-        inline bool level_is_active(level macro_level_, logtopic topic = topic::no_topic){
+        inline bool level_is_active(level macro_level, logtopic topic = topic::no_topic){
             //activation_level 60(info) && macro_level 20 (error) -> log
             //activation_level 60(info) && macro_level 100(trace) -> no log
             // activation level must be greater than macro level
-            return topic.activation_level >= macro_level_;
+            return topic.activation_level >= macro_level;
         }
+
+        constexpr inline bool default_level_is_active(level macro_level){
+            return _detail::logtopic::default_level >= macro_level;
+        }
+
 
         // this class does the real work it has to take care that messages
         // are not interleaved and it is reposible for organizing the output
@@ -32,7 +37,7 @@ namespace obi { namespace  util { namespace logging {
             std::ostream& _out;    // output - may change
             level _level;
 
-            logger(logtopic const& topic, level level_,
+            logger(char const* id, logtopic const& topic, level level_,
                    const char* file_name, int line_no,
                    const char* function = "none");
             ~logger();

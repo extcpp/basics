@@ -17,7 +17,6 @@
     #define OBI_NO_IMPL
 #endif // __COUNTER__
 
-
 // not required since c++17
 namespace obi { namespace macros { namespace _detail{
         using expand_type = int[];

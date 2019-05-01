@@ -3,6 +3,11 @@
 #ifndef OBI_UTIL_LOGGING_DEFINITIONS_HEADER
 #define OBI_UTIL_LOGGING_DEFINITIONS_HEADER
 
+
+#ifndef OBI_LOGGING_DEFAULT_LEVEL
+#define OBI_LOGGING_DEFAULT_LEVEL info
+#endif
+
 #include <string>
 #include <map>
 #include <mutex>
@@ -57,8 +62,11 @@ namespace obi { namespace  util { namespace logging {
             logtopic(logtopic const& other) = default;
 
             int id;
+            static const level default_level = level::OBI_LOGGING_DEFAULT_LEVEL;
+            // using info is the default
             level activation_level;
             std::string name;
+
         };
 
     } // _detail
