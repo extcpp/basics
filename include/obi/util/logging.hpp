@@ -24,61 +24,48 @@
 #ifndef OBI_UTIL_LOGGING_HEADER
 #define OBI_UTIL_LOGGING_HEADER
 #include <iostream>
+#include <type_traits>
 #include <obi/macros/general.hpp>
 #include <obi/util/logging/functionality.hpp>
-
-//check is constexpr - will probably be optimized
-#define _OBI_LOG_DEFAULT_IS_ACTIVE(macro_level_)     \
-    (obi::util::logging::_detail::default_level_is_active( \
-        (obi::util::logging::level::macro_level_))         \
-    )
-
-//check is done at runtime -  therefore extra code in binary
-#define _OBI_LOG_IS_ACTIVE(topic_, macro_level_) \
-    (obi::util::logging::_detail::level_is_active(     \
-        (obi::util::logging::level::macro_level_),     \
-        (obi::util::logging::topic::topic_))           \
-    )
-
-#define _OBI_LOG_LOGGER(id_, topic_, macro_level_) \
-    obi::util::logging::_detail::logger(id_,           \
-        (obi::util::logging::topic::topic_),             \
-        (obi::util::logging::level::macro_level_),       \
-        __FILE__,                                        \
-        __LINE__,                                        \
-        __FUNCTION__                                     \
-    )                                                    \
-
 
 // If use_default is true the check becomes constexpr. Therefore the compiler
 // can optimize the branch containing the logging instructions in case of
 // inactivity completely away. If you want the level to be configurable at
 // runtime you need to pay for it by having the instructions in your code.
 
+// TODO -- static_assert parameters
+#define _OBI_LOG_INTERNAL(id_, use_default_, topic_, macro_level_, cond_)                    \
+    !((use_default_ ? obi::util::logging::_detail::default_level_is_active((macro_level_))   \
+                    : obi::util::logging::_detail::level_is_active((macro_level_), (topic_)) \
+    ) && (cond_))                                                                            \
+    ? (void)nullptr : obi::util::logging::_detail::logger(                                   \
+                        id_, (topic_), (macro_level_),__FILE__, __LINE__, __FUNCTION__ )
 
-#define _OBI_LOG_INTERNAL(id, use_default, topic_, macro_level_, cond)  \
-    !((use_default ? _OBI_LOG_DEFAULT_IS_ACTIVE(macro_level_) : \
-                     _OBI_LOG_IS_ACTIVE(topic_, macro_level_) \
-    ) && (cond)) \
-    ? (void)nullptr : _OBI_LOG_LOGGER(id, topic_, macro_level_)
+
+#define _OBI_LOG_INTERNAL_ADD_PREFIX(id_, use_default_, topic_, macro_level_, cond_)         \
+    _OBI_LOG_INTERNAL(id_, use_default_                                                      \
+                     ,(obi::util::logging::topic::topic_)                                    \
+                     ,(obi::util::logging::level::macro_level_)                              \
+                     , cond_)
+
 
 #define _OBI_LOG_SELECT5TH_PARAMETER(_1, _2, _3, _4, NAME, ...) NAME
 
 // constexpr macros
 #define OBI_LOGC4(id, topic_, macro_level_, cond_) \
-    _OBI_LOG_INTERNAL(id, true, no_topic, macro_level_, cond_)
+    _OBI_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, macro_level_, cond_)
 
 #define OBI_LOGC3(id, topic_, macro_level_) \
-    _OBI_LOG_INTERNAL(id, true, topic_, macro_level_, true)
+    _OBI_LOG_INTERNAL_ADD_PREFIX(id, true, topic_, macro_level_, true)
 
 #define OBI_LOGC2(id, macro_level_) \
-    _OBI_LOG_INTERNAL(id, true, no_topic, macro_level_, true)
+    _OBI_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, macro_level_, true)
 
 #define OBI_LOGC1(id) \
-    _OBI_LOG_INTERNAL(id, true, no_topic, OBI_LOGGING_DEFAULT_LEVEL, true)
+    _OBI_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, OBI_LOGGING_DEFAULT_LEVEL, true)
 
 #define OBI_DEVC \
-    _OBI_LOG_INTERNAL("@@@@", true, dev, OBI_LOGGING_DEFAULT_LEVEL, true)
+    _OBI_LOG_INTERNAL_ADD_PREFIX("@@@@", true, dev, OBI_LOGGING_DEFAULT_LEVEL, true)
 
 
 // 1st __VA_ARGS__ shifts the args into the correct position
@@ -88,19 +75,19 @@
 
 // runtime configurable macros
 #define OBI_LOGV4(id, topic_, macro_level_, cond_) \
-    _OBI_LOG_INTERNAL(id, false, no_topic, macro_level_, cond_)
+    _OBI_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, macro_level_, cond_)
 
 #define OBI_LOGV3(id, topic_, macro_level_) \
-    _OBI_LOG_INTERNAL(id, false, topic_, macro_level_, true)
+    _OBI_LOG_INTERNAL_ADD_PREFIX(id, false, topic_, macro_level_, true)
 
 #define OBI_LOGV2(id, macro_level_) \
-    _OBI_LOG_INTERNAL(id, false, no_topic, macro_level_, true)
+    _OBI_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, macro_level_, true)
 
 #define OBI_LOGV1(id) \
-    _OBI_LOG_INTERNAL(id, false, no_topic, OBI_LOGGING_DEFAULT_LEVEL, true)
+    _OBI_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, OBI_LOGGING_DEFAULT_LEVEL, true)
 
 #define OBI_DEVV \
-    _OBI_LOG_INTERNAL("$$$$", false, dev, OBI_LOGGING_DEFAULT_LEVEL, true)
+    _OBI_LOG_INTERNAL_ADD_PREFIX("$$$$", false, dev, OBI_LOGGING_DEFAULT_LEVEL, true)
 
 #define OBI_LOGV(...) _OBI_LOG_SELECT5TH_PARAMETER(__VA_ARGS__,OBI_LOGV4, OBI_LOGV3, OBI_LOGV2, OBI_LOGV1,)(__VA_ARGS__)
 
