@@ -27,7 +27,7 @@ matrix:
         - build_type=Release
         - tests=ON
         - examples=ON
-        - SANITIZER=false
+        - SANITIZER=true
 
     - addons:
         apt:

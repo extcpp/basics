@@ -1,17 +1,16 @@
 #!/bin/bash
 
 if $SANITIZER; then
-    #sudo add-apt-repository ppa:jonathonf/binutils-2.30-2 --yes || exit 1
-    #sudo apt-get update -qq --yes || exit 1
-    #sudo apt-get install apt-show-versions
-    #apt-show-versions -a binutils
-    #sudo apt-get install -qq --yes --force-yes
 
-    sudo apt-get install texinfo
-    git clone git://sourceware.org/git/binutils-gdb.git binutils
-    cd binutils
-    git checkout binutils-2_30
-    ./configure
-    make &> build_log || cat build_log
-    sudo make install
+    ## does not work because PPA is gone / does not contain binutils
+    ## sudo add-apt-repository ppa:jonathonf/binutils-2.30-2 --yes || exit 1
+    ## sudo apt-get update -qq --yes || exit 1
+    ## sudo apt-get install apt-show-versions
+    ## apt-show-versions -a binutils
+    ## sudo apt-get install -qq --yes --force-yes
+
+    sudo echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+    sudo echo "deb http://de.archive.ubuntu.com/ubuntu disco main restricted universe multiverse" >> /etc/apt/sources.list
+    sudo apt-get update
+    sudo apt-get install binutils $CXX
 fi
