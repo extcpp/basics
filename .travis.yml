@@ -6,7 +6,7 @@ env:
   global:
     # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
     #   via the "travis encrypt" command using the project repo's public key
-    - secure: "qSMYGWdEjzBGF34loAoagJVRA0QX0M6LLYotFEFxdb5v/qqdh/aXbLWpSZCQtFDHB6bgXmR7rJP6QgNHbdyQBRfL0cue05mbABloEXpFLYYvp4n58yOyOC5ZROE6Z4pDiLcOnEYJIuD4EBSxc5C3uieQo+2rBK7CLFWimrJn9ET/rdGpKiTXMsJxRN+Ec6/F2+zL1dKW3u94Es7K/FZFT5dBqhIG6JgALYig+myLwnW/AahpkaVcNOnNaqrsdRIAHpaApn2TVYWkoKylVr1t/shTYohZYrmVnVDPwyg/VAmqIribCEub0Rsgy0uNeum3iwe4kfPkkcOgkqbmzLmQsEVbQItusU2zLHkxBMjfAYLUn/im/wVffGnFHbEV5rV9GOQcTnqdzvDktjj4XkTVqnxlHYIPwgCeVAGn1RUsi6CPU8/Jj44+uzkEXL80oKfz1hcU92zDCjXlBaOEud5eIDTWYm+bHim7HE0Iwx+RJe1jZw+QqCFKRS0fi3ooNEsra6Bcn1K+amSJMkiJjU8PguD1OJ/zpH29tRBf6+3IDzcVsBx1vxHaALlzKMQOMEZxxG6kClS1mHUTxLEydrbVhzzeDnD6FuAPBc6dtYXX5L5Zt9Tdn8oYeK5WdNyHo7di/n6dNPCxrQGFWzO738nXD3VDb5NiMOFjSYwn2c5Ie4A="
+    - secure: "L8WVgBhDwuJJy5pGC/x/RWPZnCUhQDz6aO0seQGSPY0HYBnuVeEmGvvPF7KN/G5gsubZt7fwHbuwhiaL4CpezV35Tpg1uDQGrYmKALvGQTYdFLQo6zEcBVcBi6lH/hNVcJeJxrU18TQAZJ19sHO4nYLgtUBO2GMaUg+8VGVkX7kyVfJThJ8/RJjpfhtNmfkvIs73JKxLYUgVJz57iBZC7gatACffFmpaq+C1YKUIMWQzTtnZiNOQQZNS5LTPl7kdtDP3vPrV+NDQU0/6l+bDa/FwB+OVodarc4ykL+pxt76oHCbbRE2/BURstaWPCWkkALMVHvC51lXV3Zs8brIlwWjakNoLV5leklb/prtosj4tXMjpEOM1JXW3StGensk5Pq4o19GeoasIR3X4Xjw5hFur6XRjBlAX/an8S+Eno/Pf/s+PRohCDJ+xRvxmfsy3WDncPgCNESmmK3j3Besedi9ExYRgvKMIL3Zd2zlroQepkHrB63tG77A9SHNlpGljP5HVG8rLxjSAnTGQES+uJL0IotQOjmTA7JgkvfUf40J4zczPZfKjBlCTBVzs5Zd3FXlu1G7R4h3HjSERis6sy0pWDk8RcrkSFBIpMDeZFqAA7xDgLr7qOQKnio5kLqbmFLrd/VKMGkY27DjUpSIEbJ65ZgjHLfzFfoUunISzCZo="
 
 
 matrix:
@@ -86,25 +86,25 @@ matrix:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
           packages: ['gcc-7', 'g++-7', 'lcov']
 
-          coverity_scan:
-            project:
-              name: obiwahn/libobi
-              version: 0.1
-              description: libobi
-            notification_email: linux@obiwah.org
-            build_command_prepend: "mkdir x && cd x && cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON .."
-            build_command: "cmake --build . --configuration Debug"
-
-            # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
-            # Take care in resource usage, and consider the build frequency allowances per
-            #   https://scan.coverity.com/faq#frequency
-            branch_pattern: coverity_scan
+        coverity_scan:
+          project:
+            name: ObiWahn/libobi
+            version: 0.1
+            description: libobi
+          notification_email: linux@obiwahn.org
+          build_command_prepend: "mkdir x && cd x && cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON .."
+          build_command: "cmake --build . --config Debug"
+          branch_pattern: coverity_scan
 
       before_script:
         # fix for coverity scans
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
         - sudo curl -s -L https://entrust.com/root-certificates/entrust_l1k.cer -o /usr/local/share/ca-certificates/entrust_l1k.crt
         - sudo update-ca-certificates
+
+      script:
+        - echo "no build required ... done"
+      after_success:
 
       compiler: g++-7
       env:
