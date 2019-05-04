@@ -95,7 +95,9 @@ matrix:
             version: 0.1
             description: libobi
           notification_email: linux@obiwahn.org
-          build_command_prepend: "mkdir x && cd x && cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON .."
+          build_command_prepend: |
+                                 cov-configure --comptype gcc --compiler /usr/bin/gcc-7 -- -std=gnu++1z
+                                 cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON .
           build_command: "cmake --build . --config Debug"
           branch_pattern: coverity_scan
 
@@ -106,7 +108,10 @@ matrix:
         - sudo update-ca-certificates
 
       script:
-        - echo "no build required ... done"
+        - echo 'no build required ... done'
+        #- cat cov-int/build-log.txt
+        #- cat cov-int/scm_log.txt
+
       after_success:
 
       compiler: g++-7
@@ -155,7 +160,7 @@ install:
   - mkdir "$install_root"
   - mkdir -p "$build_root"
   - ln -s "$build_root" "$build_base/current"
-  - $project_root/support/travis/install-$ARCH
+  - sudo $project_root/support/travis/install-$ARCH
   - $project_root/.build_scripts/install_cmake
   - $project_root/.build_scripts/install_3rd_party
 

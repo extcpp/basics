@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 if $SANITIZER; then
 
@@ -9,11 +10,17 @@ if $SANITIZER; then
     ## apt-show-versions -a binutils
     ## sudo apt-get install -qq --yes --force-yes
 
-    echo "en_US.UTF-8 UTF-8" \
-        | sudo tee /etc/locale.gen
-    echo "deb http://de.archive.ubuntu.com/ubuntu disco main restricted universe multiverse" \
-        | sudo tee -a /etc/apt/sources.list
+    ## try to get rid of locales that slow down travis
+    cat /etc/locale.gen | grep '^#' > /etc/locale.gen.new
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen.new
+    mv /etc/locale.gen.new /etc/locale.gen
 
-    sudo apt-get update
-    sudo apt-get install binutils $CXX
+    dpkg-divert --divert /usr/share/i18n/SUPPORTED.dpkg --rename /usr/share/i18n/SUPPORTED
+    echo 'en_US.UTF-8 UTF-8' > /usr/share/i18n/SUPPORTED
+
+    echo "deb http://de.archive.ubuntu.com/ubuntu disco main restricted universe multiverse" \
+        >> /etc/apt/sources.list
+
+    apt-get update
+    apt-get install binutils $CXX
 fi
