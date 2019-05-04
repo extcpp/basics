@@ -35,8 +35,11 @@ matrix:
 
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
-          packages: ['gcc-8', 'g++-8']
+          ## not needed as we need to take the tools from disco see:
+          ## - $project_root/support/travis/install-$ARCH
+          ## once the linker is fixed PPA should be used again
+          # sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
+          # packages: ['gcc-8', 'g++-8']
 
       compiler: g++-8
       env:
