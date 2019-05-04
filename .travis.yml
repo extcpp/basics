@@ -1,3 +1,4 @@
+os: linux
 dist: xenial
 language: cpp
 sudo: required
@@ -8,15 +9,9 @@ env:
     #   via the "travis encrypt" command using the project repo's public key
     - secure: "L8WVgBhDwuJJy5pGC/x/RWPZnCUhQDz6aO0seQGSPY0HYBnuVeEmGvvPF7KN/G5gsubZt7fwHbuwhiaL4CpezV35Tpg1uDQGrYmKALvGQTYdFLQo6zEcBVcBi6lH/hNVcJeJxrU18TQAZJ19sHO4nYLgtUBO2GMaUg+8VGVkX7kyVfJThJ8/RJjpfhtNmfkvIs73JKxLYUgVJz57iBZC7gatACffFmpaq+C1YKUIMWQzTtnZiNOQQZNS5LTPl7kdtDP3vPrV+NDQU0/6l+bDa/FwB+OVodarc4ykL+pxt76oHCbbRE2/BURstaWPCWkkALMVHvC51lXV3Zs8brIlwWjakNoLV5leklb/prtosj4tXMjpEOM1JXW3StGensk5Pq4o19GeoasIR3X4Xjw5hFur6XRjBlAX/an8S+Eno/Pf/s+PRohCDJ+xRvxmfsy3WDncPgCNESmmK3j3Besedi9ExYRgvKMIL3Zd2zlroQepkHrB63tG77A9SHNlpGljP5HVG8rLxjSAnTGQES+uJL0IotQOjmTA7JgkvfUf40J4zczPZfKjBlCTBVzs5Zd3FXlu1G7R4h3HjSERis6sy0pWDk8RcrkSFBIpMDeZFqAA7xDgLr7qOQKnio5kLqbmFLrd/VKMGkY27DjUpSIEbJ65ZgjHLfzFfoUunISzCZo="
 
-
 matrix:
   include:
     - name: "default build"
-      addons:
-        apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
-          packages: ['gcc-8', 'g++-8']
-
       compiler: g++-8
       env:
         - ARCH=amd64
@@ -29,18 +24,13 @@ matrix:
         - tests=ON
         - examples=ON
         - SANITIZER=false
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
+          packages: ['gcc-8', 'g++-8']
 
     - name: "address sanitizer build"
       if: branch = master
-
-      addons:
-        apt:
-          ## not needed as we need to take the tools from disco see:
-          ## - $project_root/support/travis/install-$ARCH
-          ## once the linker is fixed PPA should be used again
-          # sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
-          # packages: ['gcc-8', 'g++-8']
-
       compiler: g++-8
       env:
         - ARCH=amd64
@@ -56,15 +46,7 @@ matrix:
 
     - name: "coverage build"
       if: branch = master
-
-      addons:
-        apt:
-          #we need gcc7 for lcov to work
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
-          packages: ['gcc-7', 'g++-7', 'lcov']
-
       compiler: g++-7
-
       env:
         - ARCH=amd64
         #compiler
@@ -76,13 +58,27 @@ matrix:
         - tests=ON
         - examples=OFF
         - CXXFLAGS="-O0 --coverage"
-
+      addons:
+        apt:
+          #we need gcc7 for lcov to work
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
+          packages: ['gcc-7', 'g++-7', 'lcov']
       after_success:
         - $project_root/support/coverage
 
     - name: "coverity_scan build"
       if: branch = coverity_scan
-
+      compiler: g++-7
+      env:
+        - ARCH=amd64
+        #compiler
+        - COMPILER=g++-7
+        - OCXX=g++-7
+        - OCC=gcc-7
+        #build settings
+        - build_type=Debug
+        - tests=ON
+        - examples=OFF
       addons:
         apt:
           #we need gcc7 for lcov to work
@@ -100,35 +96,18 @@ matrix:
                                  cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON .
           build_command: "cmake --build . --config Debug"
           branch_pattern: coverity_scan
-
       before_script:
         # fix for coverity scans
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
         - sudo curl -s -L https://entrust.com/root-certificates/entrust_l1k.cer -o /usr/local/share/ca-certificates/entrust_l1k.crt
         - sudo update-ca-certificates
-
       script:
         - echo 'no build required ... done'
+        # debug covertiy scan
         #- cat cov-int/build-log.txt
         #- cat cov-int/scm_log.txt
-
       after_success:
-
-      compiler: g++-7
-      env:
-        - ARCH=amd64
-        #compiler
-        - COMPILER=g++-7
-        - OCXX=g++-7
-        - OCC=gcc-7
-        #build settings
-        - build_type=Debug
-        - tests=ON
-        - examples=OFF
-
-
-
-os: linux
+        # do nothing
 
 before_install:
   # for some reason CXX and CC can not be set in env

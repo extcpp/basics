@@ -1,14 +1,5 @@
 #!/bin/bash
-set -x
-
 if $SANITIZER; then
-
-    ## does not work because PPA is gone / does not contain binutils
-    ## sudo add-apt-repository ppa:jonathonf/binutils-2.30-2 --yes || exit 1
-    ## sudo apt-get update -qq --yes || exit 1
-    ## sudo apt-get install apt-show-versions
-    ## apt-show-versions -a binutils
-    ## sudo apt-get install -qq --yes --force-yes
 
     ## try to get rid of locales that slow down travis
     cat /etc/locale.gen | grep '^#' > /etc/locale.gen.new
@@ -18,6 +9,8 @@ if $SANITIZER; then
     dpkg-divert --divert /usr/share/i18n/SUPPORTED.dpkg --rename /usr/share/i18n/SUPPORTED
     echo 'en_US.UTF-8 UTF-8' > /usr/share/i18n/SUPPORTED
 
+
+    # install gcc from disco - the linker will have '--push-state--no-as-needed'
     echo "deb http://de.archive.ubuntu.com/ubuntu disco main restricted universe multiverse" \
         >> /etc/apt/sources.list
 
