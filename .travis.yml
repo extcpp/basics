@@ -6,12 +6,34 @@ env:
   global:
     # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
     #   via the "travis encrypt" command using the project repo's public key
-    #secure: ""
+    - secure: "qSMYGWdEjzBGF34loAoagJVRA0QX0M6LLYotFEFxdb5v/qqdh/aXbLWpSZCQtFDHB6bgXmR7rJP6QgNHbdyQBRfL0cue05mbABloEXpFLYYvp4n58yOyOC5ZROE6Z4pDiLcOnEYJIuD4EBSxc5C3uieQo+2rBK7CLFWimrJn9ET/rdGpKiTXMsJxRN+Ec6/F2+zL1dKW3u94Es7K/FZFT5dBqhIG6JgALYig+myLwnW/AahpkaVcNOnNaqrsdRIAHpaApn2TVYWkoKylVr1t/shTYohZYrmVnVDPwyg/VAmqIribCEub0Rsgy0uNeum3iwe4kfPkkcOgkqbmzLmQsEVbQItusU2zLHkxBMjfAYLUn/im/wVffGnFHbEV5rV9GOQcTnqdzvDktjj4XkTVqnxlHYIPwgCeVAGn1RUsi6CPU8/Jj44+uzkEXL80oKfz1hcU92zDCjXlBaOEud5eIDTWYm+bHim7HE0Iwx+RJe1jZw+QqCFKRS0fi3ooNEsra6Bcn1K+amSJMkiJjU8PguD1OJ/zpH29tRBf6+3IDzcVsBx1vxHaALlzKMQOMEZxxG6kClS1mHUTxLEydrbVhzzeDnD6FuAPBc6dtYXX5L5Zt9Tdn8oYeK5WdNyHo7di/n6dNPCxrQGFWzO738nXD3VDb5NiMOFjSYwn2c5Ie4A="
 
 
 matrix:
   include:
-    - addons:
+    - name: "default build"
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
+          packages: ['gcc-8', 'g++-8']
+
+      compiler: g++-8
+      env:
+        - ARCH=amd64
+        #compiler
+        - COMPILER=g++-8
+        - OCXX=g++-8
+        - OCC=gcc-8
+        #build settings
+        - build_type=Release
+        - tests=ON
+        - examples=ON
+        - SANITIZER=false
+
+    - name: "address sanitizer build"
+      if: branch = master
+
+      addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
           packages: ['gcc-8', 'g++-8']
@@ -29,27 +51,17 @@ matrix:
         - examples=ON
         - SANITIZER=true
 
-    - addons:
+    - name: "coverage build"
+      if: branch = master
+
+      addons:
         apt:
           #we need gcc7 for lcov to work
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
           packages: ['gcc-7', 'g++-7', 'lcov']
 
-          # coverity_scan:
-          #   project:
-          #     name: obiwahn/libobi
-          #     version: 0.1
-          #     description: libobi
-          #   notification_email: linux@obiwah.org
-          #   build_command_prepend: "mkdir x && cd x && cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON .."
-          #   build_command: "cmake --build ."
-
-          #   # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
-          #   # Take care in resource usage, and consider the build frequency allowances per
-          #   #   https://scan.coverity.com/faq#frequency
-          #   branch_pattern: coverity_scan
-
       compiler: g++-7
+
       env:
         - ARCH=amd64
         #compiler
@@ -62,19 +74,51 @@ matrix:
         - examples=OFF
         - CXXFLAGS="-O0 --coverage"
 
+      after_success:
+        - $project_root/support/coverage
+
+    - name: "coverity_scan build"
+      if: branch = coverity_scan
+
+      addons:
+        apt:
+          #we need gcc7 for lcov to work
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
+          packages: ['gcc-7', 'g++-7', 'lcov']
+
+          coverity_scan:
+            project:
+              name: obiwahn/libobi
+              version: 0.1
+              description: libobi
+            notification_email: linux@obiwah.org
+            build_command_prepend: "mkdir x && cd x && cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBOBI_TESTS=ON -DLIBOBI_EXAMPLES=ON .."
+            build_command: "cmake --build . --configuration Debug"
+
+            # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
+            # Take care in resource usage, and consider the build frequency allowances per
+            #   https://scan.coverity.com/faq#frequency
+            branch_pattern: coverity_scan
+
       before_script:
         # fix for coverity scans
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
         - sudo curl -s -L https://entrust.com/root-certificates/entrust_l1k.cer -o /usr/local/share/ca-certificates/entrust_l1k.crt
         - sudo update-ca-certificates
 
-      after_success:
-        - if [[ $test == "ON" ]]; then export do_test=true; fi
-        - |
-          e=""; if [[ $examples == "ON" ]]; then
-            e="--examples"
-          fi
-          $project_root/support/coverage $e
+      compiler: g++-7
+      env:
+        - ARCH=amd64
+        #compiler
+        - COMPILER=g++-7
+        - OCXX=g++-7
+        - OCC=gcc-7
+        #build settings
+        - build_type=Debug
+        - tests=ON
+        - examples=OFF
+
+
 
 os: linux
 

@@ -9,8 +9,11 @@ if $SANITIZER; then
     ## apt-show-versions -a binutils
     ## sudo apt-get install -qq --yes --force-yes
 
-    sudo echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
-    sudo echo "deb http://de.archive.ubuntu.com/ubuntu disco main restricted universe multiverse" >> /etc/apt/sources.list
+    echo "en_US.UTF-8 UTF-8" \
+        | sudo tee /etc/locale.gen
+    echo "deb http://de.archive.ubuntu.com/ubuntu disco main restricted universe multiverse" \
+        | sudo tee -a /etc/apt/sources.list
+
     sudo apt-get update
     sudo apt-get install binutils $CXX
 fi
