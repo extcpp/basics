@@ -1,7 +1,7 @@
 libobi
 ======
 
-|travis| |appveyor| |codecov| |cpp| |license|
+|travis| |appveyor| |codecov| |coverity| |cpp| |license|
 
 General prupose lib ranging from TMP to OS dependent operations.
 
@@ -19,6 +19,8 @@ General prupose lib ranging from TMP to OS dependent operations.
 .. |codecov| image:: https://codecov.io/gh/ObiWahn/libobi/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/ObiWahn/libobi
 
+.. |coverity| image:: https://scan.coverity.com/projects/18316/badge.svg
+   :target: https://scan.coverity.com/projects/obiwahn-libobi
 
 .. |cpp| image:: https://img.shields.io/badge/c++-17-green.svg?style=flat
 .. |license| image:: https://img.shields.io/badge/license-closed-red.svg?style=flat
