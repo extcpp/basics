@@ -1,9 +1,13 @@
+|travis| |appveyor| |codecov| |coverity| |cpp| |license|
+
 libobi
 ======
 
-|travis| |appveyor| |codecov| |coverity| |cpp| |license|
+General purpose lib ranging from template-meta-programming to
+operating system dependent operations like library loading.
+It also serves as playground and template for C++ projects
+using cmake, travis, appveyor, coverage and friends.
 
-General prupose lib ranging from TMP to OS dependent operations.
 
 .. more shields at http://shields.io
 
