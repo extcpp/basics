@@ -5,12 +5,6 @@ project(libobi)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# verbose windows linking
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /VERBOSE:LIB")
-
-# move into target
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-
 ## OPTIONS
 option(LIBOBI_EXAMPLES "build examples" OFF)
 option(LIBOBI_TESTS "build tests" OFF)
@@ -26,10 +20,23 @@ TEST_BIG_ENDIAN(obi_is_big_endian)
 include(obi_cmake_utils)
 obi_setup()
 
+# verbose windows linking
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /VERBOSE:LIB")
+
 if(UNIX)
     execute_process(COMMAND getconf LEVEL1_DCACHE_LINESIZE OUTPUT_VARIABLE obi_l1_cache_line_size)
     string(STRIP ${obi_l1_cache_line_size} obi_l1_cache_line_size)
     obi_log("cache line size: '${obi_l1_cache_line_size}'")
+	set(OBI_OUTDIR "")
+elseif(MSVC)
+    set(obi_l1_cache_line_size FALSE)
+	# move into target
+	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+	set(OBI_OUTDIR "${PROJECT_BINARY_DIR}/build")
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OBI_OUTDIR}")
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OBI_OUTDIR}")
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${OBI_OUTDIR}")
+	obi_log("binary ouput dir: ${OBI_OUTDIR}")
 else()
     set(obi_l1_cache_line_size FALSE)
 endif()

@@ -4,7 +4,7 @@
 #define OBI_MACROS_GENERAL_HEADER
 
 #define OBI_NO_IMPL "NOT IMPLEMENTED NOW PLEASE FAIL HERE"
-#define OBI_NOTHING()
+#define OBI_NOTHING(...)
 
 #define OBI_DELETE(...)
 #define OBI_EXPAND(...) __VA_ARGS__

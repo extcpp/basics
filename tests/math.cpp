@@ -12,12 +12,14 @@ TEST(binomial_coefficient, better){
     EXPECT_EQ(obi::math::binomial_coefficient_dynamic(5,3),10);
 }
 
+#ifdef OBI_TEST_LONG
 TEST(math_find_nth_prime, 10001){
     auto sieve = obi::math::create_sieve_of_eratosthenes(40000000);
     EXPECT_EQ(obi::math::find_nth_prime(10001, sieve).value
              ,std::size_t(104743)
              );
 }
+#endif
 
 TEST(basic_functions, powersets){
     std::vector<std::vector<int>> result;

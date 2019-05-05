@@ -5,7 +5,7 @@
 namespace obi { namespace logging {
 
     /////////////////////////////////////////////////////////////////////////////
-    OBI_INIT_PRIORITY_VC_HIGH;
+    OBI_INIT_PRIORITY_VC_HIGH
     // NEEDS TO BE CREATED FIRST!!!!
     OBI_INIT_PRIORITY_GNU(101) std::mutex _detail::logmutex{};
 
@@ -26,7 +26,7 @@ namespace obi { namespace logging {
     bool configuration::vim{false};
     bool configuration::gdb{false};
 
-    OBI_INIT_PRIORITY_VC_LOW;
+    OBI_INIT_PRIORITY_VC_LOW
     /////////////////////////////////////////////////////////////////////////////
 
 
