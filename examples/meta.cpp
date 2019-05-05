@@ -1,6 +1,8 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <obi/meta.hpp>
 #include <iostream>
+
+#include <obi/meta/is_one_of.hpp>
+#include <obi/meta/has_member.hpp>
 
 //using namespace std;
 using namespace obi::meta;
