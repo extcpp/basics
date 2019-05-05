@@ -18,6 +18,7 @@ set(test_files
     "util_serialization"
     "util_string"
     "util_windows_strings"
+    "util_except"
 )
 
 if(OBI_CXX_FOLDS_AVAILABLE)

@@ -14,9 +14,9 @@ namespace obi { namespace util {
 
   class not_implemented_exception : public std::logic_error {
   public:
-    explicit not_implemented_exception() : std::logic_error("not implemented"){};
-    explicit not_implemented_exception(std::string const& arg);
-    explicit not_implemented_exception(char const*);
+    explicit not_implemented_exception() : std::logic_error("not implemented") {};
+    explicit not_implemented_exception(std::string const& arg) : std::logic_error(arg) {};
+    explicit not_implemented_exception(char const* arg) : std::logic_error(arg) {};
     not_implemented_exception(not_implemented_exception const&) = default;
     not_implemented_exception& operator=(not_implemented_exception const&) = default;
     not_implemented_exception(not_implemented_exception&&) = default;
@@ -26,8 +26,8 @@ namespace obi { namespace util {
 
   class debug_exception : public std::logic_error {
   public:
-    explicit debug_exception(std::string const& arg);
-    explicit debug_exception(char const*);
+    explicit debug_exception(std::string const& arg) : std::logic_error(arg) {};
+    explicit debug_exception(char const* arg) : std::logic_error(arg) {};
     debug_exception(debug_exception const&) = default;
     debug_exception& operator=(debug_exception const&) = default;
     debug_exception(debug_exception&&) = default;
@@ -37,8 +37,8 @@ namespace obi { namespace util {
 
   class permission_denied_exception : public std::runtime_error {
   public:
-    explicit permission_denied_exception(std::string const& arg);
-    explicit permission_denied_exception(char const*);
+    explicit permission_denied_exception(std::string const& arg) : std::runtime_error(arg) {};
+    explicit permission_denied_exception(char const* arg) : std::runtime_error(arg) {};
     permission_denied_exception(permission_denied_exception const&) = default;
     permission_denied_exception& operator=(permission_denied_exception const&) = default;
     permission_denied_exception(permission_denied_exception&&) = default;
@@ -48,8 +48,8 @@ namespace obi { namespace util {
 
   class cat_not_connect_exception : public std::runtime_error {
   public:
-    explicit cat_not_connect_exception(std::string const& arg);
-    explicit cat_not_connect_exception(char const*);
+    explicit cat_not_connect_exception(std::string const& arg) : std::runtime_error(arg) {};
+    explicit cat_not_connect_exception(char const* arg) : std::runtime_error(arg) {};
     cat_not_connect_exception(cat_not_connect_exception const&) = default;
     cat_not_connect_exception& operator=(cat_not_connect_exception const&) = default;
     cat_not_connect_exception(cat_not_connect_exception&&) = default;
