@@ -5,9 +5,6 @@
 
 #include <obi/macros/general.hpp>
 
-#define OBI_DELETE(...)
-#define OBI_EXPAND(...) __VA_ARGS__
-
 // check for marker /////////////////////////////////////////////////
 #define OBI_GET2ND(first, second, ...) second
 

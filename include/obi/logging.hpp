@@ -25,7 +25,7 @@
 #define OBI_UTIL_LOGGING_HEADER
 #include <iostream>
 #include <type_traits>
-#include <obi/macros/general.hpp>
+#include <obi/macros/compiler.hpp>
 #include <obi/logging/functionality.hpp>
 
 // If use_default is true the check becomes constexpr. Therefore the compiler
@@ -70,8 +70,13 @@
 
 // 1st __VA_ARGS__ shifts the args into the correct position
 // macro can not be empty because of the leading , (fix with __VA_OPT__ in c++20)
-#define OBI_LOGC(...) _OBI_LOG_SELECT5TH_PARAMETER(__VA_ARGS__,OBI_LOGC4, OBI_LOGC3, OBI_LOGC2, OBI_LOGC1,)(__VA_ARGS__)
-
+#ifdef OBI_COMPILER_VC
+    // __VA_ARGS__ does not expand on windows :(
+    #define _OBI_LOG_EXPAND(x) x
+    #define OBI_LOGC(...) _OBI_LOG_SELECT5TH_PARAMETER(_OBI_LOG_EXPAND(__VA_ARGS__), OBI_LOGC4, OBI_LOGC3, OBI_LOGC2, OBI_LOGC1,)(_OBI_LOG_EXPAND(__VA_ARGS__))
+#else
+    #define OBI_LOGC(...) _OBI_LOG_SELECT5TH_PARAMETER(__VA_ARGS__, OBI_LOGC4, OBI_LOGC3, OBI_LOGC2, OBI_LOGC1,)(__VA_ARGS__)
+#endif
 
 // runtime configurable macros
 #define OBI_LOGV4(id, topic_, macro_level_, cond_) \

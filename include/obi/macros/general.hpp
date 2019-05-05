@@ -5,6 +5,9 @@
 
 #define OBI_NO_IMPL "NOT IMPLEMENTED NOW PLEASE FAIL HERE"
 #define OBI_NOTHING()
+
+#define OBI_DELETE(...)
+#define OBI_EXPAND(...) __VA_ARGS__
 #define OBI_STRINGIFY(a) #a
 
 // use indirection (_OBI_CONCATENATE_IMPL) because ## inhibits expansion

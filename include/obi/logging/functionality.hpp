@@ -13,7 +13,7 @@
 namespace obi { namespace logging {
 
     namespace _detail {
-        extern std::mutex logmutex;
+        //OBI_WIN_EXPORT extern std::mutex logmutex;
 
         inline bool level_is_active(level macro_level, logtopic topic = topic::no_topic){
             //activation_level 60(info) && macro_level 20 (error) -> log

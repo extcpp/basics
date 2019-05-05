@@ -1,4 +1,9 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+#include <obi/macros/platform.hpp>
+#ifdef OBI_WINDOWS
+int main() { }
+#else
+
 #include <iostream>
 #include <obi/util/functional.hpp>
 
@@ -22,3 +27,4 @@ int main() {
 
     return 0;
 }
+#endif

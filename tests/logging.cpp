@@ -27,6 +27,8 @@ TEST_F(LoggingTest, logging_no_crash){
     configuration::append_newline = false;
 
     ASSERT_NO_THROW( OBI_LOG("babe") << "2cafe?");
+    OBI_LOGC3("music", network, warn) << "adsfsaf";
+    OBI_LOGC("music", network, warn) << "ASDASFDF";
     ASSERT_NO_THROW( OBI_LOG("music", network, warn) << "NOHA!");
 }
 

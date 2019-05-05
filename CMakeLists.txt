@@ -57,6 +57,7 @@ target_include_directories(obi_shared PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/includ
 target_compile_features(obi_shared PUBLIC cxx_std_17)
 target_compile_options(obi_shared PRIVATE ${obi_stone-warnings})
 target_compile_definitions(obi_shared PUBLIC OBI_LINK_TO_LIB=ON)
+target_compile_definitions(obi_shared PRIVATE OBI_IN_LIB=ON)
 target_compile_definitions(obi_shared PUBLIC
     $<IF:$<BOOL:${obi_is_big_endian}>,OBI_BIG_ENDIAN,OBI_LITTLE_ENDIAN>
     $<$<BOOL:${OBI_CXX_COMPILER_IS_GCC}>:OBI_GCC>
