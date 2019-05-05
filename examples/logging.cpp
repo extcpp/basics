@@ -4,11 +4,11 @@
 #include <iostream>
 
 #ifndef _WIN32
-#include <obi/util/logging.hpp>
+#include <obi/logging.hpp>
 
 int main(/*int argc, const char *argv[]*/) {
     {
-        using namespace obi::util::logging;
+        using namespace obi::logging;
         configuration::function = false;
     }
 

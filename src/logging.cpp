@@ -1,8 +1,8 @@
 #include <obi/macros/compiler.hpp>
-#include <obi/util/logging.hpp>
+#include <obi/logging.hpp>
 #include <obi/util/except.hpp>
 
-namespace obi { namespace  util { namespace logging {
+namespace obi { namespace logging {
 
     /////////////////////////////////////////////////////////////////////////////
     OBI_INIT_PRIORITY_VC_HIGH
@@ -42,7 +42,7 @@ namespace obi { namespace  util { namespace logging {
 
         if (configuration::gdb){
 #ifndef _WIN32
-            _ss << "# break " << filename(file_name)
+            _ss << "# break " << obi::util::filename(file_name)
                 << ":" << line_no << "\n";
 #endif
         }
@@ -63,7 +63,7 @@ namespace obi { namespace  util { namespace logging {
             if(!configuration::gdb){
                 _ss << " "
 #ifndef _WIN32
-                    << filename(file_name)
+                    << obi::util::filename(file_name)
 #else
                     << file_name
 #endif
@@ -100,4 +100,4 @@ namespace obi { namespace  util { namespace logging {
     _detail::logger::~logger(){
         this->write();
     }
-}}} // obi::util::logging
+}} // obi::util::logging

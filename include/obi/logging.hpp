@@ -26,7 +26,7 @@
 #include <iostream>
 #include <type_traits>
 #include <obi/macros/general.hpp>
-#include <obi/util/logging/functionality.hpp>
+#include <obi/logging/functionality.hpp>
 
 // If use_default is true the check becomes constexpr. Therefore the compiler
 // can optimize the branch containing the logging instructions in case of
@@ -34,18 +34,18 @@
 // runtime you need to pay for it by having the instructions in your code.
 
 // TODO -- static_assert parameters
-#define _OBI_LOG_INTERNAL(id_, use_default_, topic_, macro_level_, cond_)                    \
-    !((use_default_ ? obi::util::logging::_detail::default_level_is_active((macro_level_))   \
-                    : obi::util::logging::_detail::level_is_active((macro_level_), (topic_)) \
-    ) && (cond_))                                                                            \
-    ? (void)nullptr : obi::util::logging::_detail::logger(                                   \
+#define _OBI_LOG_INTERNAL(id_, use_default_, topic_, macro_level_, cond_)              \
+    !((use_default_ ? obi::logging::_detail::default_level_is_active((macro_level_))   \
+                    : obi::logging::_detail::level_is_active((macro_level_), (topic_)) \
+    ) && (cond_))                                                                      \
+    ? (void)nullptr : obi::logging::_detail::logger(                                   \
                         id_, (topic_), (macro_level_),__FILE__, __LINE__, __FUNCTION__ )
 
 
-#define _OBI_LOG_INTERNAL_ADD_PREFIX(id_, use_default_, topic_, macro_level_, cond_)         \
-    _OBI_LOG_INTERNAL(id_, use_default_                                                      \
-                     ,(obi::util::logging::topic::topic_)                                    \
-                     ,(obi::util::logging::level::macro_level_)                              \
+#define _OBI_LOG_INTERNAL_ADD_PREFIX(id_, use_default_, topic_, macro_level_, cond_)   \
+    _OBI_LOG_INTERNAL(id_, use_default_                                                \
+                     ,(obi::logging::topic::topic_)                                    \
+                     ,(obi::logging::level::macro_level_)                              \
                      , cond_)
 
 

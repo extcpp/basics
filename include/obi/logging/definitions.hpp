@@ -12,7 +12,7 @@
 #include <map>
 #include <mutex>
 
-namespace obi { namespace  util { namespace logging {
+namespace obi { namespace logging {
     namespace _detail {
         struct logtopic;
         extern std::mutex logmutex;
@@ -91,5 +91,5 @@ namespace obi { namespace  util { namespace logging {
         extern _detail::logtopic engine;
     }
 
-}}} // obi::util::logging
+}} // obi::util::logging
 #endif // OBI_UTIL_LOGGING_DEFINITIONS_HEADER

@@ -3,14 +3,14 @@
 #ifndef OBI_UTIL_LOGGING_FUNCTIONALITY_HEADER
 #define OBI_UTIL_LOGGING_FUNCTIONALITY_HEADER
 
-#include <obi/util/logging/definitions.hpp>
+#include <obi/logging/definitions.hpp>
 #include <obi/util/basic.hpp>
 #include <obi/macros/platform.hpp>
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 
-namespace obi { namespace  util { namespace logging {
+namespace obi { namespace logging {
 
     namespace _detail {
         extern std::mutex logmutex;
@@ -59,5 +59,5 @@ namespace obi { namespace  util { namespace logging {
         }
     }
 
-}}} // obi::util::logging
+}} // obi::util::logging
 #endif // OBI_UTIL_LOGGING_FUNCTIONALITY_HEADER
