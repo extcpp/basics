@@ -14,8 +14,8 @@ set(test_files
     "util_cast"
     "util_encode"
     "util_endian"
-    "util_serialization"
     "util_result"
+    "util_serialization"
     "util_string"
     "util_windows_strings"
 )
@@ -27,7 +27,7 @@ if(OBI_CXX_FOLDS_AVAILABLE)
 endif()
 
 set(test_files_shared
-    #"logging"
+    "logging"
 )
 
 foreach(suffix IN ITEMS "" "_shared")
@@ -41,7 +41,7 @@ foreach(suffix IN ITEMS "" "_shared")
     set(test_main  "gtest.cpp")
     add_executable("${test_target_compile}" ${test_main} ${test_files_cpp})
     target_include_directories("${test_target_compile}" SYSTEM PRIVATE ${gtest_SOURCE_DIR}/include)
-    target_link_libraries("${test_target_compile}" obi gtest_main gtest)
+    target_link_libraries("${test_target_compile}" obi${suffix} gtest_main gtest)
     target_compile_options(${test_target_compile} PRIVATE ${obi_stone-warnings})
     add_test("${test_target_compile}_run" "${test_target_compile}")
 endforeach()

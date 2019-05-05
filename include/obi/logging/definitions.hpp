@@ -73,9 +73,12 @@ namespace obi { namespace logging {
 
     namespace configuration {
         extern std::map<int,_detail::logtopic*> topics;
-        extern level global_level;
         // logging is configured globally via these variables
         // configure logging before you start logging!!!
+        extern bool prefix_newline;
+        extern bool append_newline;
+        extern bool prefix_newline;
+        extern bool append_newline;
         extern bool threads;
         extern bool filename;
         extern bool function;

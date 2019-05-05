@@ -18,6 +18,8 @@ namespace obi { namespace logging {
     OBI_INIT_PRIORITY_GNU(103) _detail::logtopic topic::network {3, std::string("network"), level::error};
     OBI_INIT_PRIORITY_GNU(103) _detail::logtopic topic::engine {4, std::string("engine"), level::error};
 
+    bool configuration::prefix_newline{false};
+    bool configuration::append_newline{false};
     bool configuration::threads{false};
     bool configuration::filename{true};
     bool configuration::function{true};
@@ -34,7 +36,9 @@ namespace obi { namespace logging {
                             const char* file_name, int line_no,
                             const char* function): _ss(), _out(std::cerr) {
         _level = level_;
-        _ss << "\n";
+        if(configuration::prefix_newline){
+            _ss << "\n";
+        }
         // # vim <filename> +<lineno>
         if (configuration::vim){
             _ss << "# vim " << file_name << " +" << line_no << "\n";
@@ -89,7 +93,13 @@ namespace obi { namespace logging {
             // _detail::add_queue(ss.str());
         } else {
             std::lock_guard<std::mutex> lock(logmutex);
-            _out << _ss.rdbuf() << "'" << std::flush; // close message
+
+            _out << _ss.rdbuf() << "'";
+            if(configuration::append_newline){
+                _ss << "\n";
+            }
+            _out << std::flush; // close message
+
             if (_level == level::fatal){
                 _out << "\n" << std::endl;
                 std::terminate();
