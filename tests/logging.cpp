@@ -1,12 +1,17 @@
 #include <gtest/gtest.h>
 #include <obi/logging.hpp>
+#include <obi/util/except.hpp>
 #include <cstring>
 
 using namespace std::literals;
 
+class LoggingTest : public ::testing::Test {  };
+using LoggingDeathTest = LoggingTest;
 
-TEST(logging, logging_no_crash){
+
+TEST_F(LoggingTest, logging_no_crash){
     using namespace obi::logging;
+    configuration::threads = false;
     configuration::gdb = true;
     configuration::vim = true;
     configuration::prefix_newline = false;
@@ -16,12 +21,34 @@ TEST(logging, logging_no_crash){
     // This test only asserts that it is somewhat working
     ASSERT_NO_THROW( OBI_LOG("babe") << "cafe?");
 
-    // see: https://github.com/google/googletest/blob/master/googletest/docs/advanced.md#death-tests
-    //ASSERT_DEATH(OBI_LOG("cafe", fatal) << "No cafe?!?!?!!", ".*No cafe.*");
+    configuration::gdb = false;
+    configuration::vim = false;
+    configuration::prefix_newline = true;
+    configuration::append_newline = false;
+
+    ASSERT_NO_THROW( OBI_LOG("babe") << "2cafe?");
+    ASSERT_NO_THROW( OBI_LOG("music", network, warn) << "NOHA!");
 }
 
-TEST(logging, levels){
+TEST_F(LoggingDeathTest, fatal){
+    ::testing::FLAGS_gtest_death_test_style = "threadsafe";
     using namespace obi::logging;
+    configuration::threads = false;
+    ASSERT_DEATH(OBI_LOG("cafe", fatal) << "No cafe?!?!?!!", "");
+}
+
+TEST_F(LoggingDeathTest, threads){
+    ::testing::FLAGS_gtest_death_test_style = "threadsafe";
+    using namespace obi::logging;
+    configuration::threads = true;
+    ASSERT_DEATH(OBI_LOG("cafe") << "No thread impl ma:(", "");
+    configuration::threads = false;
+}
+
+TEST_F(LoggingTest, levels){
+    using namespace obi::logging;
+    configuration::threads = false;
+
     EXPECT_TRUE(_detail::level_is_active(level::error));
     EXPECT_TRUE(_detail::level_is_active(level::info));
     EXPECT_FALSE(_detail::level_is_active(level::trace));
@@ -41,8 +68,9 @@ TEST(logging, levels){
     EXPECT_FALSE(_detail::default_level_is_active(level::trace));
 }
 
-TEST(logging, levels_to_string){
+TEST_F(LoggingTest, levels_to_string){
     using namespace obi::logging;
+    configuration::threads = false;
 
     EXPECT_STREQ(_detail::level_to_str(level::fatal).c_str(), "fatal");
     EXPECT_STREQ(_detail::level_to_str(level::error).c_str(), "error");
