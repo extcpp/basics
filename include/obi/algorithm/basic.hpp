@@ -11,6 +11,7 @@
 
 namespace obi { namespace algorithm {
 
+    // TODO generalize - Why didn't I write a variadic function?
     template<typename T, typename Predicate = std::less<>>
     T const& min(T const& a, T const& b, T const& c, Predicate comp = Predicate()){
         return std::min(a,std::min(b, c, comp), comp);
@@ -22,7 +23,7 @@ namespace obi { namespace algorithm {
     }
 
 
-    // count occurences in vector like containers /////////////////////////////////////////
+    // count occurrences in container /////////////////////////////////////////
     template<typename Iterator, typename Int = std::size_t>
     std::map<typename std::iterator_traits<Iterator>::value_type,Int>
     count_occurrences(Iterator begin, Iterator end) {
@@ -34,7 +35,7 @@ namespace obi { namespace algorithm {
         return result;
     }
 
-    //add enable if for vector like containers
+    // TODO add enable_if or concept
     template<typename Container, typename Int = int>
     auto count_occurrences(const Container& container) {
         using Iterator = decltype(std::begin(container));
@@ -42,7 +43,7 @@ namespace obi { namespace algorithm {
     }
 
 
-    // mege maps //////////////////////////////////////////////////////////////
+    // merge maps //////////////////////////////////////////////////////////////
     // items that are already in the map get replaced by a later insert if
     // the predicate evaluates to true
     template <typename Map, typename Predicate = std::less<>>

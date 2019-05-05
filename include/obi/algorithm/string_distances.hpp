@@ -11,15 +11,15 @@ namespace obi { namespace algorithm { namespace distances {
 
     // For Unicode we would require lib ICU
 
-	//simple length
+	// simple length
     template<typename T>
     std::size_t length(const T& first, const T& second)
     {
-        //needs to be cast to int or subtraction will have a problem!
+        // needs to be cast to int or subtraction will have a problem!
         return std::max(first.size(),second.size()) - std::min(first.size(),second.size());
     }
 
-    //edit distance fast implementation
+    // edit distance fast implementation
     template<typename T>
     std::size_t edit_fast(const T& first, const T& second){
         const std::size_t items_per_col   = first.size();
