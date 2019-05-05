@@ -1,5 +1,4 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-// TODO enable_if for integral types
 #pragma once
 #ifndef OBI_MATH_BASIC_FUNCTIONS_HEADER
 #define OBI_MATH_BASIC_FUNCTIONS_HEADER
@@ -11,6 +10,8 @@
 #include <iostream>
 #include <limits>
 #include <cmath>
+
+// TODO: add enable_if for integral types
 
 namespace obi { namespace math {
 
@@ -56,7 +57,7 @@ namespace obi { namespace math {
                binomial_coefficient_dynamic(n-T(1), k);
     }
 
-    //checkes if decimal number is a palindrome
+    //checks if decimal number is a palindrome
     template <typename T>
     bool is_palindrome_number(T number, T base = T(10)) {
     // ATTENTION: operations need to support the base
@@ -103,7 +104,6 @@ namespace obi { namespace math {
         }
         return rv;
     }
-
 
 }}  // obi::math
 #endif // OBI_MATH_BASIC_FUNCTIONS_HEADER

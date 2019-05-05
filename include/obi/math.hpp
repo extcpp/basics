@@ -5,4 +5,5 @@
 
 #include "math/basic_functions.hpp"
 #include "math/primes.hpp"
+
 #endif // OBI_MATH_HEADER

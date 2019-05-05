@@ -18,8 +18,7 @@ inline constexpr std::size_t cache_line_size() {
 
 template <typename T>
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, bool>
-inline constexpr
-is_alignment(T number) {
+inline constexpr is_alignment(T number) {
     // alignment is expected to be a power of 2
     return (number != 0) && ( (number & (number - 1)) == 0 );
 }

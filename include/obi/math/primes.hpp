@@ -36,14 +36,14 @@ namespace obi { namespace math {
         return rv;
     }
 
-    //! struct that holds a sieve of eratosthenes
+    //! struct that holds a Sieve of Eratosthenes
     struct sieve_of_eratosthenes {
         std::vector<bool> sieve;    //!< the sieve
         std::size_t max_value;     //!< primes are calculated up to this number
     };
 
 
-    //! Calculates the sieve of eratosthenes for all primes below a certain number
+    //! Calculates the Sieve of Eratosthenes for all primes below a certain number
     /*  @param max_value maximum size of prime number
      *  @return pair of nth prime and corresponding index  or  0 on failure
      *
@@ -84,7 +84,7 @@ namespace obi { namespace math {
         std::size_t index;  //!< index in the sieve where the number is found
     };
 
-    //! Calculates the sieve of eratosthenes for all primes below a certain number
+    //! Calculates the Sieve of Eratosthenes for all primes below a certain number
     /*  @param n prime to find
      *  @param sieve returned by sieve_of_eratosthenes
      *  @param use_exceptions flag to signal failure by exception
@@ -136,7 +136,7 @@ namespace obi { namespace math {
         return result;
     }
 
-    //! Calculates the sieve of eratosthenes for all primes below a certain number
+    //! Calculates the Sieve of Eratosthenes for all primes below a certain number
     /*  @param n prime to find
      *  @param primes above this number will not be calculated in the underlying sieve
      *  @param use_exceptions flag to signal failure by exception
