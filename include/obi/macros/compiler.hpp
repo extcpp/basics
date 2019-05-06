@@ -8,15 +8,15 @@
     //gcc or clang
     #define OBI_COMPILER_GNU 1
     #define OBI_DO_PRAGMA(x) _Pragma (#x)
-    #define OBI_WIN_EXPORT OBI_NOTHING()
+    #define OBI_EXPORT_VC OBI_NOTHING()
 #elif defined _MSC_VER
     //visual studio
     #define OBI_COMPILER_VC 1
     #define OBI_DO_PRAGMA(x) __pragma (x)
     #ifdef OBI_IN_LIB
-        #define OBI_WIN_EXPORT __declspec(dllexport)
+        #define OBI_EXPORT_VC __declspec(dllexport)
     #else
-        #define OBI_WIN_EXPORT __declspec(dllimport)
+        #define OBI_EXPORT_VC __declspec(dllimport)
     #endif
 #endif // __GNUC__
 

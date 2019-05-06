@@ -8,6 +8,7 @@
 #define OBI_LOGGING_DEFAULT_LEVEL info
 #endif
 
+#include <obi/macros/compiler.hpp>
 #include <string>
 #include <map>
 #include <mutex>
@@ -15,8 +16,8 @@
 namespace obi { namespace logging {
     namespace _detail {
         struct logtopic;
-        OBI_WIN_EXPORT extern std::mutex logmutex;
-        OBI_WIN_EXPORT extern std::map<int,logtopic*> topics_map;
+        OBI_EXPORT_VC extern std::mutex logmutex;
+        OBI_EXPORT_VC extern std::map<int,logtopic*> topics_map;
     }
 
     enum class level : int {
@@ -75,23 +76,23 @@ namespace obi { namespace logging {
         extern std::map<int,_detail::logtopic*> topics;
         // logging is configured globally via these variables
         // configure logging before you start logging!!!
-        OBI_WIN_EXPORT extern bool prefix_newline;
-        OBI_WIN_EXPORT extern bool append_newline;
-        OBI_WIN_EXPORT extern bool prefix_newline;
-        OBI_WIN_EXPORT extern bool append_newline;
-        OBI_WIN_EXPORT extern bool threads;
-        OBI_WIN_EXPORT extern bool filename;
-        OBI_WIN_EXPORT extern bool function;
-        OBI_WIN_EXPORT extern bool vim;
-        OBI_WIN_EXPORT extern bool gdb;
+        OBI_EXPORT_VC extern bool prefix_newline;
+        OBI_EXPORT_VC extern bool append_newline;
+        OBI_EXPORT_VC extern bool prefix_newline;
+        OBI_EXPORT_VC extern bool append_newline;
+        OBI_EXPORT_VC extern bool threads;
+        OBI_EXPORT_VC extern bool filename;
+        OBI_EXPORT_VC extern bool function;
+        OBI_EXPORT_VC extern bool vim;
+        OBI_EXPORT_VC extern bool gdb;
     }
 
     namespace topic {
         // can not be inline as they shall be mutable
-        OBI_WIN_EXPORT extern _detail::logtopic no_topic;
-        OBI_WIN_EXPORT extern _detail::logtopic dev;
-        OBI_WIN_EXPORT extern _detail::logtopic network;
-        OBI_WIN_EXPORT extern _detail::logtopic engine;
+        OBI_EXPORT_VC extern _detail::logtopic no_topic;
+        OBI_EXPORT_VC extern _detail::logtopic dev;
+        OBI_EXPORT_VC extern _detail::logtopic network;
+        OBI_EXPORT_VC extern _detail::logtopic engine;
     }
 
 }} // obi::util::logging
