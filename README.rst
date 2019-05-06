@@ -1,4 +1,4 @@
-|travis| |appveyor| |codecov| |coverity| |cpp| |license|
+|travis| |appveyor| |codecov| |coverity| |cpp| |gpl| |license|
 
 libobi
 ======
@@ -27,4 +27,5 @@ using cmake, travis, appveyor, coverage and friends.
    :target: https://scan.coverity.com/projects/obiwahn-libobi
 
 .. |cpp| image:: https://img.shields.io/badge/c++-17-green.svg?style=flat
-.. |license| image:: https://img.shields.io/badge/license-closed-red.svg?style=flat
+.. |gpl| image:: https://img.shields.io/badge/license-GPL3-blue.svg
+.. |license| image:: https://img.shields.io/badge/license-non--free-red.svg?style=flat
