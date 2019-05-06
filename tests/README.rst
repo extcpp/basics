@@ -1,7 +1,10 @@
 Tests
 =====
 
-Please read the Googletest Primer_ and AdvancedGuide_ 
+Please read the Googletest |primer|_ and |advanced|_
 
-.. _Primer https://github.com/google/googletest/blob/master/googletest/docs/primer.md
-.. _AdvancedGuide https://github.com/google/googletest/blob/master/googletest/docs/advanced.md
+.. |primer| replace:: Primer
+.. _primer: https://github.com/google/googletest/blob/master/googletest/docs/primer.md
+
+.. |advanced| replace:: Advanced Guide
+.. _advanced: https://github.com/google/googletest/blob/master/googletest/docs/advanced.md

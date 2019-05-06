@@ -13,41 +13,40 @@ using LoggingDeathTest = LoggingTest;
 TEST_F(LoggingTest, logging_no_crash){
     using namespace obi::logging;
     configuration::threads = false;
+
     configuration::gdb = true;
     configuration::vim = true;
     configuration::prefix_newline = false;
     configuration::append_newline = true;
 
-    // TODO add far more tests that check the output
-    // This test only asserts that it is somewhat working
-    ASSERT_NO_THROW( OBI_LOG("babe") << "cafe?");
+    ASSERT_NO_THROW(OBI_LOG("babe") << "cafe?");
 
     configuration::gdb = false;
     configuration::vim = false;
     configuration::prefix_newline = true;
     configuration::append_newline = false;
 
-    ASSERT_NO_THROW( OBI_LOG("babe") << "2cafe?");
-    ASSERT_NO_THROW( OBI_LOG("music", network, warn) << "NOHA!");
+    ASSERT_NO_THROW(OBI_LOG("babe") << "2cafe?");
+    ASSERT_NO_THROW(OBI_LOG("music", network, warn) << "Green Day");
 }
 
+// does not die
+#ifndef OBI_COMPILER_VC
 TEST_F(LoggingDeathTest, fatal){
     ::testing::FLAGS_gtest_death_test_style = "threadsafe";
     using namespace obi::logging;
     configuration::threads = false;
-#ifndef OBI_WINDOWS
-    ASSERT_DEATH(OBI_LOG("cafe", fatal) << "No cafe?!?!?!!", "");
-#else
-    //It does not die it does not throw:(
-    //ASSERT_THROW(OBI_LOG("cafe", fatal) << "No cafe?!?!?!!", obi::util::not_implemented_exception);
-#endif
-}
 
-TEST_F(LoggingDeathTest, threads){
-    ::testing::FLAGS_gtest_death_test_style = "threadsafe";
+    ASSERT_DEATH_IF_SUPPORTED(OBI_LOG("work", network, fatal) << "What?!?! No Cafe!?!?!? :(","");
+}
+#endif
+
+TEST_F(LoggingTest, threads){
     using namespace obi::logging;
     configuration::threads = true;
-    ASSERT_DEATH(OBI_LOG("cafe") << "No thread impl ma:(", "");
+
+    ASSERT_THROW(OBI_LOG("aiaiai") << "No threads ma:(",  obi::util::not_implemented_exception);
+
     configuration::threads = false;
 }
 

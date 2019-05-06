@@ -82,6 +82,8 @@ namespace obi { namespace logging {
         _ss << ": '";
 
         // message follows here
+
+        this->write();
     }
 
     void _detail::logger::write(){
@@ -107,7 +109,6 @@ namespace obi { namespace logging {
         }
     }
 
-    _detail::logger::~logger(){
-        this->write();
-    }
+    _detail::logger::~logger(){ }
+
 }} // obi::util::logging
