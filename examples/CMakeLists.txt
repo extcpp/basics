@@ -36,6 +36,7 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
         target_link_libraries(${example} dl)
     endif(UNIX)
     target_compile_options(${example} PRIVATE ${obi_stone-warnings})
+    set_target_properties (${example} PROPERTIES FOLDER examples/${example})
 endforeach()
 
 add_executable(any_printable_example any_printable_main.cpp any_printable_use_impl.cpp)

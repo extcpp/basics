@@ -5,6 +5,8 @@ project(libobi)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 ## OPTIONS
 option(LIBOBI_EXAMPLES "build examples" OFF)
 option(LIBOBI_TESTS "build tests" OFF)
@@ -41,6 +43,9 @@ else()
     set(obi_l1_cache_line_size FALSE)
 endif()
 
+include(src_files.cmake)
+include(include_files.cmake)
+
 ## define header only lib
 add_library(obi INTERFACE)
 target_include_directories(obi INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -57,9 +62,7 @@ target_compile_definitions(obi INTERFACE
 )
 
 ## define shared lib
-add_library(obi_shared SHARED
-    "src/logging.cpp"
-)
+add_library(obi_shared SHARED ${libobi_source} ${libobi_header})
 target_include_directories(obi_shared PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_compile_features(obi_shared PUBLIC cxx_std_17)
 target_compile_options(obi_shared PRIVATE ${obi_stone-warnings})
@@ -71,6 +74,9 @@ target_compile_definitions(obi_shared PUBLIC
     $<$<BOOL:${OBI_CXX_COMPILER_IS_CLANG}>:OBI_CLANG>
     $<$<BOOL:${obi_l1_cache_line_size}>:OBI_KNOWN_L1_CACHE_LINE_SIZE=${obi_l1_cache_line_size}>
 )
+
+set_target_properties (obi_shared PROPERTIES FOLDER libobi)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${libobi_header} ${libobi_source})
 
 ## testing
 if(LIBOBI_TESTS)
