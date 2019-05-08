@@ -26,7 +26,7 @@ void sort_all(T&&... args){
 
 inline std::string_view
 filename(std::string const& pathname, bool is_linux = true, bool both = false){
-    static const auto sep_predicate = [&](char c) {
+    auto sep_predicate = [&](char c) {
         bool lin = ((both ||  is_linux) && c == '/');
         bool win = ((both || !is_linux) && c == '\\');
         return lin || win;
