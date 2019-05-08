@@ -165,6 +165,8 @@ TEST(util_serialization, little_storage_array_multi_in_out){
     // convenience functions when converting to string
     auto str = std::string(to_char_ptr(array), array.size());
     ASSERT_TRUE(std::memcmp(array.data(),str.data(),array.size()) == 0);
+    char* test = to_char_ptr(array.data());
+    ASSERT_TRUE(std::memcmp(test,str.data(),1) == 0);
 }
 
 TEST(util_serialization, big_storage_array_multi_in_out){
@@ -194,4 +196,6 @@ TEST(util_serialization, big_storage_array_multi_in_out){
     // convenience functions when converting to string
     auto str = std::string(to_char_ptr(array), array.size());
     ASSERT_TRUE(std::memcmp(array.data(),str.data(),array.size()) == 0);
+    char* test = to_char_ptr(array.data());
+    ASSERT_TRUE(std::memcmp(test,str.data(),1) == 0);
 }
