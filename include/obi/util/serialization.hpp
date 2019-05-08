@@ -29,11 +29,11 @@ char const* to_char_ptr(std::array<std::byte,N> const& arr){
 // with string
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>>
-to_little_storage(T in, std::string& out) {
+to_little_storage(std::string& storage, T in) {
     in = endian::host_to_little(in);
     std::size_t len = 0;
     do {
-        out.push_back(static_cast<char>(in & 0xffU));
+        storage.push_back(static_cast<char>(in & 0xffU));
         in >>= 8;
     } while (++len < sizeof(T));
 }
@@ -42,28 +42,41 @@ to_little_storage(T in, std::string& out) {
 // returns advanced pointer position
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>, std::byte*>
-to_little_storage(T in, std::byte* out) {
+to_little_storage(std::byte* storage, T in) {
     in = endian::host_to_little(in);
-    std::memcpy(out, &in, sizeof(std::decay_t<T>));
-    return out + sizeof(std::decay_t<T>);
+    std::memcpy(storage, &in, sizeof(std::decay_t<T>));
+    return storage + sizeof(std::decay_t<T>);
 }
 
 // with pointer ref - advances cursor
 template <typename T> //constexpr
-    std::enable_if_t<std::is_integral_v<T>, void>
-    to_little_storage_advance(T in, std::byte*& out) {
-        in = endian::host_to_little(in);
-        std::memcpy(out, &in, sizeof(std::decay_t<T>));
-        out += sizeof(std::decay_t<T>);
+std::enable_if_t<std::is_integral_v<T>, void>
+to_little_storage_advance(std::byte*& storage, T in) {
+    in = endian::host_to_little(in);
+    std::memcpy(storage, &in, sizeof(std::decay_t<T>));
+    storage += sizeof(std::decay_t<T>);
 }
+
+template <typename ...T>
+void to_little_storage_advance(std::byte*& storage,T& ...in_args){
+    (to_little_storage_advance(storage, in_args), ...);
+}
+
+template <typename ...T>
+std::byte* to_little_storage(std::byte* storage,T& ...in_args){
+    std::byte* cursor = storage;
+    (to_little_storage_advance(cursor, in_args), ...);
+    return cursor;
+}
+
 
 // writes multiple arguments into an array
 template <typename ...T, std::size_t N = size_of<T...>()> //constexpr
 std::array<std::byte, N>
-to_little_storage(T& ...args){
+to_little_storage_array(T& ...in_args){
     std::array<std::byte,N> result;
     std::byte* cursor = result.data();
-    (to_little_storage_advance(args,cursor), ...);
+    (to_little_storage_advance(cursor, in_args), ...);
     return result;
 }
 //// to little storage - end
@@ -73,28 +86,40 @@ to_little_storage(T& ...args){
 // returns advanced pointer position
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>, std::byte*>
-to_big_storage(T in, std::byte* out) {
+to_big_storage(std::byte* storage, T in) {
     in = endian::host_to_big(in);
-    std::memcpy(out, &in, sizeof(std::decay_t<T>));
-    return out + sizeof(std::decay_t<T>);
+    std::memcpy(storage, &in, sizeof(std::decay_t<T>));
+    return storage + sizeof(std::decay_t<T>);
 }
 
 // with pointer ref - advances cursor
 template <typename T> //constexpr
-    std::enable_if_t<std::is_integral_v<T>, void>
-    to_big_storage_advance(T in, std::byte*& out) {
-        in = endian::host_to_big(in);
-        std::memcpy(out, &in, sizeof(std::decay_t<T>));
-        out += sizeof(std::decay_t<T>);
+std::enable_if_t<std::is_integral_v<T>, void>
+to_big_storage_advance(std::byte*& storage,T in) {
+    in = endian::host_to_big(in);
+    std::memcpy(storage, &in, sizeof(std::decay_t<T>));
+    storage += sizeof(std::decay_t<T>);
+}
+
+template <typename ...T>
+void to_big_storage_advance(std::byte*& storage,T& ...in_args){
+    (to_big_storage_advance(storage, in_args), ...);
+}
+
+template <typename ...T>
+std::byte* to_big_storage(std::byte* storage,T& ...in_args){
+    std::byte* cursor = storage;
+    (to_big_storage_advance(cursor, in_args), ...);
+    return cursor;
 }
 
 // writes multiple arguments into an array
 template <typename ...T, std::size_t N = size_of<T...>()> //constexpr
 std::array<std::byte, N>
-to_big_storage(T& ...args){
+to_big_storage_array(T& ...in_args){
     std::array<std::byte,N> result;
     std::byte* cursor = result.data();
-    (to_big_storage_advance(args,cursor), ...);
+    (to_big_storage_advance(cursor, in_args), ...);
     return result;
 }
 //// to big storage - end
@@ -104,23 +129,23 @@ to_big_storage(T& ...args){
 // returns advanced pointer position
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::byte const*>
-from_little_storage(std::byte const* in, T& out){
-    std::memcpy(&out, in, sizeof(std::decay_t<T>));
+from_little_storage(std::byte const* storage, T& out){
+    std::memcpy(&out, storage, sizeof(std::decay_t<T>));
     out = endian::little_to_host(out);
-    return in + sizeof(std::decay_t<T>);
+    return storage + sizeof(std::decay_t<T>);
 }
 
 // with pointer ref - advances cursor
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,void>
-from_little_storage_advance(std::byte const*& in, T& out){
-    in = from_little_storage(in,out);
+from_little_storage_advance(std::byte const*& storage, T& out){
+    storage = from_little_storage(storage,out);
 }
 
 template <typename ...T> //constexpr
-std::byte const* from_little_storage(std::byte const* in, T& ...outs){
-    (from_little_storage_advance(in,outs), ...);
-    return in;
+std::byte const* from_little_storage(std::byte const* storage, T& ...outs){
+    (from_little_storage_advance(storage,outs), ...);
+    return storage;
 }
 //// from little storage - end
 
@@ -129,23 +154,23 @@ std::byte const* from_little_storage(std::byte const* in, T& ...outs){
 // returns advanced pointer position
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,std::byte const*>
-from_big_storage(std::byte const*& in, T& out){
-    std::memcpy(&out, in, sizeof(std::decay_t<T>));
+from_big_storage(std::byte const*& storage, T& out){
+    std::memcpy(&out, storage, sizeof(std::decay_t<T>));
     out = endian::big_to_host(out);
-    return in + sizeof(std::decay_t<T>);
+    return storage + sizeof(std::decay_t<T>);
 }
 
 // with pointer ref - advances cursor
 template <typename T> //constexpr
 std::enable_if_t<std::is_integral_v<T>,void>
-from_big_storage_advance(std::byte*& in,T& out){
-    in = from_big_storage(in,out);
+from_big_storage_advance(std::byte const*& storage,T& out){
+    storage = from_big_storage(storage,out);
 }
 
 template <typename ...T> //constexpr
-std::byte const* from_big_storage(std::byte const* in, T& ...outs){
-    (from_big_storage_advance(in,outs), ...);
-    return in;
+std::byte const* from_big_storage(std::byte const* storage, T& ...outs){
+    (from_big_storage_advance(storage,outs), ...);
+    return storage;
 }
 //// from big storage - end
 

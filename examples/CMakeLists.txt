@@ -19,7 +19,6 @@ set(examples
     meta
     scope_guard
     scoped_timer
-    serialize
     show
     static_lambda
     tagged_pointer

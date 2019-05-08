@@ -5,84 +5,61 @@
 
 using namespace ::obi::util;
 
-#ifdef OBI_LITTLE_ENDIAN
-TEST(util_endian, is_little){
-    ASSERT_TRUE(endian::is_little());
+namespace {
+    std::uint32_t num = 0x01020304U;
+    std::uint32_t num_reverse = 0x04030201U;
+    std::uint32_t little_value = 16909060;
+    std::uint32_t big_value = 67305985;
 }
 
+TEST(util_endian, assert_assumptions){
+    if(endian::is_little()){
+        ASSERT_EQ(num,little_value);
+        ASSERT_EQ(num_reverse,big_value);
+    } else {
+        ASSERT_EQ(num,big_value);
+        ASSERT_EQ(num_reverse,little_value);
+    }
+}
+
+
 TEST(util_endian, host_to_little){
-    {
-        std::int32_t const x = 42;
-        std::int32_t y = endian::host_to_little(x);
-        ASSERT_EQ(y,x);
+    auto x = endian::host_to_little(num);
+    if(endian::is_little()){
+        ASSERT_EQ(little_value,x);
+        ASSERT_EQ(num,x);
+    } else {
+        ASSERT_EQ(num_reverse,x);
     }
 
-    {
-        std::uint32_t const x = 42;
-        std::uint32_t y = endian::host_to_little(x);
-        ASSERT_EQ(y,x);
-    }
-
-    {
-        std::int64_t const x = 42;
-        std::int64_t y = endian::host_to_little(x);
-        ASSERT_EQ(y,x);
-    }
-
-    {
-        std::uint64_t const x = 42;
-        std::uint64_t y = endian::host_to_little(x);
-        ASSERT_EQ(y,x);
-    }
 }
 
 TEST(util_endian, little_to_host){
-    {
-        std::int32_t const x = 42;
-        std::int32_t y = endian::little_to_host(x);
-        ASSERT_EQ(y,x);
-    }
-
-    {
-        std::uint32_t const x = 42;
-        std::uint32_t y = endian::little_to_host(x);
-        ASSERT_EQ(y,x);
-    }
-
-    {
-        std::int64_t const x = 42;
-        std::int64_t y = endian::little_to_host(x);
-        ASSERT_EQ(y,x);
-    }
-
-    {
-        std::uint64_t const x = 42;
-        std::uint64_t y = endian::little_to_host(x);
-        ASSERT_EQ(y,x);
+    auto x = endian::little_to_host(num);
+    if(endian::is_little()){
+        ASSERT_EQ(little_value,x);
+        ASSERT_EQ(num,x);
+    } else {
+        ASSERT_EQ(num_reverse,x);
     }
 }
 
 TEST(util_endian, host_to_big){
-    {
-        std::uint32_t const x = 0x01020304;
-        std::uint32_t y = endian::host_to_big(x);
-        ASSERT_EQ(y,0x04030201);
+    auto x = endian::host_to_big(num);
+    if(endian::is_little()){
+        ASSERT_EQ(big_value,x);
+        ASSERT_EQ(num_reverse,x);
+    } else {
+        ASSERT_EQ(num,x);
     }
 }
 
 TEST(util_endian, big_to_host){
-    {
-        std::uint32_t const x = 0x01020304;
-        std::uint32_t y = endian::big_to_host(x);
-        ASSERT_EQ(y,0x04030201);
+    auto x = endian::host_to_big(num_reverse);
+    if(endian::is_little()){
+        ASSERT_EQ(little_value,x);
+        ASSERT_EQ(num,x);
+    } else {
+        ASSERT_EQ(num_reverse,x);
     }
 }
-
-#elif OBI_BIG_ENDIAN
-TEST(util_endian, is_little){
-    ASSERT_FALSE(endian::is_little());
-}
-#else
-    "fail to compile"
-    #pragma message "fail to compile"
-#endif

@@ -3,19 +3,35 @@
 #include <obi/util/encode.hpp>
 
 #include <array>
+#include <vector>
+#include <algorithm>
 
 using namespace ::obi::util;
 
-#ifdef OBI_LITTLE_ENDIAN
-
-TEST(util_serialization, little_storage_integrals){
+namespace {
     std::uint32_t num = 0x01020304U;
+    std::uint32_t num_reverse = 0x04030201U;
+    std::uint32_t little_value = 16909060;
+    std::uint32_t big_value = 67305985;
+}
 
+TEST(util_serialization, assert_assumptions){
+    if(endian::is_little()){
+        ASSERT_EQ(num,little_value);
+        ASSERT_EQ(num_reverse,big_value);
+    } else {
+        ASSERT_EQ(num,big_value);
+        ASSERT_EQ(num_reverse,little_value);
+    }
+}
+
+
+TEST(util_serialization, little_storage_behaves_as_pushback){
     std::array<std::byte,sizeof(num)> arr;
-    to_little_storage(num, &arr[0]); // pointer
+    to_little_storage(&arr[0], num); // pointer
 
     std::string str;
-    to_little_storage(num, str); // string
+    to_little_storage(str, num); // string
 
     {   // not cursor advancing method
         ASSERT_EQ(sizeof(num), str.size());
@@ -25,7 +41,7 @@ TEST(util_serialization, little_storage_integrals){
 
     {   // cursor advancing method
         std::byte* cursor = &arr[0];
-        to_little_storage_advance(num, cursor);
+        to_little_storage_advance(cursor, num);
         auto rv = std::memcmp(&arr[0], str.data(), sizeof(num));
         ASSERT_EQ(rv,0);
         ASSERT_EQ(cursor,&arr[0]+sizeof(num));
@@ -46,10 +62,85 @@ TEST(util_serialization, little_storage_integrals){
     }
 }
 
-TEST(util_serialization, little_storage_multi){
+TEST(util_serialization, little_storage_integral){
+    std::vector<std::byte> storage;
+    storage.resize(sizeof(num));
+    to_little_storage(storage.data(), num);
+    if(endian::is_little()){
+        ASSERT_TRUE(std::memcmp(&num,storage.data(),sizeof(num)) == 0);
+    } else {
+        ASSERT_TRUE(std::memcmp(&num_reverse,storage.data(),sizeof(num)) == 0);
+    }
+}
+
+TEST(util_serialization, big_storage_integral){
+    std::vector<std::byte> storage;
+    storage.resize(sizeof(num));
+    to_big_storage(storage.data(), num);
+    if(endian::is_little()){
+        ASSERT_TRUE(std::memcmp(&num_reverse,storage.data(),sizeof(num)) == 0);
+    } else {
+        ASSERT_TRUE(std::memcmp(&num,storage.data(),sizeof(num)) == 0);
+    }
+}
+
+TEST(util_serialization, little_storage_multi_in_out){
     std::uint64_t a_in = 42;
     std::uint32_t b_in = 23;
-    auto array = to_little_storage(a_in, b_in);
+    std::vector<std::byte> storage;
+    storage.resize(size_of(a_in, b_in));
+    to_little_storage(storage.data(),a_in, b_in);
+
+    {
+        std::uint64_t a_out = 0;
+        std::uint32_t b_out = 0;
+        std::byte const* cursor = storage.data();
+        from_little_storage_advance(cursor, a_out);
+        from_little_storage_advance(cursor, b_out);
+        ASSERT_EQ(a_in, a_out);
+        ASSERT_EQ(b_in, b_out);
+    }
+
+    {
+        std::uint64_t a_out = 0;
+        std::uint32_t b_out = 0;
+        from_little_storage(storage.data(), a_out, b_out);
+        ASSERT_EQ(a_in, a_out);
+        ASSERT_EQ(b_in, b_out);
+    }
+}
+
+TEST(util_serialization, big_storage_multi_in_out){
+    std::uint64_t a_in = 42;
+    std::uint32_t b_in = 23;
+    std::vector<std::byte> storage;
+    storage.resize(size_of(a_in, b_in));
+    to_big_storage(storage.data(),a_in, b_in);
+
+
+    {
+        std::uint64_t a_out = 0;
+        std::uint32_t b_out = 0;
+        std::byte const* cursor = storage.data();
+        from_big_storage_advance(cursor, a_out);
+        from_big_storage_advance(cursor, b_out);
+        ASSERT_EQ(a_in, a_out);
+        ASSERT_EQ(b_in, b_out);
+    }
+
+    {
+        std::uint64_t a_out = 0;
+        std::uint32_t b_out = 0;
+        from_big_storage(storage.data(), a_out, b_out);
+        ASSERT_EQ(a_in, a_out);
+        ASSERT_EQ(b_in, b_out);
+    }
+}
+
+TEST(util_serialization, little_storage_array_multi_in_out){
+    std::uint64_t a_in = 42;
+    std::uint32_t b_in = 23;
+    auto array = to_little_storage_array(a_in, b_in);
     ASSERT_EQ(array.size(), size_of(a_in, b_in));
 
 
@@ -70,10 +161,37 @@ TEST(util_serialization, little_storage_multi){
         ASSERT_EQ(a_in, a_out);
         ASSERT_EQ(b_in, b_out);
     }
+
+    // convenience functions when converting to string
+    auto str = std::string(to_char_ptr(array), array.size());
+    ASSERT_TRUE(std::memcmp(array.data(),str.data(),array.size()) == 0);
 }
 
-#elif OBI_BIG_ENDIAN
-#else
-    "fail to compile"
-    #pragma message "fail to compile"
-#endif
+TEST(util_serialization, big_storage_array_multi_in_out){
+    std::uint64_t a_in = 42;
+    std::uint32_t b_in = 23;
+    auto array = to_big_storage_array(a_in, b_in);
+    ASSERT_EQ(array.size(), size_of(a_in, b_in));
+
+    {
+        std::uint64_t a_out = 0;
+        std::uint32_t b_out = 0;
+        std::byte const* cursor = array.data();
+        from_big_storage_advance(cursor, a_out);
+        from_big_storage_advance(cursor, b_out);
+        ASSERT_EQ(a_in, a_out);
+        ASSERT_EQ(b_in, b_out);
+    }
+
+    {
+        std::uint64_t a_out = 0;
+        std::uint32_t b_out = 0;
+        from_big_storage(array.data(), a_out, b_out);
+        ASSERT_EQ(a_in, a_out);
+        ASSERT_EQ(b_in, b_out);
+    }
+
+    // convenience functions when converting to string
+    auto str = std::string(to_char_ptr(array), array.size());
+    ASSERT_TRUE(std::memcmp(array.data(),str.data(),array.size()) == 0);
+}
