@@ -15,12 +15,12 @@
 
 namespace obi{ namespace util {
 
+template <typename callback_type = void(*)(std::vector<std::pair<std::uint64_t,std::string>> const&)>
 class scoped_timer {
 public:  // defines
     using high_clock    = std::chrono::high_resolution_clock;
     using clock_string_vec = std::vector<std::pair<high_clock::time_point,std::string>>;
     using int_string_vec = std::vector<std::pair<std::uint64_t,std::string>>;
-    using callback_type = std::function<void(int_string_vec const&)>;
 
 private:  // variables
     callback_type callback;
@@ -30,28 +30,23 @@ private:  // variables
 
 public:  // functions
     scoped_timer(callback_type cb = &scoped_timer::show_internal)
-                :callback(cb)
-                ,enabled_in_dtor(true)
-                ,add_dtor_entry(true)
-    {
-        timepoints_with_description.reserve(10);  //if you want time more than 10 - add template param?
-        timepoints_with_description.emplace_back(high_clock::time_point(),"");
-        timepoints_with_description.back().first=high_clock::now(); //defeats the purpose of emplace a bit :/
+        :callback(cb), enabled_in_dtor(true), add_dtor_entry(true) {
+        init();
     }
 
-    scoped_timer(std::string name)
-                :callback(&scoped_timer::show_internal)
-                ,enabled_in_dtor(true)
-                ,add_dtor_entry(true)
-    {
-        timepoints_with_description.reserve(10);
-        timepoints_with_description.emplace_back(high_clock::time_point(), name);
-        timepoints_with_description.back().first=high_clock::now();
+    scoped_timer(std::string const& name)
+        :callback(&scoped_timer::show_internal), enabled_in_dtor(true), add_dtor_entry(true) {
+        init(name);
+    }
+
+    scoped_timer(char const* name)
+        :callback(&scoped_timer::show_internal), enabled_in_dtor(true), add_dtor_entry(true) {
+        init(name);
     }
 
     ~scoped_timer(void) {
         if(add_dtor_entry) {
-            timepoints_with_description.emplace_back(high_clock::now(),"destructor");
+            timepoints_with_description.emplace_back(high_clock::now(), "destructor");
         }
         if(enabled_in_dtor) {
             callback(calculate());
@@ -75,6 +70,13 @@ public:  // functions
     }
 
 private:  // functions
+    void init(std::string const& name = "") {
+        static_assert(std::is_convertible_v<callback_type,std::function<void(int_string_vec const&)>>, "callback-type does not match");
+        timepoints_with_description.reserve(10);  //if you want time more than 10 - add template param?
+        timepoints_with_description.emplace_back(high_clock::time_point(), name);
+        timepoints_with_description.back().first=high_clock::now(); //defeats the purpose of emplace a bit :/
+    }
+
     static std::uint64_t get_time_diff(high_clock::time_point const& t0, high_clock::time_point const& t1) {
         return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(t1-t0).count());
     }
