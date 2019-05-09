@@ -12,35 +12,47 @@
 #include <iomanip>
 #include <cmath>
 
+// Note:
+// Creating the timer and running the calculation and callback is not
+// free and maybe a bit more expensive as one would think.
+// Adding time-points on the other hand, especially with small strings,
+// is pretty cheap. If you expect many points you can use the init-function
+// to resize the internal vector to match your expectation.
+
+
 namespace obi{ namespace util {
+using namespace std::literals::string_literals;
 
 namespace _detail::scoped_timer {
     using int_string_vec = std::vector<std::pair<std::uint64_t,std::string>>;
-    using default_callback_type = void(*)(std::vector<std::pair<std::uint64_t,std::string>> const&);
+    using callback_arg_type = int_string_vec const&;
+    using default_callback_type = void(*)(callback_arg_type);
 
-    inline std::stringstream to_string_stream_internal(int_string_vec const& times) {
+    inline std::stringstream to_string_stream(int_string_vec const& times) {
         std::stringstream ss;
-        int  width = 15;
-        ss << "\ntotal   : "
-           << std::setw(width) << times[0].first << " ns - "
-           << std::setprecision(3) << std::fixed << static_cast<double>(times[0].first) / std::pow(10.0,3.0) << " μs - "
-           << std::setprecision(6) << std::fixed << static_cast<double>(times[0].first) / std::pow(10.0,6.0) << " ms - "
-           << std::setprecision(9) << std::fixed << static_cast<double>(times[0].first) / std::pow(10.0,9.0) << " s";
+        constexpr auto Mega = 1000 * 1000;
+        constexpr auto Giga = 1000 * 1000 * 1000;
+        constexpr int width = 15;
 
+        // init pushes the first element, so times can never be empty
         if (!times[0].second.empty()) {
-            ss << " - " << times[0].second;
+            ss << "= " << times[0].second << " = \n";
         }
-        ss << std::endl;
+
+        ss << "total   : "
+           << std::setw(width)
+           << std::setprecision(6) << std::fixed << static_cast<double>(times[0].first) / Mega  << " ms (100.0%) - "
+           << std::setprecision(9) << std::fixed << static_cast<double>(times[0].first) / Giga << " s"
+           << std::endl;
 
         if (times.size() > 1) {
             for (std::size_t i = 1; i < times.size(); i++) {
                 ss << "step "  << std::setw(3) << i << ": "
                    << std::setw(width) << std::setprecision(6)
-                   //<< times[i].first << " ns"
-                   << static_cast<double>(times[i].first) / std::pow(10.0,6.0)<< " ms"
+                   << static_cast<double>(times[i].first) / Mega << " ms"
                    << std::setprecision(1) << std::fixed
                    << " (" << std::setw(5)
-                   << 100*static_cast<double>(times[i].first)/static_cast<double>(times[0].first)
+                   << 100 * static_cast<double>(times[i].first)/static_cast<double>(times[0].first)
                    << "%)";
 
                 if (!times[i].second.empty()) {
@@ -53,7 +65,7 @@ namespace _detail::scoped_timer {
     }  // function - to_string_stream
 
     inline void default_callback(int_string_vec const& times) {
-        std::cerr << to_string_stream_internal(times).rdbuf();
+        std::cerr << to_string_stream(times).rdbuf();
     }
 
 }
@@ -61,9 +73,8 @@ namespace _detail::scoped_timer {
 template <typename callback_type = _detail::scoped_timer::default_callback_type>
 class scoped_timer {
 public:  // defines
-
-    using high_clock    = std::chrono::high_resolution_clock;
-    using clock_string_vec = std::vector<std::pair<high_clock::time_point,std::string>>;
+    using clock = std::chrono::high_resolution_clock;
+    using clock_string_vec = std::vector<std::pair<clock::time_point,std::string>>;
 
 private:  // variables
     callback_type callback;
@@ -82,17 +93,32 @@ public:  // functions
         init(name);
     }
 
-    scoped_timer(char const* name)
+    scoped_timer(char const* name) //without this overload callback is deduces to char const*
         :callback(&_detail::scoped_timer::default_callback) {
         init(name);
     }
 
-    void add_step(std::string const& str = "") {
-        timepoints_with_description.emplace_back(high_clock::now(), str);
+    void init(std::string const& name = "", std::size_t vec_size = 6) {
+        using namespace _detail::scoped_timer;
+        static_assert(
+            std::is_convertible_v<callback_type ,std::function<void(callback_arg_type)>>,
+            "callback-type does not match"
+        );
+        enabled_in_dtor = true;
+        add_dtor_entry = true;
+        timepoints_with_description.clear();
+        timepoints_with_description.reserve(vec_size);  //if you want time more than 10 - add template param?
+        timepoints_with_description.emplace_back(clock::now(), name);
     }
 
-    void add_step(std::string&& str = "") {
-        timepoints_with_description.emplace_back(high_clock::now(), std::move(str));
+    void add_step() {
+        timepoints_with_description.emplace_back(clock::now(), ""s);
+    }
+
+    template <typename T>
+    void add_step(T&& str) {
+        static_assert(std::is_convertible_v<T,std::string>,"parameter is not convertible to string");
+        timepoints_with_description.emplace_back(clock::now(), std::forward<T>(str));
     }
 
     void set_name(std::string name) {
@@ -108,14 +134,14 @@ public:  // functions
         callback(calculate());
     }
 
-    std::string to_string(bool disable = true) {
+    std::string to_string(bool disable = true) const {
         if (disable) { dismiss(); }
-        return to_string_stream_internal(calculate()).str();
+        return to_string_stream(calculate()).str();
     }
 
     ~scoped_timer(void) {
         if(add_dtor_entry) {
-            timepoints_with_description.emplace_back(high_clock::now(), "destructor");
+            timepoints_with_description.emplace_back(clock::now(), "destructor"s);
         }
         if(enabled_in_dtor) {
             callback(calculate());
@@ -124,30 +150,22 @@ public:  // functions
 
 
 private:  // functions
-    void init(std::string const& name = "") {
-        static_assert(
-            std::is_convertible_v<callback_type ,std::function<void(_detail::scoped_timer::int_string_vec const&)> >,
-            "callback-type does not match"
-        );
-        timepoints_with_description.reserve(10);  //if you want time more than 10 - add template param?
-        timepoints_with_description.emplace_back(high_clock::time_point(), name);
-        timepoints_with_description.back().first=high_clock::now(); //defeats the purpose of emplace a bit :/
-    }
 
-    static std::uint64_t get_time_diff(high_clock::time_point const& t0, high_clock::time_point const& t1) {
+    // get difference between time-points in nanoseconds
+    static std::uint64_t get_time_diff(clock::time_point const& t0, clock::time_point const& t1) {
         return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(t1-t0).count());
     }
 
     _detail::scoped_timer::int_string_vec calculate() const {
         using namespace _detail::scoped_timer;
         auto& tp = timepoints_with_description;
-        std::uint64_t total_time = get_time_diff(tp.front().first, tp.back().first);
+        auto total_time = get_time_diff(tp.front().first, tp.back().first);
         int_string_vec times;
         times.emplace_back(std::make_pair(total_time, tp.front().second));
         if (tp.size() > 2) {
-            for (std::size_t i = 1; i < tp.size(); i++) {
-                auto duration = get_time_diff(tp[i-1].first, tp[i].first);
-                auto entry = std::make_pair(std::move(duration), tp[i].second);
+            for (auto it = ++tp.begin(); it != tp.end(); it++) {
+                auto duration = get_time_diff(std::prev(it)->first, it->first);
+                auto entry = std::make_pair(std::move(duration), it->second);
                 times.emplace_back(std::move(entry));
             }
         }
