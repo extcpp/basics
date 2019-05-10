@@ -1,4 +1,4 @@
-// Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef OBI_UTIL_FUNCTION_CACHE_HEADER
 #define OBI_UTIL_FUNCTION_CACHE_HEADER
@@ -10,43 +10,42 @@
 
 namespace obi { namespace util {
 
-// requires c++14
-// Function Pointer only
-//
-// TODO - add parameter that limits the size of the cache
-//        this is difficult because we can have data of
-//        different functions in the same map and we are
-//        only able to distinguish by function pointer
-//        value
-//
-auto add_function_cache = [](auto fun, unsigned cache_size=1000000, double delete_percent=0.1) {
-    using fun_type = decltype(fun);
-    return ([=](auto... run_args) {
-        using fun_return_type = std::result_of_t<fun_type(decltype(run_args)...)>;
-        static unsigned delete_on_overflow = static_cast<unsigned>(cache_size * delete_percent);
-        static std::map<
-            std::tuple<fun_type, decltype(run_args)...>,
-            fun_return_type
-        > result_cache;
-        static std::map<fun_type, unsigned> inserts;
-        std::tuple<fun_type, decltype(run_args)...> tuple(fun, run_args...);
-        auto result_search = result_cache.find(tuple);
-        if (result_search == result_cache.end()){
+// do not use this for cheap operations :)
+auto add_function_cache = [](auto fun, std::size_t cache_size=10000) {
+    return ([=](auto... run_args) -> decltype(fun(run_args...)) {
+        using fun_type = decltype(fun);
+        using fun_return_type = decltype(fun(run_args...));
+        using function_arg_tuple = std::tuple<fun_type, decltype(run_args)...>;
+        using result_cache = std::map<function_arg_tuple, std::pair<fun_return_type,std::size_t>>;
+
+        static result_cache cache;
+        static std::map<fun_type, std::size_t> inserts;
+
+        // search result in cache
+        function_arg_tuple tuple(fun, run_args...);
+        auto result_search = cache.find(tuple);
+
+        // handle insert or return value
+        if (result_search == cache.end()){
             auto insert_num_search = inserts.find(fun);
+            std::size_t insert_id = 0;
             if (insert_num_search == inserts.end()){
                 inserts[fun]=0;
             } else {
-                insert_num_search->second++;
-                // TODO no overflow!!
-                // in case of overflow delete
+                insert_id = insert_num_search->second++;
+                if (insert_id %  cache_size / 10){
+                    // get elements for this function
+                    std::size_t elements_for_fun = 0;
+                    if (elements_for_fun > cache_size) {
+                        // clean up - delete cached elements
+                    }
+                }
             }
-            (void) delete_on_overflow; //silence warning
             fun_return_type rv = fun(run_args...);
-            result_cache[tuple] = rv;
+            cache[tuple] = {rv, insert_id};
             return rv;
-        }
-        else {
-            return result_search->second;
+        } else {
+            return result_search->second.first;
         }
     });
 };

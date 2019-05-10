@@ -7,13 +7,10 @@
 using namespace std;
 using namespace obi::util;
 
-uint64_t fib(uint64_t n)
-{
-    if (n < 2)
-        return n;
+uint64_t fib(uint64_t n) {
+    if (n < 2) { return n; }
     future<uint64_t> n1 = async(fib, n - 1);
     future<uint64_t> n2 = async(fib, n - 2);
-
     return n1.get() + n2.get();
 }
 
