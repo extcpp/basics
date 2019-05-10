@@ -17,23 +17,16 @@ uint64_t fib(uint64_t n) {
 int main() {
     scoped_timer timer("function cache test");
 
-    //function_cache - usage
-    auto fib_cache = add_function_cache(&fib);
-
-    //function_cache_old - usage
-    auto fib_cache_old = add_function_cache_old(function<decltype(fib)>(fib));
-
+    auto fib_cache = add_function_cache(fib);
+    std::string result;
     timer.add_step("init - done");
 
-    cout << fib_cache(15ull) << endl;
-    timer.add_step("function_cache (without cache) - done");
-    cout << fib_cache(15ull) << endl;
-    timer.add_step("function_cache (with cache) - done");
-
-    cout << fib_cache_old(15ull) << endl;
-    timer.add_step("function_cache_old (without cache) - done");
-    cout << fib_cache_old(15ull) << endl;
-    timer.add_step("function_cache_old (with cache) - done");
+    result = std::to_string(fib(15ull)) ;
+    timer.add_step("result: " + result + " - no cache");
+    result = std::to_string(fib_cache(15ull)) ;
+    timer.add_step("result: " + result + " - build cache");
+    result = std::to_string(fib_cache(15ull)) ;
+    timer.add_step("result: " + result + " - use cache");
 
     return 0;
 }
