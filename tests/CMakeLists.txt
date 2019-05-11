@@ -11,11 +11,12 @@ set(test_files
     "util_cast"
     "util_encode"
     "util_endian"
+    "util_except"
     "util_result"
+    "util_scoped_timer"
     "util_serialization"
     "util_string"
     "util_windows_strings"
-    "util_except"
 )
 
 set(test_files_shared

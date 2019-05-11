@@ -30,9 +30,9 @@ namespace obi{ namespace util {
 using namespace std::literals::string_literals;
 
 namespace _detail::scoped_timer {
-    using int_string_vec = std::vector<std::pair<std::uint64_t,std::string>>;
+    using int_string_vec = std::vector<std::pair<std::uint64_t, std::string>>;
     using callback_arg_type = int_string_vec const&;
-    using default_callback_type = void(*)(callback_arg_type);
+    using default_callback_type = int_string_vec(*)(callback_arg_type);
 
     inline std::stringstream to_string_stream(int_string_vec const& times) {
         std::stringstream ss;
@@ -70,10 +70,13 @@ namespace _detail::scoped_timer {
         return ss;
     }  // function - to_string_stream
 
-    inline void default_callback(int_string_vec const& times) {
+    inline int_string_vec default_callback(int_string_vec const& times) {
         std::cerr << to_string_stream(times).rdbuf();
+        return times;
     }
 }
+
+using scoped_timer_res = _detail::scoped_timer::int_string_vec;
 
 template <typename callback_type = _detail::scoped_timer::default_callback_type>
 class scoped_timer {
@@ -88,9 +91,9 @@ private:
     bool add_dtor_entry = true;
 
 public:
-    scoped_timer(callback_type cb = &_detail::scoped_timer::default_callback)
+    scoped_timer(callback_type cb = &_detail::scoped_timer::default_callback, std::string const& name = ""s)
         :callback(cb) {
-        init();
+        init(name);
     }
 
     scoped_timer(std::string const& name)
@@ -135,9 +138,9 @@ public:
     void dismiss() { enabled_in_dtor = false; }
     void disable_dtor_entry() { add_dtor_entry = false; }
 
-    void run(bool disable = true) {
+    _detail::scoped_timer::int_string_vec run(bool disable = true) {
         if (disable) { dismiss(); }
-        callback(calculate());
+        return callback(calculate());
     }
 
     std::string to_string(bool disable = true) const {

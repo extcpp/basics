@@ -1,0 +1,96 @@
+#include <gtest/gtest.h>
+#include <obi/util/scoped_timer.hpp>
+#include <thread>
+
+using namespace obi::util;
+
+constexpr auto ms = std::chrono::milliseconds(1);
+void assert_time_eq(std::size_t ms_expected, std::pair<std::uint64_t, std::string> const& in){
+    ASSERT_EQ(ms_expected, in.first / (1000 * 1000));
+}
+
+
+TEST(util_scoped_timer, nostep){
+    scoped_timer_res result;
+    auto callback = [&result](scoped_timer_res const& in) {
+        result = in;
+        return in;
+    };
+
+    {
+        scoped_timer timer(callback);
+        std::this_thread::sleep_for(ms);
+    }
+
+    assert_time_eq(1,result.front());
+}
+
+TEST(util_scoped_timer, steps){
+    scoped_timer_res result;
+    auto callback = [&result](scoped_timer_res const& in) {
+        result = in;
+        return in;
+    };
+
+    {
+        scoped_timer timer(callback);
+        std::this_thread::sleep_for(ms);
+        timer.add_step();
+        std::this_thread::sleep_for(ms);
+        timer.add_step();
+        std::this_thread::sleep_for(ms);
+    }
+
+    assert_time_eq(3,result[0]);
+    assert_time_eq(1,result[1]);
+    assert_time_eq(1,result[2]);
+    assert_time_eq(1,result[3]);
+    ASSERT_STREQ("destructor", result.back().second.c_str());
+}
+
+TEST(util_scoped_timer, no_dtor){
+    scoped_timer_res result;
+    auto callback = [&result](scoped_timer_res const& in) {
+        result = in;
+        return in;
+    };
+
+    {
+        scoped_timer timer(callback);
+        timer.disable_dtor_entry();
+        std::this_thread::sleep_for(ms);
+        timer.add_step();
+        std::this_thread::sleep_for(ms);
+        timer.add_step();
+        std::this_thread::sleep_for(ms);
+    }
+
+    assert_time_eq(2,result[0]);
+    assert_time_eq(1,result[1]);
+    assert_time_eq(1,result[2]);
+    ASSERT_STREQ("", result.back().second.c_str());
+}
+
+TEST(util_scoped_timer, dismiss) {
+    scoped_timer_res result;
+    auto callback = [&result](scoped_timer_res const& in) {
+        result = in;
+        return in;
+    };
+
+    {
+        scoped_timer timer(callback);
+        timer.disable_dtor_entry();
+        timer.dismiss();
+        timer.init("", 1);
+        std::this_thread::sleep_for(ms);
+        timer.add_step("fin");
+
+        std::this_thread::sleep_for(ms);
+        timer.run();
+    }
+
+    assert_time_eq(1,result[0]);
+    assert_time_eq(1,result[1]);
+    ASSERT_STREQ("fin", result[1].second.c_str());
+}
