@@ -19,7 +19,7 @@
 // On my machine the complete timer executes in about 200ns on average.
 // The time taken varies about 100ns on each run. Therefore the time required
 // by the timer is in the order of the expected error. So If you measure
-// something with this kind of timer it should be in the oder milliseconds
+// something with this kind of timer it should be in the oder microseconds
 // to yield something reliable.
 //
 // For micro benchmarks watch: https://www.youtube.com/watch?v=nXaxk27zwlk ,
@@ -73,22 +73,21 @@ namespace _detail::scoped_timer {
     inline void default_callback(int_string_vec const& times) {
         std::cerr << to_string_stream(times).rdbuf();
     }
-
 }
 
 template <typename callback_type = _detail::scoped_timer::default_callback_type>
 class scoped_timer {
-public:  // defines
+public:
     using clock = std::chrono::high_resolution_clock;
     using clock_string_vec = std::vector<std::pair<clock::time_point,std::string>>;
 
-private:  // variables
+private:
     callback_type callback;
     clock_string_vec timepoints_with_description;
     bool enabled_in_dtor = true;
     bool add_dtor_entry = true;
 
-public:  // functions
+public:
     scoped_timer(callback_type cb = &_detail::scoped_timer::default_callback)
         :callback(cb) {
         init();
@@ -115,6 +114,7 @@ public:  // functions
         timepoints_with_description.clear();
         timepoints_with_description.reserve(vec_size);  //if you want time more than 10 - add template param?
         timepoints_with_description.emplace_back(clock::now(), name);
+        timepoints_with_description.back().first = clock::now();
     }
 
     void add_step() {
@@ -146,17 +146,16 @@ public:  // functions
     }
 
     ~scoped_timer(void) {
+        auto end_time = clock::now();
         if(add_dtor_entry) {
-            timepoints_with_description.emplace_back(clock::now(), "destructor"s);
+            timepoints_with_description.emplace_back(end_time, "destructor"s);
         }
         if(enabled_in_dtor) {
             callback(calculate());
         }
     }
 
-
-private:  // functions
-
+private:
     // get difference between time-points in nanoseconds
     static std::uint64_t get_time_diff(clock::time_point const& t0, clock::time_point const& t1) {
         return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(t1-t0).count());
