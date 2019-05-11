@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 3.8)
 project(libobi)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ## OPTIONS
@@ -103,3 +103,11 @@ endif()
 if(COMMAND obi_install)
     obi_install(obi "include/obi")
 endif()
+
+add_custom_target(
+    update_version ALL
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    COMMAND ${CMAKE_COMMAND}
+                -D "OBI_GIT_VERSION_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/version.h"
+                -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/script_git_version.cmake"
+)
