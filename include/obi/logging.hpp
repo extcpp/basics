@@ -21,8 +21,8 @@
 //  OBI_LOG("2bad", fatal) << "your app will terminate";
 
 #pragma once
-#ifndef OBI_UTIL_LOGGING_HEADER
-#define OBI_UTIL_LOGGING_HEADER
+#ifndef OBI_LOGGING_HEADER
+#define OBI_LOGGING_HEADER
 #include <iostream>
 #include <type_traits>
 #include <obi/macros/compiler.hpp>
@@ -76,7 +76,7 @@
     #define OBI_LOGC(...) _OBI_LOG_SELECT5TH_PARAMETER(_OBI_LOG_EXPAND(__VA_ARGS__), OBI_LOGC4, OBI_LOGC3, OBI_LOGC2, OBI_LOGC1,)(_OBI_LOG_EXPAND(__VA_ARGS__))
 #else
     #define OBI_LOGC(...) _OBI_LOG_SELECT5TH_PARAMETER(__VA_ARGS__, OBI_LOGC4, OBI_LOGC3, OBI_LOGC2, OBI_LOGC1,)(__VA_ARGS__)
-#endif
+#endif // OBI_COMPILER_VC
 
 // runtime configurable macros
 #define OBI_LOGV4(id, topic_, macro_level_, cond_) \
@@ -101,4 +101,4 @@
 #define OBI_DEV OBI_DEVC
 
 
-#endif // OBI_UTIL_LOGGING_HEADER
+#endif // OBI_LOGGING_HEADER

@@ -1,7 +1,7 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_LOGGING_FUNCTIONALITY_HEADER
-#define OBI_UTIL_LOGGING_FUNCTIONALITY_HEADER
+#ifndef OBI_LOGGING_FUNCTIONALITY_HEADER
+#define OBI_LOGGING_FUNCTIONALITY_HEADER
 
 #include <obi/logging/definitions.hpp>
 #include <obi/util/basic.hpp>
@@ -58,4 +58,4 @@ namespace obi { namespace logging {
     }
 
 }} // obi::util::logging
-#endif // OBI_UTIL_LOGGING_FUNCTIONALITY_HEADER
+#endif // OBI_LOGGING_FUNCTIONALITY_HEADER

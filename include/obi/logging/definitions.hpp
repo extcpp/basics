@@ -1,12 +1,12 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_LOGGING_DEFINITIONS_HEADER
-#define OBI_UTIL_LOGGING_DEFINITIONS_HEADER
+#ifndef OBI_LOGGING_DEFINITIONS_HEADER
+#define OBI_LOGGING_DEFINITIONS_HEADER
 
 
 #ifndef OBI_LOGGING_DEFAULT_LEVEL
 #define OBI_LOGGING_DEFAULT_LEVEL info
-#endif
+#endif // OBI_LOGGING_DEFAULT_LEVEL
 
 #include <obi/macros/compiler.hpp>
 #include <string>
@@ -96,4 +96,4 @@ namespace obi { namespace logging {
     }
 
 }} // obi::util::logging
-#endif // OBI_UTIL_LOGGING_DEFINITIONS_HEADER
+#endif // OBI_LOGGING_DEFINITIONS_HEADER

@@ -16,7 +16,7 @@ int main()
     OBI_TYPE_PRINT(d);
     OBI_TYPE_PRINT(dr);
     OBI_TYPE_PRINT(s);
-#endif
+#endif // !defined(OBI_WINDOWS) || _MSC_VER >= 1920
 
     return 0;
 }
