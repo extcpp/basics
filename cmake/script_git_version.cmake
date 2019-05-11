@@ -29,8 +29,8 @@ endif()
 
 set(VERSION_INFO "
 #pragma once
-inline char* GIT_REV=\"${GIT_REV}\";
-inline char* GIT_BRANCH=\"${GIT_BRANCH}\";
+constexpr char const* GIT_REV=\"${GIT_REV}\";
+constexpr char const* GIT_BRANCH=\"${GIT_BRANCH}\";
 "
 )
 

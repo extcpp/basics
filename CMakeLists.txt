@@ -43,6 +43,9 @@ else()
     set(obi_l1_cache_line_size FALSE)
 endif()
 
+# include build dir to find version.hpp
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 # required by folder structure for XCode and VisualStudio (includes)
 # sources are always required
 include(src_files.cmake)
@@ -108,6 +111,6 @@ add_custom_target(
     update_version ALL
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     COMMAND ${CMAKE_COMMAND}
-                -D "OBI_GIT_VERSION_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/version.h"
+                -D "OBI_GIT_VERSION_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/obi_version.hpp"
                 -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/script_git_version.cmake"
 )
