@@ -7,10 +7,10 @@
 
 volatile bool run;
 
-void fun(int n, int& loc){
+void fun(std::uint32_t n, std::uint32_t& loc){
     while (!run);
-    int current=2;
-    std::vector<int> primes(1,2);
+    std::uint32_t current=2;
+    std::vector<uint32_t> primes(1,2);
     while (current < n){
         current+=1;
         bool isPrime=true;
@@ -28,45 +28,69 @@ void fun(int n, int& loc){
 }
 
 int main(){
-    obi::util::scoped_timer timer("overall calulation time");
-    run = true;
-    int n = 100000;
+    {
+        obi::util::scoped_timer timer("no steps");
+    }
+
+    {
+        obi::util::scoped_timer timer("no steps");
+    }
+
+    {
+        obi::util::scoped_timer timer("one step - no dtor");
+        timer.add_step();
+        timer.disable_dtor_entry();
+    }
+
+    {
+        obi::util::scoped_timer timer("one step");
+        timer.add_step();
+    }
+
     std::size_t vec_len = 10;
-    std::vector<int>numbers(vec_len,0);
+    std::vector<std::uint32_t>numbers(vec_len,0);
 
-    // single thread
-    timer.add_step("single thread - prepared");
-    fun(n,numbers[0]);
-    fun(n,numbers[1]);
-    timer.add_step("single thread - done");
+    {
+        obi::util::scoped_timer timer("overall calulation time");
+        run = true;
+        std::uint32_t n = 100000;
 
-    // 2 threads suffering false shring
-    run = false;
-    auto ta1 = std::thread(fun,n,std::ref(numbers[2]));
-    auto ta2 = std::thread(fun,n,std::ref(numbers[3]));
-    timer.add_step("threads (false sharing) - prepared ");
-    run = true;
-    ta1.join();
-    ta2.join();
-    timer.add_step("threads (false sharing) - done ");
+        // single thread
+        timer.add_step("single thread - prepared");
+        fun(n,numbers[0]);
+        fun(n,numbers[1]);
+        timer.add_step("single thread - done");
 
-    //2 threads no false sharing
-    run = false;
-    auto tb1 = std::thread(fun,n,std::ref(numbers[4]));
-    auto tb2 = std::thread(fun,n,std::ref(numbers[9]));
-    timer.add_step("threads - prepard");
-    run = true;
-    tb1.join();
-    tb2.join();
-    timer.add_step("threads - done");
+        // 2 threads suffering false shring
+        run = false;
+        auto ta1 = std::thread(fun,n,std::ref(numbers[2]));
+        auto ta2 = std::thread(fun,n,std::ref(numbers[3]));
+        timer.add_step("threads (false sharing) - prepared ");
+        run = true;
+        ta1.join();
+        ta2.join();
+        timer.add_step("threads (false sharing) - done ");
 
-    //print result
-    timer.disable_dtor_entry();
+        //2 threads no false sharing
+        run = false;
+        auto tb1 = std::thread(fun,n,std::ref(numbers[4]));
+        auto tb2 = std::thread(fun,n,std::ref(numbers[9]));
+        timer.add_step("threads - prepard");
+        run = true;
+        tb1.join();
+        tb2.join();
+        timer.add_step("threads - done");
+
+        //print result
+        timer.disable_dtor_entry();
+    }
+
     std::cout << std::endl;
     for (std::size_t i = 0; i < numbers.size(); i++ )
     {
         std::cout << i << ": " << numbers[i] << std::endl;
     }
     std::cout << std::endl;
+
     return 0;
 }

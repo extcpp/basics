@@ -12,13 +12,19 @@
 #include <iomanip>
 #include <cmath>
 
-// Note:
-// Creating the timer and running the calculation and callback is not
-// free and maybe a bit more expensive as one would think.
-// Adding time-points on the other hand, especially with small strings,
-// is pretty cheap. If you expect many points you can use the init-function
-// to resize the internal vector to match your expectation.
-
+// Note: This is not for micro benchmarks!
+//
+// Hey wait your timer is too big and has too much overhead to be useful!
+//
+// On my machine the complete timer executes in about 200ns on average.
+// The time taken varies about 100ns on each run. Therefore the time required
+// by the timer is in the order of the expected error. So If you measure
+// something with this kind of timer it should be in the oder milliseconds
+// to yield something reliable.
+//
+// For micro benchmarks watch: https://www.youtube.com/watch?v=nXaxk27zwlk ,
+// use perf and run the code multiple times. Scoped-Timers are not what you
+// are looking for!
 
 namespace obi{ namespace util {
 using namespace std::literals::string_literals;
@@ -162,12 +168,10 @@ private:  // functions
         auto total_time = get_time_diff(tp.front().first, tp.back().first);
         int_string_vec times;
         times.emplace_back(std::make_pair(total_time, tp.front().second));
-        if (tp.size() > 2) {
-            for (auto it = ++tp.begin(); it != tp.end(); it++) {
-                auto duration = get_time_diff(std::prev(it)->first, it->first);
-                auto entry = std::make_pair(std::move(duration), it->second);
-                times.emplace_back(std::move(entry));
-            }
+        for (auto it = ++tp.begin(); it != tp.end(); it++) {
+            auto duration = get_time_diff(std::prev(it)->first, it->first);
+            auto entry = std::make_pair(std::move(duration), it->second);
+            times.emplace_back(std::move(entry));
         }
         return times;
     }  // function - calculate
