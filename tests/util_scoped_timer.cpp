@@ -1,12 +1,18 @@
 #include <gtest/gtest.h>
 #include <obi/util/scoped_timer.hpp>
+#include <obi/macros/compiler.hpp>
 #include <thread>
 
 using namespace obi::util;
 
 constexpr auto ms = std::chrono::milliseconds(1);
-void assert_time_eq(std::size_t ms_expected, std::pair<std::uint64_t, std::string> const& in){
-    ASSERT_EQ(ms_expected, in.first / (1000 * 1000));
+void assert_time_eq(std::size_t ms_expected, std::pair<std::uint64_t, std::string> const& in, std::size_t steps = 1){
+    #ifdef OBI_COMPILER_VC
+    ms_expected += 2 * steps;
+    #else
+    ms_expected += steps;
+    #endif
+    ASSERT_LE(in.first / (1000 * 1000), ms_expected);
 }
 
 
@@ -41,10 +47,10 @@ TEST(util_scoped_timer, steps){
         std::this_thread::sleep_for(ms);
     }
 
-    assert_time_eq(3,result[0]);
-    assert_time_eq(1,result[1]);
-    assert_time_eq(1,result[2]);
-    assert_time_eq(1,result[3]);
+    assert_time_eq(3,result[0],3);
+    assert_time_eq(1,result[1],1);
+    assert_time_eq(1,result[2],2);
+    assert_time_eq(1,result[3],3);
     ASSERT_STREQ("destructor", result.back().second.c_str());
 }
 
@@ -65,9 +71,9 @@ TEST(util_scoped_timer, no_dtor){
         std::this_thread::sleep_for(ms);
     }
 
-    assert_time_eq(2,result[0]);
-    assert_time_eq(1,result[1]);
-    assert_time_eq(1,result[2]);
+    assert_time_eq(2,result[0],2);
+    assert_time_eq(1,result[1],1);
+    assert_time_eq(1,result[2],2);
     ASSERT_STREQ("", result.back().second.c_str());
 }
 
@@ -90,7 +96,7 @@ TEST(util_scoped_timer, dismiss) {
         timer.run();
     }
 
-    assert_time_eq(1,result[0]);
-    assert_time_eq(1,result[1]);
+    assert_time_eq(1,result[0],1);
+    assert_time_eq(1,result[1],1);
     ASSERT_STREQ("fin", result[1].second.c_str());
 }
