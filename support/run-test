@@ -1,0 +1,3 @@
+#!/bin/bash
+
+watchdir .  "./build && b/tests/test_libobi --gtest_filter=\"*$@*\""
