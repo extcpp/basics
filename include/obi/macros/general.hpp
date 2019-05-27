@@ -18,7 +18,7 @@
 #ifdef __COUNTER__
     #define OBI_ANONYMOUS_VARIABLE(str) OBI_CONCATENATE(str, __COUNTER__)
 #else
-    #define OBI_NO_IMPL
+    #define OBI_ANONYMOUS_VARIABLE OBI_NO_IMPL
 #endif // __COUNTER__
 
 #endif // OBI_MACROS_GENERAL_HEADER

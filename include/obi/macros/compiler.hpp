@@ -32,17 +32,21 @@
 #ifdef OBI_COMPILER_GNU
     #define OBI_ALWAYS_INLINE inline __attribute__((__always_inline__))
     #define OBI_NEVER_INLINE __attribute__((__no_inline__))
-    #define OBI_FALLTHROUGH __attribute__((__fallthrough__))
     #define OBI_UNUSED __attribute__((__unused__))
     #define OBI_HOT  __attribute__((__hot__))
     #define OBI_COLD __attribute__((__cold__))
+    #define OBI_FALLTHROUGH __attribute__((__fallthrough__))
+    #define OBI_LIKELY(x)   __builtin_expect(!!(x), 1)
+    #define OBI_UNLIKELY(x) __builtin_expect(!!(x), 0)
 #elif defined OBI_COMPILER_VC
     #define OBI_ALWAYS_INLINE __forceinline
     #define OBI_NEVER_INLINE  __declspec(noinline)
-    #define OBI_FALLTHROUGH OBI_NOTHING()
     #define OBI_UNUSED OBI_NOTHING()
     #define OBI_HOT    OBI_NOTHING()
     #define OBI_COLD   OBI_NOTHING()
+    #define OBI_FALLTHROUGH OBI_NOTHING()
+    #define OBI_LIKELY(x)   (x)
+    #define OBI_UNLIKELY(x) (x)
 #else
     #define OBI_ALWAYS_INLINE OBI_NOTHING()
     #define OBI_NEVER_INLINE OBI_NOTHING()
@@ -50,6 +54,8 @@
     #define OBI_UNUSED OBI_NOTHING()
     #define OBI_HOT    OBI_NOTHING()
     #define OBI_COLD   OBI_NOTHING()
+    #define OBI_LIKELY(x)   (x)
+    #define OBI_UNLIKELY(x) (x)
 #endif // OBI_COMPILER_GNU
 
 

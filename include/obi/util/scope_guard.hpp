@@ -118,6 +118,9 @@ struct scope_guard {
 }} // namespace ::obi::util - end
 
 //
+// FOR USE IN CPPs only (can break one-definiton-ruld in inline functions)
+// __COUNTER__ would be different in each header.
+//
 // YOU MUST ADD A ; after the SCOPE as it closes the lambda
 // ALL LAMBDAS CAPTURE BY REF!!! (use plain scope_guard as alternative)
 //

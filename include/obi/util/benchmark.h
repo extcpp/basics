@@ -22,7 +22,7 @@ inline void do_not_optimize(void* pointer) {
     // https://docs.microsoft.com/en-us/cpp/intrinsics/readwritebarrier?view=vs-2019
     // _ReadWriteBarrier
     std::atomic_thread_fence(std::memory_order_seq_cst);
-#endif
+#endif // OBI_COMPILER_GNU
 }
 
 inline void clobber_memory() {
@@ -36,7 +36,7 @@ inline void clobber_memory() {
                                 // you need processor-specific fence instructions.
 #else
     std::atomic_thread_fence(std::memory_order_seq_cst);
-#endif
+#endif // OBI_COMPILER_GNU
 }
 
 }}
