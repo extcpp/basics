@@ -2,7 +2,7 @@
 
 b
 external_libs/*
-include/obi/test.hpp
+include/ext/test.hpp
 
 .coveralls.yml
 compile_commands.json

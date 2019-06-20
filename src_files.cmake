@@ -1,3 +1,3 @@
-set(libobi_source
+set(libext_source
     "src/logging.cpp"
 )

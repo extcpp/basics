@@ -1,19 +1,19 @@
 #! some basic settings i use really often so lets have them in a macro
 
-function(obi_log)
+function(ext_log)
     message(STATUS "INFO -- " ${ARGV}) 
-endfunction(obi_log)
+endfunction(ext_log)
 
-function(obi_fatal)
+function(ext_fatal)
     message(FATAL_ERROR "INFO -- " ${ARGV}) 
-endfunction(obi_fatal)
+endfunction(ext_fatal)
 
-macro(obi_setup)
+macro(ext_setup)
     # TODO - test this macro in other libs
     # execute macro only in top-level CMakeLists.txt
     if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
         # execute this setup just once
-        if(NOT OBI_SETUP_DONE)
+        if(NOT EXT_SETUP_DONE)
             set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
             # set / modify default install prefix
             if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -24,23 +24,23 @@ macro(obi_setup)
                 endif()
             endif()
 
-            include(obi_cmake_compiler_warnings)
+            include(ext_cmake_compiler_warnings)
 
-            set(OBI_CXX_COMPILER_IS_GCC FALSE)
-            set(OBI_CXX_COMPILER_IS_CLANG FALSE)
+            set(EXT_CXX_COMPILER_IS_GCC FALSE)
+            set(EXT_CXX_COMPILER_IS_CLANG FALSE)
             if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-                set(OBI_CXX_COMPILER_IS_GCC TRUE)
+                set(EXT_CXX_COMPILER_IS_GCC TRUE)
             elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-                set(OBI_CXX_COMPILER_IS_CLANG TRUE)
+                set(EXT_CXX_COMPILER_IS_CLANG TRUE)
             endif()
 
-            set(OBI_SETUP_DONE TRUE)
+            set(EXT_SETUP_DONE TRUE)
         endif()
     endif()
-endmacro(obi_setup)
+endmacro(ext_setup)
 
-macro(obi_add_test_subdirectory type)
-    set(OBI_TEST_TYPE "${type}")
+macro(ext_add_test_subdirectory type)
+    set(EXT_TEST_TYPE "${type}")
 
     set(dir "${ARGV1}")
     if(dir STREQUAL "")
@@ -56,7 +56,7 @@ macro(obi_add_test_subdirectory type)
 
         add_subdirectory("${dir}")
     endif()
-endmacro(obi_add_test_subdirectory)
+endmacro(ext_add_test_subdirectory)
 
 #! prefix string with provided symbol(s) until is has given length
 #
@@ -64,7 +64,7 @@ endmacro(obi_add_test_subdirectory)
 #  length - desired length
 #  fill - symbols(s) used for filling
 #  out_string - this will hold the result
-function(obi_prefix in_string length fill out_string)
+function(ext_prefix in_string length fill out_string)
     set(result "${in_string}")
     string(LENGTH "${in_string}" current_length)
 
@@ -74,11 +74,11 @@ function(obi_prefix in_string length fill out_string)
     endwhile()
 
     set("${out_string}" "${result}" PARENT_SCOPE)
-endfunction(obi_prefix)
+endfunction(ext_prefix)
 
 #! this function acts like add_subdirectory but it checks
 #  if CMakeLists.txt exists in the directory before adding it
-function(obi_add_subdirectory dir debug)
+function(ext_add_subdirectory dir debug)
     if(EXISTS "${dir}/CMakeLists.txt")
         add_subdirectory("${dir}")
         if(debug)
@@ -87,7 +87,7 @@ function(obi_add_subdirectory dir debug)
     endif()
 endfunction()
 
-macro(obi_install lib)
+macro(ext_install lib)
     install(
         TARGETS "${lib}"
         RUNTIME DESTINATION bin
@@ -104,4 +104,4 @@ macro(obi_install lib)
     endforeach()
 
     include(CPack)
-endmacro(obi_install)
+endmacro(ext_install)
