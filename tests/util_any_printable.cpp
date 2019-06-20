@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include <obi/util/any_printable.hpp>
+#include <ext/util/any_printable.hpp>
 
 #include <array>
 
-using namespace ::obi::util;
+using namespace ::ext::util;
 
 // extra type
 struct developer{

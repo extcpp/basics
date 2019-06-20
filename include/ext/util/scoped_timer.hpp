@@ -1,7 +1,7 @@
 // Copyright - 2014-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_SCOPED_TIMER_HEADER
-#define OBI_UTIL_SCOPED_TIMER_HEADER
+#ifndef EXT_UTIL_SCOPED_TIMER_HEADER
+#define EXT_UTIL_SCOPED_TIMER_HEADER
 
 #include <utility>
 #include <vector>
@@ -26,7 +26,7 @@
 // use perf and run the code multiple times. Scoped-Timers are not what you
 // are looking for!
 
-namespace obi{ namespace util {
+namespace ext{ namespace util {
 using namespace std::literals::string_literals;
 
 namespace _detail::scoped_timer {
@@ -179,5 +179,5 @@ private:
     }  // function - calculate
 };
 
-}}  // namespace obi::util
-#endif // OBI_UTIL_SCOPED_TIMER_HEADER
+}}  // namespace ext::util
+#endif // EXT_UTIL_SCOPED_TIMER_HEADER

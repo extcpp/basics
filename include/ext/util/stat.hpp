@@ -1,9 +1,9 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_STAT_HEADER
-#define OBI_UTIL_STAT_HEADER
+#ifndef EXT_UTIL_STAT_HEADER
+#define EXT_UTIL_STAT_HEADER
 
-#include <obi/util/result.hpp>
+#include <ext/util/result.hpp>
 #include <filesystem>
 
 extern "C" {
@@ -11,7 +11,7 @@ extern "C" {
     #include <sys/stat.h>
 }
 
-namespace obi::util {
+namespace ext::util {
 
 namespace {
     struct ::stat buf;
@@ -37,7 +37,7 @@ inline typed_result<stat> get_stat(std::filesystem::path const& path) {
     struct ::stat statbuff;
     auto stat_result = ::stat(path.c_str(), &statbuff);
     if (stat_result != 0) {
-        rv.reset(OBI_FAIL, "failed to get stat");
+        rv.reset(EXT_FAIL, "failed to get stat");
     }
 
     rv.value.inode = statbuff.st_ino;
@@ -49,5 +49,5 @@ inline typed_result<stat> get_stat(std::filesystem::path const& path) {
     return rv;
 }
 
-} // namespace obi::util - end
-#endif // OBI_UTIL_STAT_HEADER
+} // namespace ext::util - end
+#endif // EXT_UTIL_STAT_HEADER

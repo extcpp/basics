@@ -1,10 +1,10 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#ifndef OBI_STRUCTURES_BINARY_INDEX_TREE_HEADER
-#define OBI_STRUCTURES_BINARY_INDEX_TREE_HEADER
+#ifndef EXT_STRUCTURES_BINARY_INDEX_TREE_HEADER
+#define EXT_STRUCTURES_BINARY_INDEX_TREE_HEADER
 #include <iterator>
 #include <iostream>
 
-namespace obi { namespace structures {
+namespace ext { namespace structures {
 
     // detail
     namespace detail {
@@ -86,5 +86,5 @@ namespace obi { namespace structures {
         return begin+index;
     }
 
-}}  // obi::structures
-#endif // OBI_STRUCTURES_BINARY_INDEX_TREE_HEADER
+}}  // ext::structures
+#endif // EXT_STRUCTURES_BINARY_INDEX_TREE_HEADER

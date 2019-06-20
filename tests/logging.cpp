@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include <obi/logging.hpp>
-#include <obi/util/except.hpp>
-#include <obi/macros/platform.hpp>
+#include <ext/logging.hpp>
+#include <ext/util/except.hpp>
+#include <ext/macros/platform.hpp>
 #include <cstring>
 
 using namespace std::literals;
@@ -11,7 +11,7 @@ using LoggingDeathTest = LoggingTest;
 
 
 TEST_F(LoggingTest, logging_no_crash){
-    using namespace obi::logging;
+    using namespace ext::logging;
     configuration::threads = false;
 
     configuration::gdb = true;
@@ -19,39 +19,39 @@ TEST_F(LoggingTest, logging_no_crash){
     configuration::prefix_newline = false;
     configuration::append_newline = true;
 
-    ASSERT_NO_THROW(OBI_LOG("babe") << "cafe?");
+    ASSERT_NO_THROW(EXT_LOG("babe") << "cafe?");
 
     configuration::gdb = false;
     configuration::vim = false;
     configuration::prefix_newline = true;
     configuration::append_newline = false;
 
-    ASSERT_NO_THROW(OBI_LOG("babe") << "2cafe?");
-    ASSERT_NO_THROW(OBI_LOG("music", network, warn) << "Green Day");
+    ASSERT_NO_THROW(EXT_LOG("babe") << "2cafe?");
+    ASSERT_NO_THROW(EXT_LOG("music", network, warn) << "Green Day");
 }
 
 // does not die
-#ifndef OBI_COMPILER_VC
+#ifndef EXT_COMPILER_VC
 TEST_F(LoggingDeathTest, fatal){
     ::testing::FLAGS_gtest_death_test_style = "threadsafe";
-    using namespace obi::logging;
+    using namespace ext::logging;
     configuration::threads = false;
 
-    ASSERT_DEATH_IF_SUPPORTED(OBI_LOG("work", network, fatal) << "What?!?! No Cafe!?!?!? :(","");
+    ASSERT_DEATH_IF_SUPPORTED(EXT_LOG("work", network, fatal) << "What?!?! No Cafe!?!?!? :(","");
 }
 #endif
 
 TEST_F(LoggingTest, threads){
-    using namespace obi::logging;
+    using namespace ext::logging;
     configuration::threads = true;
 
-    ASSERT_THROW(OBI_LOG("aiaiai") << "No threads ma:(",  obi::util::not_implemented_exception);
+    ASSERT_THROW(EXT_LOG("aiaiai") << "No threads ma:(",  ext::util::not_implemented_exception);
 
     configuration::threads = false;
 }
 
 TEST_F(LoggingTest, levels){
-    using namespace obi::logging;
+    using namespace ext::logging;
     configuration::threads = false;
 
     EXPECT_TRUE(_detail::level_is_active(level::error));
@@ -74,7 +74,7 @@ TEST_F(LoggingTest, levels){
 }
 
 TEST_F(LoggingTest, levels_to_string){
-    using namespace obi::logging;
+    using namespace ext::logging;
     configuration::threads = false;
 
     EXPECT_STREQ(_detail::level_to_str(level::fatal).c_str(), "fatal");

@@ -1,11 +1,11 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_SERIALIZATION_HEADER
-#define OBI_UTIL_SERIALIZATION_HEADER
+#ifndef EXT_UTIL_SERIALIZATION_HEADER
+#define EXT_UTIL_SERIALIZATION_HEADER
 
-#include <obi/util/endian.hpp>
+#include <ext/util/endian.hpp>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 char* to_char_ptr(std::byte* in){
     return reinterpret_cast<char*>(in);
@@ -174,5 +174,5 @@ std::byte const* from_big_storage(std::byte const* storage, T& ...outs){
 }
 //// from big storage - end
 
-}} // namespace obi::util
-#endif // OBI_UTIL_SERIALIZATION_HEADER
+}} // namespace ext::util
+#endif // EXT_UTIL_SERIALIZATION_HEADER

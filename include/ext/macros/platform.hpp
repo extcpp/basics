@@ -1,32 +1,32 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_MACROS_PLATFORM_HEADER
-#define OBI_MACROS_PLATFORM_HEADER
+#ifndef EXT_MACROS_PLATFORM_HEADER
+#define EXT_MACROS_PLATFORM_HEADER
 #include "compiler.hpp"
 
 #ifdef __linux__
-    #define OBI_LINUX
+    #define EXT_LINUX
 #endif // __linux__
 
 
 #ifdef __unix__
-    #define OBI_UNIX
+    #define EXT_UNIX
 #elif defined _WIN32
-    #define OBI_WINDOWS
+    #define EXT_WINDOWS
 #endif // __unix__
 
 // arch
-#ifdef OBI_UNIX
+#ifdef EXT_UNIX
     #ifdef __amd64__
-        #define OBI_X64
+        #define EXT_X64
     #endif
-#elif defined OBI_WINDOWS
+#elif defined EXT_WINDOWS
     #ifdef _WIN64
-        #define OBI_X64
+        #define EXT_X64
     #else //check for others like arm
-        #define OBI_X32
+        #define EXT_X32
     #endif
-#endif // OBI_UNIX
+#endif // EXT_UNIX
 
 
-#endif // OBI_MACROS_PLATFORM_HEADER
+#endif // EXT_MACROS_PLATFORM_HEADER

@@ -1,10 +1,10 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_META_IF_ALL_ANY_HEADER
-#define OBI_META_IF_ALL_ANY_HEADER
+#ifndef EXT_META_IF_ALL_ANY_HEADER
+#define EXT_META_IF_ALL_ANY_HEADER
 
 #include <type_traits>
-namespace obi { namespace meta {
+namespace ext { namespace meta {
 
 // REQUIRES GCC 8.0
 
@@ -24,5 +24,5 @@ template<typename T, bool ...XS>
 using enable_if_any_t = std::enable_if_t<(if_any_v<XS...>),T>;
 
 
-}}  // namespace obi::meta
-#endif // OBI_META_IF_ALL_ANY_HEADER
+}}  // namespace ext::meta
+#endif // EXT_META_IF_ALL_ANY_HEADER

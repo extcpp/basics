@@ -17,18 +17,18 @@
 
 
 #pragma once
-#ifndef OBI_UTIL_WINDOWS_STRINGS_HEADER
-#define OBI_UTIL_WINDOWS_STRINGS_HEADER
+#ifndef EXT_UTIL_WINDOWS_STRINGS_HEADER
+#define EXT_UTIL_WINDOWS_STRINGS_HEADER
 
-#include <obi/macros/platform.hpp>
-#include <obi/util/except.hpp>
+#include <ext/macros/platform.hpp>
+#include <ext/util/except.hpp>
 #include <string>
 #include <memory>
 
-#ifdef OBI_WINDOWS
+#ifdef EXT_WINDOWS
 #include <windows.h>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 static_assert(std::is_same_v<LPCSTR, char const*>);
 static_assert(std::is_same_v<LPSTR, char*>);
 static_assert(std::is_same_v<LPCWSTR, wchar_t const*>);
@@ -217,5 +217,5 @@ namespace _detail {
     }
 }}
 
-#endif // OBI_WINDOWS
-#endif // OBI_UTIL_WINDOWS_STRINGS_HEADER
+#endif // EXT_WINDOWS
+#endif // EXT_UTIL_WINDOWS_STRINGS_HEADER

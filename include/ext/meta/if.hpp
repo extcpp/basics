@@ -1,10 +1,10 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_META_IF_HEADER
-#define OBI_META_IF_HEADER
+#ifndef EXT_META_IF_HEADER
+#define EXT_META_IF_HEADER
 
 #include <type_traits>
-namespace obi { namespace meta {
+namespace ext { namespace meta {
 
 // if first value / expession is true the `first` type is returned otherwise
 // the `second`
@@ -38,5 +38,5 @@ namespace obi { namespace meta {
     template<bool cond, typename first, typename second>
     using if_c_t = typename if_c<cond, first, second>::type;
 
-}}  // namespace obi::meta
-#endif // OBI_META_IF_HEADER
+}}  // namespace ext::meta
+#endif // EXT_META_IF_HEADER

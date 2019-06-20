@@ -1,12 +1,12 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
 #pragma once
-#ifndef OBI_META_IS_ONE_OF_HEADER
-#define OBI_META_IS_ONE_OF_HEADER
+#ifndef EXT_META_IS_ONE_OF_HEADER
+#define EXT_META_IS_ONE_OF_HEADER
 
 #include <type_traits>
 
-namespace obi { namespace meta {
+namespace ext { namespace meta {
 
 // is_one_of
     template<class T, class ...XXS>
@@ -25,5 +25,5 @@ namespace obi { namespace meta {
     template<class T, class ...XXS>
     inline constexpr bool is_one_of_v = is_one_of<T, XXS...>::value;
 
-}}  // namespace obi::meta
-#endif // OBI_META_IS_ONE_OF_HEADER
+}}  // namespace ext::meta
+#endif // EXT_META_IS_ONE_OF_HEADER

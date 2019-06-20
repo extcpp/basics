@@ -1,14 +1,14 @@
 // Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_FUNCTION_CACHE_HEADER
-#define OBI_UTIL_FUNCTION_CACHE_HEADER
+#ifndef EXT_UTIL_FUNCTION_CACHE_HEADER
+#define EXT_UTIL_FUNCTION_CACHE_HEADER
 
 #include <functional>
 #include <type_traits>
 #include <map>
 #include <tuple>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 namespace _detail {
     template <typename R, class... Args> auto
@@ -34,5 +34,5 @@ auto add_function_cache(T&& x){
     return _detail::add_function_cache_impl(std::function(std::forward<T>(x)));
 }
 
-}}  // namespace obi::util
-#endif // OBI_UTIL_FUNCTION_CACHE_HEADER
+}}  // namespace ext::util
+#endif // EXT_UTIL_FUNCTION_CACHE_HEADER

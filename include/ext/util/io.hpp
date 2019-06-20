@@ -1,7 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_IO_HEADER
-#define OBI_UTIL_IO_HEADER
+#ifndef EXT_UTIL_IO_HEADER
+#define EXT_UTIL_IO_HEADER
 #include "../config.hpp"
 
 #include <iostream>
@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
     inline std::string
     istream_to_string(std::istream &in, bool remove_spaces = false) {
@@ -40,4 +40,4 @@ namespace obi { namespace util {
     }
 
 }}
-#endif // OBI_UTIL_IO_HEADER
+#endif // EXT_UTIL_IO_HEADER

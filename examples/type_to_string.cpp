@@ -1,8 +1,8 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <obi/util/type_to_string.hpp>
-#include <obi/macros/platform.hpp>
+#include <ext/util/type_to_string.hpp>
+#include <ext/macros/platform.hpp>
 
-using namespace obi::util;
+using namespace ext::util;
 
 int main()
 {
@@ -11,12 +11,12 @@ int main()
     const std::string s("foo");
     const double& dr = d;
 
-#if !defined(OBI_WINDOWS) || _MSC_VER >= 1920
-    OBI_TYPE_PRINT(i);
-    OBI_TYPE_PRINT(d);
-    OBI_TYPE_PRINT(dr);
-    OBI_TYPE_PRINT(s);
-#endif // !defined(OBI_WINDOWS) || _MSC_VER >= 1920
+#if !defined(EXT_WINDOWS) || _MSC_VER >= 1920
+    EXT_TYPE_PRINT(i);
+    EXT_TYPE_PRINT(d);
+    EXT_TYPE_PRINT(dr);
+    EXT_TYPE_PRINT(s);
+#endif // !defined(EXT_WINDOWS) || _MSC_VER >= 1920
 
     return 0;
 }

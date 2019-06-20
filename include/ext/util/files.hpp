@@ -1,7 +1,7 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_FILES_HEADER
-#define OBI_UTIL_FILES_HEADER
+#ifndef EXT_UTIL_FILES_HEADER
+#define EXT_UTIL_FILES_HEADER
 
 #include <filesystem>
 #include <algorithm>
@@ -9,9 +9,9 @@
 #include <fstream>
 #include <iostream>
 
-#include <obi/util/scoped_timer.hpp>
+#include <ext/util/scoped_timer.hpp>
 
-namespace obi::util {
+namespace ext::util {
 
 bool files_equal(std::filesystem::path const& file1
                 ,std::filesystem::path const& file2
@@ -42,4 +42,4 @@ bool files_equal(std::filesystem::path const& file1
 }
 
 }
-#endif // OBI_UTIL_FILES_HEADER
+#endif // EXT_UTIL_FILES_HEADER

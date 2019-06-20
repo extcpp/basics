@@ -2,11 +2,11 @@
 #include <vector>
 #include <map>
 #include <iostream>
-#include <obi/util/show.hpp>
+#include <ext/util/show.hpp>
 
 int main(/*int argc, const char *argv[]*/) {
     // pull in operator
-    using obi::util::operator<<;
+    using ext::util::operator<<;
 
     // define data
     std::vector<int> vec = {1,2,3,4,5,6};
@@ -22,7 +22,7 @@ int main(/*int argc, const char *argv[]*/) {
 
 
     // do this when you really need the sting
-    std::cout << obi::util::show(vec) << std::endl;
+    std::cout << ext::util::show(vec) << std::endl;
 
     //prefer this!
     std::cout << vec << std::endl;

@@ -1,7 +1,7 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_STRUCTURES_SIMPLE2DARRAY_HEADER
-#define OBI_STRUCTURES_SIMPLE2DARRAY_HEADER
+#ifndef EXT_STRUCTURES_SIMPLE2DARRAY_HEADER
+#define EXT_STRUCTURES_SIMPLE2DARRAY_HEADER
 
 #include <vector>
 #include <type_traits>
@@ -10,7 +10,7 @@
 #include <limits>
 #include <iomanip>
 
-namespace obi { namespace structures {
+namespace ext { namespace structures {
 
 template <typename T>
 class array2d
@@ -52,7 +52,7 @@ public:
 };
 
 template<typename T>
-std::ostream& operator <<(std::ostream& stream, obi::structures::array2d<T> const & arr){
+std::ostream& operator <<(std::ostream& stream, ext::structures::array2d<T> const & arr){
     using namespace std;
     int output_len = ceil(log10(numeric_limits<T>::max()));
 
@@ -67,5 +67,5 @@ std::ostream& operator <<(std::ostream& stream, obi::structures::array2d<T> cons
     return stream;
 }
 
-}}  // obi::structures
-#endif // OBI_STRUCTURES_SIMPLE2DARRAY_HEADER
+}}  // ext::structures
+#endif // EXT_STRUCTURES_SIMPLE2DARRAY_HEADER

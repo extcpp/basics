@@ -1,8 +1,8 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // TODO enable_if for integral types
 #pragma once
-#ifndef OBI_MATH_PRIMES_HEADER
-#define OBI_MATH_PRIMES_HEADER
+#ifndef EXT_MATH_PRIMES_HEADER
+#define EXT_MATH_PRIMES_HEADER
 
 #include <utility>
 #include <algorithm>
@@ -13,7 +13,7 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace obi { namespace math {
+namespace ext { namespace math {
 
     template<typename T>
     std::vector<T>
@@ -156,7 +156,7 @@ namespace obi { namespace math {
             return result;
         }
 
-        sieve_of_eratosthenes sieve = obi::math::create_sieve_of_eratosthenes(max_value);
+        sieve_of_eratosthenes sieve = ext::math::create_sieve_of_eratosthenes(max_value);
         return find_nth_prime(n, sieve, use_exceptions);
     }
 
@@ -196,5 +196,5 @@ namespace obi { namespace math {
         return current_prime;
     }
 
-}}  // obi::math
-#endif // OBI_MATH_PRIMES_HEADER
+}}  // ext::math
+#endif // EXT_MATH_PRIMES_HEADER

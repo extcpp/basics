@@ -5,11 +5,11 @@
 
 // FIXME FIXME -- get it working for WIN32
 
-#include <obi/util/load_library.hpp>
+#include <ext/util/load_library.hpp>
 
 int main(){
     using namespace std;
-    using namespace obi::util;
+    using namespace ext::util;
     string lib("/usr/lib/libmpi.so");
     string symbol("mca_base_open");
     string symbol_fail("get_string_from_object");

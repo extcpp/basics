@@ -3,10 +3,10 @@
 #include <string>
 using namespace std::literals::string_literals;
 
-#include <obi/util/windows_strings.hpp>
+#include <ext/util/windows_strings.hpp>
 
-#ifdef OBI_WINDOWS
-using namespace obi::util;
+#ifdef EXT_WINDOWS
+using namespace ext::util;
 TEST(util_windows_strings, error_to_string){
     ASSERT_EQ(""s , win_error_to_string(0));
 

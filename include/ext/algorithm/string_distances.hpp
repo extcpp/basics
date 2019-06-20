@@ -1,13 +1,13 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_ALGORITHM_STRING_DISTANCES_HEADER
-#define OBI_ALGORITHM_STRING_DISTANCES_HEADER
+#ifndef EXT_ALGORITHM_STRING_DISTANCES_HEADER
+#define EXT_ALGORITHM_STRING_DISTANCES_HEADER
 
 #include <string>
 #include <vector>
-#include <obi/algorithm/basic.hpp>
+#include <ext/algorithm/basic.hpp>
 
-namespace obi { namespace algorithm { namespace distances {
+namespace ext { namespace algorithm { namespace distances {
 
     // For Unicode we would require lib ICU
 
@@ -85,5 +85,5 @@ namespace obi { namespace algorithm { namespace distances {
     std::size_t edit(const T& first, const T& second){
         return edit_matrix(first, second);
     }
-}}} // obi::algorithm::distances
-#endif // OBI_ALGORITHM_STRING_DISTANCES_HEADER
+}}} // ext::algorithm::distances
+#endif // EXT_ALGORITHM_STRING_DISTANCES_HEADER

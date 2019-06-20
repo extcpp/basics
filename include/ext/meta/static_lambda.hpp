@@ -1,15 +1,15 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // taken from http://pfultz2.com/blog/2014/09/02/static-lambda/
 #pragma once
-#ifndef OBI_META_STATIC_LAMBDA_HEADER
-#define OBI_META_STATIC_LAMBDA_HEADER
+#ifndef EXT_META_STATIC_LAMBDA_HEADER
+#define EXT_META_STATIC_LAMBDA_HEADER
 
 #include <type_traits>
 #include <utility>
 
-namespace obi { namespace meta {
+namespace ext { namespace meta {
 
-#define OBI_STATIC_LAMBDA obi::meta::wrapper_factor() += true ? nullptr : obi::meta::addr_add() + []
+#define EXT_STATIC_LAMBDA ext::meta::wrapper_factor() += true ? nullptr : ext::meta::addr_add() + []
 
 struct addr_add
 {
@@ -41,5 +41,5 @@ struct wrapper_factor
     }
 };
 
-}}  // namespace obi::meta
-#endif // OBI_META_STATIC_LAMBDA_HEADER
+}}  // namespace ext::meta
+#endif // EXT_META_STATIC_LAMBDA_HEADER

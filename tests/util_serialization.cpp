@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
-#include <obi/util/serialization.hpp>
-#include <obi/util/encode.hpp>
+#include <ext/util/serialization.hpp>
+#include <ext/util/encode.hpp>
 
 #include <array>
 #include <vector>
 #include <algorithm>
 
-using namespace ::obi::util;
+using namespace ::ext::util;
 
 namespace {
     std::uint32_t num = 0x01020304U;

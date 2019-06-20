@@ -1,13 +1,13 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_MEMORY_TAGGED_POINTER_HEADER
-#define OBI_MEMORY_TAGGED_POINTER_HEADER
+#ifndef EXT_MEMORY_TAGGED_POINTER_HEADER
+#define EXT_MEMORY_TAGGED_POINTER_HEADER
 
-#include <obi/memory/align.hpp>
+#include <ext/memory/align.hpp>
 #include <memory>
 #include <cassert>
 
-namespace obi { namespace memory {
+namespace ext { namespace memory {
 
 template <typename T, std::uintptr_t Alignment = std::alignment_of_v<T>>
 class tagged_pointer {
@@ -23,7 +23,7 @@ class tagged_pointer {
 
     static std::uintptr_t create(T* p, std::uintptr_t tag) {
         assert(tag <= mask);
-        assert(obi::memory::is_alignment(Alignment));
+        assert(ext::memory::is_alignment(Alignment));
         std::uintptr_t ret = reinterpret_cast<std::uintptr_t>(p);
         return ret | (tag & mask);
     };
@@ -100,4 +100,4 @@ public:
 };
 
 }}
-#endif // OBI_MEMORY_TAGGED_POINTER_HEADER
+#endif // EXT_MEMORY_TAGGED_POINTER_HEADER

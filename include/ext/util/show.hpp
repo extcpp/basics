@@ -1,7 +1,7 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_SHOW_HEADER
-#define OBI_UTIL_SHOW_HEADER
+#ifndef EXT_UTIL_SHOW_HEADER
+#define EXT_UTIL_SHOW_HEADER
 #include "../meta/has_member.hpp"
 #include "container_helper.hpp"
 #include <iostream>
@@ -9,10 +9,10 @@
 #include <string>
 #include <sstream>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
     template <typename Container> inline
-    std::enable_if_t<obi::meta::has_type_category_v<_detail::container_traits<Container>>
+    std::enable_if_t<ext::meta::has_type_category_v<_detail::container_traits<Container>>
                         && std::is_same_v<typename    _detail::container_traits<Container>::category ,_detail::associative_tag>
                     ,std::ostream&
                     >
@@ -21,7 +21,7 @@ namespace obi { namespace util {
 
     template <typename Container> inline
     //if it is a container, that is mentioned in my container traits
-    std::enable_if_t<obi::meta::has_type_category_v<_detail::container_traits<Container>>
+    std::enable_if_t<ext::meta::has_type_category_v<_detail::container_traits<Container>>
                         && !std::is_same_v<typename   _detail::container_traits<Container>::category ,_detail::associative_tag>
                     ,std::ostream&
                     >
@@ -52,7 +52,7 @@ namespace obi { namespace util {
     }
 
     template <typename Container> inline
-    std::enable_if_t<obi::meta::has_type_category_v<_detail::container_traits<Container>>
+    std::enable_if_t<ext::meta::has_type_category_v<_detail::container_traits<Container>>
                         && std::is_same_v<typename    _detail::container_traits<Container>::category ,_detail::associative_tag>
                     ,std::ostream&
                     >
@@ -91,4 +91,4 @@ namespace obi { namespace util {
     }
 
 }}
-#endif // OBI_UTIL_SHOW_HEADER
+#endif // EXT_UTIL_SHOW_HEADER

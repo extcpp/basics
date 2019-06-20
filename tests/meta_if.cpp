@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include <obi/meta/if.hpp>
+#include <ext/meta/if.hpp>
 
 using namespace std;
-using namespace obi::meta;
+using namespace ext::meta;
 
 TEST(meta_if, if_){
     ASSERT_TRUE((std::is_same_v<if_t<std::true_type,double,int>,double>));

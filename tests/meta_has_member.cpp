@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include <obi/meta/has_member.hpp>
+#include <ext/meta/has_member.hpp>
 #include <iostream>
 
 using namespace std;
-using namespace obi::meta;
+using namespace ext::meta;
 
 struct leet {
         using type = void;

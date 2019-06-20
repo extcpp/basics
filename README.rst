@@ -1,6 +1,6 @@
 |travis| |appveyor| |codecov| |coverity| |cpp| |gpl| |license|
 
-libobi
+libext
 ======
 
 General purpose lib ranging from template-meta-programming to

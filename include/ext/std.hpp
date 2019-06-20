@@ -1,7 +1,7 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_STD_HEADER
-#define OBI_STD_HEADER
+#ifndef EXT_STD_HEADER
+#define EXT_STD_HEADER
 #include <vector>
 
 namespace std {
@@ -12,4 +12,4 @@ namespace std {
     }
 }
 
-#endif // OBI_STD_HEADER
+#endif // EXT_STD_HEADER

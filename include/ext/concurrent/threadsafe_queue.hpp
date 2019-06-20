@@ -1,14 +1,14 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // From Concurrency in Action - Anthony Williams
 #pragma once
-#ifndef OBI_CONCURRENT_THREADSAFE_QUEUE_HEADER
-#define OBI_CONCURRENT_THREADSAFE_QUEUE_HEADER
+#ifndef EXT_CONCURRENT_THREADSAFE_QUEUE_HEADER
+#define EXT_CONCURRENT_THREADSAFE_QUEUE_HEADER
 
 #include <condition_variable>
 #include <memory>
 #include <mutex>
 
-namespace obi{ namespace concurrent{
+namespace ext{ namespace concurrent{
 
 template<typename T>
 class threadsafe_queue
@@ -130,5 +130,5 @@ private:
     }
 };
 
-}}  // namespace obi::thread
-#endif // OBI_CONCURRENT_THREADSAFE_QUEUE_HEADER
+}}  // namespace ext::thread
+#endif // EXT_CONCURRENT_THREADSAFE_QUEUE_HEADER

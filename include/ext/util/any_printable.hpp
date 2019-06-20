@@ -1,13 +1,13 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_ANY_PRINTABLE_HEADER
-#define OBI_UTIL_ANY_PRINTABLE_HEADER
+#ifndef EXT_UTIL_ANY_PRINTABLE_HEADER
+#define EXT_UTIL_ANY_PRINTABLE_HEADER
 
 #include <memory>
 #include <iostream>
 #include <sstream>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 class any_printable {
 public:
     template <typename T>
@@ -44,9 +44,9 @@ private:
 
     std::shared_ptr<storage_base const> data_ptr;
 };
-}} // obi::util
+}} // ext::util
 
-inline std::ostream& operator<<(std::ostream& os, obi::util::any_printable const& any) {
+inline std::ostream& operator<<(std::ostream& os, ext::util::any_printable const& any) {
     return any.write_to(os);
 }
-#endif // OBI_UTIL_ANY_PRINTABLE_HEADER
+#endif // EXT_UTIL_ANY_PRINTABLE_HEADER

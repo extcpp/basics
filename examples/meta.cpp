@@ -1,11 +1,11 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <iostream>
 
-#include <obi/meta/is_one_of.hpp>
-#include <obi/meta/has_member.hpp>
+#include <ext/meta/is_one_of.hpp>
+#include <ext/meta/has_member.hpp>
 
 //using namespace std;
-using namespace obi::meta;
+using namespace ext::meta;
 
 struct leet {
         using type = void;

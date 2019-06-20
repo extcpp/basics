@@ -1,8 +1,8 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_META_VOID_T_HEADER
-#define OBI_META_VOID_T_HEADER
-namespace obi { namespace meta {
+#ifndef EXT_META_VOID_T_HEADER
+#define EXT_META_VOID_T_HEADER
+namespace ext { namespace meta {
 
 // void_t
     namespace _detail {
@@ -16,5 +16,5 @@ namespace obi { namespace meta {
     template<class ...XXS>
     using void_t = typename _detail::_void_t<XXS...>::type;
 
-}}  // namespace obi::meta
-#endif // OBI_META_VOID_T_HEADER
+}}  // namespace ext::meta
+#endif // EXT_META_VOID_T_HEADER

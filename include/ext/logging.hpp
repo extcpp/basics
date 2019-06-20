@@ -16,17 +16,17 @@
 //
 //
 // Usage
-//  OBI_LOG("cafe", info) << "hi there";
-//  OBI_LOG("babe", network, error) << "your network is broken";
-//  OBI_LOG("2bad", fatal) << "your app will terminate";
+//  EXT_LOG("cafe", info) << "hi there";
+//  EXT_LOG("babe", network, error) << "your network is broken";
+//  EXT_LOG("2bad", fatal) << "your app will terminate";
 
 #pragma once
-#ifndef OBI_LOGGING_HEADER
-#define OBI_LOGGING_HEADER
+#ifndef EXT_LOGGING_HEADER
+#define EXT_LOGGING_HEADER
 #include <iostream>
 #include <type_traits>
-#include <obi/macros/compiler.hpp>
-#include <obi/logging/functionality.hpp>
+#include <ext/macros/compiler.hpp>
+#include <ext/logging/functionality.hpp>
 
 // If use_default is true the check becomes constexpr. Therefore the compiler
 // can optimize the branch containing the logging instructions in case of
@@ -34,71 +34,71 @@
 // runtime you need to pay for it by having the instructions in your code.
 
 // TODO -- static_assert parameters
-#define _OBI_LOG_INTERNAL(id_, use_default_, topic_, macro_level_, cond_)              \
-    !((use_default_ ? obi::logging::_detail::default_level_is_active((macro_level_))   \
-                    : obi::logging::_detail::level_is_active((macro_level_), (topic_)) \
+#define _EXT_LOG_INTERNAL(id_, use_default_, topic_, macro_level_, cond_)              \
+    !((use_default_ ? ext::logging::_detail::default_level_is_active((macro_level_))   \
+                    : ext::logging::_detail::level_is_active((macro_level_), (topic_)) \
     ) && (cond_))                                                                      \
-    ? (void)nullptr : obi::logging::_detail::logger(                                   \
+    ? (void)nullptr : ext::logging::_detail::logger(                                   \
                         id_, (topic_), (macro_level_),__FILE__, __LINE__, __FUNCTION__ )
 
 
-#define _OBI_LOG_INTERNAL_ADD_PREFIX(id_, use_default_, topic_, macro_level_, cond_)   \
-    _OBI_LOG_INTERNAL(id_, use_default_                                                \
-                     ,(obi::logging::topic::topic_)                                    \
-                     ,(obi::logging::level::macro_level_)                              \
+#define _EXT_LOG_INTERNAL_ADD_PREFIX(id_, use_default_, topic_, macro_level_, cond_)   \
+    _EXT_LOG_INTERNAL(id_, use_default_                                                \
+                     ,(ext::logging::topic::topic_)                                    \
+                     ,(ext::logging::level::macro_level_)                              \
                      , cond_)
 
 
-#define _OBI_LOG_SELECT5TH_PARAMETER(_1, _2, _3, _4, NAME, ...) NAME
+#define _EXT_LOG_SELECT5TH_PARAMETER(_1, _2, _3, _4, NAME, ...) NAME
 
 // constexpr macros
-#define OBI_LOGC4(id, topic_, macro_level_, cond_) \
-    _OBI_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, macro_level_, cond_)
+#define EXT_LOGC4(id, topic_, macro_level_, cond_) \
+    _EXT_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, macro_level_, cond_)
 
-#define OBI_LOGC3(id, topic_, macro_level_) \
-    _OBI_LOG_INTERNAL_ADD_PREFIX(id, true, topic_, macro_level_, true)
+#define EXT_LOGC3(id, topic_, macro_level_) \
+    _EXT_LOG_INTERNAL_ADD_PREFIX(id, true, topic_, macro_level_, true)
 
-#define OBI_LOGC2(id, macro_level_) \
-    _OBI_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, macro_level_, true)
+#define EXT_LOGC2(id, macro_level_) \
+    _EXT_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, macro_level_, true)
 
-#define OBI_LOGC1(id) \
-    _OBI_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, OBI_LOGGING_DEFAULT_LEVEL, true)
+#define EXT_LOGC1(id) \
+    _EXT_LOG_INTERNAL_ADD_PREFIX(id, true, no_topic, EXT_LOGGING_DEFAULT_LEVEL, true)
 
-#define OBI_DEVC \
-    _OBI_LOG_INTERNAL_ADD_PREFIX("@@@@", true, dev, OBI_LOGGING_DEFAULT_LEVEL, true)
+#define EXT_DEVC \
+    _EXT_LOG_INTERNAL_ADD_PREFIX("@@@@", true, dev, EXT_LOGGING_DEFAULT_LEVEL, true)
 
 
 // 1st __VA_ARGS__ shifts the args into the correct position
 // macro can not be empty because of the leading , (fix with __VA_OPT__ in c++20)
-#ifdef OBI_COMPILER_VC
+#ifdef EXT_COMPILER_VC
     // __VA_ARGS__ does not expand on windows :(
-    #define _OBI_LOG_EXPAND(x) x
-    #define OBI_LOGC(...) _OBI_LOG_SELECT5TH_PARAMETER(_OBI_LOG_EXPAND(__VA_ARGS__), OBI_LOGC4, OBI_LOGC3, OBI_LOGC2, OBI_LOGC1,)(_OBI_LOG_EXPAND(__VA_ARGS__))
+    #define _EXT_LOG_EXPAND(x) x
+    #define EXT_LOGC(...) _EXT_LOG_SELECT5TH_PARAMETER(_EXT_LOG_EXPAND(__VA_ARGS__), EXT_LOGC4, EXT_LOGC3, EXT_LOGC2, EXT_LOGC1,)(_OBI_LOG_EXPAND(__VA_ARGS__))
 #else
-    #define OBI_LOGC(...) _OBI_LOG_SELECT5TH_PARAMETER(__VA_ARGS__, OBI_LOGC4, OBI_LOGC3, OBI_LOGC2, OBI_LOGC1,)(__VA_ARGS__)
-#endif // OBI_COMPILER_VC
+    #define EXT_LOGC(...) _EXT_LOG_SELECT5TH_PARAMETER(__VA_ARGS__, EXT_LOGC4, EXT_LOGC3, EXT_LOGC2, EXT_LOGC1,)(__VA_ARGS__)
+#endif // EXT_COMPILER_VC
 
 // runtime configurable macros
-#define OBI_LOGV4(id, topic_, macro_level_, cond_) \
-    _OBI_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, macro_level_, cond_)
+#define EXT_LOGV4(id, topic_, macro_level_, cond_) \
+    _EXT_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, macro_level_, cond_)
 
-#define OBI_LOGV3(id, topic_, macro_level_) \
-    _OBI_LOG_INTERNAL_ADD_PREFIX(id, false, topic_, macro_level_, true)
+#define EXT_LOGV3(id, topic_, macro_level_) \
+    _EXT_LOG_INTERNAL_ADD_PREFIX(id, false, topic_, macro_level_, true)
 
-#define OBI_LOGV2(id, macro_level_) \
-    _OBI_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, macro_level_, true)
+#define EXT_LOGV2(id, macro_level_) \
+    _EXT_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, macro_level_, true)
 
-#define OBI_LOGV1(id) \
-    _OBI_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, OBI_LOGGING_DEFAULT_LEVEL, true)
+#define EXT_LOGV1(id) \
+    _EXT_LOG_INTERNAL_ADD_PREFIX(id, false, no_topic, EXT_LOGGING_DEFAULT_LEVEL, true)
 
-#define OBI_DEVV \
-    _OBI_LOG_INTERNAL_ADD_PREFIX("$$$$", false, dev, OBI_LOGGING_DEFAULT_LEVEL, true)
+#define EXT_DEVV \
+    _EXT_LOG_INTERNAL_ADD_PREFIX("$$$$", false, dev, EXT_LOGGING_DEFAULT_LEVEL, true)
 
-#define OBI_LOGV(...) _OBI_LOG_SELECT5TH_PARAMETER(__VA_ARGS__,OBI_LOGV4, OBI_LOGV3, OBI_LOGV2, OBI_LOGV1,)(__VA_ARGS__)
+#define EXT_LOGV(...) _EXT_LOG_SELECT5TH_PARAMETER(__VA_ARGS__,EXT_LOGV4, EXT_LOGV3, EXT_LOGV2, EXT_LOGV1,)(__VA_ARGS__)
 
 // set default macros
-#define OBI_LOG OBI_LOGC
-#define OBI_DEV OBI_DEVC
+#define EXT_LOG EXT_LOGC
+#define EXT_DEV EXT_DEVC
 
 
-#endif // OBI_LOGGING_HEADER
+#endif // EXT_LOGGING_HEADER

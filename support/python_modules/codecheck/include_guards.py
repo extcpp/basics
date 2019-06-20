@@ -3,12 +3,12 @@ import sys
 from pathlib import Path
 from typing import Dict, Tuple, Sequence, List, IO
 
-from obi.util.path_helper import remove_from_front, change_ext
+from ext.util.path_helper import remove_from_front, change_ext
 from . import logger as log
 from .common import AccessType, Status
 from .common import Operation, OperationState, AccessType
 
-g_guard_re = re.compile(r'#ifndef\s+_?(?P<guard>OBI_.*(HEADER|HPP|H))')
+g_guard_re = re.compile(r'#ifndef\s+_?(?P<guard>EXT_.*(HEADER|HPP|H))')
 
 class IncludeGuardState(OperationState):
     def __init__(self, access):
@@ -36,7 +36,7 @@ class IncludeGuard(Operation):
 
         ## hpp h to header
         path = project_path
-        if path.parts[1] == 'obi':
+        if path.parts[1] == 'ext':
             path = remove_from_front(project_path, 'include')
         path = change_ext(path,'_HEADER')
         guard = "_".join(path.parts).upper()

@@ -1,7 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_ALGORITHM_BASIC_HEADER
-#define OBI_ALGORITHM_BASIC_HEADER
+#ifndef EXT_ALGORITHM_BASIC_HEADER
+#define EXT_ALGORITHM_BASIC_HEADER
 
 #include <iterator>
 #include <map>
@@ -9,7 +9,7 @@
 #include <type_traits>
 #include "../meta/has_member.hpp"
 
-namespace obi { namespace algorithm {
+namespace ext { namespace algorithm {
 
     // TODO generalize - Why didn't I write a variadic function?
     template<typename T, typename Predicate = std::less<>>
@@ -64,7 +64,7 @@ namespace obi { namespace algorithm {
     //looks like maps are given in a iterator range
     template <typename Iterator
              ,typename Predicate = std::less<>
-             ,typename = std::enable_if_t<obi::meta::is_input_iterator<Iterator>::value>
+             ,typename = std::enable_if_t<ext::meta::is_input_iterator<Iterator>::value>
              >
     auto merge_maps(Iterator begin, Iterator end, Predicate predicate = Predicate()) {
         using PairType = typename std::iterator_traits<Iterator>::value_type;
@@ -75,5 +75,5 @@ namespace obi { namespace algorithm {
         return result;
     }
 
-}} // obi::algorithm
-#endif // OBI_ALGORITHM_BASIC_HEADER
+}} // ext::algorithm
+#endif // EXT_ALGORITHM_BASIC_HEADER

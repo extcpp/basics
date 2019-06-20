@@ -1,7 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_CAST_HEADER
-#define OBI_UTIL_CAST_HEADER
+#ifndef EXT_UTIL_CAST_HEADER
+#define EXT_UTIL_CAST_HEADER
 
 #include <cstring>
 #include <type_traits>
@@ -9,7 +9,7 @@
 #include <array>
 #include <stdexcept>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 //// size calcuation for important types
 template <typename T, std::size_t N> inline constexpr
@@ -218,5 +218,5 @@ enum_to_enum(EnumIn e) noexcept {
 	return underlying_to_enum<EnumOut>(enum_to_underlying_unsafe(e));
 }
 
-}} // obi::util
-#endif // OBI_UTIL_CAST_HEADER
+}} // ext::util
+#endif // EXT_UTIL_CAST_HEADER

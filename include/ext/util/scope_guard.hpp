@@ -8,16 +8,16 @@
 // requires: c++17
 
 #pragma once
-#ifndef OBI_UTIL_SCOPE_GUARD_HEADER
-#define OBI_UTIL_SCOPE_GUARD_HEADER
+#ifndef EXT_UTIL_SCOPE_GUARD_HEADER
+#define EXT_UTIL_SCOPE_GUARD_HEADER
 #include <exception>
 #include <type_traits>
 #include <cstdint>
 #include <iostream> // iostream to different TU?
 
-#include <obi/macros/general.hpp>
+#include <ext/macros/general.hpp>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 namespace _detail {
 
 //! class that counts exceptions that are thrown within a scope
@@ -115,7 +115,7 @@ struct scope_guard {
     scope_guard(scope_guard &&) = delete;
 };
 
-}} // namespace ::obi::util - end
+}} // namespace ::ext::util - end
 
 //
 // FOR USE IN CPPs only (can break one-definiton-ruld in inline functions)
@@ -125,20 +125,20 @@ struct scope_guard {
 // ALL LAMBDAS CAPTURE BY REF!!! (use plain scope_guard as alternative)
 //
 
-#define OBI_SCOPE_FAIL \
-    auto OBI_ANONYMOUS_VARIABLE(OBI_SCOPE_FAIL_STATE) \
-    = obi::util::_detail::on_fail_helper() + [&]()
+#define EXT_SCOPE_FAIL \
+    auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) \
+    = ext::util::_detail::on_fail_helper() + [&]()
 
-#define OBI_SCOPE_SUCCESS \
-    auto OBI_ANONYMOUS_VARIABLE(OBI_SCOPE_FAIL_STATE) \
-    = obi::util::_detail::on_success_helper() + [&]()
+#define EXT_SCOPE_SUCCESS \
+    auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) \
+    = ext::util::_detail::on_success_helper() + [&]()
 
-#define OBI_SCOPE_EXIT \
-    auto OBI_ANONYMOUS_VARIABLE(OBI_SCOPE_FAIL_STATE) \
-    = obi::util::_detail::on_exit_helper() + [&]()
+#define EXT_SCOPE_EXIT \
+    auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) \
+    = ext::util::_detail::on_exit_helper() + [&]()
 
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 namespace _detail {
 
 //tag dispatching helper
@@ -170,5 +170,5 @@ operator+(Helper, FunctionType&& fn){
 }
 
 } // namespace _detail - end
-}} // namespace ::obi::util - end
-#endif // OBI_UTIL_SCOPE_GUARD_HEADER
+}} // namespace ::ext::util - end
+#endif // EXT_UTIL_SCOPE_GUARD_HEADER

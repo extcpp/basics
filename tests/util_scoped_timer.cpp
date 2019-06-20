@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
-#include <obi/util/scoped_timer.hpp>
-#include <obi/macros/compiler.hpp>
+#include <ext/util/scoped_timer.hpp>
+#include <ext/macros/compiler.hpp>
 #include <thread>
 
-using namespace obi::util;
+using namespace ext::util;
 
 constexpr auto ms = std::chrono::milliseconds(1);
 void assert_time_eq(std::size_t ms_expected, std::pair<std::uint64_t, std::string> const& in, std::size_t steps = 1){
-    #ifdef OBI_COMPILER_VC
+    #ifdef EXT_COMPILER_VC
     ms_expected += 2 * steps;
     #else
     ms_expected += steps;

@@ -1,15 +1,15 @@
 // Copyright - 2018 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // requires c++17 (string_view)
 #pragma once
-#ifndef OBI_UTIL_STRING_HEADER
-#define OBI_UTIL_STRING_HEADER
+#ifndef EXT_UTIL_STRING_HEADER
+#define EXT_UTIL_STRING_HEADER
 
 #include <string>
 #include <string_view>
 #include <vector>
 #include <cassert>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 //c++20 string has a member function starts_with
 inline auto
@@ -85,5 +85,5 @@ replace(std::string_view const& str
     return rv;
 }
 
-}} // obi::util
-#endif // OBI_UTIL_STRING_HEADER
+}} // ext::util
+#endif // EXT_UTIL_STRING_HEADER

@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
-#include <obi/util/result.hpp>
-#include <obi/util/tracing_classes.hpp>
+#include <ext/util/result.hpp>
+#include <ext/util/tracing_classes.hpp>
 
 #include <type_traits>
 
-namespace ou = obi::util;
-using namespace obi::util::tracing;
+namespace ou = ext::util;
+using namespace ext::util::tracing;
 
 TEST(util_result, lvalue_copy){
     all value;

@@ -1,19 +1,19 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_MEMORY_ALIGN_HEADER
-#define OBI_MEMORY_ALIGN_HEADER
+#ifndef EXT_MEMORY_ALIGN_HEADER
+#define EXT_MEMORY_ALIGN_HEADER
 
-#include <obi/config.hpp>
+#include <ext/config.hpp>
 #include <memory>
 
-namespace obi { namespace memory {
+namespace ext { namespace memory {
 
 inline constexpr std::size_t cache_line_size() {
-#ifdef OBI_KNOWN_L1_CACHE_LINE_SIZE
-    return OBI_KNOWN_L1_CACHE_LINE_SIZE;
+#ifdef EXT_KNOWN_L1_CACHE_LINE_SIZE
+    return EXT_KNOWN_L1_CACHE_LINE_SIZE;
 #else
     return ::std::hardware_destructive_interference_size;
-#endif // OBI_KNOWN_L1_CACHE_LINE_SIZE
+#endif // EXT_KNOWN_L1_CACHE_LINE_SIZE
 }
 
 template <typename T>
@@ -24,4 +24,4 @@ inline constexpr is_alignment(T number) {
 }
 
 }}
-#endif // OBI_MEMORY_ALIGN_HEADER
+#endif // EXT_MEMORY_ALIGN_HEADER

@@ -2,8 +2,8 @@
 // Idea and code from STL
 // http://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-3-of-n
 #pragma once
-#ifndef OBI_UTIL_CONTAINER_HELPER_HEADER
-#define OBI_UTIL_CONTAINER_HELPER_HEADER
+#ifndef EXT_UTIL_CONTAINER_HELPER_HEADER
+#define EXT_UTIL_CONTAINER_HELPER_HEADER
 
 #include <algorithm>
 #include <deque>
@@ -17,7 +17,7 @@
 
 // TODO - finish array
 
-namespace obi { namespace util {
+namespace ext { namespace util {
     namespace _detail {
 
         //possilbe categorys for containers
@@ -231,5 +231,5 @@ namespace obi { namespace util {
     //      _detail::category_dispatcher<category>::erase_if_helper(c, p);
     //  }
 
-}} // namespace obi::util
-#endif // OBI_UTIL_CONTAINER_HELPER_HEADER
+}} // namespace ext::util
+#endif // EXT_UTIL_CONTAINER_HELPER_HEADER

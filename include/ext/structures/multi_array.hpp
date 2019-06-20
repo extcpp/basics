@@ -1,13 +1,13 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_STRUCTURES_MULTI_ARRAY_HEADER
-#define OBI_STRUCTURES_MULTI_ARRAY_HEADER
+#ifndef EXT_STRUCTURES_MULTI_ARRAY_HEADER
+#define EXT_STRUCTURES_MULTI_ARRAY_HEADER
 
 #include <array>
 #include <type_traits>
 #include <iostream>
 
-namespace obi { namespace structures {
+namespace ext { namespace structures {
 
 
 //! Multi Array Class
@@ -54,5 +54,5 @@ private:
 
 };
 
-}}  // obi::structures
-#endif // OBI_STRUCTURES_MULTI_ARRAY_HEADER
+}}  // ext::structures
+#endif // EXT_STRUCTURES_MULTI_ARRAY_HEADER

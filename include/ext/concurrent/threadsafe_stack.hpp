@@ -1,14 +1,14 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_CONCURRENT_THREADSAFE_STACK_HEADER
-#define OBI_CONCURRENT_THREADSAFE_STACK_HEADER
+#ifndef EXT_CONCURRENT_THREADSAFE_STACK_HEADER
+#define EXT_CONCURRENT_THREADSAFE_STACK_HEADER
 
 #include <exception>
 #include <stack>
 #include <mutex>
 #include <memory>
 
-namespace obi{ namespace concurrent{
+namespace ext{ namespace concurrent{
 
 struct empty_stack: std::exception
 {
@@ -61,5 +61,5 @@ public:
     }
 };
 
-}}  // namespace obi::concurrent
-#endif // OBI_CONCURRENT_THREADSAFE_STACK_HEADER
+}}  // namespace ext::concurrent
+#endif // EXT_CONCURRENT_THREADSAFE_STACK_HEADER

@@ -1,7 +1,7 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_ENDIAN_HEADER
-#define OBI_UTIL_ENDIAN_HEADER
+#ifndef EXT_UTIL_ENDIAN_HEADER
+#define EXT_UTIL_ENDIAN_HEADER
 
 #include <cstdint>
 #include <cstring>
@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <stdexcept>
 
-#include <obi/util/cast.hpp>
+#include <ext/util/cast.hpp>
 
 #ifdef __APPLE__
     #include <machine/endian.h>
@@ -21,7 +21,7 @@
     #pragma messsage("unsupported os or compiler")
 #endif // __APPLE__
 
-namespace obi::util::endian {
+namespace ext::util::endian {
 
 
 // evaluated during compile time!!!
@@ -214,5 +214,5 @@ big_to_host(T in){
     return to_signed(big_to_host(to_unsigned(in)));
 }
 
-} // namespace obi::util::endian - end
-#endif // OBI_UTIL_ENDIAN_HEADER
+} // namespace ext::util::endian - end
+#endif // EXT_UTIL_ENDIAN_HEADER

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include <obi/util/string.hpp>
+#include <ext/util/string.hpp>
 
-using namespace obi::util;
+using namespace ext::util;
 
 TEST(util_string, starts_with){
     ASSERT_TRUE(starts_with("ein schwein", ""));

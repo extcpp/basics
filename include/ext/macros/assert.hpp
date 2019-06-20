@@ -1,18 +1,18 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_MACROS_ASSERT_HEADER
-#define OBI_MACROS_ASSERT_HEADER
+#ifndef EXT_MACROS_ASSERT_HEADER
+#define EXT_MACROS_ASSERT_HEADER
 
-#ifdef OBI_CHECKED
-    #define OBI_ASSERT(expr)       \
+#ifdef EXT_CHECKED
+    #define EXT_ASSERT(expr)       \
     do {                           \
-        if (!(OBI_LIKELY(expr))) { \
+        if (!(EXT_LIKELY(expr))) { \
             std::abort();          \
         }                          \
     } while (0)
 #else
-    #define OBI_ASSERT(expr) \
+    #define EXT_ASSERT(expr) \
     do { } while (0)
-#endif // OBI_CHECKED
+#endif // EXT_CHECKED
 
-#endif // OBI_MACROS_ASSERT_HEADER
+#endif // EXT_MACROS_ASSERT_HEADER

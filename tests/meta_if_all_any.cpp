@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include <obi/meta/if_all_any.hpp>
+#include <ext/meta/if_all_any.hpp>
 
 using namespace std;
-using namespace obi::meta;
+using namespace ext::meta;
 
 TEST(meta_if_all_any, if_all){
     ASSERT_TRUE((if_all<true>()));

@@ -1,15 +1,15 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_BENCHMARK_HEADER
-#define OBI_UTIL_BENCHMARK_HEADER
+#ifndef EXT_UTIL_BENCHMARK_HEADER
+#define EXT_UTIL_BENCHMARK_HEADER
 
-#include <obi/macros/compiler.hpp>
+#include <ext/macros/compiler.hpp>
 #include <atomic>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 inline void do_not_optimize(void* pointer) {
-#ifdef OBI_COMPILER_GNU
+#ifdef EXT_COMPILER_GNU
     // Ihttps://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#Extended-Asm
     asm volatile(""             // template
                 :               // output
@@ -22,11 +22,11 @@ inline void do_not_optimize(void* pointer) {
     // https://docs.microsoft.com/en-us/cpp/intrinsics/readwritebarrier?view=vs-2019
     // _ReadWriteBarrier
     std::atomic_thread_fence(std::memory_order_seq_cst);
-#endif // OBI_COMPILER_GNU
+#endif // EXT_COMPILER_GNU
 }
 
 inline void clobber_memory() {
-#ifdef OBI_COMPILER_GNU
+#ifdef EXT_COMPILER_GNU
     asm volatile(""             // template
                 :               // output
                 :
@@ -36,8 +36,8 @@ inline void clobber_memory() {
                                 // you need processor-specific fence instructions.
 #else
     std::atomic_thread_fence(std::memory_order_seq_cst);
-#endif // OBI_COMPILER_GNU
+#endif // EXT_COMPILER_GNU
 }
 
 }}
-#endif // OBI_UTIL_BENCHMARK_HEADER
+#endif // EXT_UTIL_BENCHMARK_HEADER

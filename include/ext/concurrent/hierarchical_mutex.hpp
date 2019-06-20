@@ -2,14 +2,14 @@
 // The code is taken from: "Anthony Williams: C++ Concurrency in Action"
 // c++11 only
 #pragma once
-#ifndef OBI_CONCURRENT_HIERARCHICAL_MUTEX_HEADER
-#define OBI_CONCURRENT_HIERARCHICAL_MUTEX_HEADER
+#ifndef EXT_CONCURRENT_HIERARCHICAL_MUTEX_HEADER
+#define EXT_CONCURRENT_HIERARCHICAL_MUTEX_HEADER
 
 #include <mutex>
 #include <stdexcept>
 #include <limits>
 
-namespace obi{ namespace concurrent{
+namespace ext{ namespace concurrent{
 
 class hierarchical_mutex
 {
@@ -64,5 +64,5 @@ private:  // functions
 thread_local unsigned long
 hierarchical_mutex::this_thread_hierarchy_value(std::numeric_limits<unsigned long>::max());
 
-}}  // namespace obi::thread
-#endif // OBI_CONCURRENT_HIERARCHICAL_MUTEX_HEADER
+}}  // namespace ext::thread
+#endif // EXT_CONCURRENT_HIERARCHICAL_MUTEX_HEADER

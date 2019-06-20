@@ -1,7 +1,7 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_ACCESS_PRIVATE_HEADER
-#define OBI_UTIL_ACCESS_PRIVATE_HEADER
+#ifndef EXT_UTIL_ACCESS_PRIVATE_HEADER
+#define EXT_UTIL_ACCESS_PRIVATE_HEADER
 
 template <typename type>
 struct access {
@@ -33,4 +33,4 @@ struct create_access : access<type> {
 //     Alexander s;
 //     (s.*access<type>::member_pointer)();
 // }
-#endif // OBI_UTIL_ACCESS_PRIVATE_HEADER
+#endif // EXT_UTIL_ACCESS_PRIVATE_HEADER

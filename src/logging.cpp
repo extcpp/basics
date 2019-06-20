@@ -1,22 +1,22 @@
-#include <obi/macros/compiler.hpp>
-#include <obi/logging.hpp>
-#include <obi/util/except.hpp>
+#include <ext/macros/compiler.hpp>
+#include <ext/logging.hpp>
+#include <ext/util/except.hpp>
 
-namespace obi { namespace logging {
+namespace ext { namespace logging {
 
     /////////////////////////////////////////////////////////////////////////////
-    OBI_INIT_PRIORITY_VC_HIGH
+    EXT_INIT_PRIORITY_VC_HIGH
     // NEEDS TO BE CREATED FIRST!!!!
-    OBI_INIT_PRIORITY_GNU(101) std::mutex _detail::logmutex{};
+    EXT_INIT_PRIORITY_GNU(101) std::mutex _detail::logmutex{};
 
     // on construction topics register in this map beware of fiasco
-    OBI_INIT_PRIORITY_GNU(102) std::map<int,_detail::logtopic*> _detail::topics_map{};
+    EXT_INIT_PRIORITY_GNU(102) std::map<int,_detail::logtopic*> _detail::topics_map{};
 
 
-    OBI_INIT_PRIORITY_GNU(103) _detail::logtopic topic::no_topic {1, std::string("default"), level::info};
-    OBI_INIT_PRIORITY_GNU(103) _detail::logtopic topic::dev {2, std::string("development"), level::debug};
-    OBI_INIT_PRIORITY_GNU(103) _detail::logtopic topic::network {3, std::string("network"), level::error};
-    OBI_INIT_PRIORITY_GNU(103) _detail::logtopic topic::engine {4, std::string("engine"), level::error};
+    EXT_INIT_PRIORITY_GNU(103) _detail::logtopic topic::no_topic {1, std::string("default"), level::info};
+    EXT_INIT_PRIORITY_GNU(103) _detail::logtopic topic::dev {2, std::string("development"), level::debug};
+    EXT_INIT_PRIORITY_GNU(103) _detail::logtopic topic::network {3, std::string("network"), level::error};
+    EXT_INIT_PRIORITY_GNU(103) _detail::logtopic topic::engine {4, std::string("engine"), level::error};
 
     bool configuration::prefix_newline{false};
     bool configuration::append_newline{false};
@@ -26,7 +26,7 @@ namespace obi { namespace logging {
     bool configuration::vim{false};
     bool configuration::gdb{false};
 
-    OBI_INIT_PRIORITY_VC_LOW
+    EXT_INIT_PRIORITY_VC_LOW
     /////////////////////////////////////////////////////////////////////////////
 
 
@@ -46,7 +46,7 @@ namespace obi { namespace logging {
 
         if (configuration::gdb){
 #ifndef _WIN32
-            _ss << "# break " << obi::util::filename(file_name)
+            _ss << "# break " << ext::util::filename(file_name)
                 << ":" << line_no << "\n";
 #endif
         }
@@ -67,7 +67,7 @@ namespace obi { namespace logging {
             if(!configuration::gdb){
                 _ss << " "
 #ifndef _WIN32
-                    << obi::util::filename(file_name)
+                    << ext::util::filename(file_name)
 #else
                     << file_name
 #endif
@@ -111,4 +111,4 @@ namespace obi { namespace logging {
 
     _detail::logger::~logger(){ }
 
-}} // obi::util::logging
+}} // ext::util::logging

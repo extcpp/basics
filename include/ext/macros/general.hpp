@@ -1,24 +1,24 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_MACROS_GENERAL_HEADER
-#define OBI_MACROS_GENERAL_HEADER
+#ifndef EXT_MACROS_GENERAL_HEADER
+#define EXT_MACROS_GENERAL_HEADER
 
-#define OBI_NO_IMPL "NOT IMPLEMENTED NOW PLEASE FAIL HERE"
-#define OBI_NOTHING(...)
+#define EXT_NO_IMPL "NOT IMPLEMENTED NOW PLEASE FAIL HERE"
+#define EXT_NOTHING(...)
 
-#define OBI_DELETE(...)
-#define OBI_EXPAND(...) __VA_ARGS__
-#define OBI_STRINGIFY(a) #a
+#define EXT_DELETE(...)
+#define EXT_EXPAND(...) __VA_ARGS__
+#define EXT_STRINGIFY(a) #a
 
-// use indirection (_OBI_CONCATENATE_IMPL) because ## inhibits expansion
-#define _OBI_CONCATENATE_IMPL(s1, ...) s1 ## __VA_ARGS__
-#define OBI_CONCATENATE(s1, ...) _OBI_CONCATENATE_IMPL(s1, __VA_ARGS__)
+// use indirection (_EXT_CONCATENATE_IMPL) because ## inhibits expansion
+#define _EXT_CONCATENATE_IMPL(s1, ...) s1 ## __VA_ARGS__
+#define EXT_CONCATENATE(s1, ...) _EXT_CONCATENATE_IMPL(s1, __VA_ARGS__)
 
 // __COUNTER__ provides increasing non negative number
 #ifdef __COUNTER__
-    #define OBI_ANONYMOUS_VARIABLE(str) OBI_CONCATENATE(str, __COUNTER__)
+    #define EXT_ANONYMOUS_VARIABLE(str) EXT_CONCATENATE(str, __COUNTER__)
 #else
-    #define OBI_ANONYMOUS_VARIABLE OBI_NO_IMPL
+    #define EXT_ANONYMOUS_VARIABLE EXT_NO_IMPL
 #endif // __COUNTER__
 
-#endif // OBI_MACROS_GENERAL_HEADER
+#endif // EXT_MACROS_GENERAL_HEADER

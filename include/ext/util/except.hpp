@@ -1,11 +1,11 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_EXCEPT_HEADER
-#define OBI_UTIL_EXCEPT_HEADER
+#ifndef EXT_UTIL_EXCEPT_HEADER
+#define EXT_UTIL_EXCEPT_HEADER
 
 #include <stdexcept>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
   /*! Errors based on std::locig_error should be preventable
    *  at compile time. Errors based on std::runtime_error are
@@ -57,5 +57,5 @@ namespace obi { namespace util {
     virtual ~cat_not_connect_exception() noexcept = default;
   };
 
-}} // obi::util
-#endif // OBI_UTIL_EXCEPT_HEADER
+}} // ext::util
+#endif // EXT_UTIL_EXCEPT_HEADER

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include <obi/algorithm/string_distances.hpp>
+#include <ext/algorithm/string_distances.hpp>
 
-namespace obi { namespace algorithm { namespace distances {
+namespace ext { namespace algorithm { namespace distances {
     class string_distance_fixture : public ::testing::Test {
         protected:
             typedef std::vector<std::pair<std::string,std::string>> test_data_type;

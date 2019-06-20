@@ -1,7 +1,7 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_STRUCTURES_VECTOR_HEADER
-#define OBI_STRUCTURES_VECTOR_HEADER
+#ifndef EXT_STRUCTURES_VECTOR_HEADER
+#define EXT_STRUCTURES_VECTOR_HEADER
 
 #include <array>
 #include <type_traits>
@@ -12,7 +12,7 @@
 // sense
 
 
-namespace obi { namespace structures {
+namespace ext { namespace structures {
 
     // Will this work with 17?
 
@@ -37,7 +37,7 @@ namespace obi { namespace structures {
     class vector_base_arithmetic;
 
     template <typename T, std::size_t N, typename... Args>
-    class vector_base_arithmetic<T, N, obi::meta::pack<Args...>> {
+    class vector_base_arithmetic<T, N, ext::meta::pack<Args...>> {
     public:
         vector_base_arithmetic() = default;
         //copy ctor
@@ -49,17 +49,17 @@ namespace obi { namespace structures {
 
     template <typename T, std::size_t N>
     class vector :   std::conditional_t<std::is_arithmetic<T>::value
-                                       ,vector_base_arithmetic  <T, N, ::obi::meta::generate_pack_t<N, T>>
+                                       ,vector_base_arithmetic  <T, N, ::ext::meta::generate_pack_t<N, T>>
                                        ,vector_base_user_defined<T, N>
                                        >
     {
         using base = std::conditional_t<std::is_arithmetic<T>::value
-                                       ,vector_base_arithmetic  <T, N, ::obi::meta::generate_pack_t<N, T>>
+                                       ,vector_base_arithmetic  <T, N, ::ext::meta::generate_pack_t<N, T>>
                                        ,vector_base_user_defined<T, N>
                                        >;
         using base::base;
     };
 
-}}  // obi::structures
+}}  // ext::structures
 
-#endif // OBI_STRUCTURES_VECTOR_HEADER
+#endif // EXT_STRUCTURES_VECTOR_HEADER

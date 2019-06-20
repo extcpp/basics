@@ -1,16 +1,16 @@
 #include <gtest/gtest.h>
-#include <obi/util/encode.hpp>
-#include <obi/util/endian.hpp>
+#include <ext/util/encode.hpp>
+#include <ext/util/endian.hpp>
 #include <cstring>
 
-using namespace obi::util;
+using namespace ext::util;
 using namespace std::literals;
 
 TEST(util_encode, encode_hex){
     std::uint32_t in = 0x01020304;
     auto hex = encode_hex(reinterpret_cast<char*>(&in), sizeof(in));
 
-    if(obi::util::endian::is_little()){
+    if(ext::util::endian::is_little()){
         ASSERT_EQ(hex, "04030201"s);
     } else {
         ASSERT_EQ(hex, "01020304"s);

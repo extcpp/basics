@@ -1,14 +1,14 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <obi/macros/platform.hpp>
-#ifdef OBI_WINDOWS
+#include <ext/macros/platform.hpp>
+#ifdef EXT_WINDOWS
 int main() { }
 #else
 
 #include <iostream>
-#include <obi/util/functional.hpp>
+#include <ext/util/functional.hpp>
 
 using namespace std;
-using namespace obi::util;
+using namespace ext::util;
 
 int main() {
     auto rv1 = apply(add)(11, 12);
@@ -27,4 +27,4 @@ int main() {
 
     return 0;
 }
-#endif // OBI_WINDOWS
+#endif // EXT_WINDOWS

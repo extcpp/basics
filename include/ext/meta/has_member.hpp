@@ -1,13 +1,13 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
 #pragma once
-#ifndef OBI_META_HAS_MEMBER_HEADER
-#define OBI_META_HAS_MEMBER_HEADER
+#ifndef EXT_META_HAS_MEMBER_HEADER
+#define EXT_META_HAS_MEMBER_HEADER
 
 #include <type_traits>
 #include "void_t.hpp"
 
-namespace obi { namespace meta {
+namespace ext { namespace meta {
 
 // has_value_var
     template<typename T, typename = void>
@@ -38,7 +38,7 @@ namespace obi { namespace meta {
     struct has_type_category : std::false_type {};
 
     template<class T>
-    struct has_type_category<T, ::obi::meta::void_t<typename T::category> > : std::true_type {};
+    struct has_type_category<T, ::ext::meta::void_t<typename T::category> > : std::true_type {};
 
 
     template<typename T>
@@ -59,5 +59,5 @@ namespace obi { namespace meta {
     template<typename T>
     inline constexpr bool is_input_iterator_v = is_input_iterator<T>::value;
 
-}}  // namespace obi::meta
-#endif // OBI_META_HAS_MEMBER_HEADER
+}}  // namespace ext::meta
+#endif // EXT_META_HAS_MEMBER_HEADER

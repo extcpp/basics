@@ -1,21 +1,21 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_BASIC_HEADER
-#define OBI_UTIL_BASIC_HEADER
+#ifndef EXT_UTIL_BASIC_HEADER
+#define EXT_UTIL_BASIC_HEADER
 
-#include <obi/macros/general.hpp>
-#include <obi/util/cast.hpp>
+#include <ext/macros/general.hpp>
+#include <ext/util/cast.hpp>
 
 #include <algorithm>
 #include <string>
 #include <type_traits>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 template<typename F, typename ...T>
 void for_each_arg(F&& function, T&&... args){
     (function(std::forward<T>(args)), ...); // c++17 fold expression
-    //OBI_EXPAND_SIDE_EFFECTS(function(std::forward<T>(args)));
+    //EXT_EXPAND_SIDE_EFFECTS(function(std::forward<T>(args)));
 }
 
 template<typename ...T>
@@ -40,9 +40,9 @@ filename(std::string const& pathname, bool is_linux = true, bool both = false){
     auto len = std::distance(start_word_itr, pathname.end());
 
     return std::string_view(pathname.data() + start_pos
-                           ,::obi::util::to_unsigned(len)
+                           ,::ext::util::to_unsigned(len)
                            );
 }
 
-}} // obi::util
-#endif // OBI_UTIL_BASIC_HEADER
+}} // ext::util
+#endif // EXT_UTIL_BASIC_HEADER

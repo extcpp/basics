@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include <obi/util/endian.hpp>
+#include <ext/util/endian.hpp>
 
 #include <array>
 
-using namespace ::obi::util;
+using namespace ::ext::util;
 
 namespace {
     std::uint32_t num = 0x01020304U;

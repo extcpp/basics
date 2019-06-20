@@ -1,7 +1,7 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_META_TUPLE_HEADER
-#define OBI_META_TUPLE_HEADER
+#ifndef EXT_META_TUPLE_HEADER
+#define EXT_META_TUPLE_HEADER
 
 // Inspired by Daniel Frey's awesome talk about non recusive
 // template programming at the c++ user group Aachen
@@ -9,7 +9,7 @@
 
 #include <type_traits>
 #include <tuple>
-namespace obi { namespace meta {
+namespace ext { namespace meta {
 
 // tuple wrapping
 template<typename>
@@ -88,5 +88,5 @@ void tuple_apply(Tuple&& t, Functor&& f, FArgs&& ...fargs){
 }
 // for each in tuple - end
 
-}}  // namespace obi::meta
-#endif // OBI_META_TUPLE_HEADER
+}}  // namespace ext::meta
+#endif // EXT_META_TUPLE_HEADER

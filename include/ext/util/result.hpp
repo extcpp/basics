@@ -1,33 +1,33 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_RESULT_HEADER
-#define OBI_UTIL_RESULT_HEADER
+#ifndef EXT_UTIL_RESULT_HEADER
+#define EXT_UTIL_RESULT_HEADER
 
 #include <type_traits>
 #include <memory>
 #include <cstdint>
 #include <string>
 
-#ifdef OBI_DEBUG
+#ifdef EXT_DEBUG
     #include <iostream>
-#endif // OBI_DEBUG
+#endif // EXT_DEBUG
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
-inline int OBI_OK = 0;
-inline int OBI_FAIL = 1;
-inline int OBI_ERROR_NET = 10;
+inline int EXT_OK = 0;
+inline int EXT_FAIL = 1;
+inline int EXT_ERROR_NET = 10;
 
-}} // obi::util
+}} // ext::util
 
 // REMOVE ///////////////////////////////////////////////////////////
-#define OBI_RESULT_NOT_FINISHED
-#ifdef OBI_RESULT_NOT_FINISHED
+#define EXT_RESULT_NOT_FINISHED
+#ifdef EXT_RESULT_NOT_FINISHED
 #include <map>
 // should be in cpp
 inline std::string error_code_vo_string(int code) {
   static const std::map<int,std::string> error_map = {
-      { obi::util::OBI_ERROR_NET, "network error" }
+      { ext::util::EXT_ERROR_NET, "network error" }
   };
 
   auto found = error_map.find(code);
@@ -37,17 +37,17 @@ inline std::string error_code_vo_string(int code) {
       return std::string();
   }
 }
-#endif // OBI_RESULT_NOT_FINISHED
+#endif // EXT_RESULT_NOT_FINISHED
 // REMOVE - END /////////////////////////////////////////////////////
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 inline
 namespace v1 {
 
 struct result {
     result() noexcept
-        :code(OBI_OK)
+        :code(EXT_OK)
     {}
 
     result(int num) noexcept
@@ -91,7 +91,7 @@ struct result {
     auto get_message() const
     -> std::string {
         if (message.empty()) {
-            if(code != OBI_OK) {
+            if(code != EXT_OK) {
                 message = error_code_vo_string(code);
             }
         }
@@ -99,11 +99,11 @@ struct result {
     }
 
     auto get_code() const -> int { return code; }
-    auto ok()   const -> bool { return code == OBI_OK; }
+    auto ok()   const -> bool { return code == EXT_OK; }
     auto fail() const -> bool { return !ok(); }
     explicit operator bool() { return ok(); }
 
-    auto reset(int num = OBI_OK)
+    auto reset(int num = EXT_OK)
     -> result& {
         code = num;
         message.clear();
@@ -167,7 +167,7 @@ public:
     ,valid(true)
     ,_result(res)
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
     #endif
     }
@@ -183,7 +183,7 @@ public:
     ,valid(true)
     ,_result(std::move(res))
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
     #endif
     }
@@ -202,7 +202,7 @@ public:
     ,valid(true)
     ,_result(res)
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
        std::cerr << "ctor: lvalue - 1 copy" << std::endl;
     #endif
     }
@@ -218,7 +218,7 @@ public:
     ,valid(true)
     ,_result(std::move(res))
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
       std::cerr << "ctor: lvalue - 1 copy" << std::endl;
     #endif
     }
@@ -238,7 +238,7 @@ public:
     , valid(true)
     , _result(res)
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
     #endif
     }
@@ -255,7 +255,7 @@ public:
     ,valid(true)
     ,_result(std::move(res))
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
     #endif
     }
@@ -277,7 +277,7 @@ public:
     ,_result(res)
     {
         this->value = std::move(val);
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move assign) - 0 copy" << std::endl;
     #endif
     }
@@ -296,7 +296,7 @@ public:
     ,_result(std::move(res))
     {
         this->value = std::move(val);
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move assign) - 0 copy" << std::endl;
     #endif
     }
@@ -370,7 +370,7 @@ struct typed_result {
              ,typename std::enable_if_t<x,int> = 0
              >
     typed_result(value_type val //required
-                ,int co = OBI_OK
+                ,int co = EXT_OK
                 ,std::string const& msg = ""
                 )
 
@@ -378,7 +378,7 @@ struct typed_result {
     ,code(co)
     ,value(val)
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
     #endif
     }
@@ -392,14 +392,14 @@ struct typed_result {
              ,typename std::enable_if_t<x,int> = 0
              >
     typed_result(value_type const& val
-                ,int co = OBI_OK
+                ,int co = EXT_OK
                 ,std::string const& msg = ""
                 )
     :message(msg)
     ,code(co)
     ,value(val) //copy here
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
        std::cerr << "ctor: lvalue - 1 copy" << std::endl;
     #endif
     }
@@ -417,7 +417,7 @@ struct typed_result {
     ,code(res.code)
     ,value(val) //copy here
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
        std::cerr << "ctor: lvalue - 1 copy" << std::endl;
     #endif
     }
@@ -434,7 +434,7 @@ struct typed_result {
     ,code(res.code)
     ,value(res.value) //copy here
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
        std::cerr << "ctor: lvalue - 1 copy" << std::endl;
     #endif
     }
@@ -448,14 +448,14 @@ struct typed_result {
              ,typename std::enable_if_t<x,int> = 0
              >
     typed_result(value_type&& val
-                ,int co = OBI_OK
+                ,int co = EXT_OK
                 ,std::string const& msg = ""
                 )
     :message(msg)
     ,code(co)
     ,value(std::move(val)) //copy here
     {
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
     #endif
     }
@@ -471,7 +471,7 @@ struct typed_result {
              ,typename std::enable_if_t<x,int> = 0
              >
     typed_result(value_type&& val
-                ,int co = OBI_OK
+                ,int co = EXT_OK
                 ,std::string const& msg = ""
                 )
     :message(msg)
@@ -479,7 +479,7 @@ struct typed_result {
     ,value()
     {
         value = std::move(val);
-    #ifdef OBI_DEBUG
+    #ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move assign) - 0 copy" << std::endl;
     #endif
     }
@@ -490,14 +490,14 @@ struct typed_result {
     auto get_message() const
     -> std::string {
         if (message.empty()) {
-            if(code != OBI_OK) {
+            if(code != EXT_OK) {
                 message = error_code_vo_string(code);
             }
         }
         return message;
     }
 
-    auto ok()   const -> bool { return code == OBI_OK; }
+    auto ok()   const -> bool { return code == EXT_OK; }
     auto fail() const -> bool { return !ok(); }
     explicit operator bool() { return ok(); }
 
@@ -534,11 +534,11 @@ struct typed_result {
     }
 
     typed_result success() { return typed_result({}); }
-    typed_result error(int co = OBI_FAIL, std::string mes = "") { return typed_result({}, co, mes); }
-    typed_result error(std::string mes = "", int co = OBI_FAIL) { return typed_result({}, co, mes); }
+    typed_result error(int co = EXT_FAIL, std::string mes = "") { return typed_result({}, co, mes); }
+    typed_result error(std::string mes = "", int co = EXT_FAIL) { return typed_result({}, co, mes); }
 
     // reset does not modify vlaue
-    auto reset(int num = OBI_OK)
+    auto reset(int num = EXT_OK)
     -> typed_result& {
         code = num;
         message.clear();
@@ -581,5 +581,5 @@ using result = typed_result<bool>;
 
 }
 
-}} // obi::util
-#endif // OBI_UTIL_RESULT_HEADER
+}} // ext::util
+#endif // EXT_UTIL_RESULT_HEADER

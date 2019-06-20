@@ -1,15 +1,15 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_TO_STR_EAM_HEADER
-#define OBI_UTIL_TO_STR_EAM_HEADER
+#ifndef EXT_UTIL_TO_STR_EAM_HEADER
+#define EXT_UTIL_TO_STR_EAM_HEADER
 #include <filesystem>
-#include <obi/util/result.hpp>
+#include <ext/util/result.hpp>
 
-// convert types libobi types to string or wirte them in streams
+// convert types libext types to string or wirte them in streams
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
-inline std::ostream& operator<< (std::ostream &out, obi::util::result const& res) {
+inline std::ostream& operator<< (std::ostream &out, ext::util::result const& res) {
     out << std::boolalpha
         << ", ok:" << res.ok()
         << ", code:" << res.code
@@ -19,7 +19,7 @@ inline std::ostream& operator<< (std::ostream &out, obi::util::result const& res
 }
 
 template <typename T>
-std::ostream& operator<< (std::ostream &out, obi::util::typed_result<T> const& res) {
+std::ostream& operator<< (std::ostream &out, ext::util::typed_result<T> const& res) {
     out << std::boolalpha
         << ", ok:" << res.ok()
         << ", code:" << res.code()
@@ -42,4 +42,4 @@ inline std::string to_type_string(::std::filesystem::recursive_directory_iterato
 }
 
 }}
-#endif // OBI_UTIL_TO_STR_EAM_HEADER
+#endif // EXT_UTIL_TO_STR_EAM_HEADER

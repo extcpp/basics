@@ -1,11 +1,11 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <obi/util/function_cache.hpp>
-#include <obi/util/scoped_timer.hpp>
+#include <ext/util/function_cache.hpp>
+#include <ext/util/scoped_timer.hpp>
 #include <iostream>
 #include <future>
 
 using namespace std;
-using namespace obi::util;
+using namespace ext::util;
 
 uint64_t fib(uint64_t n) {
     if (n < 2) { return n; }

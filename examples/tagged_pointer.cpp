@@ -1,11 +1,11 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <obi/memory/tagged_pointer.hpp>
-#include <obi/util/encode.hpp>
+#include <ext/memory/tagged_pointer.hpp>
+#include <ext/util/encode.hpp>
 
 #include <atomic>
 
 using namespace std;
-using namespace obi;
+using namespace ext;
 
 int main() {
 

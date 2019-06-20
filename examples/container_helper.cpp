@@ -2,9 +2,9 @@
 #include <iostream>
 #include <numeric>
 #include <ostream>
-#include <obi/util/container_helper.hpp>
+#include <ext/util/container_helper.hpp>
 
-using namespace obi;
+using namespace ext;
 using namespace util;
 using namespace std;
 

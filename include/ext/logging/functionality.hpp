@@ -1,16 +1,16 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_LOGGING_FUNCTIONALITY_HEADER
-#define OBI_LOGGING_FUNCTIONALITY_HEADER
+#ifndef EXT_LOGGING_FUNCTIONALITY_HEADER
+#define EXT_LOGGING_FUNCTIONALITY_HEADER
 
-#include <obi/logging/definitions.hpp>
-#include <obi/util/basic.hpp>
-#include <obi/macros/platform.hpp>
+#include <ext/logging/definitions.hpp>
+#include <ext/util/basic.hpp>
+#include <ext/macros/platform.hpp>
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 
-namespace obi { namespace logging {
+namespace ext { namespace logging {
 
     namespace _detail {
         inline bool level_is_active(level macro_level, logtopic topic = topic::no_topic){
@@ -57,5 +57,5 @@ namespace obi { namespace logging {
         }
     }
 
-}} // obi::util::logging
-#endif // OBI_LOGGING_FUNCTIONALITY_HEADER
+}} // ext::util::logging
+#endif // EXT_LOGGING_FUNCTIONALITY_HEADER

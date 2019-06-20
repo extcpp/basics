@@ -1,6 +1,6 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <obi/util/any_printable.hpp>
-using namespace obi::util;
+#include <ext/util/any_printable.hpp>
+using namespace ext::util;
 
 //function from other tu - note: no template required
 void use(any_printable const& any);

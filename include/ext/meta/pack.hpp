@@ -1,11 +1,11 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_META_PACK_HEADER
-#define OBI_META_PACK_HEADER
+#ifndef EXT_META_PACK_HEADER
+#define EXT_META_PACK_HEADER
 
 #include <type_traits>
 
-namespace obi { namespace meta {
+namespace ext { namespace meta {
     //generate pack of length N and type T
     template <typename...>
     struct pack {};
@@ -29,4 +29,4 @@ namespace obi { namespace meta {
     template <std::size_t N, typename T>
     using generate_pack_t = typename generate_pack<N, T>::type;
 }}
-#endif // OBI_META_PACK_HEADER
+#endif // EXT_META_PACK_HEADER

@@ -1,12 +1,12 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
-#define OBI_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
+#ifndef EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
+#define EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
 
 #include <array>
 #include <stdexcept>
 
-namespace obi { namespace math { namespace geometry {
+namespace ext { namespace math { namespace geometry {
 
 
     template <typename T, std::size_t N>
@@ -113,4 +113,4 @@ namespace obi { namespace math { namespace geometry {
     };
 
 }}}
-#endif // OBI_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
+#endif // EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER

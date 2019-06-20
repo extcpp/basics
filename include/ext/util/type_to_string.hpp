@@ -1,7 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_TYPE_TO_STRING_HEADER
-#define OBI_UTIL_TYPE_TO_STRING_HEADER
+#ifndef EXT_UTIL_TYPE_TO_STRING_HEADER
+#define EXT_UTIL_TYPE_TO_STRING_HEADER
 
 #include <utility>
 #include <type_traits>
@@ -12,7 +12,7 @@
     #include <cxxabi.h>
 #endif // __GNUC__
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 template<class T> std::string
 type_to_string()
@@ -67,16 +67,16 @@ type_to_string()
 }
 
 //turn param to "string"
-#define OBI_TO_STRING(X) #X
+#define EXT_TO_STRING(X) #X
 
 //create string that describes type of given var
-#define OBI_TYPE_STRING(X) obi::util::type_to_string<decltype(X)>()
+#define EXT_TYPE_STRING(X) ext::util::type_to_string<decltype(X)>()
 
 //print type of given var
-#define OBI_TYPE_PRINT(X) do {\
-    std::cout << "Variable " OBI_TO_STRING(X) " is of type: " \
-              << obi::util::type_to_string<decltype(X)>() << std::endl;  \
+#define EXT_TYPE_PRINT(X) do {\
+    std::cout << "Variable " EXT_TO_STRING(X) " is of type: " \
+              << ext::util::type_to_string<decltype(X)>() << std::endl;  \
     } while(0);
 
-}}  // namespace obi::util
-#endif // OBI_UTIL_TYPE_TO_STRING_HEADER
+}}  // namespace ext::util
+#endif // EXT_UTIL_TYPE_TO_STRING_HEADER

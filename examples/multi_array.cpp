@@ -1,8 +1,8 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <obi/structures.hpp>
+#include <ext/structures.hpp>
 #include <iostream>
 
-using namespace obi::structures;
+using namespace ext::structures;
 
 int main(int argc, const char *argv[])
 {

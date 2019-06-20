@@ -1,5 +1,5 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <obi/util/scoped_timer.hpp>
+#include <ext/util/scoped_timer.hpp>
 #include <thread>
 #include <atomic>
 #include <vector>
@@ -29,21 +29,21 @@ void fun(std::uint32_t n, std::uint32_t& loc){
 
 int main(){
     {
-        obi::util::scoped_timer timer("no steps");
+        ext::util::scoped_timer timer("no steps");
     }
 
     {
-        obi::util::scoped_timer timer("no steps");
+        ext::util::scoped_timer timer("no steps");
     }
 
     {
-        obi::util::scoped_timer timer("one step - no dtor");
+        ext::util::scoped_timer timer("one step - no dtor");
         timer.add_step();
         timer.disable_dtor_entry();
     }
 
     {
-        obi::util::scoped_timer timer("one step");
+        ext::util::scoped_timer timer("one step");
         timer.add_step();
     }
 
@@ -51,7 +51,7 @@ int main(){
     std::vector<std::uint32_t>numbers(vec_len,0);
 
     {
-        obi::util::scoped_timer timer("overall calulation time");
+        ext::util::scoped_timer timer("overall calulation time");
         run = true;
         std::uint32_t n = 100000;
 

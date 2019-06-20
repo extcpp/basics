@@ -1,14 +1,14 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_UTIL_ENCODE_HEADER
-#define OBI_UTIL_ENCODE_HEADER
+#ifndef EXT_UTIL_ENCODE_HEADER
+#define EXT_UTIL_ENCODE_HEADER
 
 #include <type_traits>
 #include <iostream>
 #include <iomanip>
 #include <bitset>
 
-namespace obi { namespace util {
+namespace ext { namespace util {
 
 //// HEX
 template<typename T>
@@ -110,5 +110,5 @@ encode_binary(T integer){
 }
 //// BINARY - end
 
-}} // namespace obi::util
-#endif // OBI_UTIL_ENCODE_HEADER
+}} // namespace ext::util
+#endif // EXT_UTIL_ENCODE_HEADER

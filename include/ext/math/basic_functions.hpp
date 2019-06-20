@@ -1,7 +1,7 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
-#ifndef OBI_MATH_BASIC_FUNCTIONS_HEADER
-#define OBI_MATH_BASIC_FUNCTIONS_HEADER
+#ifndef EXT_MATH_BASIC_FUNCTIONS_HEADER
+#define EXT_MATH_BASIC_FUNCTIONS_HEADER
 
 #include <utility>
 #include <algorithm>
@@ -13,7 +13,7 @@
 
 // TODO: add enable_if for integral types
 
-namespace obi { namespace math {
+namespace ext { namespace math {
 
     //calculates product: n * n-1 * ... * k+1 * k
     template<typename T>
@@ -105,5 +105,5 @@ namespace obi { namespace math {
         return rv;
     }
 
-}}  // obi::math
-#endif // OBI_MATH_BASIC_FUNCTIONS_HEADER
+}}  // ext::math
+#endif // EXT_MATH_BASIC_FUNCTIONS_HEADER
