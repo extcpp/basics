@@ -1,0 +1,12 @@
+#!/bin/bash
+
+format=clang-format-8
+version=$($format --version | awk '{ print $3}' | awk -F '.' '{ print $1 }')
+
+if (( version != 8 )); then
+    echo "you are not using clang-format version 8; exiting"
+    exit 1
+fi
+
+
+find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\)' -exec $format -style=file -i {} \;
