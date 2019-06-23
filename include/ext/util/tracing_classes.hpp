@@ -1,10 +1,10 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef EXT_UTIL_TRACING_CLASSES_HEADER
-#define EXT_UTIL_TRACING_CLASSES_HEADER
-#include <iostream>
-#include <iomanip>
-#include <ext/meta/is_one_of.hpp>
+#    define EXT_UTIL_TRACING_CLASSES_HEADER
+#    include <ext/meta/is_one_of.hpp>
+#    include <iomanip>
+#    include <iostream>
 
 namespace ext { namespace util {
 
@@ -13,73 +13,63 @@ class tracing_class {
     T _value;
     static unsigned const _width = 28;
 
-public:
+    public:
     // default constructor
     tracing_class() : _value() {
-        std::cout << std::setw(_width) <<
-            "Default Constructor:" << _value << std::endl;
+        std::cout << std::setw(_width) << "Default Constructor:" << _value << std::endl;
     }
 
     // ctor
     tracing_class(T v) : _value(v) {
-        std::cout << std::setw(_width) <<
-            "Copy Constructor, value:" << _value << std::endl;
+        std::cout << std::setw(_width) << "Copy Constructor, value:" << _value << std::endl;
     }
 
     // copy constructor
     tracing_class(tracing_class const& other) : _value(other._value) {
-        std::cout << std::setw(_width) <<
-            "Copy Constructor, value:" << _value << std::endl;
+        std::cout << std::setw(_width) << "Copy Constructor, value:" << _value << std::endl;
     }
 
     // move constructor
     tracing_class(tracing_class&& other) : _value(std::move(other._value)) {
-        std::cout << std::setw(_width) <<
-            "Move Constructor, value:" << _value << std::endl;
+        std::cout << std::setw(_width) << "Move Constructor, value:" << _value << std::endl;
     }
 
     // copy assign
-    tracing_class& operator= (tracing_class const& other) {
-        if(this != &other){
+    tracing_class& operator=(tracing_class const& other) {
+        if (this != &other) {
             _value = other._value;
         }
-        std::cout << std::setw(_width) <<
-            "Copy assign, value" << _value << std::endl;
+        std::cout << std::setw(_width) << "Copy assign, value" << _value << std::endl;
     }
     // move assign
-    tracing_class& operator= (tracing_class&& other){
-        if(this != &other) {
+    tracing_class& operator=(tracing_class&& other) {
+        if (this != &other) {
             _value = std::move(other._value);
         }
-        std::cout << std::setw(_width) <<
-            "Move assign, value:" << _value << std::endl;
+        std::cout << std::setw(_width) << "Move assign, value:" << _value << std::endl;
     }
 
     // destructor
     ~tracing_class() {
-        std::cout << std::setw(_width) <<
-            "Destructor, value:" << _value << std::endl;
+        std::cout << std::setw(_width) << "Destructor, value:" << _value << std::endl;
     }
 
     // member
     T set_value(T const v) {
         _value = v;
-        std::cout << std::setw(_width) <<
-            "Constructor, value:" << _value << std::endl;
+        std::cout << std::setw(_width) << "Constructor, value:" << _value << std::endl;
     }
 };
-}}  // namespace ext::util
+}} // namespace ext::util
 
-#if defined(__GNUC__) && defined(EXT_DEBUG)
-#define EXT_FUNCTION_NAME { \
-    std::cout << __PRETTY_FUNCTION__ << std::endl; \
-}
-#else
-    #define EXT_FUNCTION_NAME
-#endif // defined(__GNUC__) && defined(EXT_DEBUG)
+#    if defined(__GNUC__) && defined(EXT_DEBUG)
+#        define EXT_FUNCTION_NAME \
+            { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+#    else
+#        define EXT_FUNCTION_NAME
+#    endif // defined(__GNUC__) && defined(EXT_DEBUG)
 
-namespace ext { namespace util {
-namespace tracing {
+namespace ext { namespace util { namespace tracing {
 
 struct base {
     std::size_t default_ctor = 0;
@@ -90,14 +80,12 @@ struct base {
     std::size_t move_assign = 0;
 
     void print() const {
-        std::cout << std::boolalpha
-                  << "default ctor:     " << default_ctor << std::endl
+        std::cout << std::boolalpha << "default ctor:     " << default_ctor << std::endl
                   << "non default ctor: " << non_default_ctor << std::endl
                   << "copy ctor:        " << copy_ctor << std::endl
                   << "copy assign:      " << copy_assign << std::endl
                   << "move ctor:        " << move_ctor << std::endl
-                  << "move assign:      " << move_assign << std::endl
-                  ;
+                  << "move assign:      " << move_assign << std::endl;
     }
 
     void reset() {
@@ -119,9 +107,7 @@ struct base {
     }
 
     std::size_t opearations() {
-        return default_ctor + non_default_ctor +
-               copy_ctor + copy_assign +
-               move_ctor + move_assign ;
+        return default_ctor + non_default_ctor + copy_ctor + copy_assign + move_ctor + move_assign;
     }
 };
 
@@ -388,6 +374,5 @@ struct no_copy_assign : base {
     }
 };
 
-}  // namespace tracing
-}} // namespace ext::util
+}}}    // namespace ext::util::tracing
 #endif // EXT_UTIL_TRACING_CLASSES_HEADER

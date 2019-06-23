@@ -1,9 +1,9 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef EXT_UTIL_ACCESS_PRIVATE_HEADER
-#define EXT_UTIL_ACCESS_PRIVATE_HEADER
+#    define EXT_UTIL_ACCESS_PRIVATE_HEADER
 
-template <typename type>
+template<typename type>
 struct access {
     inline static type member_pointer;
 };
@@ -11,7 +11,9 @@ struct access {
 template<typename type, type pointer>
 struct create_access : access<type> {
     struct assign_pointer {
-        assign_pointer() { access<type>::member_pointer = pointer; }
+        assign_pointer() {
+            access<type>::member_pointer = pointer;
+        }
     };
     inline static assign_pointer by_calling_default_ctor{};
 };
@@ -22,7 +24,8 @@ struct create_access : access<type> {
 // struct Alexander {
 // private:
 //     void quote() {
-//          std::cout << "Performance constraints are good for creativity." << std::endl;
+//          std::cout << "Performance constraints are good for creativity." <<
+//          std::endl;
 //     }
 // };
 //

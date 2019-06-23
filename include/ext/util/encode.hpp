@@ -1,34 +1,31 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef EXT_UTIL_ENCODE_HEADER
-#define EXT_UTIL_ENCODE_HEADER
+#    define EXT_UTIL_ENCODE_HEADER
 
-#include <type_traits>
-#include <iostream>
-#include <iomanip>
-#include <bitset>
+#    include <bitset>
+#    include <iomanip>
+#    include <iostream>
+#    include <type_traits>
 
 namespace ext { namespace util {
 
 //// HEX
 template<typename T>
-std::enable_if_t<std::is_integral_v<T>,std::string>
-encode_hex(T i){
+std::enable_if_t<std::is_integral_v<T>, std::string> encode_hex(T i) {
     std::stringbuf buf;
     std::ostream os(&buf);
 
     os //<< "0x"
-       << std::setfill('0')
-       << std::setw(sizeof(T) * 2)
-       << std::hex << i;
+        << std::setfill('0') << std::setw(sizeof(T) * 2) << std::hex << i;
 
     return buf.str().c_str();
 }
 
 namespace {
-    inline char const* hex_values = "0123456789abcdef";
+inline char const* hex_values = "0123456789abcdef";
 }
-inline std::string encode_hex(char const* in, std::size_t len){
+inline std::string encode_hex(char const* in, std::size_t len) {
     std::string rv;
     rv.reserve(len * 2);
 
@@ -43,18 +40,20 @@ inline std::string encode_hex(char const* in, std::size_t len){
     return rv;
 }
 
-inline std::string encode_hex(std::string const& in){
-    return encode_hex(in.data(),in.size());
+inline std::string encode_hex(std::string const& in) {
+    return encode_hex(in.data(), in.size());
 }
 
-inline std::string encode_hex(std::string_view const& in){
-    return encode_hex(in.data(),in.size());
+inline std::string encode_hex(std::string_view const& in) {
+    return encode_hex(in.data(), in.size());
 }
 
 inline std::string decode_hex(char const* in, size_t len) {
     std::string rv;
 
-    if (!len) { return rv; }; // no input
+    if (!len) {
+        return rv;
+    }; // no input
 
     if (len & 0b1) {
         throw std::logic_error("input length must be even");
@@ -62,16 +61,17 @@ inline std::string decode_hex(char const* in, size_t len) {
 
     rv.reserve(len / 2);
 
-
     unsigned char const* start = reinterpret_cast<unsigned char const*>(in);
     unsigned char const* end = start + len;
     int insert_char = 0;
     int offset = 0;
-    for(unsigned char const* itr = start; itr < end; itr++) {
+    for (unsigned char const* itr = start; itr < end; itr++) {
         bool even = !(offset & 0b1);
-        if (even) { insert_char = 0; }
+        if (even) {
+            insert_char = 0;
+        }
 
-        unsigned char current_char = *itr ;
+        unsigned char current_char = *itr;
         if (current_char >= '0' && current_char <= '9') {
             insert_char += (current_char - '0');
         } else if (current_char >= 'a' && current_char <= 'f') {
@@ -82,7 +82,7 @@ inline std::string decode_hex(char const* in, size_t len) {
             throw std::logic_error("invalid input");
         }
 
-        if (even){
+        if (even) {
             insert_char <<= 4;
         } else {
             rv.push_back(char(insert_char));
@@ -104,11 +104,9 @@ inline std::string decode_hex(std::string_view const& in) {
 
 //// BINARY
 template<typename T>
-std::enable_if_t<std::is_integral_v<T>,std::string>
-encode_binary(T integer){
+std::enable_if_t<std::is_integral_v<T>, std::string> encode_binary(T integer) {
     return std::bitset<sizeof(T) * 8>(integer).to_string();
 }
 //// BINARY - end
-
-}} // namespace ext::util
+}}     // namespace ext::util
 #endif // EXT_UTIL_ENCODE_HEADER

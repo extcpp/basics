@@ -1,36 +1,29 @@
-#include <gtest/gtest.h>
 #include <ext/util/string.hpp>
+#include <gtest/gtest.h>
 
 using namespace ext::util;
 
-TEST(util_string, starts_with){
+TEST(util_string, starts_with) {
     ASSERT_TRUE(starts_with("ein schwein", ""));
     ASSERT_TRUE(starts_with("ein schwein", "ein"));
     ASSERT_FALSE(starts_with("ein schwein", "wein"));
 }
 
-TEST(util_string, ends_with){
+TEST(util_string, ends_with) {
     ASSERT_TRUE(ends_with("ein schwein", ""));
     ASSERT_TRUE(ends_with("ein schwein", "schwein"));
     ASSERT_FALSE(ends_with("ein schwein", "bein"));
 }
 
-TEST(util_string, split_on){
-    ASSERT_EQ(split_on<std::string>("foo::bar", "::")
-             ,std::vector<std::string>({"foo","bar"})
-             );
-    ASSERT_EQ(split_on<std::string>("foo::bar::", "::")
-             ,std::vector<std::string>({"foo","bar"})
-             );
-    ASSERT_EQ(split_on<std::string>("::foo::::bar::", "::")
-             ,std::vector<std::string>({"foo","bar"})
-             );
-    ASSERT_EQ(split_on<std::string>("::foo::::bar::", "::", true /* add_empty*/)
-             ,std::vector<std::string>({"","foo","","bar",""})
-             );
+TEST(util_string, split_on) {
+    ASSERT_EQ(split_on<std::string>("foo::bar", "::"), std::vector<std::string>({"foo", "bar"}));
+    ASSERT_EQ(split_on<std::string>("foo::bar::", "::"), std::vector<std::string>({"foo", "bar"}));
+    ASSERT_EQ(split_on<std::string>("::foo::::bar::", "::"), std::vector<std::string>({"foo", "bar"}));
+    ASSERT_EQ(split_on<std::string>("::foo::::bar::", "::", true /* add_empty*/),
+              std::vector<std::string>({"", "foo", "", "bar", ""}));
 }
 
-TEST(util_string, replace){
+TEST(util_string, replace) {
     ASSERT_EQ(replace("/this/is/path", "/", "\\"), std::string("\\this\\is\\path"));
     ASSERT_EQ(replace("/this/is/path/", "/", "\\"), std::string("\\this\\is\\path\\"));
     ASSERT_EQ(replace("this/is/path/", "/", "\\"), std::string("this\\is\\path\\"));

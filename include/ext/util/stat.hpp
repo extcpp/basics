@@ -1,20 +1,20 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef EXT_UTIL_STAT_HEADER
-#define EXT_UTIL_STAT_HEADER
+#    define EXT_UTIL_STAT_HEADER
 
-#include <ext/util/result.hpp>
-#include <filesystem>
+#    include <ext/util/result.hpp>
+#    include <filesystem>
 
 extern "C" {
-    #include <sys/types.h>
-    #include <sys/stat.h>
+#    include <sys/stat.h>
+#    include <sys/types.h>
 }
 
 namespace ext::util {
 
 namespace {
-    struct ::stat buf;
+struct ::stat buf;
 }
 
 struct stat {
@@ -49,5 +49,5 @@ inline typed_result<stat> get_stat(std::filesystem::path const& path) {
     return rv;
 }
 
-} // namespace ext::util - end
+} // namespace ext::util
 #endif // EXT_UTIL_STAT_HEADER

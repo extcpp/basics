@@ -4,11 +4,10 @@
 
 using namespace ext::structures;
 
-int main(int argc, const char *argv[])
-{
-    multi_array<int,5,3,3> a;
+int main(int argc, const char* argv[]) {
+    multi_array<int, 5, 3, 3> a;
 
-    //a.at(1,2,3);
+    // a.at(1,2,3);
     std::cout << a.size() << std::endl;
 
     return 0;

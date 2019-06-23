@@ -1,44 +1,44 @@
-#include <gtest/gtest.h>
 #include <ext/util/cast.hpp>
+#include <gtest/gtest.h>
 
 namespace ou = ::ext::util;
 
-TEST(util_cast, size_of){
+TEST(util_cast, size_of) {
     std::uint64_t a = 1;
     std::uint32_t b = 2;
     std::uint16_t c = 2;
     std::uint16_t& cr = c;
     std::uint64_t& ar = a;
 
-    {   // two
-        std::size_t ext = ou::size_of<std::uint64_t,std::uint32_t>();
+    { // two
+        std::size_t ext = ou::size_of<std::uint64_t, std::uint32_t>();
         std::size_t norm = sizeof(std::uint64_t) + sizeof(std::uint32_t);
         ASSERT_EQ(ext, norm);
         ASSERT_EQ(ext, 12);
     }
 
-    {   // many
-        std::size_t ext = ou::size_of(a,b,c);
+    { // many
+        std::size_t ext = ou::size_of(a, b, c);
         std::size_t norm = sizeof(a) + sizeof(b) + sizeof(c);
         ASSERT_EQ(ext, norm);
         ASSERT_EQ(ext, 14);
     }
 
-    {   // reference
+    { // reference
         std::size_t ext = ou::size_of(ar);
         std::size_t norm = sizeof(ar);
         ASSERT_EQ(ext, norm);
         ASSERT_EQ(ext, 8);
     }
 
-    {   // reference
+    { // reference
         std::size_t ext = ou::size_of(cr);
         std::size_t norm = sizeof(cr);
         ASSERT_EQ(ext, norm);
         ASSERT_EQ(ext, 2);
     }
 
-    {   // string
+    { // string
         std::string foo = "Agathe Bauer";
         std::size_t ext = ou::size_of(foo);
         std::size_t norm = sizeof(foo.front()) * foo.size();
@@ -46,7 +46,7 @@ TEST(util_cast, size_of){
         ASSERT_EQ(ext, 12);
     }
 
-    {   // array
+    { // array
         std::array<std::uint64_t, 3> foo;
         std::size_t ext = ou::size_of(foo);
         std::size_t norm = sizeof(foo.front()) * foo.size();
@@ -54,7 +54,7 @@ TEST(util_cast, size_of){
         ASSERT_EQ(ext, 24);
     }
 
-    {   // carray
+    { // carray
         std::uint32_t foo[3];
         std::size_t ext = ou::size_of(foo);
         std::size_t norm = sizeof(foo[0]) * 3;
@@ -63,58 +63,34 @@ TEST(util_cast, size_of){
     }
 }
 
-TEST(util_cast, enum_to_underlying){
-    enum class enum_a : int {
-        one = 1,
-        two = 2,
-        three = 3
-    };
+TEST(util_cast, enum_to_underlying) {
+    enum class enum_a : int { one = 1, two = 2, three = 3 };
 
     ASSERT_EQ(ou::enum_to_underlying_unsafe(enum_a::one), 1);
     ASSERT_EQ(ou::enum_to_underlying<int>(enum_a::one), 1);
 }
 
-TEST(util_cast, underlying_to_enum){
-    enum class enum_a : int {
-        one = 1,
-        two = 2,
-        three = 3
-    };
+TEST(util_cast, underlying_to_enum) {
+    enum class enum_a : int { one = 1, two = 2, three = 3 };
 
-    enum class enum_b : long {
-        one = 1,
-        two = 2,
-        three = 3
-    };
+    enum class enum_b : long { one = 1, two = 2, three = 3 };
 
     ASSERT_EQ(ou::underlying_to_enum<enum_a>(2), enum_a::two);
     ASSERT_EQ(ou::underlying_to_enum<enum_b>(2L), enum_b::two);
 }
 
-TEST(util_cast, enum_to_enum){
-    enum class enum_a : int {
-        one = 1,
-        two = 2,
-        three = 3
-    };
+TEST(util_cast, enum_to_enum) {
+    enum class enum_a : int { one = 1, two = 2, three = 3 };
 
-    enum class enum_b : int {
-        one = 1,
-        two = 2,
-        three = 3
-    };
+    enum class enum_b : int { one = 1, two = 2, three = 3 };
 
-    enum class enum_c : long {
-        one = 1,
-        two = 2,
-        three = 3
-    };
+    enum class enum_c : long { one = 1, two = 2, three = 3 };
 
     ASSERT_EQ(ou::enum_to_enum<enum_b>(enum_a::three), enum_b::three);
 }
 
-TEST(util_cast, to_un_signed){
-    int32_t  value = 5;
+TEST(util_cast, to_un_signed) {
+    int32_t value = 5;
     uint32_t uvalue = 5;
 
     ASSERT_EQ(ou::to_signed(uvalue), value);

@@ -1,15 +1,15 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+#include <ext/util/container_helper.hpp>
 #include <iostream>
 #include <numeric>
 #include <ostream>
-#include <ext/util/container_helper.hpp>
 
 using namespace ext;
 using namespace util;
 using namespace std;
 
-
-template <typename Container> void print(const Container& c) {
+template<typename Container>
+void print(const Container& c) {
     for (auto i = c.begin(); i != c.end(); ++i) {
         cout << *i << " ";
     }
@@ -48,4 +48,3 @@ int main() {
     erase_if(s, [](int n) { return n > 40 && n < 70; });
     print(s);
 }
-

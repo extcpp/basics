@@ -1,16 +1,16 @@
-#include <gtest/gtest.h>
+#include <cstring>
 #include <ext/util/encode.hpp>
 #include <ext/util/endian.hpp>
-#include <cstring>
+#include <gtest/gtest.h>
 
 using namespace ext::util;
 using namespace std::literals;
 
-TEST(util_encode, encode_hex){
+TEST(util_encode, encode_hex) {
     std::uint32_t in = 0x01020304;
     auto hex = encode_hex(reinterpret_cast<char*>(&in), sizeof(in));
 
-    if(ext::util::endian::is_little()){
+    if (ext::util::endian::is_little()) {
         ASSERT_EQ(hex, "04030201"s);
     } else {
         ASSERT_EQ(hex, "01020304"s);
@@ -24,7 +24,7 @@ TEST(util_encode, encode_hex){
     ASSERT_EQ(in, out);
 }
 
-TEST(util_encode, encode_hex_more){
+TEST(util_encode, encode_hex_more) {
     std::uint32_t in = 0x01aAbBcC;
     auto hex = encode_hex(reinterpret_cast<char*>(&in), sizeof(in));
     auto dehex = decode_hex(hex);

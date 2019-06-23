@@ -1,48 +1,41 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef EXT_UTIL_BASIC_HEADER
-#define EXT_UTIL_BASIC_HEADER
+#    define EXT_UTIL_BASIC_HEADER
 
-#include <ext/macros/general.hpp>
-#include <ext/util/cast.hpp>
+#    include <ext/macros/general.hpp>
+#    include <ext/util/cast.hpp>
 
-#include <algorithm>
-#include <string>
-#include <type_traits>
+#    include <algorithm>
+#    include <string>
+#    include <type_traits>
 
 namespace ext { namespace util {
 
-template<typename F, typename ...T>
-void for_each_arg(F&& function, T&&... args){
+template<typename F, typename... T>
+void for_each_arg(F&& function, T&&... args) {
     (function(std::forward<T>(args)), ...); // c++17 fold expression
-    //EXT_EXPAND_SIDE_EFFECTS(function(std::forward<T>(args)));
+                                            // EXT_EXPAND_SIDE_EFFECTS(function(std::forward<T>(args)));
 }
 
-template<typename ...T>
-void sort_all(T&&... args){
+template<typename... T>
+void sort_all(T&&... args) {
     static auto do_it = [](auto& container) { std::sort(std::begin(container), std::end(container)); };
-    for_each_arg(do_it, std::forward<T>(args) ...);
+    for_each_arg(do_it, std::forward<T>(args)...);
 }
 
-inline std::string_view
-filename(std::string const& pathname, bool is_linux = true, bool both = false){
+inline std::string_view filename(std::string const& pathname, bool is_linux = true, bool both = false) {
     auto sep_predicate = [&](char c) {
-        bool lin = ((both ||  is_linux) && c == '/');
+        bool lin = ((both || is_linux) && c == '/');
         bool win = ((both || !is_linux) && c == '\\');
         return lin || win;
     };
 
-    auto start_word_itr = std::find_if(pathname.rbegin()
-                                      ,pathname.rend()
-                                      ,sep_predicate
-                                      ).base();
+    auto start_word_itr = std::find_if(pathname.rbegin(), pathname.rend(), sep_predicate).base();
     auto start_pos = std::distance(pathname.begin(), start_word_itr);
     auto len = std::distance(start_word_itr, pathname.end());
 
-    return std::string_view(pathname.data() + start_pos
-                           ,::ext::util::to_unsigned(len)
-                           );
+    return std::string_view(pathname.data() + start_pos, ::ext::util::to_unsigned(len));
 }
-
-}} // ext::util
+}}     // namespace ext::util
 #endif // EXT_UTIL_BASIC_HEADER

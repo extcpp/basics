@@ -1,11 +1,10 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <ext/util/type_to_string.hpp>
 #include <ext/macros/platform.hpp>
+#include <ext/util/type_to_string.hpp>
 
 using namespace ext::util;
 
-int main()
-{
+int main() {
     int i(3);
     double d(3);
     const std::string s("foo");

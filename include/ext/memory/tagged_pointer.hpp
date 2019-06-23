@@ -1,20 +1,20 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef EXT_MEMORY_TAGGED_POINTER_HEADER
-#define EXT_MEMORY_TAGGED_POINTER_HEADER
+#    define EXT_MEMORY_TAGGED_POINTER_HEADER
 
-#include <ext/memory/align.hpp>
-#include <memory>
-#include <cassert>
+#    include <cassert>
+#    include <ext/memory/align.hpp>
+#    include <memory>
 
 namespace ext { namespace memory {
 
-template <typename T, std::uintptr_t Alignment = std::alignment_of_v<T>>
+template<typename T, std::uintptr_t Alignment = std::alignment_of_v<T>>
 class tagged_pointer {
     std::uintptr_t _pointer;
 
     static T* get_pointer(std::uintptr_t pointer) {
-        return reinterpret_cast<T*>(pointer &  ~mask);
+        return reinterpret_cast<T*>(pointer & ~mask);
     };
 
     static std::uintptr_t get_tag(std::uintptr_t pointer) {
@@ -28,7 +28,7 @@ class tagged_pointer {
         return ret | (tag & mask);
     };
 
-public:
+    public:
     static constexpr std::uintptr_t alignment = Alignment;
     static constexpr std::uintptr_t mask = Alignment - 1;
 
@@ -41,8 +41,7 @@ public:
     tagged_pointer& operator=(tagged_pointer const&) noexcept = default;
     tagged_pointer& operator=(tagged_pointer&&) noexcept = delete;
 
-    tagged_pointer(T* pointer, std::uintptr_t tag) noexcept
-        : _pointer(create(pointer, tag)) {};
+    tagged_pointer(T* pointer, std::uintptr_t tag) noexcept : _pointer(create(pointer, tag)){};
 
     T* get() const {
         return get_pointer(_pointer);
@@ -53,7 +52,7 @@ public:
     }
 
     std::uintptr_t tag_next() const {
-        return (get_tag(_pointer) + 1) & mask ;
+        return (get_tag(_pointer) + 1) & mask;
     }
 
     void set(T* pointer, std::uintptr_t tag) {
@@ -98,6 +97,5 @@ public:
         return !operator==(pointer);
     }
 };
-
-}}
+}}     // namespace ext::memory
 #endif // EXT_MEMORY_TAGGED_POINTER_HEADER

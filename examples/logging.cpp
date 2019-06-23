@@ -1,10 +1,10 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#include <vector>
-#include <map>
 #include <iostream>
+#include <map>
+#include <vector>
 
 #ifndef _WIN32
-#include <ext/logging.hpp>
+#    include <ext/logging.hpp>
 
 int main(/*int argc, const char *argv[]*/) {
     {
@@ -12,7 +12,7 @@ int main(/*int argc, const char *argv[]*/) {
         configuration::function = false;
     }
 
-    EXT_DEV  << "geil";
+    EXT_DEV << "geil";
     EXT_DEVV << "ballern";
 
     EXT_LOG("cafe") << "default level and topic";
@@ -29,4 +29,3 @@ int main(/*int argc, const char *argv[]*/) {
 #endif // _WIN32
     return 0;
 }
-

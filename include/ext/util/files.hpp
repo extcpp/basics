@@ -1,28 +1,22 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef EXT_UTIL_FILES_HEADER
-#define EXT_UTIL_FILES_HEADER
+#    define EXT_UTIL_FILES_HEADER
 
-#include <filesystem>
-#include <algorithm>
-#include <iterator>
-#include <fstream>
-#include <iostream>
+#    include <algorithm>
+#    include <filesystem>
+#    include <fstream>
+#    include <iostream>
+#    include <iterator>
 
-#include <ext/util/scoped_timer.hpp>
+#    include <ext/util/scoped_timer.hpp>
 
 namespace ext::util {
 
-bool files_equal(std::filesystem::path const& file1
-                ,std::filesystem::path const& file2
-                ,bool verbose = false
-				){
+bool files_equal(std::filesystem::path const& file1, std::filesystem::path const& file2, bool verbose = false) {
     scoped_timer timer("files_equal");
     if (verbose) {
-        std::cerr << std::endl  << "compare: "
-                  << std::endl << file1
-                  << std::endl << file2
-                  << std::endl;
+        std::cerr << std::endl << "compare: " << std::endl << file1 << std::endl << file2 << std::endl;
     } else {
         timer.dismiss();
     }
@@ -40,6 +34,5 @@ bool files_equal(std::filesystem::path const& file1
     // more output here?
     return rv;
 }
-
-}
+} // namespace ext::util
 #endif // EXT_UTIL_FILES_HEADER
