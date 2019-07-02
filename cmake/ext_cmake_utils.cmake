@@ -49,7 +49,9 @@ macro(ext_add_test_subdirectory type)
 
     if(BUILD_TESTING) #activated by `include(CTest)`
         if("${type}" STREQUAL "google") # <-- expand type here!
-            add_subdirectory(${CMAKE_SOURCE_DIR}/external_libs/googletest/googletest)
+            if(NOT TARGET gtest) #avoid recursive inclusion of gtest
+              add_subdirectory(${LIBEXT_SOURCE_DIR}/external_libs/googletest)
+            endif()
         else()
             message(ERROR "unknown test type")
         endif()

@@ -2,6 +2,7 @@
 
 cmake_minimum_required(VERSION 3.8)
 project(libext)
+message(STATUS "INFO -- entering libext")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -18,6 +19,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON) # XCode / VS folders
 include (TestBigEndian)
 TEST_BIG_ENDIAN(ext_is_big_endian)
 
+set(LIBEXT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 include(ext_cmake_utils)
 ext_setup()
 
@@ -60,9 +62,21 @@ set(ext_common_private_compile_definitions
     EXT_IN_LIB=1
 )
 
+### detect if allocators sub-lib is present
+set(EXTALLOCATORS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/external_libs/allocators/include)
+if(EXISTS ${EXTALLOCATORS_PATH})
+    ext_log("found ext allocators")
+else()
+    #unset path if the include directory does not exists -- not checked out
+    unset(EXTALLOCATORS_PATH)
+endif()
+
 ### define header only lib
 add_library(ext INTERFACE)
-target_include_directories(ext INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_include_directories(ext INTERFACE
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "${EXTALLOCATORS_PATH}"
+)
 target_compile_features(ext INTERFACE cxx_std_17)
 target_compile_options(ext INTERFACE
     $<$<AND:$<CONFIG:Debug>,$<BOOL:LIBEXT_WARNINGS>>:${ext_stone-warnings}>
@@ -74,11 +88,15 @@ target_compile_definitions(ext INTERFACE
 
 ### define shared lib
 add_library(ext_shared SHARED ${libext_source} ${libext_header})
-target_include_directories(ext_shared PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_include_directories(ext_shared PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "${EXTALLOCATORS_PATH}"
+)
 target_compile_features(ext_shared PUBLIC cxx_std_17)
 target_compile_options(ext_shared PRIVATE ${ext_stone-warnings})
 target_compile_definitions(ext_shared PRIVATE ${ext_common_private_compile_definitions})
 target_compile_definitions(ext_shared PUBLIC EXT_SHARED_LIB)
+
 
 # set up folder structure for XCode and VisualStudio
 set_target_properties (ext_shared PROPERTIES FOLDER libext)
