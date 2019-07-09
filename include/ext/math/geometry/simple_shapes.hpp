@@ -4,79 +4,21 @@
 #    define EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
 
 #    include <array>
+#    include <vector>
 #    include <stdexcept>
+#    include <algorithm>
+#    include <ext/macros/assert.hpp>
+#    include <ext/math/math_types.hpp>
 
 namespace ext { namespace math { namespace geometry {
 
-template<typename T, std::size_t N>
-struct point {
-    std::array<T, N> data;
-
-    point(point const&) = default;
-
-    template<typename... Forward,
-             typename = std::enable_if_t<!(std::is_same_v<point<T, N>, std::decay_t<Forward>> && ...)>>
-    point(Forward&&... f) : data{std::forward<Forward>(f)...} {}
-
-    T& get_x() {
-        static_assert(N > 0);
-        return this->data[0];
-    }
-
-    T& get_y() {
-        static_assert(N > 1);
-        return this->data[1];
-    }
-
-    T& get_z() {
-        static_assert(N > 2);
-        return this->data[2];
-    }
-
-    T& get_x() const {
-        static_assert(N > 0);
-        return this->data[0];
-    }
-
-    T& get_y() const {
-        static_assert(N > 1);
-        return this->data[1];
-    }
-
-    T& get_z() const {
-        static_assert(N > 2);
-        return this->data[2];
-    }
-
-    T& operator[](std::size_t index) {
-        return data[index];
-    }
-
-    T const& operator[](std::size_t index) const {
-        return data[index];
-    }
-
-    std::size_t size() const {
-        return data.size();
-    }
-};
-
-template<typename T, std::size_t N>
-point<T, N> operator-(point<T, N> const& left, point<T, N> const& right) {
-    auto rv = left;
-    for (std::size_t i = 0; i < N; ++i) {
-        rv[i] -= right[i];
-    }
-    return rv;
-}
-
 template<typename T, std::size_t N, bool validate = false>
 struct rectangle {
-    point<T, N> smaller;
-    point<T, N> greater;
+    vec<T, N> bottomLeft;
+    vec<T, N> topRight;
 
-    enum class points_valid { YES, YES_SWITCH, NO };
-    static points_valid validate_input(point<T, N> const& a, point<T, N> const& b) {
+    enum class vecs_valid { YES, YES_SWITCH, NO };
+    static vecs_valid validate_input(vec<T, N> const& a, vec<T, N> const& b) {
         bool yes = true;
         bool yes_switch = true;
         for (std::size_t i = 0; i < N; i++) {
@@ -89,30 +31,31 @@ struct rectangle {
         }
 
         if (yes) {
-            return points_valid::YES;
+            return vecs_valid::YES;
         } else if (yes_switch) {
-            return points_valid::YES_SWITCH;
+            return vecs_valid::YES_SWITCH;
         }
 
-        return points_valid::NO;
+        return vecs_valid::NO;
     }
 
-    rectangle(point<T, N> a, point<T, N> b) noexcept(!validate) : smaller(a), greater(b) {
+    rectangle() : bottomLeft{0,0}, topRight(0,0) {}
+    rectangle(vec<T, N> _bottom_left, vec<T, N> _top_right) noexcept(!validate) : bottomLeft(_bottom_left), topRight(_top_right) {
         if constexpr (validate) {
-            auto validation_result = validate_points(this->smaller, this->greater);
-            if (validation_result == points_valid::NO) {
+            auto validation_result = validate_vecs(this->smaller, this->greater);
+            if (validation_result == vecs_valid::NO) {
                 throw std::logic_error("");
-                throw std::invalid_argument("point<T,N>s provided do not form a rectangle");
-            } else if (validation_result == points_valid::SWITCH) {
-                auto tmp = std::move(smaller);
-                smaller = std::move(greater);
-                greater = std::move(tmp);
+                throw std::invalid_argument("vec<T,N>s provided do not form a rectangle");
+            } else if (validation_result == vecs_valid::SWITCH) {
+                auto tmp = std::move(bottomLeft);
+                bottomLeft = std::move(topRight);
+                bottomLeft = std::move(tmp);
             }
         }
     }
 
-    point<T, N> size() {
-        return greater - smaller;
+    vec<T, N> size() const {
+        return topRight - bottomLeft;
     }
 };
 }}}    // namespace ext::math::geometry
