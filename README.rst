@@ -11,20 +11,20 @@ using cmake, travis, appveyor, coverage and friends.
 
 .. more shields at http://shields.io
 
-.. |travis| image:: https://img.shields.io/travis/ObiWahn/libobi.svg
-   :target: https://travis-ci.org/ObiWahn/libobi
+.. |travis| image:: https://img.shields.io/travis/extcpp/libext.svg
+   :target: https://travis-ci.org/extcpp/libext
 
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/tlsxfnd8ga5gbpie/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/obiwahn/libobi
+   :target: https://ci.appveyor.com/project/extcpp/libext
 
-.. |coveralls| image:: https://coveralls.io/repos/github/ObiWahn/libobi/badge.svg?branch=master
-   :target: https://coveralls.io/github/ObiWahn/libobi?branch=master
+.. |coveralls| image:: https://coveralls.io/repos/github/extcpp/libext/badge.svg?branch=master
+   :target: https://coveralls.io/github/extcpp/libext?branch=master
 
-.. |codecov| image:: https://codecov.io/gh/ObiWahn/libobi/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/ObiWahn/libobi
+.. |codecov| image:: https://codecov.io/gh/extcpp/libext/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/extcpp/libext
 
 .. |coverity| image:: https://scan.coverity.com/projects/18316/badge.svg
-   :target: https://scan.coverity.com/projects/obiwahn-libobi
+   :target: https://scan.coverity.com/projects/extcpp-libext
 
 .. |cpp| image:: https://img.shields.io/badge/c++-17-green.svg?style=flat
 .. |gpl| image:: https://img.shields.io/badge/license-GPL3-blue.svg
