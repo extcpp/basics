@@ -55,7 +55,7 @@ macro(ext_add_test_subdirectory type)
         else()
             message(ERROR "unknown test type")
         endif()
-
+        ext_log("adding tests in: ${dir}")
         add_subdirectory("${dir}")
     endif()
 endmacro(ext_add_test_subdirectory)
