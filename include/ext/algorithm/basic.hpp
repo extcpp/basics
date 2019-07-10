@@ -24,7 +24,8 @@ T const& max(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
 
 // count occurrences in container /////////////////////////////////////////
 template<typename Iterator, typename Int = std::size_t>
-std::map<typename std::iterator_traits<Iterator>::value_type, Int> count_occurrences(Iterator begin, Iterator end) {
+auto count_occurrences(Iterator begin, Iterator end) {
+    // -> std::map<typename std::iterator_traits<Iterator>::value_type, Int>
     using Key = typename std::iterator_traits<Iterator>::value_type;
     std::map<Key, Int> result;
     for (auto it = begin; it != end; it++) {

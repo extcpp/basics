@@ -3,10 +3,11 @@
 #ifndef EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
 #    define EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
 
-#    include <array>
-#    include <vector>
-#    include <stdexcept>
 #    include <algorithm>
+#    include <array>
+#    include <stdexcept>
+#    include <vector>
+
 #    include <ext/macros/assert.hpp>
 #    include <ext/math/math_types.hpp>
 
@@ -39,8 +40,9 @@ struct rectangle {
         return vecs_valid::NO;
     }
 
-    rectangle() : bottomLeft{0,0}, topRight(0,0) {}
-    rectangle(vec<T, N> _bottom_left, vec<T, N> _top_right) noexcept(!validate) : bottomLeft(_bottom_left), topRight(_top_right) {
+    rectangle() : bottomLeft{0, 0}, topRight(0, 0) {}
+    rectangle(vec<T, N> _bottom_left, vec<T, N> _top_right) noexcept(!validate)
+        : bottomLeft(_bottom_left), topRight(_top_right) {
         if constexpr (validate) {
             auto validation_result = validate_vecs(this->smaller, this->greater);
             if (validation_result == vecs_valid::NO) {
