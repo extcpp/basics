@@ -19,9 +19,9 @@ struct vec {
              typename = std::enable_if_t<!(std::is_same_v<vec<T, N>, std::decay_t<Forward>> && ...)>>
     vec(Forward&&... f) : data{std::forward<Forward>(f)...} {}
 
-    vec(std::vector<T> const& vec)  {
-        EXT_ASSERT(N == vec.size());
-        std::copy(vec.begin(), vec.end(), data.begin());
+    vec(std::vector<T> const& v)  {
+        EXT_ASSERT(N == vect.size());
+        std::copy(v.begin(), v.end(), data.begin());
     }
 
     T& get_x() {
@@ -63,9 +63,9 @@ struct vec {
     }
 
     std::vector<value_type> to_vector() const {
-        std::vector<value_type> vec(size);
-        std::copy(data.begin(),data.end(), vec.begin());
-        return vec;
+        std::vector<value_type> v(size);
+        std::copy(data.begin(),data.end(), v.begin());
+        return v;
     }
 
 };
@@ -90,11 +90,11 @@ vec<T, N> operator+(vec<T, N> const& left, vec<T, N> const& right) {
 
 
 //M rows - N cloumns
-template <typename T, std::size_t M, std::size_t N, bool x_linear = true, bool checked = false>
+template <typename T, std::size_t M, std::size_t N, bool i_linear = true, bool checked = false>
 struct matrix {
     using value_type = T;
-    constexpr static std::size_t row_count = M;
-    constexpr static std::size_t column_count = N;
+    constexpr static std::size_t column_count = N; // i
+    constexpr static std::size_t row_count = M; // j
 
     std::array<T,row_count * column_count> data;
 
@@ -102,45 +102,45 @@ struct matrix {
         std::fill(data.begin, data.end(), value);
     }
 
-    T const& get(std::size_t x, std::size_t y) const {
+    T const& get(std::size_t i, std::size_t j) const {
         if constexpr(checked) {
-            if(x * y > row_count * column_count) {
+            if(i >= column_count || j >= row_count) {
                 throw std::runtime_error("out of range");
             }
         }
 
-        if constexpr(x_linear) {
-            return data[x + row_count * y];
+        if constexpr(i_linear) {
+            return data[i + column_count * j];
         } else {
-            return data[y + row_count * x];
+            return data[j + row_count * i];
         }
     }
 
-    T const& set(std::size_t x, std::size_t y, T const& value) {
+    T const& set(std::size_t i, std::size_t j, T const& value) {
         if constexpr(checked) {
-            if(x * y > row_count * column_count) {
+            if(i >= column_count || j >= row_count) {
                 throw std::runtime_error("out of range");
             }
         }
 
-        if constexpr(x_linear) {
-            return data[x + row_count * y] = value;
+        if constexpr(i_linear) {
+            return data[i + column_count * j] = value;
         } else {
-            return data[y + row_count * x] = value;
+            return data[j + row_count * i] = value;
         }
     }
 
-    T const& set(std::size_t x, std::size_t y, T&& value) {
+    T const& set(std::size_t i, std::size_t j, T&& value) {
         if constexpr(checked) {
-            if(x * y > row_count * column_count) {
+            if(i >= column_count || j >= row_count) {
                 throw std::runtime_error("out of range");
             }
         }
 
-        if constexpr(x_linear) {
-            return data[x + row_count * y] = std::move(value);
+        if constexpr(i_linear) {
+            return data[i + column_count * j] = std::move(value);
         } else {
-            return data[y + row_count * x] = std::move(value);
+            return data[j + row_count * i] = std::move(value);
         }
     }
 

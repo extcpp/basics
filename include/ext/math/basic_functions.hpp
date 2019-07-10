@@ -9,6 +9,7 @@
 #    include <limits>
 #    include <utility>
 #    include <vector>
+#    include <ext/macros/assert.hpp>
 
 // TODO: add enable_if for integral types
 
@@ -49,7 +50,7 @@ T binomial_coefficient(T n, T k) {
 // less likely to overflow
 template<typename T>
 std::enable_if_t<std::is_integral_v<T>, T> binomial_coefficient_dynamic(T n, T k) {
-    assert(n >= 0 && k >= 0);
+    EXT_ASSERT(n >= 0 && k >= 0);
     if (n == k || k == 0) {
         return T(1);
     } else if (k > n) {
