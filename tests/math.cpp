@@ -64,11 +64,11 @@ TEST(types, static_matrix_i_access) {
     EXPECT_EQ(m.data, data);
 
     EXPECT_EQ(m.get(0, 0), 1);
-    EXPECT_EQ(m.get(1, 0), 2);
-    EXPECT_EQ(m.get(0, 1), 3);
+    EXPECT_EQ(m.get(0, 1), 2);
+    EXPECT_EQ(m.get(1, 0), 3);
     EXPECT_EQ(m.get(1, 1), 4);
-    EXPECT_EQ(m.get(0, 2), 5);
-    EXPECT_EQ(m.get(1, 2), 6);
+    EXPECT_EQ(m.get(2, 0), 5);
+    EXPECT_EQ(m.get(2, 1), 6);
 
     EXPECT_THROW(m.get(2, 3), std::runtime_error);
 }
@@ -90,11 +90,11 @@ TEST(types, static_matrix_j_access) {
     EXPECT_EQ(m.data, data);
 
     EXPECT_EQ(m.get(0, 0), 1);
-    EXPECT_EQ(m.get(1, 0), 2);
-    EXPECT_EQ(m.get(0, 1), 3);
+    EXPECT_EQ(m.get(0, 1), 2);
+    EXPECT_EQ(m.get(1, 0), 3);
     EXPECT_EQ(m.get(1, 1), 4);
-    EXPECT_EQ(m.get(0, 2), 5);
-    EXPECT_EQ(m.get(1, 2), 6);
+    EXPECT_EQ(m.get(2, 0), 5);
+    EXPECT_EQ(m.get(2, 1), 6);
 
     EXPECT_THROW(m.get(2, 3), std::runtime_error);
 }
@@ -108,15 +108,23 @@ TEST(types, dynamic_matrix_i_access) {
                  , 5, 6};
     // clang-format on
 
-    std::vector<std::size_t> data = {1, 2, 3, 4, 5, 6};
-    EXPECT_EQ(m.data, data);
+    {
+        std::vector<std::size_t> data = {1, 2, 3, 4, 5, 6};
+        EXPECT_EQ(m.data, data);
 
-    EXPECT_EQ(m.get(0, 0), 1);
-    EXPECT_EQ(m.get(1, 0), 2);
-    EXPECT_EQ(m.get(0, 1), 3);
-    EXPECT_EQ(m.get(1, 1), 4);
-    EXPECT_EQ(m.get(0, 2), 5);
-    EXPECT_EQ(m.get(1, 2), 6);
+        EXPECT_EQ(m.get(0, 0), 1);
+        EXPECT_EQ(m.get(0, 1), 2);
+        EXPECT_EQ(m.get(1, 0), 3);
+        EXPECT_EQ(m.get(1, 1), 4);
+        EXPECT_EQ(m.get(2, 0), 5);
+        EXPECT_EQ(m.get(2, 1), 6);
 
-    EXPECT_THROW(m.get(2, 3), std::runtime_error);
+        EXPECT_THROW(m.get(2, 3), std::runtime_error);
+    }
+
+    {
+        std::vector<std::size_t> data = {1, 2, 3, 4, 5, 8};
+        EXPECT_EQ(m.set(2, 1, 8), 8);
+        EXPECT_EQ(m.data, data);
+    }
 }
