@@ -109,6 +109,8 @@ def should_include_path(root, path, include):
 def check_modify_source(directories_to_include, directories_or_files_to_exclude, state_and_config :StateAndConfiguration):
     conf = state_and_config.configuration
 
+    log.info("project_root {}".format(conf.project_root))
+
     ## NOTE:
     ## project_root and root are NOT the same
 

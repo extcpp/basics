@@ -4,6 +4,10 @@ import sys
 import os
 from pathlib import Path
 
+import sys
+if sys.version_info[0] < 3 or sys.version_info[1] < 7:
+        raise Exception("Must be using Python 3.7")
+
 current_dir = Path(__file__).parent.resolve()
 project_dir = current_dir.parent
 modules_dir = current_dir.joinpath("python_modules")
