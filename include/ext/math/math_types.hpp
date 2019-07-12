@@ -3,10 +3,13 @@
 #    define EXT_MATH_MATH_TYPES_HEADER
 #    include <algorithm>
 #    include <array>
+#    include <iomanip>
+#    include <ostream>
 #    include <vector>
 
 #    include <ext/macros/assert.hpp>
-#    include <ostream>
+
+
 namespace ext { namespace math {
 
 template<typename T, std::size_t N>
@@ -194,13 +197,15 @@ struct static_matrix {
 
 namespace _detail {
 template<typename T>
-inline std::ostream& to_stream(std::ostream& os, T const& matrix) {
-    for (std::size_t j = 0; j < matrix.row_count; j++) {
-        for (std::size_t i = 0; i < matrix.column_count; i++) {
-            os << matrix.get(i, j) << " ";
+inline std::ostream& to_stream(std::ostream& os, T const& matrix, int width = 5) {
+    for (std::size_t i = 0; i < matrix.row_count; i++) {
+        for (std::size_t j = 0; j < matrix.column_count; j++) {
+            os << std::setw(width) << matrix.get(i, j) << " ";
         }
         os << "\n";
     }
+
+
     return os;
 }
 } // namespace _detail
