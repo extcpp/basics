@@ -25,6 +25,7 @@ echo "CXX:          $CXX"
 echo "CC:           $CC "
 echo "CXXFLAGS:     $CXXFLAGS"
 echo "CFLAGS:       $CFLAGS"
+echo "RPATH         $RPATH"
 echo "COMPILER:     $COMPILER"
 echo "IN_TRAVIS:    $IN_TRAVIS"
 #end
