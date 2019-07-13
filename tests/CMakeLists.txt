@@ -2,6 +2,7 @@ project(libext-tests)
 
 set(test_files 
     "algorithm_string_distances"
+    "algorithm_knapsack"
     "math"
     "meta_has_member"
     "meta_if"
