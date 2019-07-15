@@ -10,6 +10,10 @@
 #    include <ext/macros/assert.hpp>
 
 
+// TODO - find better name for classes and file
+//      - implement multiplication and addition so it is more than an array
+//      - implement vec using matrix
+
 namespace ext { namespace math {
 
 template<typename T, std::size_t N>
@@ -26,7 +30,7 @@ struct vec {
     vec(Forward&&... f) : data{std::forward<Forward>(f)...} {}
 
     vec(std::vector<T> const& v) {
-        EXT_ASSERT(N == vect.size());
+        EXT_ASSERT(N == v.size());
         std::copy(v.begin(), v.end(), data.begin());
     }
 
@@ -96,6 +100,7 @@ vec<T, N> operator+(vec<T, N> const& left, vec<T, N> const& right) {
 
 namespace _detail {
 
+// TODO - use enum for options
 template<typename Container, bool row_major, bool checked>
 constexpr auto const& matrix_get(Container const& cont,
                                  std::size_t const& column_count,
@@ -145,7 +150,7 @@ struct dynamic_matrix {
     using value_type = T;
     std::size_t const row_count;    // j
     std::size_t const column_count; // i
-    std::vector<T> data;
+    std::vector<T> data = {};
 
     dynamic_matrix(std::size_t m = 1, std::size_t n = 1) : row_count(m), column_count(n), data(n * m) {}
 
@@ -155,6 +160,11 @@ struct dynamic_matrix {
 
     T const& get(std::size_t i, std::size_t j) const {
         return _detail::matrix_get<dynamic_matrix, row_major, checked>(*this, column_count, row_count, i, j);
+    }
+
+    T& get_mutable(std::size_t i, std::size_t j) {
+        T const& rv = _detail::matrix_get<dynamic_matrix, row_major, checked>(*this, column_count, row_count, i, j);
+        return const_cast<T&>(rv);
     }
 
     T const& set(std::size_t i, std::size_t j, T const& value) {
@@ -184,6 +194,12 @@ struct static_matrix {
     T const& get(std::size_t i, std::size_t j) const {
         return _detail::matrix_get<static_matrix, row_major, checked>(*this, column_count, row_count, i, j);
     }
+
+    T& get_mutable(std::size_t i, std::size_t j) {
+        T const& rv = _detail::matrix_get<dynamic_matrix, row_major, checked>(*this, column_count, row_count, i, j);
+        return const_cast<T&>(rv);
+    }
+
 
     T const& set(std::size_t i, std::size_t j, T const& value) {
         return _detail::matrix_set<static_matrix, row_major, checked>(*this, column_count, row_count, i, j, value);
