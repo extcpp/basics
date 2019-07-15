@@ -100,6 +100,7 @@ target_compile_features(ext_shared PUBLIC cxx_std_17)
 target_compile_options(ext_shared PRIVATE ${ext_stone-warnings})
 target_compile_definitions(ext_shared PRIVATE ${ext_common_private_compile_definitions})
 target_compile_definitions(ext_shared PUBLIC EXT_SHARED_LIB)
+target_link_libraries(ext_shared Threads::Threads)
 
 
 # set up folder structure for XCode and VisualStudio
