@@ -10,6 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(LIBEXT_EXAMPLES "build examples" OFF)
 option(LIBEXT_TESTS "build tests" OFF)
 option(LIBEXT_WARNINGS "enable warnings" ON)
+option(LIBEXT_CHECKED "user assert" ON)
 
 ## general setup and includes
 set(CMAKE_CXX_STANDARD 17)
@@ -59,9 +60,12 @@ set(ext_common_private_compile_definitions
     $<$<BOOL:${EXT_CXX_COMPILER_IS_GCC}>:EXT_GCC>
     $<$<BOOL:${EXT_CXX_COMPILER_IS_CLANG}>:EXT_CLANG>
     $<$<BOOL:${ext_l1_cache_line_size}>:EXT_KNOWN_L1_CACHE_LINE_SIZE=${ext_l1_cache_line_size}>
+    $<$<BOOL:${LIBEXT_CHECKED}>:EXT_CHECKED=1>
     EXT_IN_LIB=1
 )
 
+
+find_package(Threads REQUIRED)
 ### detect if allocators sub-lib is present
 set(EXTALLOCATORS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/external_libs/allocators/include)
 if(EXISTS ${EXTALLOCATORS_PATH})
