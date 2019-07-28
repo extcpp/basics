@@ -12,6 +12,7 @@ set(test_files
     "util_cast"
     "util_encode"
     "util_endian"
+    "util_enum"
     "util_except"
     "util_result"
     "util_scoped_timer"
