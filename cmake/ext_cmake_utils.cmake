@@ -1,11 +1,11 @@
 #! some basic settings i use really often so lets have them in a macro
 
 function(ext_log)
-    message(STATUS "INFO -- " ${ARGV}) 
+    message(STATUS "extINFO -- " ${ARGV})
 endfunction(ext_log)
 
 function(ext_fatal)
-    message(FATAL_ERROR "INFO -- " ${ARGV}) 
+    message(FATAL_ERROR "FATAL ERROR -- " ${ARGV})
 endfunction(ext_fatal)
 
 macro(ext_setup)
