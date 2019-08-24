@@ -4,7 +4,7 @@
 build=false
 debug=false
 examples=false
-OBI_CI=${OBI_CI:-false}
+EXT_CI=${EXT_CI:-false}
 
 while [[ -n "$1" ]]; do
     case $1 in
@@ -27,7 +27,7 @@ project_root="${project_root:-$(realpath . )}"
 build_root="${build_root:-$(realpath ../libobi-build/current)}"
 
 ## skip coverage when not on branch master
-if $OBI_CI && [[ $TRAVIS_BRANCH != master ]] ; then
+if $EXT_CI && [[ $TRAVIS_BRANCH != master ]] ; then
     cd $build_root; ctest --output-on-failure
     exit $?
 fi
@@ -100,7 +100,7 @@ if $debug; then
 fi
 
 ## upload coverage information
-if $OBI_CI; then
+if $EXT_CI; then
     cd $project_root
 
     bash <(curl -s https://codecov.io/bash) -f $build_root/coverage.info || \
