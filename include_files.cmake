@@ -46,6 +46,7 @@ set(libext_header
     "include/ext/util/container_helper.hpp"
     "include/ext/util/encode.hpp"
     "include/ext/util/endian.hpp"
+    "include/ext/util/enum.hpp"
     "include/ext/util/except.hpp"
     "include/ext/util/files.hpp"
     "include/ext/util/function_cache.hpp"
