@@ -14,8 +14,8 @@ using cmake, travis, appveyor, coverage and friends.
 .. |travis| image:: https://travis-ci.org/extcpp/libext.svg?branch=master
    :target: https://travis-ci.org/extcpp/libext
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/tlsxfnd8ga5gbpie/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/extcpp/libext
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/r1ldfrhd3txhefh3/branch/master?svg=true 
+   :target: https://ci.appveyor.com/project/obiwahn/libext
 
 .. |coveralls| image:: https://coveralls.io/repos/github/extcpp/libext/badge.svg?branch=master
    :target: https://coveralls.io/github/extcpp/libext?branch=master
