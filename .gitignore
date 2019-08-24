@@ -3,6 +3,7 @@
 b
 external_libs/*
 include/ext/test.hpp
+watch*
 
 .coveralls.yml
 compile_commands.json
