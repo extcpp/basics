@@ -1,16 +1,15 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_LOGGING_DEFINITIONS_HEADER
-#    define EXT_LOGGING_DEFINITIONS_HEADER
+#define EXT_LOGGING_DEFINITIONS_HEADER
 
-#    ifndef EXT_LOGGING_DEFAULT_LEVEL
-#        define EXT_LOGGING_DEFAULT_LEVEL info
-#    endif // EXT_LOGGING_DEFAULT_LEVEL
+#ifndef EXT_LOGGING_DEFAULT_LEVEL
+#    define EXT_LOGGING_DEFAULT_LEVEL info
+#endif // EXT_LOGGING_DEFAULT_LEVEL
 
-#    include <ext/macros/compiler.hpp>
-#    include <map>
-#    include <mutex>
-#    include <string>
+#include <ext/macros/compiler.hpp>
+#include <map>
+#include <mutex>
+#include <string>
 
 namespace ext { namespace logging {
 namespace _detail {

@@ -1,13 +1,12 @@
 // Copyright - 2018 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // requires c++17 (string_view)
-#pragma once
 #ifndef EXT_UTIL_STRING_HEADER
-#    define EXT_UTIL_STRING_HEADER
+#define EXT_UTIL_STRING_HEADER
 
-#    include <cassert>
-#    include <string>
-#    include <string_view>
-#    include <vector>
+#include <cassert>
+#include <string>
+#include <string_view>
+#include <vector>
 
 namespace ext { namespace util {
 

@@ -1,7 +1,6 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_ACCESS_PRIVATE_HEADER
-#    define EXT_UTIL_ACCESS_PRIVATE_HEADER
+#define EXT_UTIL_ACCESS_PRIVATE_HEADER
 
 template<typename type>
 struct access {

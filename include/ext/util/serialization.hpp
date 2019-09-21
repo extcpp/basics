@@ -1,9 +1,8 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_SERIALIZATION_HEADER
-#    define EXT_UTIL_SERIALIZATION_HEADER
+#define EXT_UTIL_SERIALIZATION_HEADER
 
-#    include <ext/util/endian.hpp>
+#include <ext/util/endian.hpp>
 
 namespace ext { namespace util {
 

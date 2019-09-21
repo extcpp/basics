@@ -1,15 +1,14 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_ALGORITHM_KNAPSACK_HEADER
-#    define EXT_ALGORITHM_KNAPSACK_HEADER
+#define EXT_ALGORITHM_KNAPSACK_HEADER
 
-#    include <iterator>
-#    include <map>
-#    include <stdexcept>
-#    include <type_traits>
+#include <iterator>
+#include <map>
+#include <stdexcept>
+#include <type_traits>
 
-#    include <ext/macros/assert.hpp>
-#    include <ext/math/math_types.hpp>
+#include <ext/macros/assert.hpp>
+#include <ext/math/math_types.hpp>
 
 namespace ext {
 namespace algorithm {

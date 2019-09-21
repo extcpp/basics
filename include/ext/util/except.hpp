@@ -1,9 +1,8 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_EXCEPT_HEADER
-#    define EXT_UTIL_EXCEPT_HEADER
+#define EXT_UTIL_EXCEPT_HEADER
 
-#    include <stdexcept>
+#include <stdexcept>
 
 namespace ext { namespace util {
 

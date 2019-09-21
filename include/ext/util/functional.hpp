@@ -1,7 +1,6 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_FUNCTIONAL_HEADER
-#    define EXT_UTIL_FUNCTIONAL_HEADER
+#define EXT_UTIL_FUNCTIONAL_HEADER
 
 namespace ext { namespace util {
 

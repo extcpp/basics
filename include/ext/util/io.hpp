@@ -1,13 +1,12 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_IO_HEADER
-#    define EXT_UTIL_IO_HEADER
-#    include "../config.hpp"
+#define EXT_UTIL_IO_HEADER
+#include "../config.hpp"
 
-#    include <algorithm>
-#    include <iostream>
-#    include <stdexcept>
-#    include <string>
+#include <algorithm>
+#include <iostream>
+#include <stdexcept>
+#include <string>
 
 namespace ext { namespace util {
 

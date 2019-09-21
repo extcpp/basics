@@ -1,12 +1,11 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // From Concurrency in Action - Anthony Williams
-#pragma once
 #ifndef EXT_CONCURRENT_THREADSAFE_QUEUE_HEADER
-#    define EXT_CONCURRENT_THREADSAFE_QUEUE_HEADER
+#define EXT_CONCURRENT_THREADSAFE_QUEUE_HEADER
 
-#    include <condition_variable>
-#    include <memory>
-#    include <mutex>
+#include <condition_variable>
+#include <memory>
+#include <mutex>
 
 namespace ext { namespace concurrent {
 

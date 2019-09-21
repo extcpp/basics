@@ -1,9 +1,8 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_META_IF_ALL_ANY_HEADER
-#    define EXT_META_IF_ALL_ANY_HEADER
+#define EXT_META_IF_ALL_ANY_HEADER
 
-#    include <type_traits>
+#include <type_traits>
 namespace ext { namespace meta {
 
 // REQUIRES GCC 8.0

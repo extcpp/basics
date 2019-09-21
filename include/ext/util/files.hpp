@@ -1,15 +1,14 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_FILES_HEADER
-#    define EXT_UTIL_FILES_HEADER
+#define EXT_UTIL_FILES_HEADER
 
-#    include <algorithm>
-#    include <filesystem>
-#    include <fstream>
-#    include <iostream>
-#    include <iterator>
+#include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <iterator>
 
-#    include <ext/util/scoped_timer.hpp>
+#include <ext/util/scoped_timer.hpp>
 
 namespace ext::util {
 

@@ -1,12 +1,11 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_ENCODE_HEADER
-#    define EXT_UTIL_ENCODE_HEADER
+#define EXT_UTIL_ENCODE_HEADER
 
-#    include <bitset>
-#    include <iomanip>
-#    include <iostream>
-#    include <type_traits>
+#include <bitset>
+#include <iomanip>
+#include <iostream>
+#include <type_traits>
 
 namespace ext { namespace util {
 

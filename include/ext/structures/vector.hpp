@@ -1,11 +1,10 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_STRUCTURES_VECTOR_HEADER
-#    define EXT_STRUCTURES_VECTOR_HEADER
+#define EXT_STRUCTURES_VECTOR_HEADER
 
-#    include "../meta/pack.hpp"
-#    include <array>
-#    include <type_traits>
+#include "../meta/pack.hpp"
+#include <array>
+#include <type_traits>
 
 // this vector is not meant to be container like
 // std::vector but more a vector in a mathematic

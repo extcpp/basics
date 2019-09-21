@@ -1,13 +1,12 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_CAST_HEADER
-#    define EXT_UTIL_CAST_HEADER
+#define EXT_UTIL_CAST_HEADER
 
-#    include <array>
-#    include <cstring>
-#    include <limits>
-#    include <stdexcept>
-#    include <type_traits>
+#include <array>
+#include <cstring>
+#include <limits>
+#include <stdexcept>
+#include <type_traits>
 
 namespace ext { namespace util {
 

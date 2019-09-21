@@ -1,15 +1,14 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // taken from http://pfultz2.com/blog/2014/09/02/static-lambda/
-#pragma once
 #ifndef EXT_META_STATIC_LAMBDA_HEADER
-#    define EXT_META_STATIC_LAMBDA_HEADER
+#define EXT_META_STATIC_LAMBDA_HEADER
 
-#    include <type_traits>
-#    include <utility>
+#include <type_traits>
+#include <utility>
 
 namespace ext { namespace meta {
 
-#    define EXT_STATIC_LAMBDA ext::meta::wrapper_factor() += true ? nullptr : ext::meta::addr_add() + []
+#define EXT_STATIC_LAMBDA ext::meta::wrapper_factor() += true ? nullptr : ext::meta::addr_add() + []
 
 struct addr_add {
     template<class T>

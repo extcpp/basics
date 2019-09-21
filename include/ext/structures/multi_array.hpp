@@ -1,11 +1,10 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_STRUCTURES_MULTI_ARRAY_HEADER
-#    define EXT_STRUCTURES_MULTI_ARRAY_HEADER
+#define EXT_STRUCTURES_MULTI_ARRAY_HEADER
 
-#    include <array>
-#    include <iostream>
-#    include <type_traits>
+#include <array>
+#include <iostream>
+#include <type_traits>
 
 namespace ext { namespace structures {
 

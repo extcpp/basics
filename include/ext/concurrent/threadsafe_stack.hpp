@@ -1,12 +1,11 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_CONCURRENT_THREADSAFE_STACK_HEADER
-#    define EXT_CONCURRENT_THREADSAFE_STACK_HEADER
+#define EXT_CONCURRENT_THREADSAFE_STACK_HEADER
 
-#    include <exception>
-#    include <memory>
-#    include <mutex>
-#    include <stack>
+#include <exception>
+#include <memory>
+#include <mutex>
+#include <stack>
 
 namespace ext { namespace concurrent {
 

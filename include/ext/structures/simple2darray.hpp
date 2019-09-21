@@ -1,14 +1,13 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_STRUCTURES_SIMPLE2DARRAY_HEADER
-#    define EXT_STRUCTURES_SIMPLE2DARRAY_HEADER
+#define EXT_STRUCTURES_SIMPLE2DARRAY_HEADER
 
-#    include <cmath>
-#    include <iomanip>
-#    include <limits>
-#    include <type_traits>
-#    include <utility>
-#    include <vector>
+#include <cmath>
+#include <iomanip>
+#include <limits>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace ext { namespace structures {
 

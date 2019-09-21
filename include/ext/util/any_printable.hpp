@@ -1,11 +1,10 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_ANY_PRINTABLE_HEADER
-#    define EXT_UTIL_ANY_PRINTABLE_HEADER
+#define EXT_UTIL_ANY_PRINTABLE_HEADER
 
-#    include <iostream>
-#    include <memory>
-#    include <sstream>
+#include <iostream>
+#include <memory>
+#include <sstream>
 
 namespace ext { namespace util {
 class any_printable {

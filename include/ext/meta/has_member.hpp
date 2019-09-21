@@ -1,11 +1,10 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
-#pragma once
 #ifndef EXT_META_HAS_MEMBER_HEADER
-#    define EXT_META_HAS_MEMBER_HEADER
+#define EXT_META_HAS_MEMBER_HEADER
 
-#    include "void_t.hpp"
-#    include <type_traits>
+#include "void_t.hpp"
+#include <type_traits>
 
 namespace ext { namespace meta {
 

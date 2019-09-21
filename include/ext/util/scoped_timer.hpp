@@ -1,16 +1,15 @@
 // Copyright - 2014-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_SCOPED_TIMER_HEADER
-#    define EXT_UTIL_SCOPED_TIMER_HEADER
+#define EXT_UTIL_SCOPED_TIMER_HEADER
 
-#    include <chrono>
-#    include <cmath>
-#    include <functional>
-#    include <iomanip>
-#    include <iostream>
-#    include <sstream>
-#    include <utility>
-#    include <vector>
+#include <chrono>
+#include <cmath>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <utility>
+#include <vector>
 
 // Note: This is not for micro benchmarks!
 //

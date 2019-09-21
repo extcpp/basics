@@ -1,25 +1,24 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_ENDIAN_HEADER
-#    define EXT_UTIL_ENDIAN_HEADER
+#define EXT_UTIL_ENDIAN_HEADER
 
-#    include <cstddef>
-#    include <cstdint>
-#    include <cstring>
-#    include <stdexcept>
-#    include <type_traits>
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+#include <stdexcept>
+#include <type_traits>
 
-#    include <ext/util/cast.hpp>
+#include <ext/util/cast.hpp>
 
-#    ifdef __APPLE__
-#        include <libkern/OSByteOrder.h>
-#        include <machine/endian.h>
-#    elif _WIN32
-#    elif __linux__
-#        include <endian.h>
-#    else
-#        pragma messsage("unsupported os or compiler")
-#    endif // __APPLE__
+#ifdef __APPLE__
+#    include <libkern/OSByteOrder.h>
+#    include <machine/endian.h>
+#elif _WIN32
+#elif __linux__
+#    include <endian.h>
+#else
+#    pragma messsage("unsupported os or compiler")
+#endif // __APPLE__
 
 namespace ext::util::endian {
 
@@ -46,7 +45,7 @@ constexpr void byte_swap(void* ptr, std::size_t bytes) {
 // host to little unsinged
 template<typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_little(T in) {
-#    ifdef __APPLE__
+#ifdef __APPLE__
     if constexpr (sizeof(T) == 2) {
         return OSSwapHostToLittleInt16(in);
     } else if constexpr (sizeof(T) == 4) {
@@ -56,7 +55,7 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_litt
     } else {
         throw std::logic_error("not implemented");
     }
-#    elif __linux__
+#elif __linux__
     if constexpr (sizeof(T) == 2) {
         using P = decltype(htole16(0));
         return static_cast<T>(htole16(static_cast<P>(in)));
@@ -69,11 +68,11 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_litt
     } else {
         throw std::logic_error("not implemented");
     }
-#    elif _WIN32
+#elif _WIN32
     if (!is_little()) {
         byte_swap(&in, sizeof(T));
     }
-#    endif // __APPLE__
+#endif // __APPLE__
     return in;
 }
 
@@ -86,7 +85,7 @@ std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T> host_to_little
 // little to host unsinged
 template<typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> little_to_host(T in) {
-#    ifdef __APPLE__
+#ifdef __APPLE__
     if constexpr (sizeof(T) == 2) {
         return OSSwapLittleToHostInt16(in);
     } else if constexpr (sizeof(T) == 4) {
@@ -96,7 +95,7 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> little_to_ho
     } else {
         throw std::logic_error("not implemented");
     }
-#    elif __linux__
+#elif __linux__
     if constexpr (sizeof(T) == 2) {
         using P = decltype(le16toh(0));
         return static_cast<T>(le16toh(static_cast<P>(in)));
@@ -109,11 +108,11 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> little_to_ho
     } else {
         throw std::logic_error("not implemented");
     }
-#    elif _WIN32
+#elif _WIN32
     if (!is_little()) {
         byte_swap(&in, sizeof(T));
     }
-#    endif // __APPLE__
+#endif // __APPLE__
     return in;
 }
 
@@ -126,7 +125,7 @@ std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T> little_to_host
 // host to big unsinged
 template<typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_big(T in) {
-#    ifdef __APPLE__
+#ifdef __APPLE__
     if constexpr (sizeof(T) == 2) {
         return OSSwapHostToBigInt16(in);
     } else if constexpr (sizeof(T) == 4) {
@@ -136,7 +135,7 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_big(
     } else {
         throw std::logic_error("not implemented");
     }
-#    elif __linux__
+#elif __linux__
     if constexpr (sizeof(T) == 2) {
         using P = decltype(htobe16(0));
         return static_cast<T>(htobe16(static_cast<P>(in)));
@@ -149,11 +148,11 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_big(
     } else {
         throw std::logic_error("not implemented");
     }
-#    elif _WIN32
+#elif _WIN32
     if (is_little()) {
         byte_swap(&in, sizeof(T));
     }
-#    endif // __APPLE__
+#endif // __APPLE__
     return in;
 }
 
@@ -166,7 +165,7 @@ std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T> host_to_big(T 
 // big to host unsinged
 template<typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> big_to_host(T in) {
-#    ifdef __APPLE__
+#ifdef __APPLE__
     if constexpr (sizeof(T) == 2) {
         return OSSwapBigToHostInt16(in);
     } else if constexpr (sizeof(T) == 4) {
@@ -176,7 +175,7 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> big_to_host(
     } else {
         throw std::logic_error("not implemented");
     }
-#    elif __linux__
+#elif __linux__
     if constexpr (sizeof(T) == 2) {
         using P = decltype(be16toh(0));
         return static_cast<T>(be16toh(static_cast<P>(in)));
@@ -189,11 +188,11 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> big_to_host(
     } else {
         throw std::logic_error("not implemented");
     }
-#    elif _WIN32
+#elif _WIN32
     if (is_little()) {
         byte_swap(&in, sizeof(T));
     }
-#    endif // __APPLE__
+#endif // __APPLE__
     return in;
 }
 

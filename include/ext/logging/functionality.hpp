@@ -1,14 +1,13 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_LOGGING_FUNCTIONALITY_HEADER
-#    define EXT_LOGGING_FUNCTIONALITY_HEADER
+#define EXT_LOGGING_FUNCTIONALITY_HEADER
 
-#    include <algorithm>
-#    include <ext/logging/definitions.hpp>
-#    include <ext/macros/platform.hpp>
-#    include <ext/util/basic.hpp>
-#    include <iostream>
-#    include <sstream>
+#include <algorithm>
+#include <ext/logging/definitions.hpp>
+#include <ext/macros/platform.hpp>
+#include <ext/util/basic.hpp>
+#include <iostream>
+#include <sstream>
 
 namespace ext { namespace logging {
 

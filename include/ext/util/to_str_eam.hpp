@@ -1,9 +1,8 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_TO_STR_EAM_HEADER
-#    define EXT_UTIL_TO_STR_EAM_HEADER
-#    include <ext/util/result.hpp>
-#    include <filesystem>
+#define EXT_UTIL_TO_STR_EAM_HEADER
+#include <ext/util/result.hpp>
+#include <filesystem>
 
 // convert types libext types to string or wirte them in streams
 

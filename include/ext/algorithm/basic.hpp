@@ -1,13 +1,12 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_ALGORITHM_BASIC_HEADER
-#    define EXT_ALGORITHM_BASIC_HEADER
+#define EXT_ALGORITHM_BASIC_HEADER
 
-#    include "../meta/has_member.hpp"
-#    include <iterator>
-#    include <map>
-#    include <stdexcept>
-#    include <type_traits>
+#include "../meta/has_member.hpp"
+#include <iterator>
+#include <map>
+#include <stdexcept>
+#include <type_traits>
 
 namespace ext { namespace algorithm {
 

@@ -1,16 +1,15 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // TODO enable_if for integral types
-#pragma once
 #ifndef EXT_MATH_PRIMES_HEADER
-#    define EXT_MATH_PRIMES_HEADER
+#define EXT_MATH_PRIMES_HEADER
 
-#    include <algorithm>
-#    include <cmath>
-#    include <iostream>
-#    include <limits>
-#    include <stdexcept>
-#    include <utility>
-#    include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <limits>
+#include <stdexcept>
+#include <utility>
+#include <vector>
 
 namespace ext { namespace math {
 

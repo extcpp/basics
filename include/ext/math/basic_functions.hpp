@@ -1,16 +1,15 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_MATH_BASIC_FUNCTIONS_HEADER
-#    define EXT_MATH_BASIC_FUNCTIONS_HEADER
+#define EXT_MATH_BASIC_FUNCTIONS_HEADER
 
-#    include <algorithm>
-#    include <cmath>
-#    include <iostream>
-#    include <limits>
-#    include <utility>
-#    include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <limits>
+#include <utility>
+#include <vector>
 
-#    include <ext/macros/assert.hpp>
+#include <ext/macros/assert.hpp>
 
 // TODO: add enable_if for integral types
 

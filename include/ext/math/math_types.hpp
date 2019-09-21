@@ -1,14 +1,13 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_MATH_MATH_TYPES_HEADER
-#    define EXT_MATH_MATH_TYPES_HEADER
-#    include <algorithm>
-#    include <array>
-#    include <iomanip>
-#    include <ostream>
-#    include <vector>
+#define EXT_MATH_MATH_TYPES_HEADER
+#include <algorithm>
+#include <array>
+#include <iomanip>
+#include <ostream>
+#include <vector>
 
-#    include <ext/macros/assert.hpp>
+#include <ext/macros/assert.hpp>
 
 
 // TODO - find better name for classes and file

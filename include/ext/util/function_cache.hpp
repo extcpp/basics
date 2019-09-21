@@ -1,12 +1,11 @@
 // Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_FUNCTION_CACHE_HEADER
-#    define EXT_UTIL_FUNCTION_CACHE_HEADER
+#define EXT_UTIL_FUNCTION_CACHE_HEADER
 
-#    include <functional>
-#    include <map>
-#    include <tuple>
-#    include <type_traits>
+#include <functional>
+#include <map>
+#include <tuple>
+#include <type_traits>
 
 namespace ext { namespace util {
 

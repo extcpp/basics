@@ -1,15 +1,14 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
-#    define EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
+#define EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
 
-#    include <algorithm>
-#    include <array>
-#    include <stdexcept>
-#    include <vector>
+#include <algorithm>
+#include <array>
+#include <stdexcept>
+#include <vector>
 
-#    include <ext/macros/assert.hpp>
-#    include <ext/math/math_types.hpp>
+#include <ext/macros/assert.hpp>
+#include <ext/math/math_types.hpp>
 
 namespace ext { namespace math { namespace geometry {
 

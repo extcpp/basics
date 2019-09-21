@@ -1,11 +1,10 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_ALGORITHM_STRING_DISTANCES_HEADER
-#    define EXT_ALGORITHM_STRING_DISTANCES_HEADER
+#define EXT_ALGORITHM_STRING_DISTANCES_HEADER
 
-#    include <ext/algorithm/basic.hpp>
-#    include <string>
-#    include <vector>
+#include <ext/algorithm/basic.hpp>
+#include <string>
+#include <vector>
 
 namespace ext { namespace algorithm { namespace distances {
 

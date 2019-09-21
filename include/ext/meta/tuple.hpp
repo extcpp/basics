@@ -1,14 +1,13 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_META_TUPLE_HEADER
-#    define EXT_META_TUPLE_HEADER
+#define EXT_META_TUPLE_HEADER
 
 // Inspired by Daniel Frey's awesome talk about non recusive
 // template programming at the c++ user group Aachen
 // https://github.com/taocpp/tuple/blob/master/Variadic%20Templates.pdf
 
-#    include <tuple>
-#    include <type_traits>
+#include <tuple>
+#include <type_traits>
 namespace ext { namespace meta {
 
 // tuple wrapping

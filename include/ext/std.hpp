@@ -1,8 +1,7 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_STD_HEADER
-#    define EXT_STD_HEADER
-#    include <vector>
+#define EXT_STD_HEADER
+#include <vector>
 
 namespace std {
 // add get for vector - be sure what you do when using it

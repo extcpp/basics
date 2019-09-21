@@ -1,10 +1,9 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // c++11 only
-#pragma once
 #ifndef EXT_META_IS_ONE_OF_HEADER
-#    define EXT_META_IS_ONE_OF_HEADER
+#define EXT_META_IS_ONE_OF_HEADER
 
-#    include <type_traits>
+#include <type_traits>
 
 namespace ext { namespace meta {
 

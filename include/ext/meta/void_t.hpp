@@ -1,7 +1,6 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_META_VOID_T_HEADER
-#    define EXT_META_VOID_T_HEADER
+#define EXT_META_VOID_T_HEADER
 namespace ext { namespace meta {
 
 // void_t

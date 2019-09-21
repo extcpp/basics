@@ -7,15 +7,14 @@
 //
 // requires: c++17
 
-#pragma once
 #ifndef EXT_UTIL_SCOPE_GUARD_HEADER
-#    define EXT_UTIL_SCOPE_GUARD_HEADER
-#    include <cstdint>
-#    include <exception>
-#    include <iostream> // iostream to different TU?
-#    include <type_traits>
+#define EXT_UTIL_SCOPE_GUARD_HEADER
+#include <cstdint>
+#include <exception>
+#include <iostream> // iostream to different TU?
+#include <type_traits>
 
-#    include <ext/macros/general.hpp>
+#include <ext/macros/general.hpp>
 
 namespace ext { namespace util {
 namespace _detail {
@@ -82,17 +81,17 @@ struct scope_guard {
     }
 
     ~scope_guard()
-#    if (defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 8)
+#if (defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 8)
         // noexcept (noexcept(execute())) does not work with older gcc
         // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#1207
         noexcept(policy != scope_guard_execution_policy::on_no_exception) { // FIXME -
                                                                             // update
                                                                             // travis
                                                                             // compiler
-#    else
+#else
         // does it really work with with cl?
         noexcept(noexcept(execute())) {
-#    endif // (defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 8)
+#endif // (defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 8)
         if (active) {
             execute();
         }
@@ -113,14 +112,12 @@ struct scope_guard {
 // ALL LAMBDAS CAPTURE BY REF!!! (use plain scope_guard as alternative)
 //
 
-#    define EXT_SCOPE_FAIL \
-        auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) = ext::util::_detail::on_fail_helper() + [&]()
+#define EXT_SCOPE_FAIL auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) = ext::util::_detail::on_fail_helper() + [&]()
 
-#    define EXT_SCOPE_SUCCESS \
-        auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) = ext::util::_detail::on_success_helper() + [&]()
+#define EXT_SCOPE_SUCCESS \
+    auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) = ext::util::_detail::on_success_helper() + [&]()
 
-#    define EXT_SCOPE_EXIT \
-        auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) = ext::util::_detail::on_exit_helper() + [&]()
+#define EXT_SCOPE_EXIT auto EXT_ANONYMOUS_VARIABLE(EXT_SCOPE_FAIL_STATE) = ext::util::_detail::on_exit_helper() + [&]()
 
 namespace ext { namespace util { namespace _detail {
 

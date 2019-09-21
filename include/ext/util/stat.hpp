@@ -1,14 +1,13 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_STAT_HEADER
-#    define EXT_UTIL_STAT_HEADER
+#define EXT_UTIL_STAT_HEADER
 
-#    include <ext/util/result.hpp>
-#    include <filesystem>
+#include <ext/util/result.hpp>
+#include <filesystem>
 
 extern "C" {
-#    include <sys/stat.h>
-#    include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 }
 
 namespace ext::util {

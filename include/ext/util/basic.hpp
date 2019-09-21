@@ -1,14 +1,13 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_BASIC_HEADER
-#    define EXT_UTIL_BASIC_HEADER
+#define EXT_UTIL_BASIC_HEADER
 
-#    include <ext/macros/general.hpp>
-#    include <ext/util/cast.hpp>
+#include <ext/macros/general.hpp>
+#include <ext/util/cast.hpp>
 
-#    include <algorithm>
-#    include <string>
-#    include <type_traits>
+#include <algorithm>
+#include <string>
+#include <type_traits>
 
 namespace ext { namespace util {
 

@@ -1,10 +1,9 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_TRACING_CLASSES_HEADER
-#    define EXT_UTIL_TRACING_CLASSES_HEADER
-#    include <ext/meta/is_one_of.hpp>
-#    include <iomanip>
-#    include <iostream>
+#define EXT_UTIL_TRACING_CLASSES_HEADER
+#include <ext/meta/is_one_of.hpp>
+#include <iomanip>
+#include <iostream>
 
 namespace ext { namespace util {
 
@@ -62,12 +61,12 @@ class tracing_class {
 };
 }} // namespace ext::util
 
-#    if defined(__GNUC__) && defined(EXT_DEBUG)
-#        define EXT_FUNCTION_NAME \
-            { std::cout << __PRETTY_FUNCTION__ << std::endl; }
-#    else
-#        define EXT_FUNCTION_NAME
-#    endif // defined(__GNUC__) && defined(EXT_DEBUG)
+#if defined(__GNUC__) && defined(EXT_DEBUG)
+#    define EXT_FUNCTION_NAME \
+        { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+#else
+#    define EXT_FUNCTION_NAME
+#endif // defined(__GNUC__) && defined(EXT_DEBUG)
 
 namespace ext { namespace util { namespace tracing {
 

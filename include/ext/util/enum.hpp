@@ -1,9 +1,8 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_ENUM_HEADER
-#    define EXT_UTIL_ENUM_HEADER
+#define EXT_UTIL_ENUM_HEADER
 
-#    include <type_traits>
+#include <type_traits>
 
 namespace ext { namespace util {
 

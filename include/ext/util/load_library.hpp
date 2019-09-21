@@ -13,31 +13,30 @@
 // - https://msdn.microsoft.com/en-us/library/windows/desktop/ms683152.aspx
 // (FreeLibrary)
 
-#pragma once
 #ifndef EXT_UTIL_LOAD_LIBRARY_HEADER
-#    define EXT_UTIL_LOAD_LIBRARY_HEADER
-#    include <ext/macros/platform.hpp>
-#    ifdef EXT_UNIX
-#        include <dlfcn.h>
-#    elif EXT_WINDOWS
-#        include "windows_strings.hpp"
-#        include <strsafe.h>
-#        include <windows.h>
-#    endif // EXT_UNIX
-#    include <stdexcept>
-#    include <string>
+#define EXT_UTIL_LOAD_LIBRARY_HEADER
+#include <ext/macros/platform.hpp>
+#ifdef EXT_UNIX
+#    include <dlfcn.h>
+#elif EXT_WINDOWS
+#    include "windows_strings.hpp"
+#    include <strsafe.h>
+#    include <windows.h>
+#endif // EXT_UNIX
+#include <stdexcept>
+#include <string>
 
 namespace ext { namespace util {
 // types
-#    ifdef EXT_UNIX
+#ifdef EXT_UNIX
 typedef void* dl_handle;
 typedef void* dl_address;
 typedef int dl_rv;
-#    elif EXT_WINDOWS
+#elif EXT_WINDOWS
 typedef HMODULE dl_handle;
 typedef FARPROC dl_address;
 typedef BOOL dl_rv;
-#    endif // EXT_UNIX
+#endif // EXT_UNIX
 typedef char* utf8_e_str;
 typedef const char* const_utf8_e_str;
 
@@ -51,16 +50,16 @@ typedef const char* const_utf8_e_str;
  * @return                  dl_handle or NULL on fail
  */
 dl_handle dl_open(const_utf8_e_str filename, int flag = RTLD_LAZY) {
-#    ifdef EXT_UNIX
+#ifdef EXT_UNIX
     return ::dlopen(filename, flag);
-#    elif EXT_WINDOWS
-#        ifdef UNICODE
+#elif EXT_WINDOWS
+#    ifdef UNICODE
     std::wstring tmp = string_to_win(filename);
     return ::LoadLibrary(tmp.c_str());
-#        else
+#    else
     return ::LoadLibrary(filename);
-#        endif // UNICODE
-#    endif     // EXT_UNIX
+#    endif // UNICODE
+#endif     // EXT_UNIX
 }
 
 //! open library - overload for std::string
@@ -74,7 +73,7 @@ dl_handle dl_open(const std::string& filename, int flag = RTLD_LAZY) {
  * @return  textual description of the error in utf-8 encoded std::string
  */
 std::string dl_error(void) {
-#    ifdef EXT_UNIX
+#ifdef EXT_UNIX
     // returns a static buffer - do not free!!!!
     char* buffer = ::dlerror();
     if (buffer) {
@@ -82,7 +81,7 @@ std::string dl_error(void) {
     } else {
         return std::string("");
     }
-#    elif EXT_WINDOWS
+#elif EXT_WINDOWS
     LPVOID lpMsgBuf;
     DWORD dw_error_num = ::GetLastError();
 
@@ -93,14 +92,14 @@ std::string dl_error(void) {
                     (LPTSTR) &lpMsgBuf,
                     0,
                     NULL);
-#        ifdef UNICODE
+#    ifdef UNICODE
     std::string rv = string_from_win(lpMsgBuf)
-#        else
+#    else
     std::string rv(lpMsgBuf);
-#        endif // UNICODE
+#    endif // UNICODE
         ::LocalFree(lpMsgBuf);
     return rv;
-#    endif     // EXT_UNIX
+#endif     // EXT_UNIX
 }
 
 //! get address of symbol
@@ -112,16 +111,16 @@ std::string dl_error(void) {
  *                          or NULL if symbol is not found
  */
 dl_address dl_sym(dl_handle handle, const_utf8_e_str symbol) {
-#    ifdef EXT_UNIX
+#ifdef EXT_UNIX
     return ::dlsym(handle, symbol);
-#    elif EXT_WINDOWS
-#        ifdef UNICODE
+#elif EXT_WINDOWS
+#    ifdef UNICODE
     std::wstring tmp = string_to_win(symbol);
     return ::GetProcAddress(handle, tmp.c_str());
-#        else
+#    else
     return ::GetProcAddress(handle, symbol);
-#        endif // UNICODE
-#    endif     // EXT_UNIX
+#    endif // UNICODE
+#endif     // EXT_UNIX
 }
 
 //! get address of symbol - overload for std::string
@@ -147,11 +146,11 @@ dl_address dl_sym_e(dl_handle handle, const std::string& symbol) {
  *  @return             returns NULL on fail
  */
 dl_rv dl_close(dl_handle handle) {
-#    ifdef EXT_UNIX
+#ifdef EXT_UNIX
     return ::dlclose(handle);
-#    elif EXT_WINDOWS
+#elif EXT_WINDOWS
     return ::FreeLibrary(handle);
-#    endif // EXT_UNIX
+#endif // EXT_UNIX
 }
 }}     // namespace ext::util
 #endif // EXT_UTIL_LOAD_LIBRARY_HEADER

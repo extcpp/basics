@@ -17,17 +17,16 @@
 //  LPTSTR  | LPSTR (char*)        | LPWSTR (wchar*)
 //
 
-#pragma once
 #ifndef EXT_UTIL_WINDOWS_STRINGS_HEADER
-#    define EXT_UTIL_WINDOWS_STRINGS_HEADER
+#define EXT_UTIL_WINDOWS_STRINGS_HEADER
 
-#    include <ext/macros/platform.hpp>
-#    include <ext/util/except.hpp>
-#    include <memory>
-#    include <string>
+#include <ext/macros/platform.hpp>
+#include <ext/util/except.hpp>
+#include <memory>
+#include <string>
 
-#    ifdef EXT_WINDOWS
-#        include <windows.h>
+#ifdef EXT_WINDOWS
+#    include <windows.h>
 
 namespace ext { namespace util {
 static_assert(std::is_same_v<LPCSTR, char const*>);
@@ -234,5 +233,5 @@ inline std::wstring string_to_win(const std::string& in_string) {
 }
 }} // namespace ext::util
 
-#    endif // EXT_WINDOWS
-#endif     // EXT_UTIL_WINDOWS_STRINGS_HEADER
+#endif // EXT_WINDOWS
+#endif // EXT_UTIL_WINDOWS_STRINGS_HEADER

@@ -1,13 +1,12 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_UTIL_SHOW_HEADER
-#    define EXT_UTIL_SHOW_HEADER
-#    include "../meta/has_member.hpp"
-#    include "container_helper.hpp"
-#    include <iostream>
-#    include <sstream>
-#    include <string>
-#    include <type_traits>
+#define EXT_UTIL_SHOW_HEADER
+#include "../meta/has_member.hpp"
+#include "container_helper.hpp"
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <type_traits>
 
 namespace ext { namespace util {
 

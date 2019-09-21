@@ -1,11 +1,10 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_MEMORY_TAGGED_POINTER_HEADER
-#    define EXT_MEMORY_TAGGED_POINTER_HEADER
+#define EXT_MEMORY_TAGGED_POINTER_HEADER
 
-#    include <cassert>
-#    include <ext/memory/align.hpp>
-#    include <memory>
+#include <cassert>
+#include <ext/memory/align.hpp>
+#include <memory>
 
 namespace ext { namespace memory {
 

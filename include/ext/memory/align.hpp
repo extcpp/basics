@@ -1,19 +1,18 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_MEMORY_ALIGN_HEADER
-#    define EXT_MEMORY_ALIGN_HEADER
+#define EXT_MEMORY_ALIGN_HEADER
 
-#    include <ext/config.hpp>
-#    include <memory>
+#include <ext/config.hpp>
+#include <memory>
 
 namespace ext { namespace memory {
 
 inline constexpr std::size_t cache_line_size() {
-#    ifdef EXT_KNOWN_L1_CACHE_LINE_SIZE
+#ifdef EXT_KNOWN_L1_CACHE_LINE_SIZE
     return EXT_KNOWN_L1_CACHE_LINE_SIZE;
-#    else
+#else
     return ::std::hardware_destructive_interference_size;
-#    endif // EXT_KNOWN_L1_CACHE_LINE_SIZE
+#endif // EXT_KNOWN_L1_CACHE_LINE_SIZE
 }
 
 template<typename T>

@@ -1,9 +1,8 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
-#pragma once
 #ifndef EXT_META_IF_HEADER
-#    define EXT_META_IF_HEADER
+#define EXT_META_IF_HEADER
 
-#    include <type_traits>
+#include <type_traits>
 namespace ext { namespace meta {
 
 // if first value / expession is true the `first` type is returned otherwise
