@@ -18,13 +18,13 @@
 #    ifdef EXT_UNIX
 #        ifdef __amd64__
 #            define EXT_X64
-#        endif
+#        endif // __amd64__
 #    elif defined EXT_WINDOWS
 #        ifdef _WIN64
 #            define EXT_X64
 #        else // check for others like arm
 #            define EXT_X32
-#        endif
-#    endif // EXT_UNIX
+#        endif // _WIN64
+#    endif     // EXT_UNIX
 
 #endif // EXT_MACROS_PLATFORM_HEADER

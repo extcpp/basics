@@ -46,7 +46,7 @@ std::string type_to_string()
     std::string type_name = demangeled_name.get();
 #    else
     std::string type_name = typeid(DT).name();
-#    endif
+#    endif // __GNUC__
 
     std::string result;
 

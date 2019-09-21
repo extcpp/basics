@@ -17,8 +17,8 @@
 #            define EXT_EXPORT_VC __declspec(dllexport)
 #        else
 #            define EXT_EXPORT_VC __declspec(dllimport)
-#        endif
-#    endif // __GNUC__
+#        endif // EXT_IN_LIB
+#    endif     // __GNUC__
 
 // Warnings
 #    ifdef EXT_COMPILER_GNU

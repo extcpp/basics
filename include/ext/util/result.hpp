@@ -139,14 +139,14 @@ struct typed_result {
     typed_result(value_type val, result const& res = {}) : value(val), valid(true), _result(res) {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     template<bool x = std::is_lvalue_reference_v<T> || std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
     typed_result(value_type val, result&& res) : value(val), valid(true), _result(std::move(res)) {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
     // handling lvalue references and pointers - end
 
@@ -158,7 +158,7 @@ struct typed_result {
         , _result(res) {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue - 1 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     template<int x = !std::is_reference_v<T> && !std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
@@ -168,7 +168,7 @@ struct typed_result {
         , _result(std::move(res)) {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue - 1 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
     // handling lvalues - end
 
@@ -178,7 +178,7 @@ struct typed_result {
     typed_result(value_type&& val, result const& res = {}) : value(std::move(val)), valid(true), _result(res) {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     template<std::uint32_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_move_constructible_v<T>,
@@ -186,7 +186,7 @@ struct typed_result {
     typed_result(value_type&& val, result&& res) : value(std::move(val)), valid(true), _result(std::move(res)) {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
     // handling rvalue / copy - end
 
@@ -198,7 +198,7 @@ struct typed_result {
         this->value = std::move(val);
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move assign) - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     template<std::uint64_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_move_constructible_v<T> &&
@@ -208,7 +208,7 @@ struct typed_result {
         this->value = std::move(val);
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move assign) - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
     // handling rvalue / assign - end
 
@@ -314,7 +314,7 @@ struct typed_result {
         : message(msg), code(co), value(val) {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     // handling lvalue references and pointers - end
@@ -328,7 +328,7 @@ struct typed_result {
     {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue - 1 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     template<typename V,
@@ -341,7 +341,7 @@ struct typed_result {
     {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue - 1 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     template<typename V,
@@ -354,7 +354,7 @@ struct typed_result {
     {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue - 1 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
     // handling lvalues - end
 
@@ -368,7 +368,7 @@ struct typed_result {
     {
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     // handling rvalue / copy - end
@@ -381,7 +381,7 @@ struct typed_result {
         value = std::move(val);
 #    ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move assign) - 0 copy" << std::endl;
-#    endif
+#    endif // EXT_DEBUG
     }
 
     // handling rvalue / assign - end

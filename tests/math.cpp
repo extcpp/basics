@@ -129,10 +129,10 @@ TEST(types, dynamic_matrix_i_access) {
         EXPECT_EQ(m.data, data);
 
         std::vector<std::size_t> data_10 = {10, 2, 3, 4, 5, 8};
-        m.get_mutable(0,0) = 10;
+        m.get_mutable(0, 0) = 10;
         EXPECT_EQ(m.data, data_10);
 
-        m.get_mutable(0,0) = 1;
+        m.get_mutable(0, 0) = 1;
         EXPECT_EQ(m.data, data);
     }
 }

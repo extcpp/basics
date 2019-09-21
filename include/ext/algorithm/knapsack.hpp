@@ -122,4 +122,4 @@ inline std::ostream& operator<<(std::ostream& os, ext::algorithm::item<T> const&
 } // namespace util
 } // namespace ext
 
-#endif
+#endif // EXT_ALGORITHM_KNAPSACK_HEADER

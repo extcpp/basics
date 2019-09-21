@@ -37,7 +37,7 @@ typedef int dl_rv;
 typedef HMODULE dl_handle;
 typedef FARPROC dl_address;
 typedef BOOL dl_rv;
-#    endif
+#    endif // EXT_UNIX
 typedef char* utf8_e_str;
 typedef const char* const_utf8_e_str;
 
@@ -59,8 +59,8 @@ dl_handle dl_open(const_utf8_e_str filename, int flag = RTLD_LAZY) {
     return ::LoadLibrary(tmp.c_str());
 #        else
     return ::LoadLibrary(filename);
-#        endif
-#    endif
+#        endif // UNICODE
+#    endif     // EXT_UNIX
 }
 
 //! open library - overload for std::string
@@ -97,10 +97,10 @@ std::string dl_error(void) {
     std::string rv = string_from_win(lpMsgBuf)
 #        else
     std::string rv(lpMsgBuf);
-#        endif
+#        endif // UNICODE
         ::LocalFree(lpMsgBuf);
     return rv;
-#    endif
+#    endif     // EXT_UNIX
 }
 
 //! get address of symbol
@@ -120,8 +120,8 @@ dl_address dl_sym(dl_handle handle, const_utf8_e_str symbol) {
     return ::GetProcAddress(handle, tmp.c_str());
 #        else
     return ::GetProcAddress(handle, symbol);
-#        endif
-#    endif
+#        endif // UNICODE
+#    endif     // EXT_UNIX
 }
 
 //! get address of symbol - overload for std::string
@@ -151,7 +151,7 @@ dl_rv dl_close(dl_handle handle) {
     return ::dlclose(handle);
 #    elif EXT_WINDOWS
     return ::FreeLibrary(handle);
-#    endif
+#    endif // EXT_UNIX
 }
 }}     // namespace ext::util
 #endif // EXT_UTIL_LOAD_LIBRARY_HEADER

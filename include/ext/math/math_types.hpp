@@ -1,3 +1,4 @@
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #pragma once
 #ifndef EXT_MATH_MATH_TYPES_HEADER
 #    define EXT_MATH_MATH_TYPES_HEADER
@@ -236,5 +237,5 @@ inline std::ostream& operator<<(std::ostream& os, static_matrix<T, M, N, row_maj
     return _detail::to_stream(os, matrix);
 }
 
-}} // namespace ext::math
-#endif
+}}     // namespace ext::math
+#endif // EXT_MATH_MATH_TYPES_HEADER
