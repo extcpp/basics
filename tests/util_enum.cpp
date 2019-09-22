@@ -1,7 +1,7 @@
 #include <ext/util/enum.hpp>
 #include <gtest/gtest.h>
 
-namespace ou = ::ext::util;
+namespace eu = ::ext::util;
 
 enum class testenum : int {
     // clang-format off
@@ -17,10 +17,10 @@ enum class testenum : int {
     // clang-format on
 };
 
-using ou::operator|;
-using ou::operator|=;
-using ou::operator&;
-using ou::operator&=;
+using eu::operator|;
+using eu::operator|=;
+using eu::operator&;
+using eu::operator&=;
 
 TEST(util_enum, or) {
 
