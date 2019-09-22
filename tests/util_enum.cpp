@@ -4,6 +4,7 @@
 namespace ou = ::ext::util;
 
 enum class testenum : int {
+    // clang-format off
     one    = 0b0001,
     two    = 0b0010,
     three  = 0b0011,
@@ -13,6 +14,7 @@ enum class testenum : int {
     seven  = 0b0111,
     eight  = 0b1000,
     nine   = 0b1001
+    // clang-format on
 };
 
 using ou::operator|;
@@ -35,7 +37,6 @@ TEST(util_enum, or) {
         x |= 2;
         ASSERT_EQ(testenum::three, x);
     }
-
 }
 
 TEST(util_enum, and) {
@@ -53,5 +54,4 @@ TEST(util_enum, and) {
         x &= 1;
         ASSERT_EQ(testenum::one, x);
     }
-
 }
