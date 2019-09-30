@@ -3,6 +3,30 @@
 
 namespace eu = ::ext::util;
 
+TEST(util_enum, enum_to_underlying) {
+    enum class enum_a : int { one = 1, two = 2, three = 3 };
+
+    ASSERT_EQ(eu::enum_to_underlying_unsafe(enum_a::one), 1);
+    ASSERT_EQ(eu::enum_to_underlying<int>(enum_a::one), 1);
+}
+
+TEST(util_enum, underlying_to_enum) {
+    enum class enum_a : int { one = 1, two = 2, three = 3 };
+    enum class enum_b : long { one = 1, two = 2, three = 3 };
+
+    ASSERT_EQ(eu::underlying_to_enum<enum_a>(2), enum_a::two);
+    ASSERT_EQ(eu::underlying_to_enum<enum_b>(2L), enum_b::two);
+}
+
+TEST(util_enum, enum_to_enum) {
+    enum class enum_a : int { one = 1, two = 2, three = 3 };
+    enum class enum_b : int { one = 1, two = 2, three = 3 };
+    enum class enum_c : long { one = 1, two = 2, three = 3 };
+
+    ASSERT_EQ(eu::enum_to_enum<enum_b>(enum_a::three), enum_b::three);
+}
+
+
 enum class testenum : int {
     // clang-format off
     one    = 0b0001,
@@ -17,13 +41,9 @@ enum class testenum : int {
     // clang-format on
 };
 
-using eu::operator|;
-using eu::operator|=;
-using eu::operator&;
-using eu::operator&=;
 
 TEST(util_enum, or) {
-
+    using namespace eu::operators::enumeration;
     ASSERT_EQ(testenum::three, testenum::one | testenum::two);
     {
         auto x = testenum::one;
@@ -40,7 +60,7 @@ TEST(util_enum, or) {
 }
 
 TEST(util_enum, and) {
-
+    using namespace eu::operators::enumeration;
     ASSERT_EQ(testenum::one, testenum::three & testenum::one);
     {
         auto x = testenum::three;
@@ -55,30 +75,3 @@ TEST(util_enum, and) {
         ASSERT_EQ(testenum::one, x);
     }
 }
-
-TEST(util_enum, enum_to_underlying) {
-    enum class enum_a : int { one = 1, two = 2, three = 3 };
-
-    ASSERT_EQ(eu::enum_to_underlying_unsafe(enum_a::one), 1);
-    ASSERT_EQ(eu::enum_to_underlying<int>(enum_a::one), 1);
-}
-
-TEST(util_enum, underlying_to_enum) {
-    enum class enum_a : int { one = 1, two = 2, three = 3 };
-
-    enum class enum_b : long { one = 1, two = 2, three = 3 };
-
-    ASSERT_EQ(eu::underlying_to_enum<enum_a>(2), enum_a::two);
-    ASSERT_EQ(eu::underlying_to_enum<enum_b>(2L), enum_b::two);
-}
-
-TEST(util_enum, enum_to_enum) {
-    enum class enum_a : int { one = 1, two = 2, three = 3 };
-
-    enum class enum_b : int { one = 1, two = 2, three = 3 };
-
-    enum class enum_c : long { one = 1, two = 2, three = 3 };
-
-    ASSERT_EQ(eu::enum_to_enum<enum_b>(enum_a::three), enum_b::three);
-}
-
