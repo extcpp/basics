@@ -118,13 +118,14 @@ EnumType& operator&=(EnumType& e1, EnumType const& e2) {
 // motivated by http://blog.bitwigglers.org/using-enum-classes-as-type-safe-bitmasks/
 template<typename T>
 struct flag_set {
+    static_assert(std::is_enum_v<T>, "given type is not an enum");
     using underlying_type = std::underlying_type_t<T>;
 
     flag_set() : flags(0) {}
 
     flag_set(T f) : flags(static_cast<underlying_type>(f)) {}
 
-    explicit flag_set(underlying_type flags) : flags(flags) {}
+    explicit flag_set(underlying_type flags_) : flags(flags_) {}
 
     bool operator()(T f) const {
         return (flags & static_cast<underlying_type>(f)) > 0;
@@ -166,28 +167,34 @@ struct flag_set {
 template<typename>
 struct is_flags_enum : std::false_type {};
 
+#define EXT_ENABLE_FLAG_SET_OPERATORS(x)         \
+    namespace ext::util {                        \
+    template<>                                   \
+    struct is_flags_enum<x> : std::true_type {}; \
+    }
+
 namespace operators::flag_set {
 using ::ext::util::flag_set;
 
 // --- flag_set operators ---
 template<typename T, typename = std::enable_if_t<is_flags_enum<T>::value>>
 flag_set<T> operator~(flag_set<T> fs) {
-    return ~fs.flags;
+    return flag_set<T>(~fs.flags);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum<T>::value>>
 flag_set<T> operator|(flag_set<T> rhs, flag_set<T> lhs) {
-    return rhs.flags | lhs.flags;
+    return flag_set<T>(rhs.flags | lhs.flags);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum<T>::value>>
 flag_set<T> operator&(flag_set<T> rhs, flag_set<T> lhs) {
-    return rhs.flags & lhs.flags;
+    return flag_set<T>(rhs.flags & lhs.flags);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum<T>::value>>
 flag_set<T> operator^(flag_set<T> rhs, flag_set<T> lhs) {
-    return rhs.flags ^ lhs.flags;
+    return flag_set<T>(rhs.flags ^ lhs.flags);
 }
 
 // --- enum operators ---

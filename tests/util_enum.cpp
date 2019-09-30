@@ -75,3 +75,19 @@ TEST(util_enum, and) {
         ASSERT_EQ(testenum::one, x);
     }
 }
+
+// TODO - add more tests
+EXT_ENABLE_FLAG_SET_OPERATORS(testenum)
+
+TEST(util_enum, flag_set) {
+    using namespace eu::operators::flag_set;
+    {
+        flag_set<testenum> x = (testenum::one | testenum::two);
+        ASSERT_EQ(testenum::three, eu::underlying_to_enum<testenum>(x.flags));
+    }
+
+    {
+        flag_set<testenum> x = (testenum::three & testenum::one);
+        ASSERT_EQ(testenum::one, eu::underlying_to_enum<testenum>(x.flags));
+    }
+}
