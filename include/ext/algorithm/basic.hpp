@@ -3,12 +3,24 @@
 #define EXT_ALGORITHM_BASIC_HEADER
 
 #include "../meta/has_member.hpp"
+#include <algorithm>
 #include <iterator>
 #include <map>
 #include <stdexcept>
 #include <type_traits>
 
 namespace ext { namespace algorithm {
+
+template<typename T, typename Predicate>
+std::vector<T> split(std::vector<T>& vec, Predicate pred) {
+    auto end = vec.end();
+    auto split_point = std::stable_partition(vec.begin(), end, pred);
+    std::vector<T> out;
+    out.reserve(static_cast<std::size_t>(std::distance(split_point, end)));
+    std::copy(std::move_iterator(split_point), std::move_iterator(end), std::back_inserter(out));
+    vec.erase(split_point, end);
+    return out;
+}
 
 // TODO generalize - Why didn't I write a variadic function?
 template<typename T, typename Predicate = std::less<>>

@@ -1,6 +1,7 @@
 project(libext-tests)
 
 set(test_files 
+    "algorithm_basic"
     "algorithm_string_distances"
     "algorithm_knapsack"
     "math"
