@@ -8,11 +8,11 @@
 #include <map>
 #include <stdexcept>
 #include <type_traits>
-
+#include <vector>
 namespace ext { namespace algorithm {
 
 template<typename T, typename Predicate>
-std::vector<T> split(std::vector<T>& vec, Predicate pred) {
+std::vector<T> partition_out(std::vector<T>& vec, Predicate pred) {
     auto end = vec.end();
     auto split_point = std::stable_partition(vec.begin(), end, pred);
     std::vector<T> out;
@@ -21,6 +21,21 @@ std::vector<T> split(std::vector<T>& vec, Predicate pred) {
     vec.erase(split_point, end);
     return out;
 }
+
+/*
+template<typename T, typename Predicate>
+std::vector<T> split_ub(std::vector<T>& vec, Predicate pred) {
+    // this is unfortunatly ub as input and output overlap
+    // self move assign does not need to be safe
+    auto size = std::count_if(vec.begin(), vec.end(), pred );
+    std::vector<T> out;
+    out.reserve(vec.size() - static_cast<std::size_t>(size));
+    auto res = std::partition_copy(
+        std::move_iterator(vec.begin()), std::move_iterator(vec.end()), vec.begin(), std::back_inserter(out), pred);
+    vec.erase(res.first, vec.end());
+    return out;
+}
+*/
 
 // TODO generalize - Why didn't I write a variadic function?
 template<typename T, typename Predicate = std::less<>>
