@@ -14,6 +14,7 @@ namespace ext { namespace math { namespace geometry {
 
 template<typename T, std::size_t N, bool validate = false>
 struct rectangle {
+    using vec_type = vec<T, N>;
     vec<T, N> bottomLeft;
     vec<T, N> topRight;
 

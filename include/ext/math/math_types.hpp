@@ -3,6 +3,7 @@
 #define EXT_MATH_MATH_TYPES_HEADER
 #include <algorithm>
 #include <array>
+#include <cstring>
 #include <iomanip>
 #include <ostream>
 #include <vector>
@@ -32,6 +33,12 @@ struct vec {
     vec(std::vector<T> const& v) {
         EXT_ASSERT(N == v.size());
         std::copy(v.begin(), v.end(), data.begin());
+    }
+
+    static vec zero() {
+        auto rv = vec();
+        std::memset(&rv.data, 0, sizeof rv.data);
+        return rv;
     }
 
     T& get_x() {
