@@ -31,14 +31,18 @@ TEST(algorithm_basic, split) {
         EXPECT_EQ(first, (std::vector<int>{5}));
         EXPECT_EQ(second, (std::vector<int>{}));
     }
-
 }
 
 TEST(algorithm_basic, min_max) {
-    EXPECT_EQ(1, ext::algorithm::min(3,2,1));
-    EXPECT_EQ(1, ext::algorithm::min(1,2,3));
-    EXPECT_EQ(3, ext::algorithm::max(3,2,1));
-    EXPECT_EQ(3, ext::algorithm::max(1,2,3));
+    EXPECT_EQ(1, ext::algorithm::min(3, 2, 1));
+    EXPECT_EQ(1, ext::algorithm::min(1, 2, 3));
+    EXPECT_EQ(3, ext::algorithm::max(3, 2, 1));
+    EXPECT_EQ(3, ext::algorithm::max(1, 2, 3));
+
+    EXPECT_EQ(1, ext::algorithm::min(5, 4, 3, 2, 1));
+    EXPECT_EQ(1, ext::algorithm::min(1, 2, 3, 4, 5));
+    EXPECT_EQ(5, ext::algorithm::max(5, 4, 3, 2, 1));
+    EXPECT_EQ(5, ext::algorithm::max(1, 2, 3, 4, 5));
 }
 
 TEST(algorithm_basic, count_occurrences) {

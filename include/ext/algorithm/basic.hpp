@@ -37,7 +37,6 @@ std::vector<T> split_ub(std::vector<T>& vec, Predicate pred) {
 }
 */
 
-// TODO generalize - Why didn't I write a variadic function?
 template<typename T, typename Predicate = std::less<>>
 T const& min(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
     return std::min(a, std::min(b, c, comp), comp);
@@ -46,6 +45,26 @@ T const& min(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
 template<typename T, typename Predicate = std::less<>>
 T const& max(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
     return std::max(std::max(a, b, comp), c, comp);
+}
+
+template<typename T>
+T&& min(T&& x) {
+    return std::forward<T>(x);
+}
+
+template<typename T1, typename T2, typename... Ts>
+decltype(auto) min(T1&& x1, T2&& x2, Ts&&... xs) {
+    return (x1 < x2) ? min(x1, std::forward<Ts>(xs)...) : min(x2, std::forward<Ts>(xs)...);
+}
+
+template<typename T>
+T&& max(T&& x) {
+    return std::forward<T>(x);
+}
+
+template<typename T1, typename T2, typename... Ts>
+decltype(auto) max(T1&& x1, T2&& x2, Ts&&... xs) {
+    return (x1 > x2) ? max(x1, std::forward<Ts>(xs)...) : max(x2, std::forward<Ts>(xs)...);
 }
 
 // count occurrences in container /////////////////////////////////////////
