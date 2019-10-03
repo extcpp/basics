@@ -47,7 +47,7 @@ TEST(algorithm_basic, min_max) {
 
 TEST(algorithm_basic, count_occurrences) {
     std::vector<int> in{2, 1, 3, 3, 2, 3};
-    auto out = ext::algorithm::count_occurrences(in.begin(), in.end());
+    auto out = ext::algorithm::count_occurrences(in);
 
     EXPECT_EQ(1, out[1]);
     EXPECT_EQ(2, out[2]);
