@@ -64,7 +64,7 @@
 #    define _EXT_LOG_EXPAND(x) x
 #    define EXT_LOGC(...)                                                                                        \
         _EXT_LOG_SELECT5TH_PARAMETER(_EXT_LOG_EXPAND(__VA_ARGS__), EXT_LOGC4, EXT_LOGC3, EXT_LOGC2, EXT_LOGC1, ) \
-        (_OBI_LOG_EXPAND(__VA_ARGS__))
+        (_EXT_LOG_EXPAND(__VA_ARGS__))
 #else
 #    define EXT_LOGC(...)                                                                       \
         _EXT_LOG_SELECT5TH_PARAMETER(__VA_ARGS__, EXT_LOGC4, EXT_LOGC3, EXT_LOGC2, EXT_LOGC1, ) \
