@@ -43,7 +43,7 @@ T const& min(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
     return std::min(a, std::min(b, c, comp), comp);
 }
 
-template<typename T, typename Predicate = std::greater<>>
+template<typename T, typename Predicate = std::less<>>
 T const& max(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
     return std::max(std::max(a, b, comp), c, comp);
 }
