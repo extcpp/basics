@@ -70,7 +70,6 @@ decltype(auto) max(T1&& x1, T2&& x2, Ts&&... xs) {
 // count occurrences in container /////////////////////////////////////////
 template<typename Iterator, typename Int = std::size_t>
 auto count_occurrences(Iterator begin, Iterator end) {
-    // -> std::map<typename std::iterator_traits<Iterator>::value_type, Int>
     using Key = typename std::iterator_traits<Iterator>::value_type;
     std::map<Key, Int> result;
     for (auto it = begin; it != end; it++) {
@@ -79,7 +78,6 @@ auto count_occurrences(Iterator begin, Iterator end) {
     return result;
 }
 
-// TODO add enable_if or concept
 template<typename Container, typename Int = int>
 auto count_occurrences(const Container& container) {
     using Iterator = decltype(std::begin(container));
@@ -87,34 +85,22 @@ auto count_occurrences(const Container& container) {
 }
 
 // merge maps //////////////////////////////////////////////////////////////
-// items that are already in the map get replaced by a later insert if
+// Items that are already present in the first map get replaced if
 // the predicate evaluates to true
-template<typename Map, typename Predicate = std::less<>>
-auto& merge_maps(Map& result, const Map& in, Predicate predicate = Predicate()) {
-    for (auto it = in.begin(); it != in.end(); it++) {
-        auto found = result.find(it->first);
-        if (found != result.end()) {
+template<typename Map, typename Predicate = std::not_equal_to<>>
+auto& merge_maps(Map& modify, const Map& add, Predicate predicate = Predicate()) {
+    for (auto it = add.begin(); it != add.end(); it++) {
+        auto found = modify.find(it->first);
+        if (found != modify.end()) {
             if (predicate(found->second, it->second)) {
-                result[it->first] = it->second;
+                modify[it->first] = it->second;
             }
         } else {
-            result[it->first] = it->second;
+            modify[it->first] = it->second;
         }
     }
-    return result;
+    return modify;
 }
 
-// looks like maps are given in a iterator range
-template<typename Iterator,
-         typename Predicate = std::less<>,
-         typename = std::enable_if_t<ext::meta::is_input_iterator<Iterator>::value>>
-auto merge_maps(Iterator begin, Iterator end, Predicate predicate = Predicate()) {
-    using PairType = typename std::iterator_traits<Iterator>::value_type;
-    std::map<typename PairType::T1, typename PairType::T2> result;
-    for (auto it = begin; it != end; it++) {
-        merge_maps(result, *it, predicate);
-    }
-    return result;
-}
 }}     // namespace ext::algorithm
 #endif // EXT_ALGORITHM_BASIC_HEADER

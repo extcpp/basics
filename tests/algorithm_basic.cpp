@@ -53,3 +53,12 @@ TEST(algorithm_basic, count_occurrences) {
     EXPECT_EQ(2, out[2]);
     EXPECT_EQ(3, out[3]);
 }
+
+TEST(algorithm_basic, merge_maps) {
+    std::map<int, int> modify{{1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}};
+    std::map<int, int> add{{2, 20}, {5, 50}, {6, 60}};
+    std::map<int, int> expected{{1, 1}, {2, 20}, {3, 3}, {4, 4}, {5, 50}, {6, 60}};
+
+    ext::algorithm::merge_maps(modify, add);
+    EXPECT_EQ(modify, expected);
+}
