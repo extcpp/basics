@@ -12,9 +12,20 @@
 namespace ext { namespace algorithm {
 
 template<typename T, typename Predicate>
-std::vector<T> partition_out(std::vector<T>& vec, Predicate pred) {
+std::vector<T> stable_partition_out(std::vector<T>& vec, Predicate pred) {
     auto end = vec.end();
     auto split_point = std::stable_partition(vec.begin(), end, pred);
+    std::vector<T> out;
+    out.reserve(static_cast<std::size_t>(std::distance(split_point, end)));
+    std::copy(std::move_iterator(split_point), std::move_iterator(end), std::back_inserter(out));
+    vec.erase(split_point, end);
+    return out;
+}
+
+template<typename T, typename Predicate>
+std::vector<T> partition_out(std::vector<T>& vec, Predicate pred) {
+    auto end = vec.end();
+    auto split_point = std::partition(vec.begin(), end, pred);
     std::vector<T> out;
     out.reserve(static_cast<std::size_t>(std::distance(split_point, end)));
     std::copy(std::move_iterator(split_point), std::move_iterator(end), std::back_inserter(out));

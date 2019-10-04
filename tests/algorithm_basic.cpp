@@ -1,18 +1,19 @@
 #include <gtest/gtest.h>
 
 #include <ext/algorithm/basic.hpp>
+#include <set>
 
-TEST(algorithm_basic, split) {
+TEST(algorithm_basic, stable_partition_out) {
     {
         std::vector<int> first = {1, 6, 2, 7, 3, 8, 4, 9, 5};
-        auto second = ext::algorithm::partition_out(first, [](int const& value) { return value <= 5; });
+        auto second = ext::algorithm::stable_partition_out(first, [](int const& value) { return value <= 5; });
         EXPECT_EQ(first, (std::vector<int>{1, 2, 3, 4, 5}));
         EXPECT_EQ(second, (std::vector<int>{6, 7, 8, 9}));
     }
 
     {
         std::vector<int> first = {1, 6, 2, 7, 3, 8, 4, 9, 5};
-        auto second = ext::algorithm::partition_out(first, [](int const& value) { return value > 5; });
+        auto second = ext::algorithm::stable_partition_out(first, [](int const& value) { return value > 5; });
         EXPECT_EQ(first, (std::vector<int>{6, 7, 8, 9}));
         EXPECT_EQ(second, (std::vector<int>{1, 2, 3, 4, 5}));
         EXPECT_EQ(second.capacity(), second.size());
@@ -20,16 +21,49 @@ TEST(algorithm_basic, split) {
 
     {
         std::vector<int> first = {};
-        auto second = ext::algorithm::partition_out(first, [](int const& value) { return value <= 5; });
+        auto second = ext::algorithm::stable_partition_out(first, [](int const& value) { return value <= 5; });
         EXPECT_EQ(first, (std::vector<int>{}));
         EXPECT_EQ(second, (std::vector<int>{}));
     }
 
     {
         std::vector<int> first = {5};
-        auto second = ext::algorithm::partition_out(first, [](int const& value) { return value <= 5; });
+        auto second = ext::algorithm::stable_partition_out(first, [](int const& value) { return value <= 5; });
         EXPECT_EQ(first, (std::vector<int>{5}));
         EXPECT_EQ(second, (std::vector<int>{}));
+    }
+}
+
+TEST(algorithm_basic, partition_out) {
+    auto to_set = [](std::vector<int> const& vec) { return std::set<int>(vec.begin(), vec.end()); };
+
+    {
+        std::vector<int> first = {1, 6, 2, 7, 3, 8, 4, 9, 5};
+        auto second = ext::algorithm::partition_out(first, [](int const& value) { return value <= 5; });
+        EXPECT_EQ(to_set(first), to_set(std::vector<int>{1, 2, 3, 4, 5}));
+        EXPECT_EQ(to_set(second), to_set(std::vector<int>{6, 7, 8, 9}));
+    }
+
+    {
+        std::vector<int> first = {1, 6, 2, 7, 3, 8, 4, 9, 5};
+        auto second = ext::algorithm::partition_out(first, [](int const& value) { return value > 5; });
+        EXPECT_EQ(to_set(first), to_set(std::vector<int>{6, 7, 8, 9}));
+        EXPECT_EQ(to_set(second), to_set(std::vector<int>{1, 2, 3, 4, 5}));
+        EXPECT_EQ(second.capacity(), second.size());
+    }
+
+    {
+        std::vector<int> first = {};
+        auto second = ext::algorithm::partition_out(first, [](int const& value) { return value <= 5; });
+        EXPECT_EQ(to_set(first), to_set(std::vector<int>{}));
+        EXPECT_EQ(to_set(second), to_set(std::vector<int>{}));
+    }
+
+    {
+        std::vector<int> first = {5};
+        auto second = ext::algorithm::partition_out(first, [](int const& value) { return value <= 5; });
+        EXPECT_EQ(to_set(first), to_set(std::vector<int>{5}));
+        EXPECT_EQ(to_set(second), to_set(std::vector<int>{}));
     }
 }
 
