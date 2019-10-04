@@ -11,21 +11,19 @@
 #include <vector>
 namespace ext { namespace algorithm {
 
-template<typename T, typename Predicate>
-std::vector<T> stable_partition_out(std::vector<T>& vec, Predicate pred) {
-    auto end = vec.end();
-    auto split_point = std::stable_partition(vec.begin(), end, pred);
-    std::vector<T> out;
-    out.reserve(static_cast<std::size_t>(std::distance(split_point, end)));
-    std::copy(std::move_iterator(split_point), std::move_iterator(end), std::back_inserter(out));
-    vec.erase(split_point, end);
-    return out;
-}
-
-template<typename T, typename Predicate>
+template<typename T, typename Predicate, bool stable = false>
 std::vector<T> partition_out(std::vector<T>& vec, Predicate pred) {
     auto end = vec.end();
-    auto split_point = std::partition(vec.begin(), end, pred);
+    decltype(end) split_point;
+
+    // std::partition_copy - can not be used because input and output may
+    // not overlap - this is probably due to the fact that self move assignment
+    // is not guaranteed to work (UB)
+    if constexpr (stable) {
+        split_point = std::stable_partition(vec.begin(), end, pred);
+    } else {
+        split_point = std::partition(vec.begin(), end, pred);
+    }
     std::vector<T> out;
     out.reserve(static_cast<std::size_t>(std::distance(split_point, end)));
     std::copy(std::move_iterator(split_point), std::move_iterator(end), std::back_inserter(out));
@@ -33,20 +31,10 @@ std::vector<T> partition_out(std::vector<T>& vec, Predicate pred) {
     return out;
 }
 
-/*
 template<typename T, typename Predicate>
-std::vector<T> split_ub(std::vector<T>& vec, Predicate pred) {
-    // this is unfortunatly ub as input and output overlap
-    // self move assign does not need to be safe
-    auto size = std::count_if(vec.begin(), vec.end(), pred );
-    std::vector<T> out;
-    out.reserve(vec.size() - static_cast<std::size_t>(size));
-    auto res = std::partition_copy(
-        std::move_iterator(vec.begin()), std::move_iterator(vec.end()), vec.begin(), std::back_inserter(out), pred);
-    vec.erase(res.first, vec.end());
-    return out;
+std::vector<T> stable_partition_out(std::vector<T>& vec, Predicate&& pred) {
+    return partition_out<T, Predicate, true>(vec, std::forward<Predicate>(pred));
 }
-*/
 
 template<typename T, typename Predicate = std::less<>>
 T const& min(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
