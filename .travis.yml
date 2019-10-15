@@ -3,6 +3,8 @@
 ## general travis
 # https://docs.travis-ci.com/user/environment-variables/
 # https://docs.travis-ci.com/user/reference/linux
+# https://docs.travis-ci.com/user/reference/windows
+# https://docs.travis-ci.com/user/reference/osx
 
 ## packages
 # https://docs.travis-ci.com/user/installing-dependencies#Installing-Packages-with-the-APT-Addon
