@@ -2,13 +2,14 @@
 
 ## general travis
 # https://docs.travis-ci.com/user/environment-variables/
+# https://docs.travis-ci.com/user/reference/linux
 
 ## packages
 # https://docs.travis-ci.com/user/installing-dependencies#Installing-Packages-with-the-APT-Addon
 # https://apt.llvm.org/
 
 os: linux
-dist: xenial
+dist: bionic
 language: cpp
 sudo: required
 
