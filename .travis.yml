@@ -153,7 +153,7 @@ before_install:
   - export SANITIZER=${SANITIZER:-false}
   - export ARCH=${ARCH:-amd64}
   # calculate pojects paths
-  - export VERBOSE={verbose}
+  - export VERBOSE=${verbose}
   - export project_root="$(pwd)"
   - export build_base="${project_root}-build"
   - export build_root="${build_base}/$build_type"
