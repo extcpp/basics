@@ -88,6 +88,7 @@ def main():
           ['-lines', str(start_line) + ':' + str(end_line)])
 
   # Reformat files containing changes in place.
+  status = 0
   for filename, lines in lines_by_file.items():
     if args.i and args.verbose:
       print('Formatting {}'.format(filename))
@@ -117,7 +118,10 @@ def main():
                                   '(before formatting)', '(after formatting)')
       diff_string = ''.join(diff)
       if len(diff_string) > 0:
+        status = 1
         sys.stdout.write(diff_string)
 
+  return status
+
 if __name__ == '__main__':
-  main()
+  sys.exit(main())
