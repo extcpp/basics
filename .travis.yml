@@ -78,7 +78,7 @@ matrix:
         - $project_root/support/coverage
 
     - name: "clang build"
-      if: branch = master
+      if: branch = clang9
       compiler: clang++-9
       env:
         - ARCH=amd64
