@@ -1,3 +1,3 @@
 #!/bin/bash
 
-watchdir .  "./build && b/tests/test_libobi --gtest_filter=\"*$@*\""
+watchdir . "./build -bt  && ../../libext-build/curren/tests/test_libobi --gtest_filter=\"*$@*\""
