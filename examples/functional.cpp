@@ -4,8 +4,8 @@
 int main() {}
 #else
 
-#    include <ext/util/functional.hpp>
-#    include <iostream>
+    #include <ext/util/functional.hpp>
+    #include <iostream>
 
 using namespace std;
 using namespace ext::util;
@@ -19,10 +19,10 @@ int main() {
 
     cout << curry(add, 1)(1) << endl;
 
-// FIXME
-#    ifndef _WIN32
+    // FIXME
+    #ifndef _WIN32
     cout << rv1 << endl << rv2 << endl;
-#    endif // _WIN32
+    #endif // _WIN32
 
     return 0;
 }

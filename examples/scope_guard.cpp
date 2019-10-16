@@ -16,7 +16,9 @@ int main() {
     ::ext::util::scope_guard{fun};
     ::ext::util::scope_guard{&fun};
 
-    auto lambda_fun = []() { std::cout << "lambda_fun" << std::endl; };
+    auto lambda_fun = []() {
+        std::cout << "lambda_fun" << std::endl;
+    };
     ::ext::util::scope_guard{lambda_fun};
     ::ext::util::scope_guard{std::move(lambda_fun)};
 

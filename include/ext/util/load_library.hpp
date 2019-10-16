@@ -17,11 +17,11 @@
 #define EXT_UTIL_LOAD_LIBRARY_HEADER
 #include <ext/macros/platform.hpp>
 #ifdef EXT_UNIX
-#    include <dlfcn.h>
+    #include <dlfcn.h>
 #elif EXT_WINDOWS
-#    include "windows_strings.hpp"
-#    include <strsafe.h>
-#    include <windows.h>
+    #include "windows_strings.hpp"
+    #include <strsafe.h>
+    #include <windows.h>
 #endif // EXT_UNIX
 #include <stdexcept>
 #include <string>
@@ -53,12 +53,12 @@ dl_handle dl_open(const_utf8_e_str filename, int flag = RTLD_LAZY) {
 #ifdef EXT_UNIX
     return ::dlopen(filename, flag);
 #elif EXT_WINDOWS
-#    ifdef UNICODE
+    #ifdef UNICODE
     std::wstring tmp = string_to_win(filename);
     return ::LoadLibrary(tmp.c_str());
-#    else
+    #else
     return ::LoadLibrary(filename);
-#    endif // UNICODE
+    #endif // UNICODE
 #endif     // EXT_UNIX
 }
 
@@ -92,11 +92,11 @@ std::string dl_error(void) {
                     (LPTSTR) &lpMsgBuf,
                     0,
                     NULL);
-#    ifdef UNICODE
+    #ifdef UNICODE
     std::string rv = string_from_win(lpMsgBuf)
-#    else
+    #else
     std::string rv(lpMsgBuf);
-#    endif // UNICODE
+    #endif // UNICODE
         ::LocalFree(lpMsgBuf);
     return rv;
 #endif     // EXT_UNIX
@@ -114,12 +114,12 @@ dl_address dl_sym(dl_handle handle, const_utf8_e_str symbol) {
 #ifdef EXT_UNIX
     return ::dlsym(handle, symbol);
 #elif EXT_WINDOWS
-#    ifdef UNICODE
+    #ifdef UNICODE
     std::wstring tmp = string_to_win(symbol);
     return ::GetProcAddress(handle, tmp.c_str());
-#    else
+    #else
     return ::GetProcAddress(handle, symbol);
-#    endif // UNICODE
+    #endif // UNICODE
 #endif     // EXT_UNIX
 }
 

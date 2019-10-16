@@ -16,7 +16,9 @@ int main(/*int argc, const char *argv[]*/) {
     std::cout << ext::meta::tuple_size<combined>::value << std::endl;
 
     std::tuple<int, int, int> tuple1 = {1, 2, 3};
-    auto print = [](auto a, int b, int c) { std::cout << a << " " << b << " " << c << " " << std::endl; };
+    auto print = [](auto a, int b, int c) {
+        std::cout << a << " " << b << " " << c << " " << std::endl;
+    };
     ext::meta::tuple_apply(tuple1, print, 23, 42);
 
     return 0;

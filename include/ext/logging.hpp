@@ -60,13 +60,13 @@
 // macro can not be empty because of the leading , (fix with __VA_OPT__ in
 // c++20)
 #ifdef EXT_COMPILER_VC
-// __VA_ARGS__ does not expand on windows :(
-#    define _EXT_LOG_EXPAND(x) x
-#    define EXT_LOGC(...)                                                                                        \
+    // __VA_ARGS__ does not expand on windows :(
+    #define _EXT_LOG_EXPAND(x) x
+    #define EXT_LOGC(...)                                                                                        \
         _EXT_LOG_SELECT5TH_PARAMETER(_EXT_LOG_EXPAND(__VA_ARGS__), EXT_LOGC4, EXT_LOGC3, EXT_LOGC2, EXT_LOGC1, ) \
         (_EXT_LOG_EXPAND(__VA_ARGS__))
 #else
-#    define EXT_LOGC(...)                                                                       \
+    #define EXT_LOGC(...)                                                                       \
         _EXT_LOG_SELECT5TH_PARAMETER(__VA_ARGS__, EXT_LOGC4, EXT_LOGC3, EXT_LOGC2, EXT_LOGC1, ) \
         (__VA_ARGS__)
 #endif // EXT_COMPILER_VC

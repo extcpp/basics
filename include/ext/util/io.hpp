@@ -20,7 +20,9 @@ inline std::string istream_to_string(std::istream& in, bool remove_spaces = fals
     result.append(buffer, in.gcount());
 
     if (remove_spaces) {
-        auto is_space = [](unsigned char const c) { return std::isspace(c); };
+        auto is_space = [](unsigned char const c) {
+            return std::isspace(c);
+        };
         result.erase(std::remove_if(result.begin(), result.end(), is_space), result.end());
     }
     return result;

@@ -15,9 +15,9 @@
 
 // __COUNTER__ provides increasing non negative number
 #ifdef __COUNTER__
-#    define EXT_ANONYMOUS_VARIABLE(str) EXT_CONCATENATE(str, __COUNTER__)
+    #define EXT_ANONYMOUS_VARIABLE(str) EXT_CONCATENATE(str, __COUNTER__)
 #else
-#    define EXT_ANONYMOUS_VARIABLE EXT_NO_IMPL
+    #define EXT_ANONYMOUS_VARIABLE EXT_NO_IMPL
 #endif // __COUNTER__
 
 #endif // EXT_MACROS_GENERAL_HEADER

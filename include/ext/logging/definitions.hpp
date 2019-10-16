@@ -3,7 +3,7 @@
 #define EXT_LOGGING_DEFINITIONS_HEADER
 
 #ifndef EXT_LOGGING_DEFAULT_LEVEL
-#    define EXT_LOGGING_DEFAULT_LEVEL info
+    #define EXT_LOGGING_DEFAULT_LEVEL info
 #endif // EXT_LOGGING_DEFAULT_LEVEL
 
 #include <ext/macros/compiler.hpp>

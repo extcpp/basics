@@ -83,7 +83,9 @@ class threadsafe_queue {
 
     std::unique_lock<std::mutex> wait_for_data() {
         std::unique_lock<std::mutex> head_lock(head_mutex);
-        data_cond.wait(head_lock, [&] { return head != get_tail(); });
+        data_cond.wait(head_lock, [&] {
+            return head != get_tail();
+        });
         return head_lock; // copy elision!
     }
 

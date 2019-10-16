@@ -26,7 +26,7 @@
 #include <string>
 
 #ifdef EXT_WINDOWS
-#    include <windows.h>
+    #include <windows.h>
 
 namespace ext { namespace util {
 static_assert(std::is_same_v<LPCSTR, char const*>);
@@ -57,8 +57,9 @@ inline std::string win_error_to_string(DWORD error_number) {
     }
 
     // make sure buffer is freed
-    auto message_ptr = std::unique_ptr<std::remove_pointer_t<LPSTR>, void (*)(LPSTR c)>(
-        message_buffer, [](LPSTR c) { ::LocalFree(c); });
+    auto message_ptr = std::unique_ptr<std::remove_pointer_t<LPSTR>, void (*)(LPSTR c)>(message_buffer, [](LPSTR c) {
+        ::LocalFree(c);
+    });
 
     LPSTR pos = std::find(message_buffer, message_buffer + size, '\r');
     std::string message(message_buffer, pos);

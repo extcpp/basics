@@ -5,7 +5,9 @@ using namespace std::literals;
 
 TEST(util_basic, for_each_arg) {
     std::vector<int> result;
-    auto fun = [&](int a) { result.push_back(a); };
+    auto fun = [&](int a) {
+        result.push_back(a);
+    };
     ext::util::for_each_arg(fun, 1, 2, 3);
     ASSERT_EQ(result, (std::vector<int>{1, 2, 3}));
 }

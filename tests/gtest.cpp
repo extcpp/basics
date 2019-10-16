@@ -5,7 +5,7 @@
 // relative search. But this is still better
 // than polluting the source directory.
 #if __has_include(<../ ext_version.hpp>)
-#    include <../ext_version.hpp>
+    #include <../ext_version.hpp>
 #else
 constexpr char const* GIT_REV = "unknown";
 constexpr char const* GIT_BRANCH = "unknown";

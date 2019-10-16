@@ -5,7 +5,7 @@
 
 // FIXME FIXME -- get it working for WIN32
 
-#    include <ext/util/load_library.hpp>
+    #include <ext/util/load_library.hpp>
 
 int main() {
     using namespace std;

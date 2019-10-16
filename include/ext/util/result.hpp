@@ -8,7 +8,7 @@
 #include <type_traits>
 
 #ifdef EXT_DEBUG
-#    include <iostream>
+    #include <iostream>
 #endif // EXT_DEBUG
 
 namespace ext { namespace util {
@@ -21,7 +21,7 @@ inline int EXT_ERROR_NET = 10;
 // REMOVE ///////////////////////////////////////////////////////////
 #define EXT_RESULT_NOT_FINISHED
 #ifdef EXT_RESULT_NOT_FINISHED
-#    include <map>
+    #include <map>
 // should be in cpp
 inline std::string error_code_vo_string(int code) {
     static const std::map<int, std::string> error_map = {{ext::util::EXT_ERROR_NET, "network error"}};

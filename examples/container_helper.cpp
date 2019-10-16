@@ -21,7 +21,9 @@ int main() {
 
     iota(v.begin(), v.end(), 1);
     print(v);
-    for_each(v.begin(), v.end(), [](int& n) { n *= 11; });
+    for_each(v.begin(), v.end(), [](int& n) {
+        n *= 11;
+    });
     print(v);
 
     cout << "--" << endl;
@@ -31,20 +33,26 @@ int main() {
 
     erase(v, 44);
     print(v);
-    erase_if(v, [](int n) { return n % 2 == 0; });
+    erase_if(v, [](int n) {
+        return n % 2 == 0;
+    });
     print(v);
 
     cout << "--" << endl;
 
     erase(l, 33);
     print(l);
-    erase_if(l, [](int n) { return n % 2 != 0; });
+    erase_if(l, [](int n) {
+        return n % 2 != 0;
+    });
     print(l);
 
     cout << "--" << endl;
 
     erase(s, 22);
     print(s);
-    erase_if(s, [](int n) { return n > 40 && n < 70; });
+    erase_if(s, [](int n) {
+        return n > 40 && n < 70;
+    });
     print(s);
 }

@@ -11,13 +11,13 @@
 #include <ext/util/cast.hpp>
 
 #ifdef __APPLE__
-#    include <libkern/OSByteOrder.h>
-#    include <machine/endian.h>
+    #include <libkern/OSByteOrder.h>
+    #include <machine/endian.h>
 #elif _WIN32
 #elif __linux__
-#    include <endian.h>
+    #include <endian.h>
 #else
-#    pragma messsage("unsupported os or compiler")
+    #pragma messsage("unsupported os or compiler")
 #endif // __APPLE__
 
 namespace ext::util::endian {

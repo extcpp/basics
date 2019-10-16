@@ -7,7 +7,7 @@
 #include <iostream>
 
 #ifdef EXT_CHECKED
-#    define EXT_ASSERT(expr)                                              \
+    #define EXT_ASSERT(expr)                                              \
         do {                                                              \
             if (!(EXT_LIKELY(expr))) {                                    \
                 std::cerr << "ERROR: EXT_ASSERT(" #expr ")" << std::endl; \
@@ -15,7 +15,7 @@
             }                                                             \
         } while (0)
 #else
-#    define EXT_ASSERT(expr) \
+    #define EXT_ASSERT(expr) \
         do {                 \
         } while (0)
 #endif // EXT_CHECKED

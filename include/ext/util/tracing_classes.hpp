@@ -62,10 +62,10 @@ class tracing_class {
 }} // namespace ext::util
 
 #if defined(__GNUC__) && defined(EXT_DEBUG)
-#    define EXT_FUNCTION_NAME \
+    #define EXT_FUNCTION_NAME \
         { std::cout << __PRETTY_FUNCTION__ << std::endl; }
 #else
-#    define EXT_FUNCTION_NAME
+    #define EXT_FUNCTION_NAME
 #endif // defined(__GNUC__) && defined(EXT_DEBUG)
 
 namespace ext { namespace util { namespace tracing {

@@ -4,7 +4,7 @@
 #include <vector>
 
 #ifndef _WIN32
-#    include <ext/logging.hpp>
+    #include <ext/logging.hpp>
 
 int main(/*int argc, const char *argv[]*/) {
     {
