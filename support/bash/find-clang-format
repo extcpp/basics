@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+find_clang_format() {
+    readonly local clang_format_version="${EXT_CLANG_FORMAT_VERSION:-"9.0.1"}"
+    readonly local version_check_re=".*version ${clang_format_version}.*"
+
+    readonly local locations=(
+        "${EXT_CLANG_FORMAT:=}"
+        "$HOME/.local/bin/clang-format"
+        "clang-format-ext"
+        "clang-format-9"
+        "clang-format"
+    )
+    echo "locs ${locations[@]}"
+
+    local found=false
+    local location
+
+    for location in "${locations[@]}"; do
+        local clang_format="$(type -p "${location}")"
+        if (( $? == 0 )) && [[ -n $clang_format ]]; then
+            local version_string=$(${clang_format} --version)
+            if [[ $version_string =~ $version_check_re ]]; then
+                found=true
+                break;
+            fi
+        fi
+    done
+
+    if $found; then
+        echo "Found clang-format with version ($version_string) in '$clang_format'."
+        echo 'You can find the the executable in "$clang_format"'
+    else
+        echo "Could not find clang-fromat with required version ($clang_format_version)."
+        exit 1
+    fi
+}
