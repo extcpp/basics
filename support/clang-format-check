@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -u
+set -o pipefail
+
+support_dir="${project_root:-"$(realpath -s "$(dirname "$(readlink -s -f "${BASH_SOURCE[0]}")")")"}"
+. "$support_dir/bash/find-clang-format"
+find_clang_format
+
+command=(
+    "${support_dir}/helper_scripts/clang-format-diff"
+    --verbose
+    -binary "${clang_format_binary}"
+    -style=file
+    -p1
+)
+
+if type colordiff 2>/dev/null; then
+    "${command[@]}" < <(git diff -U0 --no-color "$@") | colordiff -u5
+else
+    "${command[@]}" < <(git diff -U0 --no-color "$@")
+fi

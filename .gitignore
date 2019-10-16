@@ -1,6 +1,6 @@
 */.gitignore
 
-b
+format
 external_libs/*
 include/ext/test.hpp
 watch*

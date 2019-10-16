@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 find_clang_format() {
-    readonly local clang_format_version="${EXT_CLANG_FORMAT_VERSION:-"9.0.1"}"
+    readonly local clang_format_version="${EXT_CLANG_FORMAT_VERSION:-"9.0"}"
     readonly local version_check_re=".*version ${clang_format_version}.*"
 
     readonly local locations=(
@@ -28,8 +28,9 @@ find_clang_format() {
     done
 
     if $found; then
+        clang_format_binary="$clang_format"
         echo "Found clang-format with version ($version_string) in '$clang_format'."
-        echo 'You can find the the executable in "$clang_format"'
+        echo 'You can find the the executable in "$clang_format_binary"'
     else
         echo "Could not find clang-fromat with required version ($clang_format_version)."
         exit 1
