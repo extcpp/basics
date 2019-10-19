@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
+#Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
 import os, sys, re
 import logging as log
 
 from pathlib import Path
 from subprocess import Popen, PIPE, STDOUT
-from pprint import pprint as PP
 
-def find_files(path, action, *filters):
+def apply_actuion_to_files(path, action, *filters):
     for root, dirs, files in os.walk(path.resolve()):
         for filename in files:
             file_path=Path(root, filename)
@@ -27,17 +27,17 @@ def filter_id(path):
 def filter_path(*paths):
     def filter(path: Path):
         absolute_path = path.resolve()
-        log.error("path to check: {}".format(str(absolute_path)))
+        log.debug("path to check: {}".format(str(absolute_path)))
         for prefix in paths:
             absolute_prefix_path = Path(prefix).resolve()
-            log.error("path to check: {}".format(str(absolute_prefix_path)))
+            log.debug("path to check: {}".format(str(absolute_prefix_path)))
             if str(absolute_path).startswith(str(absolute_prefix_path)):
                 return True
         return False
     return filter
 
 def filter_cpp(path):
-    if path.suffix in [ ".cpp", ".hpp" ]:
+    if path.suffix in [ ".cpp", ".cc", ".c", ".hpp", ".h" ]:
         return True
     else:
         return False
@@ -73,7 +73,7 @@ def find_clang_format(version = None):
         out=" ".join(stdout).replace('\n', ' ')
 
         if phandle.returncode == 0:
-            print(out)
+            log.debug(out)
             match = version_re.search(out)
             if match:
                 return candidate_path
@@ -81,29 +81,35 @@ def find_clang_format(version = None):
     return None
 
 
-def action_format(path: Path):
+def create_action_format():
     clang_format = find_clang_format(9.0)
 
     if not clang_format:
         log.fatal("no matching clang-format found")
         sys.exit(1)
 
-    command = [
-        clang_format,
-        "-style=file",
-        str(path)
-    ]
+    def action(path: Path):
+        command = [
+            clang_format,
+            "-style=file", "-i",
+            str(path)
+        ]
 
-    log.error(command)
-    Popen(command).wait()
+
+        log.debug(command)
+        Popen(command).wait()
+
+    return action
 
 path = Path(os.curdir)
 
 project_dir = Path(__file__).resolve().parent.parent
-find_files(project_dir,
-           action_format,
-           filter_path(Path(project_dir, "include"),
-                       Path(project_dir, "tests"),
-                       Path(project_dir, "examples")
-                      )
-           ,filter_cpp)
+apply_actuion_to_files(
+    project_dir,
+    create_action_format(),
+    filter_cpp,
+    filter_path(Path(project_dir, "include"),
+                Path(project_dir, "tests"),
+                Path(project_dir, "examples")
+               )
+)
