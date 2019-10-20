@@ -14,6 +14,12 @@ macro(ext_setup)
     if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
         # execute this setup just once
         if(NOT EXT_SETUP_DONE)
+            if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+                set(LINUX TRUE)
+            else()
+                set(LINUX FALSE)
+            endif()
+
             set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
             # set / modify default install prefix
             if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)

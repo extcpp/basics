@@ -27,7 +27,7 @@ ext_setup()
 # verbose windows linking
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /VERBOSE:LIB")
 
-if(UNIX)
+if(LINUX)
     execute_process(COMMAND getconf LEVEL1_DCACHE_LINESIZE OUTPUT_VARIABLE ext_l1_cache_line_size)
     string(STRIP ${ext_l1_cache_line_size} ext_l1_cache_line_size)
     ext_log("cache line size: '${ext_l1_cache_line_size}'")
