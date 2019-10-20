@@ -27,13 +27,14 @@ ext_setup()
 # verbose windows linking
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /VERBOSE:LIB")
 
-if(UNIX)
+if(LINUX)
     execute_process(COMMAND getconf LEVEL1_DCACHE_LINESIZE OUTPUT_VARIABLE ext_l1_cache_line_size)
     string(STRIP ${ext_l1_cache_line_size} ext_l1_cache_line_size)
     ext_log("cache line size: '${ext_l1_cache_line_size}'")
     set(EXT_OUTDIR "")
 elseif(MSVC)
     set(ext_l1_cache_line_size FALSE)
+    ext_log("cache line size: provided by os")
     set(EXT_OUTDIR "${PROJECT_BINARY_DIR}/build")
     ext_log("binary ouput dir: ${EXT_OUTDIR}")
 
@@ -42,6 +43,9 @@ elseif(MSVC)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${EXT_OUTDIR}")
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${EXT_OUTDIR}")
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+elseif(APPLE)
+    set(ext_l1_cache_line_size "64")
+    ext_log("cache line size: '${ext_l1_cache_line_size}'")
 else()
     set(ext_l1_cache_line_size FALSE)
 endif()
@@ -55,7 +59,7 @@ include(src_files.cmake)
 include(include_files.cmake)
 
 ### library setup
-set(ext_common_private_compile_definitions
+set(ext_common_compile_definitions
     $<IF:$<BOOL:${ext_is_big_endian}>,EXT_BIG_ENDIAN,EXT_LITTLE_ENDIAN>
     $<$<BOOL:${EXT_CXX_COMPILER_IS_GCC}>:EXT_GCC>
     $<$<BOOL:${EXT_CXX_COMPILER_IS_CLANG}>:EXT_CLANG>
@@ -86,7 +90,7 @@ target_compile_options(ext INTERFACE
     $<$<AND:$<CONFIG:Debug>,$<BOOL:LIBEXT_WARNINGS>>:${ext_stone-warnings}>
 )
 target_compile_definitions(ext INTERFACE
-    ${ext_common_private_compile_definitions}
+    ${ext_common_compile_definitions}
     EXT_HEADER_ONLY_LIB
 )
 
@@ -98,7 +102,7 @@ target_include_directories(ext_shared PUBLIC
 )
 target_compile_features(ext_shared PUBLIC cxx_std_17)
 target_compile_options(ext_shared PRIVATE ${ext_stone-warnings})
-target_compile_definitions(ext_shared PRIVATE ${ext_common_private_compile_definitions})
+target_compile_definitions(ext_shared PUBLIC ${ext_common_compile_definitions})
 target_compile_definitions(ext_shared PUBLIC EXT_SHARED_LIB)
 target_link_libraries(ext_shared Threads::Threads)
 

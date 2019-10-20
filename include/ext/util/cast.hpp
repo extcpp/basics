@@ -47,10 +47,6 @@ inline constexpr std::size_t size_of(std::basic_string<C, T, A> const& arg) {
     return (sizeof(T) * arg.size());
 }
 
-template<typename C, typename T>
-inline constexpr std::size_t size_of(std::basic_string_view<C, T> const& arg) {
-    return (sizeof(T) * arg.size());
-}
 } // namespace _detail
 
 template<typename... T>

@@ -1,11 +1,17 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+#include <ext/macros/platform.hpp>
+#if defined(EXT_MACOS)
+int main() {}
+#else
 #include <ext/util/function_cache.hpp>
 #include <ext/util/scoped_timer.hpp>
 #include <future>
+#include <string>
 #include <iostream>
 
 using namespace std;
 using namespace ext::util;
+using namespace std::literals::string_literals;
 
 uint64_t fib(uint64_t n) {
     if (n < 2) {
@@ -24,11 +30,12 @@ int main() {
     timer.add_step("init - done");
 
     result = std::to_string(fib(15ull));
-    timer.add_step("result: " + result + " - no cache");
+    timer.add_step("result: "s + result + " - no cache"s);
     result = std::to_string(fib_cache(15ull));
-    timer.add_step("result: " + result + " - build cache");
+    timer.add_step("result: "s + result + " - build cache"s);
     result = std::to_string(fib_cache(15ull));
-    timer.add_step("result: " + result + " - use cache");
+    timer.add_step("result: "s + result + " - use cache"s);
 
     return 0;
 }
+#endif
