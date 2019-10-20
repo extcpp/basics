@@ -4,6 +4,7 @@
 
 #include <ext/config.hpp>
 #include <memory>
+#include <new>
 
 namespace ext { namespace memory {
 
