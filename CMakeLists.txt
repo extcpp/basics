@@ -59,7 +59,7 @@ include(src_files.cmake)
 include(include_files.cmake)
 
 ### library setup
-set(ext_common_private_compile_definitions
+set(ext_common_compile_definitions
     $<IF:$<BOOL:${ext_is_big_endian}>,EXT_BIG_ENDIAN,EXT_LITTLE_ENDIAN>
     $<$<BOOL:${EXT_CXX_COMPILER_IS_GCC}>:EXT_GCC>
     $<$<BOOL:${EXT_CXX_COMPILER_IS_CLANG}>:EXT_CLANG>
@@ -90,7 +90,7 @@ target_compile_options(ext INTERFACE
     $<$<AND:$<CONFIG:Debug>,$<BOOL:LIBEXT_WARNINGS>>:${ext_stone-warnings}>
 )
 target_compile_definitions(ext INTERFACE
-    ${ext_common_private_compile_definitions}
+    ${ext_common_compile_definitions}
     EXT_HEADER_ONLY_LIB
 )
 
@@ -102,7 +102,7 @@ target_include_directories(ext_shared PUBLIC
 )
 target_compile_features(ext_shared PUBLIC cxx_std_17)
 target_compile_options(ext_shared PRIVATE ${ext_stone-warnings})
-target_compile_definitions(ext_shared PRIVATE ${ext_common_private_compile_definitions})
+target_compile_definitions(ext_shared PUBLIC ${ext_common_compile_definitions})
 target_compile_definitions(ext_shared PUBLIC EXT_SHARED_LIB)
 target_link_libraries(ext_shared Threads::Threads)
 
