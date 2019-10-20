@@ -13,6 +13,10 @@
     #define EXT_WINDOWS
 #endif // __unix__
 
+#ifdef __APPLE__
+    #define EXT_MACOS
+#endif // __APPLE__
+
 // arch
 #ifdef EXT_UNIX
     #ifdef __amd64__

@@ -1,6 +1,6 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <ext/macros/platform.hpp>
-#ifdef EXT_WINDOWS
+#if defined(EXT_WINDOWS) || defined(EXT_MACOS)
 int main() {}
 #else
 
