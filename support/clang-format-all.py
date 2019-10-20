@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 #Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 import os, sys, re
-import logging as log
-
 from pathlib import Path
 from subprocess import Popen, PIPE, STDOUT
 
@@ -10,9 +8,10 @@ python_dir = Path(__file__).parent.resolve()
 modules_dir = python_dir.joinpath("python_modules")
 sys.path.insert(0,str(modules_dir)) #add modules dir
 
+from codecheck import logger #get and init logging
+
 from obi.util.path_helper import apply_action_to_files, filter_cpp, create_filter_path
 from codecheck.util import find_clang_format
-from codecheck import logger
 
 def create_action_format():
     clang_format = find_clang_format(9.0)
@@ -29,7 +28,7 @@ def create_action_format():
         ]
 
 
-        log.debug(command)
+        logger.debug(command)
         Popen(command).wait()
 
     return action
