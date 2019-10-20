@@ -6,11 +6,12 @@ int main() {}
 #include <ext/util/function_cache.hpp>
 #include <ext/util/scoped_timer.hpp>
 #include <future>
+#include <string>
 #include <iostream>
 
 using namespace std;
 using namespace ext::util;
-using std::literals::string;
+using std::literals::string_literals;
 
 uint64_t fib(uint64_t n) {
     if (n < 2) {

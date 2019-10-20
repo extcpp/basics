@@ -113,6 +113,7 @@ matrix:
         - tests=ON
         - examples=ON
         - SANITIZER=false
+        - verbose=true
 
     - name: "coverity_scan build"
       if: branch = coverity_scan
