@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <iostream>
 #include <type_traits>
+#include <string>
 #include <sstream>
 
 namespace ext { namespace util {

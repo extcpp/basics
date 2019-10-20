@@ -1,7 +1,10 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <iostream>
 
-#ifndef _WIN32
+#include <ext/macros/platform.hpp>
+#if defined(EXT_WINDOWS) || defined(EXT_MACOS)
+int main() {}
+#else
 
 // FIXME FIXME -- get it working for WIN32
 
@@ -41,8 +44,4 @@ int main() {
 
     return 0;
 }
-#else
-int main() {
-    return 0;
-}
-#endif // _WIN32
+#endif
