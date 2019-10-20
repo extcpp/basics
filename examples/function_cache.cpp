@@ -3,11 +3,14 @@
 #if defined(EXT_MACOS)
 int main() {}
 #else
+
+// clang-format off
 #include <ext/util/function_cache.hpp>
 #include <ext/util/scoped_timer.hpp>
 #include <future>
-#include <string>
 #include <iostream>
+#include <string>
+// clang-format on
 
 using namespace std;
 using namespace ext::util;

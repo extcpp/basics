@@ -1,18 +1,23 @@
 #include <ext/macros/compiler.hpp>
 #include <ext/util/scoped_timer.hpp>
 #include <gtest/gtest.h>
+#include <iostream>
 #include <thread>
 
 using namespace ext::util;
 
 constexpr auto ms = std::chrono::milliseconds(1);
 void assert_time_eq(std::size_t ms_expected, std::pair<std::uint64_t, std::string> const& in, std::size_t steps = 1) {
-#ifdef EXT_COMPILER_VC
+#ifndef EXT_TESTS_NO_TIME_CRITICAL
+    #ifdef EXT_COMPILER_VC
     ms_expected += 2 * steps;
-#else
+    #else
     ms_expected += steps;
-#endif
+    #endif
     ASSERT_LE(in.first / (1000 * 1000), ms_expected);
+#else
+    std::cerr << "test not executed\n";
+#endif
 }
 
 TEST(util_scoped_timer, nostep) {

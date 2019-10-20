@@ -32,7 +32,7 @@ before_build:
   - if defined BINDIR (set "PATH=%BINDIR%;%PATH:C:\Program Files\Git\usr\bin;=%")
   - md build_dir
   - cd build_dir
-  - cmake -Wno-dev -DLIBEXT_TESTS=ON -DLIBEXT_EXAMPLES=ON --config "%CONFIGURATION%" -G "%GENERATOR%" ..
+  - cmake -Wno-dev -DLIBEXT_TESTS=ON -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON -DLIBEXT_EXAMPLES=ON --config "%CONFIGURATION%" -G "%GENERATOR%" ..
 
 build_script:
   - cmake --build . --config "%CONFIGURATION%"

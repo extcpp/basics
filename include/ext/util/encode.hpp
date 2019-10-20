@@ -5,9 +5,9 @@
 #include <bitset>
 #include <iomanip>
 #include <iostream>
-#include <type_traits>
-#include <string>
 #include <sstream>
+#include <string>
+#include <type_traits>
 
 namespace ext { namespace util {
 
