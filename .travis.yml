@@ -103,6 +103,17 @@ matrix:
 
           packages: ['clang-9', 'clang++-9', 'clang-format-9', 'clang-tools-9']
 
+    - name: "macOS build"
+      os: osx
+      osx_image: xcode11.2
+      env:
+        - ARCH=amd64
+        #build settings
+        - build_type=Release
+        - tests=ON
+        - examples=ON
+        - SANITIZER=false
+
     - name: "coverity_scan build"
       if: branch = coverity_scan
       compiler: g++-7
