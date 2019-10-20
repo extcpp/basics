@@ -11,7 +11,7 @@ int main() {}
 
 using namespace std;
 using namespace ext::util;
-using std::literals::string_literals;
+using namespace std::literals::string_literals;
 
 uint64_t fib(uint64_t n) {
     if (n < 2) {
