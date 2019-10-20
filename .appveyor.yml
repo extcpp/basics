@@ -18,8 +18,8 @@ skip_commits:
 
 environment:
   matrix:
-      #- GENERATOR: Visual Studio 15 2017 Win64
-    - GENERATOR: Visual Studio 16 2019 Win64
+    - GENERATOR: Visual Studio 16 2019
+    #- GENERATOR: Visual Studio 15 2017 Win64
 
 init: []
 
