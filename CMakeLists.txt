@@ -65,7 +65,6 @@ set(ext_common_compile_definitions
     $<$<BOOL:${EXT_CXX_COMPILER_IS_CLANG}>:EXT_CLANG>
     $<$<BOOL:${ext_l1_cache_line_size}>:EXT_KNOWN_L1_CACHE_LINE_SIZE=${ext_l1_cache_line_size}>
     $<$<BOOL:${LIBEXT_CHECKED}>:EXT_CHECKED=1>
-    EXT_IN_LIB=1
 )
 
 
@@ -104,6 +103,7 @@ target_compile_features(ext_shared PUBLIC cxx_std_17)
 target_compile_options(ext_shared PRIVATE ${ext_stone-warnings})
 target_compile_definitions(ext_shared PUBLIC ${ext_common_compile_definitions})
 target_compile_definitions(ext_shared PUBLIC EXT_SHARED_LIB)
+target_compile_definitions(ext_shared PRIVATE EXT_IN_LIB=1)
 target_link_libraries(ext_shared Threads::Threads)
 
 
