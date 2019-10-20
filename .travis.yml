@@ -188,7 +188,7 @@ install:
   - mkdir "$install_root"
   - mkdir -p "$build_root"
   - ln -s "$build_root" "$build_base/current"
-  - sudo $project_root/support/travis/install-$ARCH
+  - sudo $project_root/support/travis/install-$ARCH-$TRAVIS_OS_NAME
   - $project_root/.build_scripts/install_cmake
   - $project_root/.build_scripts/install_3rd_party
 
