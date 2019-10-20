@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 #Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+
+# FIXME - unfinished - not worth the trouble at the moment
+
 import os, sys, re
 from pathlib import Path
 from subprocess import Popen, PIPE, STDOUT
@@ -14,32 +17,18 @@ from obi.util.path_helper import apply_action_to_files, filter_cpp, create_filte
 
 project_dir = Path(__file__).resolve().parent.parent
 
-def create_action_format():
+def check_diff():
     clang_format = find_clang_format(9.0)
 
     if not clang_format:
         logger.fatal("no matching clang-format found")
         sys.exit(1)
 
-    def action(path: Path):
-        command = [
-            clang_format,
-            "-style=file", "-i",
-            str(path)
-        ]
+    #TODO diff
+    #TODO call clang-format-diff
+    #TODO colordiff
+    return 1
 
 
-        logger.debug(command)
-        Popen(command).wait()
-
-    return action
-
-apply_action_to_files(
-    project_dir,
-    create_action_format(),
-    filter_cpp,
-    create_filter_path(Path(project_dir, "include"),
-                       Path(project_dir, "tests"),
-                       Path(project_dir, "examples")
-                      )
-)
+if __name__ == "__main__":
+    sys.exit(check_diff())
