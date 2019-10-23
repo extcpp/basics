@@ -7,7 +7,7 @@ TEST(util_lazy, lazy_construct) {
     std::unordered_map<int, int> map;
 
     {
-        auto [it, emplaced] = map.try_emplace(1, ext::util::lazy_construct([] {
+        auto [it, emplaced] = map.try_emplace(1, ext::util::lazy_construct([]() noexcept {
                                                   return 1;
                                               }));
         ASSERT_TRUE(emplaced);
@@ -17,7 +17,7 @@ TEST(util_lazy, lazy_construct) {
 
     {
         bool lambda_not_used = true;
-        auto [it, emplaced] = map.try_emplace(1, ext::util::lazy_construct([&] {
+        auto [it, emplaced] = map.try_emplace(1, ext::util::lazy_construct([&]() noexcept {
                                                   lambda_not_used = false;
                                                   return 42;
                                               }));
