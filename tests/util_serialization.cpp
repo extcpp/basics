@@ -196,3 +196,9 @@ TEST(util_serialization, big_storage_array_multi_in_out) {
     char* test = to_char_ptr(array.data());
     ASSERT_TRUE(std::memcmp(test, str.data(), 1) == 0);
 }
+
+TEST(util_serialization, to_char_ptr) {
+    char const in = 'c';
+    auto byte_ptr = reinterpret_cast<std::byte const*>(&in);
+    ASSERT_EQ(&in, to_char_ptr(byte_ptr));
+}
