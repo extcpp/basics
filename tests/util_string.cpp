@@ -15,12 +15,14 @@ TEST(util_string, starts_with) {
     ASSERT_TRUE(starts_with("ein schwein", ""));
     ASSERT_TRUE(starts_with("ein schwein", "ein"));
     ASSERT_FALSE(starts_with("ein schwein", "wein"));
+    ASSERT_FALSE(starts_with("ein schwein", "ein schwein too long"));
 }
 
 TEST(util_string, ends_with) {
     ASSERT_TRUE(ends_with("ein schwein", ""));
     ASSERT_TRUE(ends_with("ein schwein", "schwein"));
     ASSERT_FALSE(ends_with("ein schwein", "bein"));
+    ASSERT_FALSE(ends_with("ein schwein", "too long ein schwein"));
 }
 
 TEST(util_string, split_on) {
