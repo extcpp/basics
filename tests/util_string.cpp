@@ -3,6 +3,14 @@
 
 using namespace ext::util;
 
+TEST(util_string, to_upper_lower) {
+    std::string upper = "UUUULLF";
+    std::string lower = "uuuullf";
+    ASSERT_EQ(to_lower(upper), lower);
+    ASSERT_EQ(to_upper(lower), upper);
+    ASSERT_EQ(to_lower(upper[0]), lower[0]);
+    ASSERT_EQ(to_upper(lower[0]), upper[0]);
+}
 TEST(util_string, starts_with) {
     ASSERT_TRUE(starts_with("ein schwein", ""));
     ASSERT_TRUE(starts_with("ein schwein", "ein"));

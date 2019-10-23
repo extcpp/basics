@@ -1,6 +1,7 @@
 #include <cstring>
 #include <ext/util/encode.hpp>
 #include <ext/util/endian.hpp>
+#include <ext/util/string.hpp>
 #include <gtest/gtest.h>
 
 using namespace ext::util;
@@ -24,16 +25,23 @@ TEST(util_encode, encode_hex) {
     ASSERT_EQ(in, out);
 }
 
-TEST(util_encode, encode_hex_more) {
+TEST(util_encode, encode_hex_upper_lower) {
     std::uint32_t in = 0x01aAbBcC;
     auto hex = encode_hex(reinterpret_cast<char*>(&in), sizeof(in));
-    auto dehex = decode_hex(hex);
+    auto dehex1 = decode_hex(hex);
+    auto dehex2 = decode_hex(to_upper(hex));
+    ASSERT_EQ(dehex1, dehex2);
     uint32_t out = 0;
-    std::memcpy(reinterpret_cast<char*>(&out), dehex.data(), sizeof(out));
+    std::memcpy(reinterpret_cast<char*>(&out), dehex1.data(), sizeof(out));
     ASSERT_EQ(in, out);
+}
+
+TEST(util_encode, decode_zero_len) {
+    auto dehex = decode_hex(std::string(""));
+    ASSERT_EQ(dehex, "");
 }
 
 TEST(util_encode, decode_hex_throw) {
     using namespace std::literals::string_literals;
-    ASSERT_THROW(decode_hex("UUUUULLLF"s), std::logic_error);
+    ASSERT_THROW(decode_hex("UUUUULLLF"s), std::invalid_argument);
 }

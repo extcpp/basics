@@ -3,12 +3,35 @@
 #ifndef EXT_UTIL_STRING_HEADER
 #define EXT_UTIL_STRING_HEADER
 
+#include <algorithm>
 #include <cassert>
 #include <string>
 #include <string_view>
 #include <vector>
 
 namespace ext { namespace util {
+
+inline char to_upper(char ch) {
+    return static_cast<char>(std::toupper(static_cast<unsigned char>(ch)));
+}
+
+inline char to_lower(char ch) {
+    return static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+}
+
+inline std::string to_upper(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
+        return std::toupper(c);
+    });
+    return s;
+}
+
+inline std::string to_lower(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
+        return std::tolower(c);
+    });
+    return s;
+}
 
 // c++20 string has a member function starts_with
 inline auto starts_with(std::string_view const& str, std::string_view const& prefix) -> bool {

@@ -57,7 +57,7 @@ inline std::string decode_hex(char const* in, size_t len) {
     }; // no input
 
     if (len & 0b1) {
-        throw std::logic_error("input length must be even");
+        throw std::invalid_argument("input length must be even");
     }
 
     rv.reserve(len / 2);
