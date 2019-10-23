@@ -11,6 +11,7 @@ set(test_files
     "util_any_printable"
     "util_basic"
     "util_cast"
+    "util_lazy"
     "util_encode"
     "util_endian"
     "util_enum"

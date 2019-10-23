@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-#noting to do for macOS
+#Do nothing for macOS
 
 exit 0
