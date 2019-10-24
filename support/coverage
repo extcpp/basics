@@ -8,7 +8,7 @@ EXT_CI=${EXT_CI:-false}
 
 GCOV=gcov-8
 GCOV_TOOL=gcov-tool-8
-LCOV_CMD=("$LCOV" '--gcov-tool' "$GCOV_TOOL")
+LCOV_CMD=(lcov '--gcov-tool' "$GCOV_TOOL")
 
 while [[ -n "$1" ]]; do
     case $1 in
