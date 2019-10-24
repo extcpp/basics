@@ -10,6 +10,9 @@ GCOV=gcov-8
 GCOV_TOOL=gcov-tool-8
 LCOV_CMD=(lcov '--gcov-tool' "$GCOV_TOOL")
 
+apt-cache show lcov
+lcov --version
+
 ferr() {
     echo "$@"
     exit 1
@@ -37,7 +40,6 @@ echo "project_root: ${project_root}"
 build_root="${build_root:-$(realpath ../libext-build/current)}"
 (( $? == 0 )) || ferr "faild to set build_root"
 echo "build_root: ${build_root}"
-
 [[ -L "$build_root" ]] || echo "invalid build root"
 
 ## build with coverage information
