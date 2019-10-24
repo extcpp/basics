@@ -58,13 +58,13 @@ matrix:
 
     - name: "coverage build"
       if: branch =~ /master|coverage/
-      compiler: g++-7
+      compiler: g++-8
       env:
         - ARCH=amd64
         #compiler
-        - COMPILER=g++-7
-        - OCXX=g++-7
-        - OCC=gcc-7
+        - COMPILER=g++-8
+        - OCXX=g++-8
+        - OCC=gcc-8
         #build settings
         - build_type=Debug
         - tests=ON
@@ -76,7 +76,7 @@ matrix:
           sources:
             - ['ubuntu-toolchain-r-test']
 
-          packages: ['gcc-7', 'g++-7', 'lcov']
+          packages: ['gcc-8', 'g++-8', 'lcov']
       after_success:
         - $project_root/support/coverage
 
