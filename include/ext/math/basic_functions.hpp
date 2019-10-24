@@ -34,11 +34,9 @@ T factorial(T n) {
 // calculates: (n * n-1 * ... * k+1 * k) / ( (n-k) * (n-k-1) * ... * 1)
 template<typename T>
 T binomial_coefficient(T n, T k) {
+    EXT_ASSERT(n >= k);
+    EXT_ASSERT(n >= 0 && k >= 0);
     T nk(n - k);
-
-    if (k <= nk) {
-        std::swap(k, nk);
-    }
 
     auto numerator = factors_from_down_to(n, k + T(1));
     auto denominator = factorial(nk);
@@ -50,12 +48,12 @@ T binomial_coefficient(T n, T k) {
 // less likely to overflow
 template<typename T>
 std::enable_if_t<std::is_integral_v<T>, T> binomial_coefficient_dynamic(T n, T k) {
+    EXT_ASSERT(n >= k);
     EXT_ASSERT(n >= 0 && k >= 0);
     if (n == k || k == 0) {
         return T(1);
-    } else if (k > n) {
-        return T(0);
     }
+
     return binomial_coefficient_dynamic(n - T(1), k - T(1)) + binomial_coefficient_dynamic(n - T(1), k);
 }
 
