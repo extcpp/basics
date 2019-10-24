@@ -38,7 +38,6 @@ matrix:
         - SANITIZER=false
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
           packages: ['gcc-8', 'g++-8']
 
     - name: "address sanitizer build"
@@ -72,10 +71,6 @@ matrix:
         - CXXFLAGS="-O0 --coverage"
       addons:
         apt:
-          #we need gcc7 for lcov to work
-          sources:
-            - ['ubuntu-toolchain-r-test']
-
           packages: ['gcc-8', 'g++-8', 'lcov']
       after_success:
         - $project_root/support/coverage
@@ -97,7 +92,6 @@ matrix:
       addons:
         apt:
           sources:
-            - ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
             - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
               key_url: "https://apt.llvm.org/llvm-snapshot.gpg.key"
 
@@ -130,8 +124,7 @@ matrix:
         - examples=OFF
       addons:
         apt:
-          #we need gcc7 for lcov to work
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
+            #sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
           packages: ['gcc-7', 'g++-7', 'lcov']
 
         coverity_scan:
