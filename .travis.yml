@@ -57,7 +57,7 @@ matrix:
         - SANITIZER=true
 
     - name: "coverage build"
-      if: branch = master
+      if: branch =~ /master|coverage/
       compiler: g++-7
       env:
         - ARCH=amd64
