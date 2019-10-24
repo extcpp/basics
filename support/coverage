@@ -6,6 +6,10 @@ debug=false
 examples=false
 EXT_CI=${EXT_CI:-false}
 
+GCOV=gcov-8
+GCOV_TOOL=gcov-tool-8
+LCOV_CMD=("$LCOV" '--gcov-tool' "$GCOV_TOOL")
+
 while [[ -n "$1" ]]; do
     case $1 in
         --build)
@@ -40,11 +44,11 @@ fi
 cd "$build_root"
 
 echo "############## extract base coverage ##############"
-lcov --capture --initial --directory "$build_root" \
+"${LCOV_CMD[@]}" --capture --initial --directory "$build_root" \
      --output-file base_coverage.info || exit $?
 
 echo "############## zero counters  ##############"
-lcov --directory "$build_root" --zerocounters
+"${LCOV_CMD[@]}" --directory "$build_root" --zerocounters
 
 echo "############## run tests ##############"
 ( cd $build_root; ctest ) || exit $?
@@ -66,38 +70,38 @@ if $debug; then
 fi
 
 echo "############## extract test coverage  ##############"
-lcov --directory "$build_root" \
-     --capture --output-file test_coverage.info || exit $?
+"${LCOV_CMD[@]}" --directory "$build_root" \
+                 --capture --output-file test_coverage.info || exit $?
 
 echo "############## combine base and test coverage  ##############"
-lcov --add-tracefile base_coverage.info --add-tracefile test_coverage.info \
-     --output-file coverage.info || exit $?
+"${LCOV_CMD[@]}" --add-tracefile base_coverage.info --add-tracefile test_coverage.info \
+                 --output-file coverage.info || exit $?
 
 
 if $debug; then
     echo "############## list info ##############"
-    lcov --list coverage.info || exit $?
+    "${LCOV_CMD[@]}" --list coverage.info || exit $?
 fi
 
 echo "############## remove info ##############"
-lcov --remove coverage.info \
-     '/usr/*' \
-     "$project_root"'/examples*' \
-     "$project_root"'/tests*' \
-     "$project_root"'/external_libs/*' \
-     --output-file coverage.info \
-     || exit $?
+"${LCOV_CMD[@]}" --remove coverage.info \
+                 '/usr/*' \
+                 "$project_root"'/examples*' \
+                 "$project_root"'/tests*' \
+                 "$project_root"'/external_libs/*' \
+                 --output-file coverage.info \
+                 || exit $?
 
 if $debug; then
     echo "############## list info ##############"
-    lcov --list coverage.info || exit $?
+    "${LCOV_CMD[@]}" --list coverage.info || exit $?
 fi
 
 ## upload coverage information
 if $EXT_CI; then
     cd $project_root
 
-    bash <(curl -s https://codecov.io/bash) -f $build_root/coverage.info || \
+    bash <(curl -s https://codecov.io/bash) -x "$GCOV" -f $build_root/coverage.info || \
         echo "Codecov did not collect coverage reports"
 
     gem install coveralls-lcov
