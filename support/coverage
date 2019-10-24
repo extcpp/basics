@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 ## setup vars
 build=false
@@ -13,7 +14,6 @@ LCOV_CMD=(lcov '--gcov-tool' "$GCOV_TOOL")
 if $EXT_CI; then
     wget http://mirrors.kernel.org/ubuntu/pool/universe/l/lcov/lcov_1.13-4_all.deb
     sudo dpkg -i lcov_1.13-4_all.deb
-    apt-cache show lcov
     lcov --version
 fi
 
