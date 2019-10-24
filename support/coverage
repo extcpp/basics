@@ -10,8 +10,12 @@ GCOV=gcov-8
 GCOV_TOOL=gcov-tool-8
 LCOV_CMD=(lcov '--gcov-tool' "$GCOV_TOOL")
 
-apt-cache show lcov
-lcov --version
+if $EXT_CI; then
+    wget http://mirrors.kernel.org/ubuntu/pool/universe/l/lcov/lcov_1.13-4_all.deb
+    dpkg -i lcov_1.13-4_all.deb
+    apt-cache show lcov
+    lcov --version
+fi
 
 ferr() {
     echo "$@"
