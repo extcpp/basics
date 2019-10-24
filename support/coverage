@@ -26,12 +26,6 @@ done
 project_root="${project_root:-$(realpath . )}"
 build_root="${build_root:-$(realpath ../libobi-build/current)}"
 
-## skip coverage when not on branch master
-if $EXT_CI && [[ $TRAVIS_BRANCH != master ]] ; then
-    cd $build_root; ctest --output-on-failure
-    exit $?
-fi
-
 ## build with coverage information
 if $build; then
     e=""
