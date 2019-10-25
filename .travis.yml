@@ -20,122 +20,85 @@ env:
     # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
     #   via the "travis encrypt" command using the project repo's public key
     - secure: "L8WVgBhDwuJJy5pGC/x/RWPZnCUhQDz6aO0seQGSPY0HYBnuVeEmGvvPF7KN/G5gsubZt7fwHbuwhiaL4CpezV35Tpg1uDQGrYmKALvGQTYdFLQo6zEcBVcBi6lH/hNVcJeJxrU18TQAZJ19sHO4nYLgtUBO2GMaUg+8VGVkX7kyVfJThJ8/RJjpfhtNmfkvIs73JKxLYUgVJz57iBZC7gatACffFmpaq+C1YKUIMWQzTtnZiNOQQZNS5LTPl7kdtDP3vPrV+NDQU0/6l+bDa/FwB+OVodarc4ykL+pxt76oHCbbRE2/BURstaWPCWkkALMVHvC51lXV3Zs8brIlwWjakNoLV5leklb/prtosj4tXMjpEOM1JXW3StGensk5Pq4o19GeoasIR3X4Xjw5hFur6XRjBlAX/an8S+Eno/Pf/s+PRohCDJ+xRvxmfsy3WDncPgCNESmmK3j3Besedi9ExYRgvKMIL3Zd2zlroQepkHrB63tG77A9SHNlpGljP5HVG8rLxjSAnTGQES+uJL0IotQOjmTA7JgkvfUf40J4zczPZfKjBlCTBVzs5Zd3FXlu1G7R4h3HjSERis6sy0pWDk8RcrkSFBIpMDeZFqAA7xDgLr7qOQKnio5kLqbmFLrd/VKMGkY27DjUpSIEbJ65ZgjHLfzFfoUunISzCZo="
+    - ARCH=amd64
+    - build_type=Release
+    - tests=ON
+    - examples=ON
+    - coverage=false
 
 matrix:
   include:
-    - name: "default build"
-      compiler: g++-8
+    - name: "default"
       env:
-        - ARCH=amd64
-        #compiler
-        - COMPILER=g++-8
-        - OCXX=g++-8
-        - OCC=gcc-8
-        #build settings
+        - CXX=g++-8
+        - CC=gcc-8
         - build_type=Release
-        - tests=ON
-        - examples=ON
-        - SANITIZER=false
       addons:
         apt:
           packages: ['gcc-8', 'g++-8']
 
-    - name: "address sanitizer build"
+    - name: "asan"
       if: branch = master
-      compiler: g++-8
       env:
-        - ARCH=amd64
-        #compiler
-        - COMPILER=g++-8
-        - OCXX=g++-8
-        - OCC=gcc-8
-        #build settings
-        - build_type=Release
-        - tests=ON
-        - examples=ON
-        - SANITIZER=true
+        - CXX=g++-8
+        - CC=gcc-8
+        - CXXFLAGS=" -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fno-omit-frame-pointer -fno-sanitize=vptr -pthread "
 
-    - name: "coverage build"
+    - name: "coverage"
       if: branch =~ /master|coverage/
-      compiler: g++-8
       env:
-        - ARCH=amd64
-        #compiler
-        - COMPILER=g++-8
-        - OCXX=g++-8
-        - OCC=gcc-8
+        - CXX=g++-8
+        - CC=gcc-8
+        - CXXFLAGS="-O0 --coverage"
         #build settings
         - build_type=Debug
-        - tests=ON
         - examples=OFF
-        - CXXFLAGS="-O0 --coverage"
+        - coverage=true
       addons:
         apt:
+          #we need gcc7 for lcov to work
           packages: ['gcc-8', 'g++-8', 'lcov']
-      after_success:
-        - $project_root/support/coverage
 
-    - name: "clang build"
+    - name: "clang"
       if: branch = master
-      compiler: clang++-9
       env:
-        - ARCH=amd64
-        #compiler
-        - COMPILER=clang++-9
-        - OCXX=clang++-9
-        - OCC=clang-9
-        #build settings
-        - build_type=Release
-        - tests=ON
-        - examples=ON
-        - verbose=true
+        - CXX=clang++-9
+        - CC=clang-9
       addons:
         apt:
           sources:
+            #- ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-8']
             - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
               key_url: "https://apt.llvm.org/llvm-snapshot.gpg.key"
-
           packages: ['clang-9', 'clang++-9', 'clang-format-9', 'clang-tools-9']
 
-    - name: "macOS build"
+    - name: "mac"
       os: osx
       osx_image: xcode11.2
-      env:
-        - ARCH=amd64
-        #build settings
-        - build_type=Release
-        - tests=ON
-        - examples=ON
-        - SANITIZER=false
-        - verbose=true
+      compiler: clang
 
-    - name: "coverity_scan build"
+    - name: "coverity scan"
       if: branch = coverity_scan
-      compiler: g++-7
       env:
-        - ARCH=amd64
-        #compiler
-        - COMPILER=g++-7
-        - OCXX=g++-7
-        - OCC=gcc-7
-        #build settings
-        - build_type=Debug
-        - tests=ON
-        - examples=OFF
+        - CXX=g++-7
+        - CC=gcc-7
       addons:
         apt:
-            #sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-xenial-7']
+          #we need gcc7 for lcov to work
           packages: ['gcc-7', 'g++-7', 'lcov']
 
         coverity_scan:
           project:
-            name: ObiWahn/libobi
+            name: extcpp/libext
             version: 0.1
-            description: libobi
+            description: libext
           notification_email: linux@obiwahn.org
           build_command_prepend: |
+                                 export ${CXX}
+                                 export ${CC}
+                                 export ${CXXFLAGS}
                                  cov-configure --comptype gcc --compiler /usr/bin/gcc-7 -- -std=gnu++1z
-                                 cmake -DCMAKE_BUILD_TYPE=DEBUG -DLIBEXT_TESTS=ON -DLIBEXT_EXAMPLES=ON .
+                                 cmake -DCMAKE_BUILD_TYPE=Debug -DLIBEXT_TESTS=ON -DLIBEXT_EXAMPLES=ON .
           build_command: "cmake --build . --config Debug"
           branch_pattern: coverity_scan
       before_script:
@@ -148,32 +111,24 @@ matrix:
         # debug covertiy scan
         #- cat cov-int/build-log.txt
         #- cat cov-int/scm_log.txt
-      after_success:
-        # do nothing
 
 before_install:
   # for some reason CXX and CC can not be set in env
-  - export IN_TRAVIS=true
-  - export EXT_CI=true
-  - export CXX=$OCXX
-  - export CC=$OCC
+  - export CXX=${CXX:-g++}
+  - export CC=${CC:-gcc}
+  - export CXXFLAGS=${CXXFLAGS:-""}
   # set defaults
-  - export SANITIZER=${SANITIZER:-false}
+  - if ${verbose:-false}; then export VERBOSE=1; fi
   - export ARCH=${ARCH:-amd64}
+  - export EXT_CI=true
+  - export EXT_CI_BRANCH=${TRAVIS_BRANCH}
   # calculate pojects paths
-  - export VERBOSE=${verbose}
+  - export PATH="$install_root/bin:$PATH"
   - export project_root="$(pwd)"
   - export build_base="${project_root}-build"
   - export build_root="${build_base}/$build_type"
   - export install_root="$HOME/usr"
-  - export PATH="$install_root/bin:$PATH"
   - export build_prefix='<>'
-  # extra stunts
-  - |
-    if $SANITIZER; then
-        #extra_flags="$extra_flags -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold"
-        export CXXFLAGS="$CXXFLAGS -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fno-omit-frame-pointer -fno-sanitize=vptr -pthread"
-    fi
   # system info
   - $project_root/.build_scripts/system_info
   - $project_root/.build_scripts/var_info
@@ -191,10 +146,12 @@ before_script:
 script:
   - $project_root/.build_scripts/var_info
   - |
-    $project_root/.build_scripts/configure -DCMAKE_BUILD_TYPE="$build_type" \
-      -DLIBEXT_TESTS="$tests" -DLIBEXT_EXAMPLES="$examples" "$extra_flags"
+    $project_root/.build_scripts/configure \
+      -DCMAKE_BUILD_TYPE="$build_type" \
+      -DLIBEXT_TESTS="$tests" \
+      -DLIBEXT_EXAMPLES="$examples" \
+      -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON \
+      $cmake_extra_flags
   - $project_root/.build_scripts/build
-
-after_success:
-  - export do_test=true
-  - $project_root/.build_scripts/test
+  - if [[ $coverage == "false" ]]; then $project_root/.build_scripts/test $tests; fi
+  - if [[ $coverage == "true" ]]; then $project_root/support/coverage; fi

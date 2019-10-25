@@ -43,8 +43,14 @@ project_root="${project_root:-$(realpath . )}"
 echo "project_root: ${project_root}"
 build_root="${build_root:-$(realpath ../libext-build/current)}"
 (( $? == 0 )) || ferr "faild to set build_root"
-echo "build_root: ${build_root}"
 [[ -L "$build_root" ]] || echo "invalid build root"
+echo "build_root: ${build_root}"
+
+## skip coverage when not on branch master
+if $EXT_CI && [[ $EXT_CI_BRANCH != master ]] ; then
+    cd $build_root; ctest --output-on-failure
+    exit $?
+fi
 
 ## build with coverage information
 if $build; then

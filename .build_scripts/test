@@ -9,7 +9,7 @@ else
     exit 1
 fi
 
-if ! $do_test; then
+if [[ $1 == "OFF" || $1 == "FALSE" ]]; then
     exit 0
 fi
 

@@ -16,7 +16,7 @@ void assert_time_eq(std::size_t ms_expected, std::pair<std::uint64_t, std::strin
     #endif
     ASSERT_LE(in.first / (1000 * 1000), ms_expected);
 #else
-    std::cerr << "test not executed\n";
+    std::cerr << "time not asserted\n";
 #endif
 }
 
