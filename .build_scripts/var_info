@@ -12,21 +12,21 @@ fi
 #prepare
 section "variable info"
 #command
-echo "project_root: $project_root"
-echo "build_base:   $build_base"
-echo "build_root:   $build_root"
+echo "project_root:  $project_root"
+echo "build_base:    $build_base"
+echo "build_root:    $build_root"
 echo
-echo "build_type:   $build_type"
-echo "examples:     $examples"
-echo "tests:        $tests"
+echo "build_type:    $build_type"
+echo "examples:      $examples"
+echo "tests:         $tests"
 echo
-echo "PATH:         $PATH"
-echo "CXX:          $CXX"
-echo "CC:           $CC "
-echo "CXXFLAGS:     $CXXFLAGS"
-echo "CFLAGS:       $CFLAGS"
-echo "RPATH         $RPATH"
-echo "COMPILER:     $COMPILER"
-echo "IN_TRAVIS:    $IN_TRAVIS"
+echo "PATH:          $PATH"
+echo "CXX:           $CXX"
+echo "CC:            $CC "
+echo "CXXFLAGS:      $CXXFLAGS"
+echo "CFLAGS:        $CFLAGS"
+echo "RPATH:         $RPATH"
+echo "EXT_CI:        $EXT_CI"
+echo "EXT_CI_BRANCH: $EXT_CI_BRANCH"
 #end
 echo
