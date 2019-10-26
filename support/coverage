@@ -1,14 +1,31 @@
 #!/bin/bash
-EXT_CI=${EXT_CI:-false}
+set -u
 
 ## setup vars
-build=false
-debug=false
-examples=false
+build=${build:-false}
+debug=${debug:-false}
+examples=${examples:-false}
 
+##internal setup
+if [[ -z ${project_root:-""} ]]; then
+    project_root="${project_root:-$(realpath . )}"
+    build_root="${build_root:-$(realpath ../libext-build/current)}"
+    (( $? == 0 )) || ferr "faild to set build_root"
+    [[ -e "$build_root" ]] || ferr "invalid build root: $build_root"
+fi
+echo "project_root: ${project_root}"
+echo "build_root: ${build_root}"
 
-GCOV=gcov-8
-GCOV_TOOL=gcov-tool-8
+EXT_CI=${EXT_CI:-false}
+CXX=${CXX:=''}
+version=${CXX#*-}
+if [[ -n $version ]]; then
+    version="-$version"
+fi
+GCOV=gcov${version}
+GCOV_TOOL=gcov-tool${version}
+echo "gcov: $GCOV"
+echo "gcov-tool: $GCOV_TOOL"
 
 if $EXT_CI; then
     wget http://mirrors.kernel.org/ubuntu/pool/universe/l/lcov/lcov_1.13-4_all.deb
@@ -21,7 +38,7 @@ ferr() {
     exit 1
 }
 
-while [[ -n "$1" ]]; do
+while [[ -n "${1:-""}" ]]; do
     case $1 in
         --build)
             build=true
@@ -38,15 +55,8 @@ while [[ -n "$1" ]]; do
     shift
 done
 
-project_root="${project_root:-$(realpath . )}"
-echo "project_root: ${project_root}"
-build_root="${build_root:-$(realpath ../libext-build/current)}"
-(( $? == 0 )) || ferr "faild to set build_root"
-[[ -L "$build_root" ]] || echo "invalid build root"
-echo "build_root: ${build_root}"
-
 ## skip coverage when not on branch master
-if $EXT_CI && [[ $EXT_CI_BRANCH != master ]] ; then
+if $EXT_CI && [[ $EXT_CI_BRANCH != master && $EXT_CI_BRANCH != coverage ]] ; then
     cd $build_root; ctest --output-on-failure
     exit $?
 fi
