@@ -1,15 +1,14 @@
 #!/bin/bash
-set -x
+EXT_CI=${EXT_CI:-false}
 
 ## setup vars
 build=false
 debug=false
 examples=false
-EXT_CI=${EXT_CI:-false}
+
 
 GCOV=gcov-8
 GCOV_TOOL=gcov-tool-8
-LCOV_CMD=(lcov '--gcov-tool' "$GCOV_TOOL")
 
 if $EXT_CI; then
     wget http://mirrors.kernel.org/ubuntu/pool/universe/l/lcov/lcov_1.13-4_all.deb
@@ -64,13 +63,18 @@ fi
 
 ## collect coverage information
 cd "$build_root"
+LCOV_CMD=(
+    'lcov'
+    '--gcov-tool' "$GCOV_TOOL"
+    '--directory' "$build_root"
+)
 
 echo "############## extract base coverage ##############"
-"${LCOV_CMD[@]}" --capture --directory "$build_root" --initial \
+"${LCOV_CMD[@]}" --capture --initial \
      --output-file base_coverage.info || ferr "failed to collect basebase  coverage"
 
 echo "############## zero counters  ##############"
-"${LCOV_CMD[@]}" --directory "$build_root" --zerocounters
+"${LCOV_CMD[@]}" --zerocounters
 
 echo "############## run tests ##############"
 ( cd $build_root; ctest ) || ferr "failed to run ctest"
@@ -92,7 +96,8 @@ if $debug; then
 fi
 
 echo "############## extract test coverage  ##############"
-"${LCOV_CMD[@]}" --capture --directory "$build_root" \
+set -x
+"${LCOV_CMD[@]}" --capture  \
                  --output-file test_coverage.info || ferr "failed to extract coverage"
 
 echo "############## combine base and test coverage  ##############"
