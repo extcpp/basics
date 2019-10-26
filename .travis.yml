@@ -45,7 +45,7 @@ matrix:
         - CXXFLAGS=" -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fno-omit-frame-pointer -fno-sanitize=vptr -pthread "
 
     - name: "coverage"
-      if: branch = master
+      if: branch =~ /master|coverage/
       env:
         - CXX=g++-7
         - CC=gcc-7
@@ -57,7 +57,7 @@ matrix:
       addons:
         apt:
           #we need gcc7 for lcov to work
-          packages: ['gcc-7', 'g++-7', 'lcov']
+          packages: ['gcc-7', 'g++-7', 'gcc-8', 'g++-8', 'lcov']
 
     - name: "clang"
       if: branch = master

@@ -1,12 +1,42 @@
 #!/bin/bash
+set -u
 
 ## setup vars
-build=false
-debug=false
-examples=false
-EXT_CI=${EXT_CI:-false}
+build=${build:-false}
+debug=${debug:-false}
+examples=${examples:-"OFF"}
 
-while [[ -n "$1" ]]; do
+##internal setup
+if [[ -z ${project_root:-""} ]]; then
+    project_root="${project_root:-$(realpath . )}"
+    build_root="${build_root:-$(realpath ../libext-build/current)}"
+    (( $? == 0 )) || ferr "faild to set build_root"
+    [[ -e "$build_root" ]] || ferr "invalid build root: $build_root"
+fi
+echo "project_root: ${project_root}"
+echo "build_root: ${build_root}"
+
+EXT_CI=${EXT_CI:-false}
+CXX=${CXX:='gcc'}
+version=${CXX#*-}
+if [[ -n $version ]]; then
+    version="-$version"
+fi
+GCOV=gcov${version}
+echo "gcov: $GCOV"
+
+if $EXT_CI; then
+    wget http://mirrors.kernel.org/ubuntu/pool/universe/l/lcov/lcov_1.13-4_all.deb
+    sudo dpkg -i lcov_1.13-4_all.deb
+    lcov --version
+fi
+
+ferr() {
+    echo "$@"
+    exit 1
+}
+
+while [[ -n "${1:-""}" ]]; do
     case $1 in
         --build)
             build=true
@@ -23,11 +53,8 @@ while [[ -n "$1" ]]; do
     shift
 done
 
-project_root="${project_root:-$(realpath . )}"
-build_root="${build_root:-$(realpath ../libobi-build/current)}"
-
 ## skip coverage when not on branch master
-if $EXT_CI && [[ $EXT_CI_BRANCH != master ]] ; then
+if $EXT_CI && [[ $EXT_CI_BRANCH != master && $EXT_CI_BRANCH != coverage ]] ; then
     cd $build_root; ctest --output-on-failure
     exit $?
 fi
@@ -35,27 +62,32 @@ fi
 ## build with coverage information
 if $build; then
     e=""
-    if $examples; then
+    if [[ examples != OFF ]]; then
         e="-e"
     fi
 
-    CXXFLAGS="--coverage -O0 " ./build -v -c -d -t $e || exit $?
+    CXXFLAGS="--coverage -O0 " ./build -v -d -bt $e || ferr "failed to build"
 fi
 
 ## collect coverage information
 cd "$build_root"
+LCOV_CMD=(
+    'lcov'
+    '--gcov-tool' "$GCOV"
+    '--directory' "$build_root"
+)
 
 echo "############## extract base coverage ##############"
-lcov --capture --initial --directory "$build_root" \
-     --output-file base_coverage.info || exit $?
+"${LCOV_CMD[@]}" --capture --initial \
+     --output-file base_coverage.info || ferr "failed to collect basebase  coverage"
 
 echo "############## zero counters  ##############"
-lcov --directory "$build_root" --zerocounters
+"${LCOV_CMD[@]}" --zerocounters
 
 echo "############## run tests ##############"
-( cd $build_root; ctest ) || exit $?
+( cd $build_root; ctest ) || ferr "failed to run ctest"
 
-if $examples; then
+if [[ $examples != "OFF" ]]; then
 echo "############## run examples ##############"
     (
         cd $build_root/examples
@@ -68,44 +100,51 @@ fi
 
 if $debug; then
     echo "############## gcdas ##############"
-    find -L "$build_root" -iname "*.gcda" || exit $?
+    find -L "$build_root" -iname "*.gcda" || ferr "failed to find .gcda files"
 fi
 
 echo "############## extract test coverage  ##############"
-lcov --directory "$build_root" \
-     --capture --output-file test_coverage.info || exit $?
+$CXX --version
+$GCOV --version
+"${LCOV_CMD[@]}" --capture  \
+                 --output-file test_coverage.info \
+                 || ferr "failed to extract coverage"
 
 echo "############## combine base and test coverage  ##############"
-lcov --add-tracefile base_coverage.info --add-tracefile test_coverage.info \
-     --output-file coverage.info || exit $?
+"${LCOV_CMD[@]}" --add-tracefile base_coverage.info \
+                 --add-tracefile test_coverage.info \
+                 --output-file coverage.info \
+                 || ferr "failed to combine coverage"
 
 
 if $debug; then
     echo "############## list info ##############"
-    lcov --list coverage.info || exit $?
+    "${LCOV_CMD[@]}" --list coverage.info || ferr "failed to list coverage"
 fi
 
 echo "############## remove info ##############"
-lcov --remove coverage.info \
-     '/usr/*' \
-     "$project_root"'/examples*' \
-     "$project_root"'/tests*' \
-     "$project_root"'/external_libs/*' \
-     --output-file coverage.info \
-     || exit $?
+"${LCOV_CMD[@]}" --remove coverage.info \
+                 '/usr/*' \
+                 "$project_root"'/examples*' \
+                 "$project_root"'/tests*' \
+                 "$project_root"'/external_libs/*' \
+                 --output-file coverage.info \
+                 || ferr "failed to remove info"
 
 if $debug; then
     echo "############## list info ##############"
-    lcov --list coverage.info || exit $?
+    "${LCOV_CMD[@]}" --list coverage.info || ferr "failed to list coverage"
 fi
 
 ## upload coverage information
 if $EXT_CI; then
     cd $project_root
 
-    bash <(curl -s https://codecov.io/bash) -f $build_root/coverage.info || \
-        echo "Codecov did not collect coverage reports"
+    bash <(curl -s https://codecov.io/bash) \
+        -f $build_root/coverage.info \
+        -x $GCOV \
+        || ferr "codecov upload failed"
 
-    gem install coveralls-lcov
-    coveralls-lcov $build_root/coverage.info
+    gem install coveralls-lcov || ferr "could not install coveralls-lcov gem"
+    coveralls-lcov $build_root/coverage.info || ferr "coveralls upload failed"
 fi
