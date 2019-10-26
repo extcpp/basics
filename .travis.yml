@@ -47,8 +47,8 @@ matrix:
     - name: "coverage"
       if: branch =~ /master|coverage/
       env:
-        - CXX=g++-8
-        - CC=gcc-8
+        - CXX=g++-7
+        - CC=gcc-7
         - CXXFLAGS="-O0 --coverage"
         #build settings
         - build_type=Debug
@@ -57,7 +57,7 @@ matrix:
       addons:
         apt:
           #we need gcc7 for lcov to work
-          packages: ['gcc-8', 'g++-8', 'lcov']
+          packages: ['gcc-7', 'g++-7', 'gcc-8', 'g++-8', 'lcov']
 
     - name: "clang"
       if: branch = master
