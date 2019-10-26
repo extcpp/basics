@@ -17,15 +17,13 @@ echo "project_root: ${project_root}"
 echo "build_root: ${build_root}"
 
 EXT_CI=${EXT_CI:-false}
-CXX=${CXX:=''}
+CXX=${CXX:='gcc'}
 version=${CXX#*-}
 if [[ -n $version ]]; then
     version="-$version"
 fi
 GCOV=gcov${version}
-GCOV_TOOL=gcov-tool${version}
 echo "gcov: $GCOV"
-echo "gcov-tool: $GCOV_TOOL"
 
 if $EXT_CI; then
     wget http://mirrors.kernel.org/ubuntu/pool/universe/l/lcov/lcov_1.13-4_all.deb
@@ -68,14 +66,14 @@ if $build; then
         e="-e"
     fi
 
-    CXXFLAGS="--coverage -O0 " ./build -v -c -d -bt $e || ferr "failed to build"
+    CXXFLAGS="--coverage -O0 " ./build -v -d -bt $e || ferr "failed to build"
 fi
 
 ## collect coverage information
 cd "$build_root"
 LCOV_CMD=(
     'lcov'
-    '--gcov-tool' "$GCOV_TOOL"
+    '--gcov-tool' "$GCOV"
     '--directory' "$build_root"
 )
 
@@ -106,13 +104,17 @@ if $debug; then
 fi
 
 echo "############## extract test coverage  ##############"
-set -x
+$CXX --version
+$GCOV --version
 "${LCOV_CMD[@]}" --capture  \
-                 --output-file test_coverage.info || ferr "failed to extract coverage"
+                 --output-file test_coverage.info \
+                 || ferr "failed to extract coverage"
 
 echo "############## combine base and test coverage  ##############"
-"${LCOV_CMD[@]}" --add-tracefile base_coverage.info --add-tracefile test_coverage.info \
-                 --output-file coverage.info || ferr "failed to combine coverage"
+"${LCOV_CMD[@]}" --add-tracefile base_coverage.info \
+                 --add-tracefile test_coverage.info \
+                 --output-file coverage.info \
+                 || ferr "failed to combine coverage"
 
 
 if $debug; then
@@ -127,7 +129,7 @@ echo "############## remove info ##############"
                  "$project_root"'/tests*' \
                  "$project_root"'/external_libs/*' \
                  --output-file coverage.info \
-                 || exit $?
+                 || ferr "failed to remove info"
 
 if $debug; then
     echo "############## list info ##############"
@@ -138,10 +140,11 @@ fi
 if $EXT_CI; then
     cd $project_root
 
-    bash -x  <(curl -s https://codecov.io/bash) \
-        -x $GCOV -f $build_root/coverage.info \
-        || ferr "Codecov did not collect coverage reports"
+    bash <(curl -s https://codecov.io/bash) \
+        -f $build_root/coverage.info \
+        -x $GCOV \
+        || ferr "codecov upload failed"
 
     gem install coveralls-lcov || ferr "could not install coveralls-lcov gem"
-    coveralls-lcov $build_root/coverage.info || ferr "coveralls-lcov failed"
+    coveralls-lcov $build_root/coverage.info || ferr "coveralls upload failed"
 fi
