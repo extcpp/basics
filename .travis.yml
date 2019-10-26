@@ -46,8 +46,8 @@ matrix:
     - name: "coverage"
       if: branch =~ /master|coverage/
       env:
-        - CXX=g++-7
-        - CC=gcc-7
+        - CXX=g++-8
+        - CC=gcc-8
         - CXXFLAGS="-O0 --coverage"
         #build settings
         - build_type=Debug
