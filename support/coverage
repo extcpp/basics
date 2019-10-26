@@ -4,7 +4,7 @@ set -u
 ## setup vars
 build=${build:-false}
 debug=${debug:-false}
-examples=${examples:-false}
+examples=${examples:-"OFF"}
 
 ##internal setup
 if [[ -z ${project_root:-""} ]]; then
@@ -64,7 +64,7 @@ fi
 ## build with coverage information
 if $build; then
     e=""
-    if $examples; then
+    if [[ examples != OFF ]]; then
         e="-e"
     fi
 
@@ -89,7 +89,7 @@ echo "############## zero counters  ##############"
 echo "############## run tests ##############"
 ( cd $build_root; ctest ) || ferr "failed to run ctest"
 
-if $examples; then
+if [[ $examples != "OFF" ]]; then
 echo "############## run examples ##############"
     (
         cd $build_root/examples
