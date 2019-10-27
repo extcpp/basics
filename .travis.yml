@@ -33,6 +33,8 @@ matrix:
         - CXX=g++-9
         - CC=gcc-9
         - build_type=Debug
+      before_script:
+        - $project_root/support/travis/flake8
 
     - name: "asan"
       if: branch = master
