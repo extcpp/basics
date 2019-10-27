@@ -55,8 +55,9 @@ matrix:
         - coverage=true
       addons:
         apt:
-          #we need gcc7 for lcov to work
-          packages: ['gcc-7', 'g++-7', 'lcov']
+          # lcov in bionic does not work with gcc-9
+          # lcov/gcov with gcc-8 hits wrong lines
+          packages: ['lcov', 'gcc-8', 'g++-8']
 
     - name: "clang"
       if: branch = master
@@ -86,7 +87,7 @@ matrix:
       addons:
         apt:
           #we need gcc7 for lcov to work
-          packages: ['gcc-7', 'g++-7', 'lcov']
+          packages: ['lcov', 'gcc-7', 'g++-7']
 
         coverity_scan:
           project:
