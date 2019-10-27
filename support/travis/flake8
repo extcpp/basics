@@ -1,6 +1,11 @@
 #!/bin/bash
 
-sudo apt-get install -y python3-pip
+ferr() {
+    echo "$*"
+    exit 1;
+}
+
+sudo apt-get install -y python3-pip || ferr "faild to install pip"
 python3 --version
-pip3 install --user flake8
-flake8 ./support --count --select=E9,F63,F7,F82 --show-source --statistics
+pip3 install --user flake8 || ferr "faild to install flake8"
+flake8 ./support --count --select=E9,F63,F7,F82 --show-source --statistics || ferr "failed flake8"
