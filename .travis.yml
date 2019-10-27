@@ -30,20 +30,17 @@ matrix:
   include:
     - name: "default"
       env:
-        - CXX=g++-8
-        - CC=gcc-8
-        - build_type=Release
-      addons:
-        apt:
-          packages: ['gcc-8', 'g++-8']
+        - CXX=g++-9
+        - CC=gcc-9
+        - build_type=Debug
       before_script:
         - support/travis/flake8
 
     - name: "asan"
       if: branch = master
       env:
-        - CXX=g++-8
-        - CC=gcc-8
+        - CXX=g++-9
+        - CC=gcc-9
         - CXXFLAGS=" -fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fno-omit-frame-pointer -fno-sanitize=vptr -pthread "
 
     - name: "coverage"
@@ -59,7 +56,7 @@ matrix:
       addons:
         apt:
           #we need gcc7 for lcov to work
-          packages: ['gcc-7', 'g++-7', 'gcc-8', 'g++-8', 'lcov']
+          packages: ['gcc-7', 'g++-7', 'lcov']
 
     - name: "clang"
       if: branch = master
