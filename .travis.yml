@@ -36,6 +36,8 @@ matrix:
       addons:
         apt:
           packages: ['gcc-8', 'g++-8']
+      before_script:
+        - support/travis/flake8
 
     - name: "asan"
       if: branch = master
