@@ -191,7 +191,7 @@ fi
 "$project_root"/.build_scripts/build || exit $?
 
 # runs unit tests
-"$project_root"/.build_scripts/test || exit $?
+"$project_root"/.build_scripts/test $do_test || exit $?
 
 if ${change_dir:-false}; then
   msg "starting shell in build directory"

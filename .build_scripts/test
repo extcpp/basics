@@ -9,7 +9,7 @@ else
     exit 1
 fi
 
-if [[ $1 == "OFF" || $1 == "FALSE" ]]; then
+if [[ $1 == "OFF" || $1 == "FALSE" || $1 == "false" ]]; then
     exit 0
 fi
 
