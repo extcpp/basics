@@ -46,7 +46,7 @@ struct result {
 
     result(int num, std::string const& msg) : code(num), message(msg) {}
 
-    result(int num, std::string&& msg) : code(num), message(std::move(msg)) {}
+    result(int num, std::string&& msg) noexcept : code(num), message(std::move(msg)) {}
 
     result(result const& other) : code(other.code), message(other.message) {}
 
