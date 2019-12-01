@@ -140,7 +140,7 @@ class scoped_timer {
         return callback(calculate());
     }
 
-    std::string to_string(bool disable = true) const {
+    std::string to_string(bool disable = true) {
         if (disable) {
             dismiss();
         }
