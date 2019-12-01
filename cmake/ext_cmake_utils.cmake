@@ -53,17 +53,19 @@ macro(ext_add_test_subdirectory type)
         set(dir "tests")
     endif()
 
-    if(BUILD_TESTING) #activated by `include(CTest)`
-        if("${type}" STREQUAL "google") # <-- expand type here!
-            if(NOT TARGET gtest) #avoid recursive inclusion of gtest
-              add_subdirectory(${LIBEXT_SOURCE_DIR}/external_libs/googletest)
-            endif()
-        else()
-            message(ERROR "unknown test type")
+    if("${type}" STREQUAL "google") # <-- expand type here!
+        if(NOT TARGET gtest) #avoid recursive inclusion of gtest
+          if("${LIBEXT_SOURCE_DIR}" STREQUAL "")
+              ext_fatal("LIBEXT_SOURCE_DIR not found")
+          endif()
+          ext_log("using google test in: ${LIBEXT_SOURCE_DIR}/external_libs/googletest")
+          add_subdirectory(${LIBEXT_SOURCE_DIR}/external_libs/googletest)
         endif()
-        ext_log("adding tests in: ${dir}")
-        add_subdirectory("${dir}")
+    else()
+        message(ERROR "unknown test type")
     endif()
+    ext_log("adding tests in: ${dir}")
+    add_subdirectory("${dir}")
 endmacro(ext_add_test_subdirectory)
 
 #! prefix string with provided symbol(s) until is has given length
