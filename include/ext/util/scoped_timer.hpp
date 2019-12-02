@@ -140,6 +140,13 @@ class scoped_timer {
         return callback(calculate());
     }
 
+    _detail::scoped_timer::int_string_vec run_external(callback_type& cb, bool disable = true) {
+        if (disable) {
+            dismiss();
+        }
+        return cb(calculate());
+    }
+
     std::string to_string(bool disable = true) {
         if (disable) {
             dismiss();
