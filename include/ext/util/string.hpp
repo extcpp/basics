@@ -11,6 +11,23 @@
 
 namespace ext { namespace util {
 
+inline std::string section(std::string const& text, std::size_t witdh = 60, char fill = '=') {
+    if (text.length() + 2 >= witdh) {
+        return text;
+    }
+
+    if (text.empty()) {
+        return std::string(witdh, fill);
+    }
+
+    auto to_fill = witdh - text.length();
+    auto odd = to_fill % 2;
+    to_fill -= odd;
+    auto half = (to_fill / 2) - 1;
+
+    return std::string(half + odd, fill) + " " + text + " " + std::string(half, fill);
+}
+
 inline char to_upper(char ch) {
     return static_cast<char>(std::toupper(static_cast<unsigned char>(ch)));
 }
