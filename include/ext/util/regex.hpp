@@ -8,20 +8,21 @@
 #include <vector>
 
 #ifdef EXT_DEBUG
-#include <iostream>
+    #include <iostream>
 #endif
 
 namespace ext { namespace util {
 
 
 #ifdef EXT_DEBUG
-    using re_vector = std::vector<std::pair<std::string, std::regex>>;
+using re_vector = std::vector<std::pair<std::string, std::regex>>;
 #else
-    using re_vector = std::vector<std::regex>;
+using re_vector = std::vector<std::regex>;
 #endif
 
 
-inline void add_re(std::string const& re, re_vector& re_vec,
+inline void add_re(std::string const& re,
+                   re_vector& re_vec,
                    std::regex_constants::syntax_option_type flag = std::regex_constants::ECMAScript) {
 #ifdef EXT_DEBUG
     re_vec.push_back({re, std::regex(re, flag)});
@@ -34,10 +35,11 @@ inline bool match(std::string const& to_check, re_vector const& re_vec, bool all
     for (auto const& re : re_vec) {
 #ifdef EXT_DEBUG
         bool matches = std::regex_match(to_check, re.second);
+        // clang-format off
         std::cerr << "re: '" << re.first << "' "
-                  <<  ( matches ? "matches" : "does not match")
-                  << " string: '" << to_check
+                  << (matches ? "matches" : "does not match") << " string: '" << to_check
                   << "'\n";
+        // clang-format on
         if (matches) {
 #else
         if (std::regex_match(to_check, re)) {

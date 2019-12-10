@@ -2,8 +2,10 @@
 
 format
 external_libs/*
-include/ext/test.hpp
 watch*
+
+test.cpp
+test.hpp
 
 .coveralls.yml
 compile_commands.json

@@ -46,7 +46,8 @@ inline std::stringstream to_string_stream(int_string_vec const& times) {
 
     ss << "total   : " << std::setw(width) << std::setprecision(6) << std::fixed
        << static_cast<double>(times[0].first) / Mega << " ms (100.0%) - " << std::setprecision(9) << std::fixed
-       << static_cast<double>(times[0].first) / Giga << " s" << "\n";
+       << static_cast<double>(times[0].first) / Giga << " s"
+       << "\n";
 
     if (times.size() > 1) {
         for (std::size_t i = 1; i < times.size(); i++) {
