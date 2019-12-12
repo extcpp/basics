@@ -41,4 +41,4 @@ int main() {
 
     return 0;
 }
-#endif
+#endif // defined(EXT_MACOS)

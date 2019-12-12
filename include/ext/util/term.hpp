@@ -17,7 +17,7 @@
         #include <windows.h>
         #define EXT_WINDOWS_TERM
     #endif
-#endif
+#endif // EXT_USE_TERM
 
 namespace ext { namespace util {
 
@@ -34,10 +34,10 @@ inline std::optional<std::pair<std::size_t, std::size_t>> get_term_size() {
     return {columns, row};
 #else
     return std::nullopt;
-#endif
+#endif // EXT_UNIX_TERM
 }
 
 }} // namespace ext::util
 
 
-#endif
+#endif // EXT_UTIL_TERM_HEADER

@@ -1,7 +1,7 @@
 // Copyright - 2018 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // requires c++17 (string_view)
-#ifndef EXT_UTIL_REGEX
-#define EXT_UTIL_REGEX
+#ifndef EXT_UTIL_REGEX_HEADER
+#define EXT_UTIL_REGEX_HEADER
 
 #include <regex>
 #include <string>
@@ -9,7 +9,7 @@
 
 #ifdef EXT_DEBUG
     #include <iostream>
-#endif
+#endif // EXT_DEBUG
 
 namespace ext { namespace util {
 
@@ -18,7 +18,7 @@ namespace ext { namespace util {
 using re_vector = std::vector<std::pair<std::string, std::regex>>;
 #else
 using re_vector = std::vector<std::regex>;
-#endif
+#endif // EXT_DEBUG
 
 
 inline void add_re(std::string const& re,
@@ -28,7 +28,7 @@ inline void add_re(std::string const& re,
     re_vec.push_back({re, std::regex(re, flag)});
 #else
     re_vec.push_back(std::regex(re, flag));
-#endif
+#endif // EXT_DEBUG
 }
 
 inline bool match(std::string const& to_check, re_vector const& re_vec, bool all = false) {
@@ -43,7 +43,7 @@ inline bool match(std::string const& to_check, re_vector const& re_vec, bool all
         if (matches) {
 #else
         if (std::regex_match(to_check, re)) {
-#endif
+#endif // EXT_DEBUG
             if (!all) {
                 return true;
             }
@@ -73,5 +73,5 @@ inline bool in_must_include_all_of(std::string const& to_check, re_vector const&
     return match(to_check, include_one_of_vec, true);
 }
 
-}} // namespace ext::util
-#endif
+}}     // namespace ext::util
+#endif // EXT_UTIL_REGEX_HEADER

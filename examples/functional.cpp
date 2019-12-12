@@ -26,4 +26,4 @@ int main() {
 
     return 0;
 }
-#endif     // EXT_WINDOWS
+#endif     // defined(EXT_WINDOWS) || defined(EXT_MACOS)

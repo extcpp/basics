@@ -10,8 +10,8 @@
 #include <vector>
 
 #ifdef EXT_USE_TERM
-#include "term.hpp"
-#endif
+    #include "term.hpp"
+#endif // EXT_USE_TERM
 
 namespace ext { namespace util {
 
@@ -21,7 +21,7 @@ inline std::string section(std::string const& text, std::size_t width = 80, char
     if (size.has_value()) {
         width = std::min(width, size.value().first);
     }
-#endif
+#endif // EXT_USE_TERM
     if (text.length() + 2 >= width) {
         return text;
     }

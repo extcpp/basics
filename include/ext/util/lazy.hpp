@@ -24,4 +24,4 @@ struct lazy_construct {
 };
 
 }}     // namespace ext::util
-#endif // EXT_UTIL_CAST_HEADER
+#endif // EXT_UTIL_LAZY_HEADER
