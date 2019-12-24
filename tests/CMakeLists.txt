@@ -7,7 +7,7 @@ set(test_files
     "math"
     "meta_has_member"
     #"meta_if"
-    #"meta_is_one_of"
+    "meta_is_one_of"
     "util_any_printable"
     "util_basic"
     "util_cast"
