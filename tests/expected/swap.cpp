@@ -5,6 +5,7 @@ struct no_throw {
     no_throw(std::string i) : i(i) {}
     std::string i;
 };
+
 struct canthrow_move {
     canthrow_move(std::string i) : i(i) {}
     canthrow_move(canthrow_move const&) = default;

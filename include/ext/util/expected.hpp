@@ -261,11 +261,13 @@ struct expected_storage_base {
             m_unexpect.~unexpected<E>();
         }
     }
+
     union {
         T m_val;
         unexpected<E> m_unexpect;
         char m_no_init;
     };
+
     bool m_has_val;
 };
 

@@ -65,3 +65,12 @@ foreach(suffix IN ITEMS "" "_shared")
 	add_test(NAME "${test_target}_run" COMMAND $<TARGET_FILE:${test_target}>)
     set_target_properties (${test_target} PROPERTIES FOLDER tests/${test_target})
 endforeach()
+
+
+
+add_executable(expected_standalone_test_swap expected/standalone_test_swap.cpp)
+target_link_libraries(expected_standalone_test_swap ext)
+target_compile_options(expected_standalone_test_swap PRIVATE ${ext_stone-warnings})
+target_compile_definitions(expected_standalone_test_swap PUBLIC EXT_CHECKED=1 EXT_IN_TEST=1)
+#add_test(NAME expected_standalone_test_swap_run COMMAND $<TARGET_FILE:expected_standalone_test_swap>)
+#set_target_properties (expected_standalone_test_swap PROPERTIES FOLDER tests/expected_standalone_test_swap)
