@@ -31,7 +31,11 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     set(cpp "${ex}.cpp")
     set(example "${ex}_example")
     add_executable(${example} ${cpp})
-    target_link_libraries(${example} ${CMAKE_THREAD_LIBS_INIT} ext_shared)
+    target_link_libraries(${example}
+        ${CMAKE_THREAD_LIBS_INIT}
+        ext_shared
+        ext_unfinished
+    )
     if(UNIX)
         target_link_libraries(${example} dl)
     endif(UNIX)

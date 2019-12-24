@@ -108,6 +108,11 @@ target_compile_definitions(ext_shared PUBLIC EXT_SHARED_LIB)
 target_compile_definitions(ext_shared PRIVATE EXT_IN_LIB=1)
 target_link_libraries(ext_shared Threads::Threads)
 
+### define header only lib UNFINISHED
+add_library(ext_unfinished INTERFACE)
+target_include_directories(ext_unfinished INTERFACE
+    "${CMAKE_CURRENT_SOURCE_DIR}/.unfinished/include"
+)
 
 # set up folder structure for XCode and VisualStudio
 set_target_properties (ext_shared PROPERTIES FOLDER libext)
