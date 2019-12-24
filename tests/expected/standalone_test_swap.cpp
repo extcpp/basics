@@ -1,6 +1,6 @@
 #include <ext/util/expected.hpp>
-#include <string>
 #include <stdexcept>
+#include <string>
 namespace eu = ext::util;
 
 struct no_throw {

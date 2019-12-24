@@ -1,5 +1,5 @@
-#include <ext/macros/compiler.hpp>
 #include "expected.hpp"
+#include <ext/macros/compiler.hpp>
 
 struct no_throw {
     no_throw(std::string i) : i(i) {}
@@ -93,10 +93,7 @@ TEST(expected_swap, all) {
     eu::expected<no_throw, willthrow_move> b{eu::unexpect, s2};
     should_throw = 1;
 
-#ifdef EXT_COMPILER_VC
-    //TODO inspect with asan
     ASSERT_ANY_THROW(swap(a, b));
-#endif
     EXPECT_TRUE(a->i == s1);
     EXPECT_TRUE(b.error().i == s2);
 }

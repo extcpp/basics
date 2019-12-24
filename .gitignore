@@ -4,6 +4,7 @@ format
 external_libs/*
 watch*
 
+/test
 test.cpp
 test.hpp
 
