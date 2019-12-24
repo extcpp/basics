@@ -1,3 +1,4 @@
+#include <ext/macros/compiler.hpp>
 #include "expected.hpp"
 
 struct no_throw {
@@ -33,50 +34,50 @@ void swap_test() {
     eu::expected<T1, T2> a{s1};
     eu::expected<T1, T2> b{s2};
     swap(a, b);
-    ASSERT_TRUE(a->i == s2);
-    ASSERT_TRUE(b->i == s1);
+    EXPECT_TRUE(a->i == s2);
+    EXPECT_TRUE(b->i == s1);
 
     a = s1;
     b = eu::unexpected<T2>(s2);
     swap(a, b);
-    ASSERT_TRUE(a.error().i == s2);
-    ASSERT_TRUE(b->i == s1);
+    EXPECT_TRUE(a.error().i == s2);
+    EXPECT_TRUE(b->i == s1);
 
     a = eu::unexpected<T2>(s1);
     b = s2;
     swap(a, b);
-    ASSERT_TRUE(a->i == s2);
-    ASSERT_TRUE(b.error().i == s1);
+    EXPECT_TRUE(a->i == s2);
+    EXPECT_TRUE(b.error().i == s1);
 
     a = eu::unexpected<T2>(s1);
     b = eu::unexpected<T2>(s2);
     swap(a, b);
-    ASSERT_TRUE(a.error().i == s2);
-    ASSERT_TRUE(b.error().i == s1);
+    EXPECT_TRUE(a.error().i == s2);
+    EXPECT_TRUE(b.error().i == s1);
 
     a = s1;
     b = s2;
     a.swap(b);
-    ASSERT_TRUE(a->i == s2);
-    ASSERT_TRUE(b->i == s1);
+    EXPECT_TRUE(a->i == s2);
+    EXPECT_TRUE(b->i == s1);
 
     a = s1;
     b = eu::unexpected<T2>(s2);
     a.swap(b);
-    ASSERT_TRUE(a.error().i == s2);
-    ASSERT_TRUE(b->i == s1);
+    EXPECT_TRUE(a.error().i == s2);
+    EXPECT_TRUE(b->i == s1);
 
     a = eu::unexpected<T2>(s1);
     b = s2;
     a.swap(b);
-    ASSERT_TRUE(a->i == s2);
-    ASSERT_TRUE(b.error().i == s1);
+    EXPECT_TRUE(a->i == s2);
+    EXPECT_TRUE(b.error().i == s1);
 
     a = eu::unexpected<T2>(s1);
     b = eu::unexpected<T2>(s2);
     a.swap(b);
-    ASSERT_TRUE(a.error().i == s2);
-    ASSERT_TRUE(b.error().i == s1);
+    EXPECT_TRUE(a.error().i == s2);
+    EXPECT_TRUE(b.error().i == s1);
 }
 
 TEST(expected_swap, all) {
@@ -91,11 +92,10 @@ TEST(expected_swap, all) {
     eu::expected<no_throw, willthrow_move> b{eu::unexpect, s2};
     should_throw = 1;
 
-#ifdef _MSC_VER
-    // this seems to break catch on GCC and Clang
-    ASSERT_TRUE_THROWS(swap(a, b));
+#ifdef EXT_COMPILER_VC
+    //TODO inspect with asan
+    ASSERT_ANY_THROW(swap(a, b));
 #endif
-
-    ASSERT_TRUE(a->i == s1);
-    ASSERT_TRUE(b.error().i == s2);
+    EXPECT_TRUE(a->i == s1);
+    EXPECT_TRUE(b.error().i == s2);
 }

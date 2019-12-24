@@ -5,7 +5,7 @@
 
 #define STATIC_REQUIRE(e)                            \
     constexpr bool TOKENPASTE2(rqure, __LINE__) = e; \
-    ASSERT_TRUE(e);
+    EXPECT_TRUE(e);
 
 TEST(expected_extensions, map) {
     auto mul2 = [](int a) {
@@ -18,112 +18,112 @@ TEST(expected_extensions, map) {
     {
         eu::expected<int, int> e = 21;
         auto ret = e.map(mul2);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = e.map(mul2);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = std::move(e).map(mul2);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = std::move(e).map(mul2);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.map(mul2);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.map(mul2);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).map(mul2);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).map(mul2);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = e.map(ret_void);
-        ASSERT_TRUE(ret);
+        EXPECT_TRUE(ret);
         // STATIC_REQUIRE((std::is_same<decltype(ret), eu::expected<void, int>>::value));
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = e.map(ret_void);
-        ASSERT_TRUE(ret);
+        EXPECT_TRUE(ret);
         // STATIC_REQUIRE( (std::is_same<decltype(ret), eu::expected<void, int>>::value));
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = std::move(e).map(ret_void);
-        ASSERT_TRUE(ret);
+        EXPECT_TRUE(ret);
         // STATIC_REQUIRE( (std::is_same<decltype(ret), eu::expected<void, int>>::value));
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = std::move(e).map(ret_void);
-        ASSERT_TRUE(ret);
+        EXPECT_TRUE(ret);
         // STATIC_REQUIRE( (std::is_same<decltype(ret), eu::expected<void, int>>::value));
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.map(ret_void);
-        ASSERT_TRUE(!ret);
+        EXPECT_TRUE(!ret);
         // STATIC_REQUIRE( (std::is_same<decltype(ret), eu::expected<void, int>>::value));
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.map(ret_void);
-        ASSERT_TRUE(!ret);
+        EXPECT_TRUE(!ret);
         // STATIC_REQUIRE( (std::is_same<decltype(ret), eu::expected<void, int>>::value));
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).map(ret_void);
-        ASSERT_TRUE(!ret);
+        EXPECT_TRUE(!ret);
         // STATIC_REQUIRE((std::is_same<decltype(ret), eu::expected<void, int>>::value));
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).map(ret_void);
-        ASSERT_TRUE(!ret);
+        EXPECT_TRUE(!ret);
         // STATIC_REQUIRE((std::is_same<decltype(ret), eu::expected<void, int>>::value));
     }
 
@@ -134,8 +134,8 @@ TEST(expected_extensions, map) {
         auto ret = e.map([](int& i) -> int& {
             return i;
         });
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(ret == 42);
     }
 }
 
@@ -150,105 +150,105 @@ TEST(expected_extensions, map_error) {
     {
         eu::expected<int, int> e = 21;
         auto ret = e.map_error(mul2);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = e.map_error(mul2);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = std::move(e).map_error(mul2);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = std::move(e).map_error(mul2);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.map_error(mul2);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 42);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 42);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.map_error(mul2);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 42);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 42);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).map_error(mul2);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 42);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 42);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).map_error(mul2);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 42);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 42);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = e.map_error(ret_void);
-        ASSERT_TRUE(ret);
+        EXPECT_TRUE(ret);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = e.map_error(ret_void);
-        ASSERT_TRUE(ret);
+        EXPECT_TRUE(ret);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = std::move(e).map_error(ret_void);
-        ASSERT_TRUE(ret);
+        EXPECT_TRUE(ret);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = std::move(e).map_error(ret_void);
-        ASSERT_TRUE(ret);
+        EXPECT_TRUE(ret);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.map_error(ret_void);
-        ASSERT_TRUE(!ret);
+        EXPECT_TRUE(!ret);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.map_error(ret_void);
-        ASSERT_TRUE(!ret);
+        EXPECT_TRUE(!ret);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).map_error(ret_void);
-        ASSERT_TRUE(!ret);
+        EXPECT_TRUE(!ret);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).map_error(ret_void);
-        ASSERT_TRUE(!ret);
+        EXPECT_TRUE(!ret);
     }
 }
 
@@ -265,113 +265,113 @@ TEST(expected_extensions, and_then) {
     {
         eu::expected<int, int> e = 21;
         auto ret = e.and_then(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = e.and_then(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = std::move(e).and_then(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = std::move(e).and_then(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = e.and_then(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 17);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 17);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = e.and_then(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 17);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 17);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = std::move(e).and_then(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 17);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 17);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = std::move(e).and_then(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 17);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 17);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.and_then(succeed);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.and_then(succeed);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).and_then(succeed);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).and_then(succeed);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.and_then(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.and_then(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).and_then(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).and_then(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 }
 
@@ -406,177 +406,177 @@ TEST(expected_extensions, or_else) {
     {
         eu::expected<int, int> e = 21;
         auto ret = e.or_else(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = e.or_else(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = std::move(e).or_else(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         eu::expected<int, eptr> e = 21;
         auto ret = std::move(e).or_else(succeedptr);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = std::move(e).or_else(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = e.or_else(fail);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = e.or_else(fail);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         eu::expected<int, int> e = 21;
         auto ret = std::move(e).or_else(fail);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(ret == 21);
     }
 
 
     {
         eu::expected<int, eptr> e = 21;
         auto ret = std::move(e).or_else(efail);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(ret == 21);
     }
 
     {
         const eu::expected<int, int> e = 21;
         auto ret = std::move(e).or_else(fail);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 21);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 21);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.or_else(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.or_else(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).or_else(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         eu::expected<int, eptr> e(eu::unexpect, make_u_int(21));
         auto ret = std::move(e).or_else(succeedptr);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).or_else(succeed);
-        ASSERT_TRUE(ret);
-        ASSERT_TRUE(*ret == 42);
+        EXPECT_TRUE(ret);
+        EXPECT_TRUE(*ret == 42);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.or_else(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 17);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 17);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.or_else(failvoid);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.or_else(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 17);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 17);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = e.or_else(failvoid);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).or_else(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 17);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 17);
     }
 
     {
         eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).or_else(failvoid);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 
     {
         eu::expected<int, eptr> e(eu::unexpect, make_u_int(21));
         auto ret = std::move(e).or_else(failvoidptr);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(*ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(*ret.error() == 21);
     }
 
     {
         eu::expected<int, eptr> e(eu::unexpect, make_u_int(21));
         auto ret = std::move(e).or_else(consumeptr);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == nullptr);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == nullptr);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).or_else(fail);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 17);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 17);
     }
 
     {
         const eu::expected<int, int> e(eu::unexpect, 21);
         auto ret = std::move(e).or_else(failvoid);
-        ASSERT_TRUE(!ret);
-        ASSERT_TRUE(ret.error() == 21);
+        EXPECT_TRUE(!ret);
+        EXPECT_TRUE(ret.error() == 21);
     }
 }
 struct S {
@@ -600,10 +600,10 @@ TEST(expected_extensions, issue32) {
     a.map([&i] {
         i = 42;
     });
-    ASSERT_TRUE(i == 42);
+    EXPECT_TRUE(i == 42);
 
     auto x = a.map([] {
         return 42;
     });
-    ASSERT_TRUE(*x == 42);
+    EXPECT_TRUE(*x == 42);
 }

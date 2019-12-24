@@ -43,12 +43,12 @@ auto doit() -> eu::expected<std::unique_ptr<b>, int> {
 
 TEST(expected_extensions, issue23) {
     eu::expected<std::unique_ptr<a>, int> msg = doit();
-    ASSERT_TRUE(!msg.has_value());
+    EXPECT_TRUE(!msg.has_value());
 }
 
 TEST(expected_extensions, issue26) {
     eu::expected<a, int> exp = eu::expected<b, int>(eu::unexpect, 0);
-    ASSERT_TRUE(!exp.has_value());
+    EXPECT_TRUE(!exp.has_value());
 }
 
 struct foo {
@@ -61,7 +61,7 @@ TEST(expected_extensions, issue29) {
     std::vector<foo> v;
     v.emplace_back();
     eu::expected<std::vector<foo>, int> ov = std::move(v);
-    ASSERT_TRUE(ov->size() == 1);
+    EXPECT_TRUE(ov->size() == 1);
 }
 
 eu::expected<int, std::string> error() {
@@ -89,11 +89,11 @@ TEST(expected_extensions, issue31) {
 
 TEST(expected_extensions, issue33) {
     eu::expected<void, int> res{eu::unexpect, 0};
-    ASSERT_TRUE(!res);
+    EXPECT_TRUE(!res);
     res = res.map_error([](int) {
         return 42;
     });
-    ASSERT_TRUE(res.error() == 42);
+    EXPECT_TRUE(res.error() == 42);
 }
 
 
@@ -151,5 +151,5 @@ eu::expected<int, std::unique_ptr<std::string>> func() {
 }
 
 TEST(expected_extensions, issue61) {
-    ASSERT_TRUE(func().value() == 1);
+    EXPECT_TRUE(func().value() == 1);
 }

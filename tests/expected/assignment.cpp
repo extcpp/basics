@@ -9,45 +9,45 @@ TEST(expected_assignment, simple) {
     eu::expected<int, int> e6 = eu::make_unexpected(21);
 
     e1 = e2;
-    ASSERT_TRUE(e1);
-    ASSERT_TRUE(*e1 == 17);
-    ASSERT_TRUE(e2);
-    ASSERT_TRUE(*e2 == 17);
+    EXPECT_TRUE(e1);
+    EXPECT_TRUE(*e1 == 17);
+    EXPECT_TRUE(e2);
+    EXPECT_TRUE(*e2 == 17);
 
     e1 = std::move(e2);
-    ASSERT_TRUE(e1);
-    ASSERT_TRUE(*e1 == 17);
-    ASSERT_TRUE(e2);
-    ASSERT_TRUE(*e2 == 17);
+    EXPECT_TRUE(e1);
+    EXPECT_TRUE(*e1 == 17);
+    EXPECT_TRUE(e2);
+    EXPECT_TRUE(*e2 == 17);
 
     e1 = 42;
-    ASSERT_TRUE(e1);
-    ASSERT_TRUE(*e1 == 42);
+    EXPECT_TRUE(e1);
+    EXPECT_TRUE(*e1 == 42);
 
     auto unex = eu::make_unexpected(12);
     e1 = unex;
-    ASSERT_TRUE(!e1);
-    ASSERT_TRUE(e1.error() == 12);
+    EXPECT_TRUE(!e1);
+    EXPECT_TRUE(e1.error() == 12);
 
     e1 = eu::make_unexpected(42);
-    ASSERT_TRUE(!e1);
-    ASSERT_TRUE(e1.error() == 42);
+    EXPECT_TRUE(!e1);
+    EXPECT_TRUE(e1.error() == 42);
 
     e1 = e3;
-    ASSERT_TRUE(e1);
-    ASSERT_TRUE(*e1 == 21);
+    EXPECT_TRUE(e1);
+    EXPECT_TRUE(*e1 == 21);
 
     e4 = e5;
-    ASSERT_TRUE(!e4);
-    ASSERT_TRUE(e4.error() == 17);
+    EXPECT_TRUE(!e4);
+    EXPECT_TRUE(e4.error() == 17);
 
     e4 = std::move(e6);
-    ASSERT_TRUE(!e4);
-    ASSERT_TRUE(e4.error() == 21);
+    EXPECT_TRUE(!e4);
+    EXPECT_TRUE(e4.error() == 21);
 
     e4 = e1;
-    ASSERT_TRUE(e4);
-    ASSERT_TRUE(*e4 == 21);
+    EXPECT_TRUE(e4);
+    EXPECT_TRUE(*e4 == 21);
 }
 
 TEST(expected_assignment, deletion) {
