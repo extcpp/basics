@@ -21,6 +21,20 @@ set(test_files
     "util_serialization"
     "util_string"
     "util_windows_strings"
+
+    "expected/assignment"
+    "expected/bases"
+    #"expected/constexpr"
+    "expected/constructors"
+    "expected/emplace"
+    "expected/extensions"
+    "expected/issues"
+    #"expected/main"
+    #"expected/noexcept"
+    "expected/observers"
+    #"expected/relops"
+    "expected/swap"
+    #"expected/test"
 )
 
 set(test_files_shared
