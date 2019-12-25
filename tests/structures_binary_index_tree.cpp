@@ -1,11 +1,13 @@
 #include <algorithm>
+#include <array>
 #include <gtest/gtest.h>
 #include <iostream>
-#include <array>
 
 #define EXT_STRUCTURES_BINARY_INDEX_TREE_TEST
 #include <ext/structures/binary_index_tree.hpp>
-#include <ext/util/show.hpp>
+
+//#include <ext/util/show.hpp>
+//using ext::util::operator<<;
 
 TEST(structures_binary_index_tree, detail) {
     EXPECT_EQ(ext::structures::detail::parent_interrogation(0), 0);
@@ -85,6 +87,28 @@ void compare(Input const& input, BitArr const& bit_arr, Bit const& bit, std::str
     ASSERT_EQ(prefix_sum, bit.sum_vec()) << desc;
 }
 
+TEST(structures_binary_index_tree, class) {
+    std::vector<int> input(16);
+    ext::structures::binary_index_tree<int> bit(3);
+
+    auto set_test = [&input, &bit](std::size_t index, auto value, bool test = true) {
+        bit.set(index, value);
+        input.at(index) = value;
+        if (test) {
+            ASSERT_EQ(input, bit.value_vec());
+            ASSERT_EQ(get_sums(input), bit.sum_vec());
+        }
+    };
+
+    set_test(3, 2, false);
+    set_test(13, 1);
+    set_test(5, 7);
+    set_test(2, 2);
+
+    bit.reset();
+    ASSERT_EQ(bit.size(), 4);
+}
+
 TEST(structures_binary_index_tree, functions) {
     // clang-format off
     std::vector<int> input {1, 3, 4, 8,
@@ -96,30 +120,41 @@ TEST(structures_binary_index_tree, functions) {
     ASSERT_EQ(bit_arr.size(), bit_arr.size());
     bit_arr.fill(0);
 
-    ext::structures::binary_index_tree<int> bit(5);
-    ASSERT_EQ(bit.size(), 8);
+    ext::structures::binary_index_tree<int> bit(1);
 
-
+    // fill with add
     for (auto it = input.begin(); it != input.end(); it++) {
         auto index = static_cast<std::size_t>(std::distance(input.begin(), it));
         ext::structures::bit_modify(bit_arr.begin(), bit_arr.end(), index, *it);
         bit.add(index, *it);
     }
-    compare(input, bit_arr, bit, "initial");
+    compare(input, bit_arr, bit, "initial - add");
 
+    // fill with set
+    bit_arr.fill(0);
+    bit.reset();
+
+    for (auto it = input.begin(); it != input.end(); it++) {
+        auto index = static_cast<std::size_t>(std::distance(input.begin(), it));
+        ext::structures::bit_set(bit_arr.begin(), bit_arr.end(), index, *it);
+        bit.set(index, *it);
+    }
+    compare(input, bit_arr, bit, "initial - set");
+
+    // modification helper
     auto add_at_value = [&input, &bit_arr, &bit](std::size_t index, auto value) {
+        input[index] += value;
         ext::structures::bit_modify(bit_arr.begin(), bit_arr.end(), index, value);
         bit.add(index, value);
-        input[index] += value;
     };
 
     auto set_at_value = [&input, &bit_arr, &bit](std::size_t index, auto value) {
+        input[index] = value;
         ext::structures::bit_set(bit_arr.begin(), bit_arr.end(), index, value);
         bit.set(index, value);
-        input[index] = value;
     };
 
-
+    // modifications
     add_at_value(2, 3);
     compare(input, bit_arr, bit, "1st modification");
 
@@ -134,7 +169,4 @@ TEST(structures_binary_index_tree, functions) {
 
     set_at_value(0, 0);
     compare(input, bit_arr, bit, "5th modification");
-
-    bit.reset();
-    ASSERT_EQ(bit.size(), 8);
 }

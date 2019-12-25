@@ -30,7 +30,7 @@ constexpr inline T parent_interrogation(T number) {
 template<typename T>
 constexpr inline T parent_update(T number) {
     static_assert(-1 == ~0, "not 2's complement");
-    //if (number == T(0)) {
+    // if (number == T(0)) {
     //    number = T(1);
     //}
     return number + lsb(number);
@@ -67,7 +67,7 @@ inline void bit_modify(Iterator begin, Iterator end, std::size_t index, T value)
 // Paper GetProb
 template<typename T, typename Iterator>
 inline T bit_get(Iterator begin, Iterator /*end*/, std::size_t index) {
-    T rv = *(begin + static_cast<std::ptrdiff_t>(index)); //get value at positon
+    T rv = *(begin + static_cast<std::ptrdiff_t>(index)); // get value at positon
     if (index > std::size_t(0)) {
         auto search_index = index - 1; // index of previous element
         auto parent_index = detail::parent_interrogation(index);
@@ -162,7 +162,9 @@ class binary_index_tree {
         }
         return result;
     }
-
+    std::vector<T> storage_vec() const {
+        return _storage;
+    }
 #endif
     private:
     void grow_fill(std::size_t index) {
@@ -179,7 +181,7 @@ class binary_index_tree {
         EXT_ASSERT(index < _storage.size());
     }
 
-    std::vector<T> _storage; //size must be a power of 2
+    std::vector<T> _storage; // size must be a power of 2
     std::size_t _start_size = 0;
 };
 
