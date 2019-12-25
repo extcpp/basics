@@ -1,12 +1,11 @@
 #include <algorithm>
-#include <ext/structures/binary_index_tree.hpp>
-#include <ext/util/show.hpp>
 #include <gtest/gtest.h>
 #include <iostream>
+#include <array>
 
-using ext::util::operator<<;
-namespace es = ext::structures;
-namespace esd = ext::structures::detail;
+#define EXT_STRUCTURES_BINARY_INDEX_TREE_TEST
+#include <ext/structures/binary_index_tree.hpp>
+#include <ext/util/show.hpp>
 
 TEST(structures_binary_index_tree, detail) {
     EXPECT_EQ(ext::structures::detail::remove_lsb(0), 0);
@@ -46,7 +45,7 @@ TEST(structures_binary_index_tree, detail) {
     EXPECT_EQ(ext::structures::detail::increase_lsb(16), 32);
 }
 
-template <typename Container>
+template<typename Container>
 std::vector<typename Container::value_type> get_sums(Container const& input) {
     std::vector<typename Container::value_type> prefix_sum;
     int sum = 0;
@@ -57,16 +56,17 @@ std::vector<typename Container::value_type> get_sums(Container const& input) {
     return prefix_sum;
 }
 
-template <typename Container>
+template<typename Container>
 std::vector<typename Container::value_type> bit_get_sums(Container const& input) {
     std::vector<typename Container::value_type> prefix_sum;
     for (std::size_t i = 0; i < input.size(); ++i) {
-        prefix_sum.push_back(ext::structures::bit_get_sum<typename Container::value_type>(input.begin(), input.end(), i));
+        prefix_sum.push_back(
+            ext::structures::bit_get_sum<typename Container::value_type>(input.begin(), input.end(), i));
     }
     return prefix_sum;
 }
 
-template <typename Container>
+template<typename Container>
 std::vector<typename Container::value_type> bit_get_values(Container const& input) {
     std::vector<typename Container::value_type> values;
     for (std::size_t i = 0; i < input.size(); ++i) {
@@ -75,13 +75,15 @@ std::vector<typename Container::value_type> bit_get_values(Container const& inpu
     return values;
 }
 
-template <typename Input,  typename Bit>
-void compare(Input const& input, Bit const& bit, std::string const& desc) {
-    EXPECT_EQ(input, bit_get_values(bit)) << desc;
+template<typename Input, typename BitArr, typename Bit>
+void compare(Input const& input, BitArr const& bit_arr, Bit const& bit, std::string const& desc) {
+    ASSERT_EQ(input, bit_get_values(bit_arr)) << desc;
+    ASSERT_EQ(input, bit.value_vec()) << desc;
 
     auto prefix_sum = get_sums(input);
-    auto bit_prefix_sum = bit_get_sums(bit);
+    auto bit_prefix_sum = bit_get_sums(bit_arr);
     ASSERT_EQ(prefix_sum, bit_prefix_sum) << desc;
+    ASSERT_EQ(prefix_sum, bit.sum_vec()) << desc;
 }
 
 TEST(structures_binary_index_tree, functions) {
@@ -91,39 +93,49 @@ TEST(structures_binary_index_tree, functions) {
                             1, 2, 3, 2,
                             5, 7, 3, 5};
     // clang-format on
-    std::array<int, 16> bit; // binary index tree
-    ASSERT_EQ(bit.size(), bit.size());
-    bit.fill(0);
+    std::array<int, 16> bit_arr; // binary index tree
+    ASSERT_EQ(bit_arr.size(), bit_arr.size());
+    bit_arr.fill(0);
+
+    ext::structures::binary_index_tree<int> bit(5);
+    ASSERT_EQ(bit.size(), 8);
+
 
     for (auto it = input.begin(); it != input.end(); it++) {
-        ext::structures::bit_modify(bit.begin(), bit.end(), static_cast<std::size_t>(std::distance(input.begin(), it)), *it);
+        auto index = static_cast<std::size_t>(std::distance(input.begin(), it));
+        ext::structures::bit_modify(bit_arr.begin(), bit_arr.end(), index, *it);
+        bit.add(index, *it);
     }
-    compare(input, bit, "initial");
+    compare(input, bit_arr, bit, "initial");
 
-    auto add_at_value = [&input, &bit](std::size_t index, auto value) {
-        ext::structures::bit_modify(bit.begin(), bit.end(), index, value);
+    auto add_at_value = [&input, &bit_arr, &bit](std::size_t index, auto value) {
+        ext::structures::bit_modify(bit_arr.begin(), bit_arr.end(), index, value);
+        bit.add(index, value);
         input[index] += value;
     };
 
-    auto set_at_value = [&input, &bit](std::size_t index, auto value) {
-        ext::structures::bit_set(bit.begin(), bit.end(), index, value);
+    auto set_at_value = [&input, &bit_arr, &bit](std::size_t index, auto value) {
+        ext::structures::bit_set(bit_arr.begin(), bit_arr.end(), index, value);
+        bit.set(index, value);
         input[index] = value;
     };
 
 
-    add_at_value(2,3);
-    compare(input, bit, "1st modification");
+    add_at_value(2, 3);
+    compare(input, bit_arr, bit, "1st modification");
 
-    add_at_value(0,3);
-    compare(input, bit, "2nd modification");
+    add_at_value(0, 3);
+    compare(input, bit_arr, bit, "2nd modification");
 
-    set_at_value(8,23);
-    compare(input, bit, "3rd modification");
+    set_at_value(8, 23);
+    compare(input, bit_arr, bit, "3rd modification");
 
-    set_at_value(8,2);
-    compare(input, bit, "4th modification");
+    set_at_value(8, 2);
+    compare(input, bit_arr, bit, "4th modification");
 
-    set_at_value(0,0);
-    compare(input, bit, "5th modification");
+    set_at_value(0, 0);
+    compare(input, bit_arr, bit, "5th modification");
 
+    bit.reset();
+    ASSERT_EQ(bit.size(), 8);
 }
