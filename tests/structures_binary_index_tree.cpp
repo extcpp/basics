@@ -8,41 +8,40 @@
 #include <ext/util/show.hpp>
 
 TEST(structures_binary_index_tree, detail) {
-    EXPECT_EQ(ext::structures::detail::remove_lsb(0), 0);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(1), 0);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(2), 0);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(3), 2);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(4), 0);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(5), 4);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(6), 4);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(7), 6);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(8), 0);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(9), 8);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(10), 8);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(11), 10);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(12), 8);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(13), 12);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(14), 12);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(15), 14);
-    EXPECT_EQ(ext::structures::detail::remove_lsb(16), 0);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(0), 0);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(1), 0);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(2), 0);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(3), 2);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(4), 0);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(5), 4);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(6), 4);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(7), 6);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(8), 0);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(9), 8);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(10), 8);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(11), 10);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(12), 8);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(13), 12);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(14), 12);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(15), 14);
+    EXPECT_EQ(ext::structures::detail::parent_interrogation(16), 0);
 
-    EXPECT_EQ(ext::structures::detail::increase_lsb(0), 2);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(1), 2);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(2), 4);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(3), 4);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(4), 8);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(5), 6);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(6), 8);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(7), 8);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(8), 16);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(9), 10);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(10), 12);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(11), 12);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(12), 16);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(13), 14);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(14), 16);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(15), 16);
-    EXPECT_EQ(ext::structures::detail::increase_lsb(16), 32);
+    EXPECT_EQ(ext::structures::detail::parent_update(1), 2);
+    EXPECT_EQ(ext::structures::detail::parent_update(2), 4);
+    EXPECT_EQ(ext::structures::detail::parent_update(3), 4);
+    EXPECT_EQ(ext::structures::detail::parent_update(4), 8);
+    EXPECT_EQ(ext::structures::detail::parent_update(5), 6);
+    EXPECT_EQ(ext::structures::detail::parent_update(6), 8);
+    EXPECT_EQ(ext::structures::detail::parent_update(7), 8);
+    EXPECT_EQ(ext::structures::detail::parent_update(8), 16);
+    EXPECT_EQ(ext::structures::detail::parent_update(9), 10);
+    EXPECT_EQ(ext::structures::detail::parent_update(10), 12);
+    EXPECT_EQ(ext::structures::detail::parent_update(11), 12);
+    EXPECT_EQ(ext::structures::detail::parent_update(12), 16);
+    EXPECT_EQ(ext::structures::detail::parent_update(13), 14);
+    EXPECT_EQ(ext::structures::detail::parent_update(14), 16);
+    EXPECT_EQ(ext::structures::detail::parent_update(15), 16);
+    EXPECT_EQ(ext::structures::detail::parent_update(16), 32);
 }
 
 template<typename Container>
