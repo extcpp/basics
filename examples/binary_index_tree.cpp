@@ -22,7 +22,7 @@ int main(/*int argc, const char *argv[]*/) {
     std::array<unsigned, 16> input = {{0, 2, 0, 1, 1, 1, 0, 4, 4, 0, 1, 0, 1, 2, 3, 0}};
 
     for (auto it = input.begin(); it != input.end(); it++) {
-        ext::structures::bit_modify(begin, end, std::distance(input.begin(), it), *it);
+        ext::structures::bit_modify(begin, end, static_cast<std::size_t>(std::distance(input.begin(), it)), *it);
     }
 
     // index
@@ -49,7 +49,7 @@ int main(/*int argc, const char *argv[]*/) {
     // cul
     std::cout << "cul:      ";
     for (std::size_t j = 0; j < arr.size(); ++j) {
-        std::cout << ext::structures::bit_get_cumulative<long>(begin, end, j) << "\t";
+        std::cout << ext::structures::bit_get_sum<long>(begin, end, j) << "\t";
     }
     std::cout << std::endl;
 
