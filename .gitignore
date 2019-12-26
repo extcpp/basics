@@ -4,7 +4,9 @@ format
 external_libs/*
 watch*
 
+/*clang*
 /test
+
 test.cpp
 test.hpp
 
