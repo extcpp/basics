@@ -8,22 +8,16 @@
 #include <vector>
 
 #include <ext/macros/assert.hpp>
-#include <ext/memory/align.hpp>
+#include <ext/util/bit_tricks.hpp>
 
 namespace ext { namespace structures {
 
 namespace detail {
 
-template<typename T>
-constexpr inline T lsb(T number) {
-    static_assert(-1 == ~0, "not 2's complement");
-    return (number & -number);
-}
-
 // parent in interrogation tree
 template<typename T>
 constexpr inline T parent_interrogation(T number) {
-    return number - lsb(number);
+    return number - ext::util::lsb(number);
 }
 
 // get index of next node
@@ -33,7 +27,7 @@ constexpr inline T parent_update(T number) {
     // if (number == T(0)) {
     //    number = T(1);
     //}
-    return number + lsb(number);
+    return number + ext::util::lsb(number);
 }
 } // namespace detail
 
@@ -103,8 +97,7 @@ class binary_index_tree {
     binary_index_tree(std::size_t size = 8) {
         std::size_t new_size = size;
 
-        // check if we got a power of 2, if not take the next bigger one
-        if (!ext::memory::is_alignment(size)) {
+        if (!ext::util::is_power_of_two(size)) {
             std::size_t msb = 0;
             while (size != 0) {
                 size = size / 2;
@@ -165,11 +158,11 @@ class binary_index_tree {
     std::vector<T> storage_vec() const {
         return _storage;
     }
-#endif
+#endif // EXT_STRUCTURES_BINARY_INDEX_TREE_TEST
     private:
     void grow_fill(std::size_t index) {
         if (index >= _storage.size()) {
-            EXT_ASSERT(ext::memory::is_alignment(_storage.size()));
+            EXT_ASSERT(ext::util::is_power_of_two(_storage.size()));
             auto old_size = _storage.size();
             auto new_size = old_size;
             while (new_size <= index) {

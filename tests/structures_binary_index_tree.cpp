@@ -7,7 +7,7 @@
 #include <ext/structures/binary_index_tree.hpp>
 
 //#include <ext/util/show.hpp>
-//using ext::util::operator<<;
+// using ext::util::operator<<;
 
 TEST(structures_binary_index_tree, detail) {
     EXPECT_EQ(ext::structures::detail::parent_interrogation(0), 0);

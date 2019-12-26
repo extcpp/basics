@@ -22,7 +22,7 @@ struct if_<std::false_type, first, second> {
 template<typename cond, typename first, typename second>
 using if_t = typename if_<cond, first, second>::type;
 
-// if_c
+// if_c -- same as std::conditional
 template<bool, typename first, typename second>
 struct if_c {
     using type = first;

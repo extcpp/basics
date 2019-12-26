@@ -3,6 +3,7 @@
 #define EXT_MEMORY_ALIGN_HEADER
 
 #include <ext/config.hpp>
+#include <ext/util/bit_tricks.hpp>
 #include <memory>
 #include <new>
 
@@ -18,8 +19,8 @@ inline constexpr std::size_t cache_line_size() {
 
 template<typename T>
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, bool> inline constexpr is_alignment(T number) {
-    // alignment is expected to be a power of 2
-    return (number != 0) && ((number & (number - 1)) == 0);
+    return util::is_power_of_two(number);
 }
+
 }}     // namespace ext::memory
 #endif // EXT_MEMORY_ALIGN_HEADER
