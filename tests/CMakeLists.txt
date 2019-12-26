@@ -6,7 +6,6 @@ set(test_files
     "algorithm_knapsack"
     "math"
     "meta_has_member"
-    #"meta_if"
     "meta_is_one_of"
 
     "structures_binary_index_tree"
