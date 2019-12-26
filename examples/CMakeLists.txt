@@ -8,6 +8,7 @@ find_package(Threads REQUIRED)
 
 ## examples
 set(examples
+    binary_index_tree
     container_helper
     function_cache
     functional
