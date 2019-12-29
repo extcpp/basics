@@ -19,7 +19,7 @@ env:
   global:
     # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
     #   via the "travis encrypt" command using the project repo's public key
-    - secure: "L8WVgBhDwuJJy5pGC/x/RWPZnCUhQDz6aO0seQGSPY0HYBnuVeEmGvvPF7KN/G5gsubZt7fwHbuwhiaL4CpezV35Tpg1uDQGrYmKALvGQTYdFLQo6zEcBVcBi6lH/hNVcJeJxrU18TQAZJ19sHO4nYLgtUBO2GMaUg+8VGVkX7kyVfJThJ8/RJjpfhtNmfkvIs73JKxLYUgVJz57iBZC7gatACffFmpaq+C1YKUIMWQzTtnZiNOQQZNS5LTPl7kdtDP3vPrV+NDQU0/6l+bDa/FwB+OVodarc4ykL+pxt76oHCbbRE2/BURstaWPCWkkALMVHvC51lXV3Zs8brIlwWjakNoLV5leklb/prtosj4tXMjpEOM1JXW3StGensk5Pq4o19GeoasIR3X4Xjw5hFur6XRjBlAX/an8S+Eno/Pf/s+PRohCDJ+xRvxmfsy3WDncPgCNESmmK3j3Besedi9ExYRgvKMIL3Zd2zlroQepkHrB63tG77A9SHNlpGljP5HVG8rLxjSAnTGQES+uJL0IotQOjmTA7JgkvfUf40J4zczPZfKjBlCTBVzs5Zd3FXlu1G7R4h3HjSERis6sy0pWDk8RcrkSFBIpMDeZFqAA7xDgLr7qOQKnio5kLqbmFLrd/VKMGkY27DjUpSIEbJ65ZgjHLfzFfoUunISzCZo="
+    - secure: "U1c29thaYIX4rK9/aF9mgllQJ5qHbSSPEZMr+sR3VrGVGVBPBZ3rCV8ytqrOX9N8U1v68hJJPn5Qo+o1xXI8/tlW/mDZrDe50S6J2XtLiQXZfaQxB+3itF08vWONSK9G9P9RbXxruVBz4jNCtl4uhXOH1Y3QQoTL/ag8se1lAZ/8fvIKe5IA+HlIVCkcI6qV0XfCD8DlYilbq+65S5zdqJ+ER+/o+QjViaX6suXIsFp+kqRHjrn/4B+Bd32ZfWERDL4UmFGu4HrvTc5A+WpT2/Qt0lYo8mce4kFnmMlhxx989M18ZOZS+wTH7QtZwzc8CUQytjg6Q97SYtOsXZqpRI3A2OoZitt715Yg27Um4XFmIOPUFgoxdJ0tDTixZBxKCuSWfZes61AlcD5bILhRSQAkjuKss0poIJXTCBFfFvSlbj1rrTbeK9ZxsaHYQ9dFcVxAuRdDS0YtQLZv/ldaQygOQZVQ8pijU1w366gDlN5qYkXS9N3+YzsFF3RdJ8072060F30f/xp6fekazBmk8Bao/WrXJrRJT3aY3IsQsaI55mL82scyS0F9otWkCWA1VYvpBmCkllLX0CJSTERjT7MT+uOK65uQpCY43keb5h+e7cji0d62HBlkpwfpvqGpbaRceppetc4rUM7UTG+MOduuHlXjwh1XZkeNKkwr1ek="
     - ARCH=amd64
     - build_type=Release
     - tests=ON
@@ -92,11 +92,15 @@ matrix:
             version: 0.1
             description: libext
           notification_email: linux@obiwahn.org
+          #build_command_prepend: |
+          #                       export ${CXX}
+          #                       export ${CC}
+          #                       export ${CXXFLAGS}
+          #                       cov-configure --comptype gcc --compiler /usr/bin/g++-7 -- -std=gnu++1z
+          #                       cmake -DCMAKE_BUILD_TYPE=Debug -DLIBEXT_TESTS=ON -DLIBEXT_EXAMPLES=ON .
+          #build_command: "cmake --build . --config Debug"
           build_command_prepend: |
-                                 export ${CXX}
-                                 export ${CC}
-                                 export ${CXXFLAGS}
-                                 cov-configure --comptype gcc --compiler /usr/bin/gcc-7 -- -std=gnu++1z
+                                 cov-configure --comptype g++ --compiler /usr/bin/g++-7 -- -std=gnu++1z
                                  cmake -DCMAKE_BUILD_TYPE=Debug -DLIBEXT_TESTS=ON -DLIBEXT_EXAMPLES=ON .
           build_command: "cmake --build . --config Debug"
           branch_pattern: coverity_scan
@@ -108,8 +112,8 @@ matrix:
       script:
         - echo 'no build required ... done'
         # debug covertiy scan
-        #- cat cov-int/build-log.txt
-        #- cat cov-int/scm_log.txt
+        - cat cov-int/build-log.txt
+        - cat cov-int/scm_log.txt
 
 before_install:
   # for some reason CXX and CC can not be set in env

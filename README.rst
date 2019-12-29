@@ -23,7 +23,7 @@ using cmake, travis, appveyor, coverage and friends.
 .. |codecov| image:: https://codecov.io/gh/extcpp/libext/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/extcpp/libext
 
-.. |coverity| image:: https://scan.coverity.com/projects/18316/badge.svg
+.. |coverity| image:: https://scan.coverity.com/projects/20115/badge.svg
    :target: https://scan.coverity.com/projects/extcpp-libext
 
 .. |cpp| image:: https://img.shields.io/badge/c++-17-green.svg?style=flat
