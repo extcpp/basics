@@ -20,7 +20,13 @@ section "running cmake"
 cd $build_root || ferr "failed to change into build dir"
 #command
 echo "cmake arguments: $@"
-cmake "$@" "$project_root" || fserr "running cmake - failed" $?
+
+cmake_gen=()
+if [[ $generator == "ninja" ]]; then
+    cmake_gen+=( "-G" "Ninja" )
+fi
+
+cmake "${cmake_gen[@]}" "$@" "$project_root" || fserr "running cmake - failed" $?
 
 #end
 echo

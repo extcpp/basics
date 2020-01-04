@@ -13,6 +13,10 @@ fi
 section "running make"
 cd $build_root || ferr "failed to change into build dir"
 #command
-make -j $(nproc) || ferr "running make - failed" $?
+if [[ $generator == "ninja" ]]; then
+    ninja
+else
+    make -j $(nproc) || ferr "running make - failed" $?
+fi
 #end
 echo

@@ -22,6 +22,7 @@ do_test=false
 asan=false
 build_prefix="<> "
 rpath=
+generator=
 
 # source build lib
 lib=$project_root/.build_scripts/build_lib
@@ -127,6 +128,10 @@ while [[ -n "$1" ]]; do
       flags_asan="-fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fno-omit-frame-pointer -fno-sanitize=vptr -pthread"
       shift
     ;;
+    --ninja)
+      generator="ninja"
+      shift
+    ;;
     *)
       args+=( "$1" )
       shift
@@ -177,6 +182,7 @@ export build_root
 export build_base
 export do_test
 export asan
+export generator
 ## build prepared
 
 "$project_root"/.build_scripts/var_info || exit $?

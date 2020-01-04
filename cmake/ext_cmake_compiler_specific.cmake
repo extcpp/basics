@@ -28,7 +28,10 @@ endif()
 endmacro(ext_define_warning_flags)
 
 macro(ext_colored_compiler_ouput)
-option(FORCE_COLORED_OUTPUT "Always produce ANSI-colored output (GNU/Clang only)." OFF)
+if(NOT DEFINED FORCE_COLORED_OUTPUT)
+    option(FORCE_COLORED_OUTPUT "Always produce ANSI-colored output (GNU/Clang only)." OFF)
+endif()
+
 if (${FORCE_COLORED_OUTPUT})
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
        add_compile_options (-fdiagnostics-color=always)
