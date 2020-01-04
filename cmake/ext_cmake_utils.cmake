@@ -8,43 +8,6 @@ function(ext_fatal)
     message(FATAL_ERROR "FATAL ERROR -- " ${ARGV})
 endfunction(ext_fatal)
 
-macro(ext_setup)
-    # TODO - test this macro in other libs
-    # execute macro only in top-level CMakeLists.txt
-    if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
-        # execute this setup just once
-        if(NOT EXT_SETUP_DONE)
-            if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-                set(LINUX TRUE)
-            else()
-                set(LINUX FALSE)
-            endif()
-
-            set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-            # set / modify default install prefix
-            if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-                if(UNIX)
-                    set(CMAKE_INSTALL_PREFIX  "$ENV{HOME}/local")
-                else()
-                    # do not change the default for other operating systems
-                endif()
-            endif()
-
-            include(ext_cmake_compiler_warnings)
-
-            set(EXT_CXX_COMPILER_IS_GCC FALSE)
-            set(EXT_CXX_COMPILER_IS_CLANG FALSE)
-            if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-                set(EXT_CXX_COMPILER_IS_GCC TRUE)
-            elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-                set(EXT_CXX_COMPILER_IS_CLANG TRUE)
-            endif()
-
-            set(EXT_SETUP_DONE TRUE)
-        endif()
-    endif()
-endmacro(ext_setup)
-
 macro(ext_add_test_subdirectory type)
     set(EXT_TEST_TYPE "${type}")
 

@@ -6,6 +6,7 @@ watch*
 
 /*clang*
 /test
+/ninja
 
 test.cpp
 test.hpp

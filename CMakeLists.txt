@@ -23,8 +23,10 @@ include (TestBigEndian)
 TEST_BIG_ENDIAN(ext_is_big_endian)
 
 set(LIBEXT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-include(ext_cmake_utils)
-ext_setup()
+include(ext_cmake_setup)
+
+set(FORCE_COLORED_OUTPUT ON)
+ext_colored_compiler_ouput()
 
 # verbose windows linking
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /VERBOSE:LIB")
@@ -146,5 +148,5 @@ add_custom_target(
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     COMMAND ${CMAKE_COMMAND}
                 -D "EXT_GIT_VERSION_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/ext_version.hpp"
-                -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/script_git_version.cmake"
+                -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ext_script_git_version.cmake"
 )
