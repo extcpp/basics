@@ -56,7 +56,7 @@ while [[ -n "$1" ]]; do
       build_type="release"
       shift
     ;;
-    -rd|--rel-wiht-deb-info)
+    -rd|--rel-with-deb-info)
       build_type="relwithdeb"
       shift
     ;;
@@ -80,19 +80,16 @@ while [[ -n "$1" ]]; do
     --gcc)
       export CXX=g++
       export CC=gcc
-      #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
       shift
     ;;
     --gcc-7)
       export CXX=g++-7
       export CC=gcc-7
-      #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
       shift
     ;;
     --gcc-8)
       export CXX=g++-8
       export CC=gcc-8
-      #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
       shift
     ;;
     --gcc-head)
@@ -101,13 +98,11 @@ while [[ -n "$1" ]]; do
       export RPATH="$gcc_dir/lib64"
       export CXX=g++-head
       export CC=gcc-head
-      #cm_flags+=( "-DCMAKE_INSTALL_RPATH=$gcc_lib_dir" )
       shift
     ;;
     --clang)
       export CXX=clang++
       export CC=clang
-      #cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++' )
       shift
     ;;
     --clang-6.0)
