@@ -8,6 +8,11 @@
     #define EXT_COMPILER_GNU 1
     #define EXT_DO_PRAGMA(x) _Pragma(#x)
     #define EXT_EXPORT_VC EXT_NOTHING()
+    #ifdef __clang__
+        #define EXT_COMPILER_CLANG 1
+    #else
+        #define EXT_COMPILER_GCC 1
+    #endif
 #elif defined _MSC_VER
     // visual studio
     #define EXT_COMPILER_VC 1

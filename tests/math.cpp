@@ -20,6 +20,8 @@ TEST(math_find_nth_prime, 10001) {
     EXPECT_EQ(ext::math::find_nth_prime(10001, sieve).value, std::size_t(104743));
 }
 //#endif
+
+#ifdef EXT_COMPILER_GCC
 TEST(math_sieve, compile_time) {
     constexpr auto sieve_compile = ext::math::create_sieve_of_eratosthenes<4000>();
     auto sieve_runtime = ext::math::create_sieve_of_eratosthenes(4000);
@@ -56,6 +58,7 @@ TEST(basic_functions, powersets) {
     ext::util::sort_all(result, expect);
     EXPECT_EQ(result, expect);
 }
+#endif
 
 TEST(types, static_matrix_i_access) {
 

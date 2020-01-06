@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include <ext/macros/compiler.hpp>
+
 namespace ext { namespace math {
 
 template<typename T>
@@ -73,6 +75,7 @@ inline sieve_of_eratosthenes create_sieve_of_eratosthenes(std::size_t max_value)
     return result;
 }
 
+#ifdef EXT_COMPILER_GCC
 template <std::size_t N>
 struct sieve_of_eratosthenes_compile_time {
     std::array<bool,N> sieve; //!< the sieve
@@ -107,6 +110,7 @@ inline constexpr auto create_sieve_of_eratosthenes() -> sieve_of_eratosthenes_co
     }
     return result;
 }
+#endif
 
 //! struct that holds primes of maximal size_t size
 struct prime_number {
