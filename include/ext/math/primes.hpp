@@ -44,7 +44,7 @@ struct sieve_of_eratosthenes {
  *  @return pair of nth prime and corresponding index  or  0 on failure
  *
  *  Notes: Just works for size_t and is memory heavy for real stuff I need
- * Quadratic Sieve
+ *  a quadratic sieve.
  */
 inline sieve_of_eratosthenes create_sieve_of_eratosthenes(std::size_t max_value) {
     std::size_t sieve_size = max_value >> 1;
@@ -54,6 +54,41 @@ inline sieve_of_eratosthenes create_sieve_of_eratosthenes(std::size_t max_value)
     result.max_value = max_value;
 
     std::vector<bool>& sieve = result.sieve;
+
+    std::size_t current_pos = 1;
+    while (current_pos <= std::size_t(std::sqrt(sieve_size)) + 1) {
+        while (sieve[current_pos] == false && current_pos < sieve_size) {
+            ++current_pos;
+        }
+
+        std::size_t distance = current_pos * 2 + 1;
+        for (std::size_t i = current_pos + distance; i < sieve_size; i += distance) {
+            if (i >= sieve_size || i < current_pos) {
+                break;
+            }
+            sieve[i] = false;
+        }
+        ++current_pos;
+    }
+    return result;
+}
+
+template <std::size_t N>
+struct sieve_of_eratosthenes_compile_time {
+    std::array<bool,N> sieve; //!< the sieve
+    std::size_t max_value;   //!< primes are calculated up to this number
+    constexpr sieve_of_eratosthenes_compile_time() : sieve(), max_value(N) {}
+};
+
+template <std::size_t max_value>
+inline constexpr auto create_sieve_of_eratosthenes() -> sieve_of_eratosthenes_compile_time<(max_value >> 1)> {
+    std::size_t constexpr sieve_size = max_value >> 1;
+
+    sieve_of_eratosthenes_compile_time<sieve_size> result;
+    for(auto& e : result.sieve) { e = true; }
+    result.max_value = max_value;
+
+    auto& sieve = result.sieve;
 
     std::size_t current_pos = 1;
     while (current_pos <= std::size_t(std::sqrt(sieve_size)) + 1) {

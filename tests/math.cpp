@@ -14,12 +14,18 @@ TEST(binomial_coefficient, better) {
     EXPECT_EQ(ext::math::binomial_coefficient_dynamic(5, 3), 10);
 }
 
-#ifdef EXT_TEST_LONG
+//#ifdef EXT_TEST_LONG
 TEST(math_find_nth_prime, 10001) {
     auto sieve = ext::math::create_sieve_of_eratosthenes(40000000);
     EXPECT_EQ(ext::math::find_nth_prime(10001, sieve).value, std::size_t(104743));
 }
-#endif
+//#endif
+TEST(math_sieve, compile_time) {
+    constexpr auto sieve_compile = ext::math::create_sieve_of_eratosthenes<4000>();
+    auto sieve_runtime = ext::math::create_sieve_of_eratosthenes(4000);
+    bool res = std::equal(sieve_compile.sieve.begin(), sieve_compile.sieve.end(), sieve_runtime.sieve.begin());
+    EXPECT_TRUE(res);
+}
 
 TEST(basic_functions, powersets) {
     std::vector<std::vector<int>> result;
