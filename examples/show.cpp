@@ -17,9 +17,11 @@ int main(/*int argc, const char *argv[]*/) {
     vec_of_maps.push_back(map);
     vec_of_maps.push_back(map);
 
+    std::vector<std::vector<std::string>> vec2= {{ "foo", "bar"}, {"barz"}};
+
     // cool stuff starts below
 
-    // do this when you really need the sting
+    // do this when you really need the string
     std::cout << ext::util::show(vec) << std::endl;
 
     // prefer this!
@@ -27,6 +29,9 @@ int main(/*int argc, const char *argv[]*/) {
 
     // a bit more magic
     std::cout << vec_of_maps << std::endl;
+
+    // prefer this!
+    std::cout << vec2 << std::endl;
 
     return 0;
 }
