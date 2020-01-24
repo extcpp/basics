@@ -1,4 +1,4 @@
-// Copyright 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Idea and code from STL
 // http://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-3-of-n
 #ifndef EXT_UTIL_CONTAINER_TAGS_HEADER
@@ -101,12 +101,13 @@ struct container_traits<std::unordered_multimap<K, V, C, A>> {
 } // namespace _detail
 
 template<typename Container, typename Tag>
-constexpr bool container_has_tag_v = std::is_same_v<typename _detail::container_traits<std::decay_t<Container>>::category, Tag>;
+constexpr bool container_has_tag_v =
+    std::is_same_v<typename _detail::container_traits<std::decay_t<Container>>::category, Tag>;
 
 template<typename Container, typename Tag, typename T = void>
-using enable_if_container_has_tag_t = std::enable_if_t<container_has_tag_v<Container,Tag>, T>;
+using enable_if_container_has_tag_t = std::enable_if_t<container_has_tag_v<Container, Tag>, T>;
 
 
-}}
+}} // namespace ext::util
 
-#endif
+#endif // EXT_UTIL_CONTAINER_TAGS_HEADER

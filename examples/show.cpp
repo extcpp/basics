@@ -17,7 +17,7 @@ int main(/*int argc, const char *argv[]*/) {
     vec_of_maps.push_back(map);
     vec_of_maps.push_back(map);
 
-    std::vector<std::vector<std::string>> vec2= {{ "foo", "bar"}, {"barz"}};
+    std::vector<std::vector<std::string>> vec2 = {{"foo", "bar"}, {"barz"}};
 
     // cool stuff starts below
 

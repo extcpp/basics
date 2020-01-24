@@ -1,8 +1,8 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #include <array>
-#include <vector>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <vector>
 
 #include <ext/structures/binary_index_tree.hpp>
 

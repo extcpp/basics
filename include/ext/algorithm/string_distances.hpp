@@ -3,9 +3,9 @@
 #define EXT_ALGORITHM_STRING_DISTANCES_HEADER
 
 #include <ext/algorithm/basic.hpp>
+#include <numeric>
 #include <string>
 #include <vector>
-#include <numeric>
 
 namespace ext { namespace algorithm { namespace distances {
 
@@ -33,10 +33,10 @@ std::size_t edit_fast(const T& first, const T& second) {
         std::size_t last = j - start;
         for (std::size_t i = start; i <= items_per_col; ++i) {
             std::size_t save = col[i];
-            col[i] = min(col[i - 1] + 1,                                 // delete
-                         col[i] + 1,                                     // insert
-                         last + (first[i - 1] == second[j - 1] ? 0 : 1)  // equal
-                     );
+            col[i] = min(col[i - 1] + 1,                                // delete
+                         col[i] + 1,                                    // insert
+                         last + (first[i - 1] == second[j - 1] ? 0 : 1) // equal
+            );
             last = save;
         }
     }

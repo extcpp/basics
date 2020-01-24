@@ -76,19 +76,21 @@ inline sieve_of_eratosthenes create_sieve_of_eratosthenes(std::size_t max_value)
 }
 
 #ifdef EXT_COMPILER_GCC
-template <std::size_t N>
+template<std::size_t N>
 struct sieve_of_eratosthenes_compile_time {
-    std::array<bool,N> sieve; //!< the sieve
-    std::size_t max_value;   //!< primes are calculated up to this number
+    std::array<bool, N> sieve; //!< the sieve
+    std::size_t max_value;     //!< primes are calculated up to this number
     constexpr sieve_of_eratosthenes_compile_time() : sieve(), max_value(N) {}
 };
 
-template <std::size_t max_value>
+template<std::size_t max_value>
 inline constexpr auto create_sieve_of_eratosthenes() -> sieve_of_eratosthenes_compile_time<(max_value >> 1)> {
     std::size_t constexpr sieve_size = max_value >> 1;
 
     sieve_of_eratosthenes_compile_time<sieve_size> result;
-    for(auto& e : result.sieve) { e = true; }
+    for (auto& e : result.sieve) {
+        e = true;
+    }
     result.max_value = max_value;
 
     auto& sieve = result.sieve;
@@ -110,7 +112,7 @@ inline constexpr auto create_sieve_of_eratosthenes() -> sieve_of_eratosthenes_co
     }
     return result;
 }
-#endif
+#endif // EXT_COMPILER_GCC
 
 //! struct that holds primes of maximal size_t size
 struct prime_number {
