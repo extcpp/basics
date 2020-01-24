@@ -12,7 +12,7 @@ int main(/*int argc, const char *argv[]*/) {
     std::vector<int> vec = {1, 2, 3, 4, 5, 6};
 
     using Map = std::map<int, std::string>;
-    Map map{{45, "foo"}, {3, "bar"}};
+    Map map{{2, "foo"}, {3, "bar"}};
     std::vector<Map> vec_of_maps;
     vec_of_maps.push_back(map);
     vec_of_maps.push_back(map);

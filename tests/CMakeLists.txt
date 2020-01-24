@@ -21,6 +21,7 @@ set(test_files
     "util_result"
     "util_scoped_timer"
     "util_serialization"
+    "util_show"
     "util_string"
     "util_windows_strings"
 

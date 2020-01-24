@@ -3,7 +3,8 @@
 #define EXT_UTIL_SHOW_HEADER
 #include <iostream>
 #include <sstream>
-#include <type_traits> // forwards declares std::tuple
+#include <type_traits>
+#include <tuple>
 
 #include "forward_std_string.hpp"
 #include "container_traits.hpp"
@@ -35,8 +36,10 @@ namespace _detail {
 
 template<typename Key, typename Value>
 inline std::ostream& out_pair_in_map(std::ostream& out, const std::pair<Key, Value>& pair) {
+    using namespace std::literals::string_literals;
     using ext::util::operator<<;
-    out << pair.first << ":" << pair.second;
+    out << pair.first;
+    std::operator<<(out, ":"s) << pair.second;
     return out;
 }
 
@@ -58,7 +61,7 @@ inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator
                                                                                    const T& container) {
     using namespace std::literals::string_literals;
 
-    if constexpr (_detail::is_associative<T>::value) {
+    if constexpr (_detail::is_associative<T>::value || _detail::is_set<T>::value) {
         std::operator<<(out, "{"s);
     } else {
         std::operator<<(out, "["s);
@@ -68,13 +71,13 @@ inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator
     if (container.size() > 1) {
         while (next(current) != container.end()) {
             _detail::show<T>(out, *current);
-            std::operator<<(out, ","s);
+            std::operator<<(out, ", "s);
             current++;
         }
     }
     _detail::show<T>(out, *current);
 
-    if constexpr (_detail::is_associative<T>::value) {
+    if constexpr (_detail::is_associative<T>::value || _detail::is_set<T>::value) {
         std::operator<<(out, "}"s);
     } else {
         std::operator<<(out, "]"s);
@@ -86,8 +89,25 @@ inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator
 template<typename Key, typename Value>
 inline std::ostream& operator<<(std::ostream& out, const std::pair<Key, Value>& pair) {
     using namespace std::literals::string_literals;
-    out << "(" << pair.first << "," << pair.second << ")";
+    std::operator<<(out, "("s) << pair.first;
+    std::operator<<(out, ", "s) << pair.second;
+    std::operator<<(out, ")"s);
     return out;
+}
+
+template<typename Tuple, std::size_t ... I>
+inline std::ostream& show(std::ostream& out, const Tuple& tuple, std::index_sequence<I...>) {
+    using namespace std::literals::string_literals;
+
+    std::operator<<(out, "("s);
+    ( ... , (std::operator<<(out, (I == 0 ? ""s:", "s)) << std::get<I>(tuple)) );
+    std::operator<<(out, ")"s);
+    return out;
+}
+
+template<typename ...T>
+inline constexpr std::ostream& operator<<(std::ostream& out, const std::tuple<T...>& tuple) {
+    return show(out, tuple, std::make_index_sequence<sizeof...(T)>());
 }
 
 template<typename T>

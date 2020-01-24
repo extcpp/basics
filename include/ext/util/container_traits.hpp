@@ -33,6 +33,12 @@ template<typename T>
 struct is_associative<T, std::void_t<typename std::decay_t<T>::key_type, typename std::decay_t<T>::mapped_type>>
     : std::true_type {};
 
+template<typename T, typename = void>
+struct is_set : std::false_type {};
+
+template<typename T>
+struct is_set<T, std::void_t<typename std::decay_t<T>::value_compare>>
+    : std::true_type {};
 
 }}} // namespace ext::util::_detail
 
