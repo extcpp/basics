@@ -1,58 +1,44 @@
 // Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+#include <ext/util/show.hpp>
 #include <ext/util/container_helper.hpp>
 #include <iostream>
 #include <numeric>
 #include <ostream>
 
-using namespace ext;
-using namespace util;
-using namespace std;
-
-template<typename Container>
-void print(const Container& c) {
-    for (auto i = c.begin(); i != c.end(); ++i) {
-        cout << *i << " ";
-    }
-    cout << endl;
-}
-
 int main() {
-    vector<int> v(7);
+    using ext::util::operator<<;
+    namespace eu = ext::util;
+    std::vector<int> vec(7);
 
-    iota(v.begin(), v.end(), 1);
-    print(v);
-    for_each(v.begin(), v.end(), [](int& n) {
-        n *= 11;
-    });
-    print(v);
+    iota(vec.begin(), vec.end(), 1);
+    std::list<int> list(vec.begin(), vec.end());
+    std::set<int> set(vec.begin(), vec.end());
 
-    cout << "--" << endl;
 
-    list<int> l(v.begin(), v.end());
-    set<int> s(v.begin(), v.end());
+    std::cout << vec << "\n";
 
-    erase(v, 44);
-    print(v);
-    erase_if(v, [](int n) {
-        return n % 2 == 0;
-    });
-    print(v);
+    std::cout << "-- vector erase 3 --\n";
+    eu::erase(vec, 3);
+    std::cout << vec << "\n";
 
-    cout << "--" << endl;
+    std::cout << "-- vector erase % 2 --\n";
+    eu::erase_if(vec, [](int n) { return n % 2 == 0; });
+    std::cout << vec << "\n";
 
-    erase(l, 33);
-    print(l);
-    erase_if(l, [](int n) {
-        return n % 2 != 0;
-    });
-    print(l);
 
-    cout << "--" << endl;
+    std::cout << "-- list erase 3 --\n";
+    eu::erase(list, 3);
+    std::cout << list << "\n";
 
-    erase(s, 22);
-    print(s);
-    erase_if(s, [](int n) {
-        return n > 40 && n < 70;
-    });
-    print(s);
+    std::cout << "-- list erase % 2 --\n";
+    eu::erase_if(list, [](int n) { return n % 2 == 0; });
+    std::cout << list << "\n";
+
+    std::cout << "-- set erase 2 --\n";
+    eu::erase(set, 2);
+    std::cout << set << "\n";
+
+    std::cout << "-- set erase 4 > x < 7 --\n";
+    eu::erase_if(set, [](int n) { return n > 4 && n < 7; });
+    std::cout << set << "\n";
 }
