@@ -1,11 +1,18 @@
 // Copyright - 2016-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #ifndef EXT_UTIL_SHOW_HEADER
 #define EXT_UTIL_SHOW_HEADER
-#include <type_traits>
+#include <type_traits> // forward declares std::tuple
 #include <iostream>
 #include <sstream>
+
+// try to forarad declare std::string
+#if __has_include(<bits/stringfwd.h>)
+#include <bits/stringfwd.h>
+#elif __has_include(<iosfwd>)
+#include <iosfwd>
+#else
 #include <string>
-#include <string_view>
+#endif
 
 #include "container_traits.hpp"
 
