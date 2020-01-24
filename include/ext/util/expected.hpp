@@ -175,7 +175,7 @@ struct is_expected_impl<expected<T, E>> : std::true_type {};
 template<class T>
 using is_expected = is_expected_impl<std::decay_t<T>>;
 template<class T>
-constexpr bool is_expected_v = is_expected<T>::value;
+inline constexpr bool is_expected_v = is_expected<T>::value;
 
 template<class T, class E, class U>
 using expected_enable_forward_value =
@@ -203,19 +203,19 @@ template<class T, class U>
 using is_void_or = std::conditional_t<std::is_void_v<T>, std::true_type, U>;
 
 template<class T, class BoolConstant>
-constexpr bool is_void_or_v = std::conditional_t<std::is_void_v<T>, std::true_type, BoolConstant>::value;
+inline constexpr bool is_void_or_v = std::conditional_t<std::is_void_v<T>, std::true_type, BoolConstant>::value;
 
 template<class T>
-constexpr bool is_copy_constructible_or_void_v = is_void_or_v<T, std::is_copy_constructible<T>>;
+inline constexpr bool is_copy_constructible_or_void_v = is_void_or_v<T, std::is_copy_constructible<T>>;
 
 template<class T>
-constexpr bool is_move_constructible_or_void_v = is_void_or_v<T, std::is_move_constructible<T>>;
+inline constexpr bool is_move_constructible_or_void_v = is_void_or_v<T, std::is_move_constructible<T>>;
 
 template<class T>
-constexpr bool is_copy_assignable_or_void_v = is_void_or_v<T, std::is_copy_assignable<T>>;
+inline constexpr bool is_copy_assignable_or_void_v = is_void_or_v<T, std::is_copy_assignable<T>>;
 
 template<class T>
-constexpr bool is_move_assignable_or_void_v = is_void_or_v<T, std::is_move_assignable<T>>;
+inline constexpr bool is_move_assignable_or_void_v = is_void_or_v<T, std::is_move_assignable<T>>;
 
 
 } // namespace detail

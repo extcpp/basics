@@ -24,7 +24,7 @@ eu::expected<int, int> operation1() {
     return 42;
 }
 
-eu::expected<std::string, int> operation2(int const val) {
+eu::expected<std::string, int> operation2(int const) {
     return "Bananas";
 }
 
@@ -80,7 +80,7 @@ struct i31 {
 };
 TEST(expected_extensions, issue31) {
     const eu::expected<i31, int> a = i31{42};
-    a->i;
+    (void) a->i;
 
     eu::expected<void, std::string> result;
     eu::expected<void, std::string> result2 = result;
@@ -90,7 +90,7 @@ TEST(expected_extensions, issue31) {
 TEST(expected_extensions, issue33) {
     eu::expected<void, int> res{eu::unexpect, 0};
     EXPECT_TRUE(!res);
-    res = res.map_error([](int) {
+    res = res.map_error([](int) noexcept {
         return 42;
     });
     EXPECT_TRUE(res.error() == 42);
@@ -107,8 +107,8 @@ void errorhandling(std::string) {}
 
 TEST(expected_extensions, issue34) {
     eu::expected<int, std::string> result = voidWork().and_then(work2);
-    result.map_error([&](std::string result) {
-        errorhandling(result);
+    result.map_error([&](std::string res) {
+        errorhandling(res);
     });
 }
 
@@ -119,7 +119,7 @@ struct non_copyable {
 };
 
 TEST(expected_extensions, issue42) {
-    eu::expected<non_copyable, int>{}.map([](non_copyable) {
+    eu::expected<non_copyable, int>{}.map([](non_copyable) noexcept {
     });
 }
 
