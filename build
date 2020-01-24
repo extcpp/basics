@@ -105,9 +105,9 @@ while [[ -n "$1" ]]; do
       export CC=clang
       shift
     ;;
-    --clang-6.0)
-      export CXX=clang++-6.0
-      export CC=clang-6.0
+    --clang-9)
+      export CXX=clang++-9
+      export CC=clang-9
       shift
     ;;
     --travis)
