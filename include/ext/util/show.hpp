@@ -3,17 +3,9 @@
 #define EXT_UTIL_SHOW_HEADER
 #include <iostream>
 #include <sstream>
-#include <type_traits> // forward declares std::tuple
+#include <type_traits> // forwards declares std::tuple
 
-// try to forarad declare std::string
-#if __has_include(<bits/stringfwd.h>)
-    #include <bits/stringfwd.h>
-#elif __has_include(<iosfwd>)
-    #include <iosfwd>
-#else
-    #include <string>
-#endif // __has_include(<bits/stringfwd.h>)
-
+#include "forward_std_string.hpp"
 #include "container_traits.hpp"
 
 namespace ext { namespace util {

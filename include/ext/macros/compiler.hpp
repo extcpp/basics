@@ -1,4 +1,4 @@
-// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2017-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #ifndef EXT_MACROS_COMPILER_HEADER
 #define EXT_MACROS_COMPILER_HEADER
 #include <ext/macros/general.hpp>
@@ -82,5 +82,22 @@
     #define EXT_INIT_PRIORITY_VC_HIGH EXT_NOTHING()
     #define EXT_INIT_PRIORITY_VC_LOW EXT_NOTHING()
 #endif // EXT_COMPILER_VC
+
+#if !defined(EXT_STL_LIBCXX) && !defined(EXT_STL_LIBSTDCXX) && !defined(EXT_STL_UNKNOWN)
+    #ifdef _LIBCPP_VERSION
+        #define EXT_STL_LIBCXX
+    #elif defined(__GLIBCXX__)
+        #define EXT_STL_LIBSTDCXX
+    #elif defined(__has_include)
+        #if __has_include(<bits/c++config.h>)
+            #include <bits/c++config.h>
+            #ifdef __GLIBCXX__
+                #define EXT_STL_LIBSTDCXX
+            #endif
+        #endif
+    #else
+        #define EXT_STL_UNKNOWN
+    #endif
+#endif // !defined(EXT_STL_LIBCXX) && !defined(EXT_STL_LIBSTDCXX) && !defined(EXT_STL_UNKNOWN)
 
 #endif // EXT_MACROS_COMPILER_HEADER
