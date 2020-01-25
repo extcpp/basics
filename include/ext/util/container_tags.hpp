@@ -14,6 +14,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include <ext/meta/basic.hpp>
 
 namespace ext { namespace util {
 namespace _detail {
@@ -102,7 +103,7 @@ struct container_traits<std::unordered_multimap<K, V, C, A>> {
 
 template<typename Container, typename Tag>
 constexpr bool container_has_tag_v =
-    std::is_same_v<typename _detail::container_traits<std::decay_t<Container>>::category, Tag>;
+    std::is_same_v<typename _detail::container_traits<meta::remove_cv_ref_t<Container>>::category, Tag>;
 
 template<typename Container, typename Tag, typename T = void>
 using enable_if_container_has_tag_t = std::enable_if_t<container_has_tag_v<Container, Tag>, T>;
