@@ -66,16 +66,20 @@ inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator
     } else {
         std::operator<<(out, "["s);
     }
-
-    auto current = container.begin();
-    if (container.size() > 1) {
-        while (next(current) != container.end()) {
-            _detail::show<T>(out, *current);
-            std::operator<<(out, ", "s);
-            current++;
-        }
+    auto size = container.size();
+    if (size > 0) {
+      auto current = container.begin();
+      if (container.size() > 1) {
+          while (next(current) != container.end()) {
+              _detail::show<T>(out, *current);
+              std::operator<<(out, ", "s);
+              current++;
+          }
+      }
+      _detail::show<T>(out, *current);
+    } else {
+        std::operator<<(out, " "s);
     }
-    _detail::show<T>(out, *current);
 
     if constexpr (_detail::is_associative<T>::value || _detail::is_set<T>::value) {
         std::operator<<(out, "}"s);
@@ -102,6 +106,12 @@ inline std::ostream& show(std::ostream& out, const Tuple& tuple, std::index_sequ
     std::operator<<(out, "("s);
     ( ... , (std::operator<<(out, (I == 0 ? ""s:", "s)) << std::get<I>(tuple)) );
     std::operator<<(out, ")"s);
+    return out;
+}
+
+inline std::ostream& show(std::ostream& out, const std::tuple<>&, std::index_sequence<>) {
+    using namespace std::literals::string_literals;
+    std::operator<<(out, "( )"s);
     return out;
 }
 

@@ -13,6 +13,11 @@ TEST(util_show, string_view) {
     ASSERT_EQ(eu::show(out), "\"bar\"");
 }
 
+TEST(util_show, vec_empty) {
+    std::vector<int> out = { };
+    ASSERT_EQ(eu::show(out), "[ ]");
+}
+
 TEST(util_show, vec_one_item) {
     std::vector<int> out = {1};
     ASSERT_EQ(eu::show(out), "[1]");
@@ -52,10 +57,12 @@ TEST(util_show, set_int) {
 }
 
 TEST(util_show, tuple) {
-    std::tuple<int, int, int, std::string> out1 = {3, 2 , 1, "risiko"};
-    ASSERT_EQ(eu::show(out1), "(3, 2, 1, \"risiko\")");
-    std::tuple<std::string> out2 = {"DarkwingDuck"};
-    ASSERT_EQ(eu::show(out2), "(\"DarkwingDuck\")");
+    std::tuple<> out1;
+    ASSERT_EQ(eu::show(out1), "( )");
+    std::tuple<int, int, int, std::string> out2 = {3, 2 , 1, "risiko"};
+    ASSERT_EQ(eu::show(out2), "(3, 2, 1, \"risiko\")");
+    std::tuple<std::string> out3 = {"DarkwingDuck"};
+    ASSERT_EQ(eu::show(out3), "(\"DarkwingDuck\")");
 }
 
 // tuple
