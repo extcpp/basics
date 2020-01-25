@@ -27,4 +27,4 @@ using cmake, travis, appveyor, coverage and friends.
    :target: https://scan.coverity.com/projects/extcpp-libext
 
 .. |cpp| image:: https://img.shields.io/badge/c++-17-green.svg?style=flat
-.. |mit| image:: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat
+.. |mit| image:: https://img.shields.io/badge/license-MIT-green.svg?style=flat
