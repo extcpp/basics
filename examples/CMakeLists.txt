@@ -1,4 +1,4 @@
-# Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+# Copyright - 2015-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
 cmake_minimum_required(VERSION 3.0.0)
 project(ext_examples)
@@ -33,8 +33,8 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     add_executable(${example} ${cpp})
     target_link_libraries(${example}
         ${CMAKE_THREAD_LIBS_INIT}
-        ext::base-shared
-        extcpp-base-unfinished
+        ext::basics-shared
+        ext-basics-unfinished
     )
     if(UNIX)
         target_link_libraries(${example} dl)
@@ -44,5 +44,5 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
 endforeach()
 
 add_executable(any_printable_example any_printable_main.cpp any_printable_use_impl.cpp)
-target_link_libraries(any_printable_example ext::base)
+target_link_libraries(any_printable_example ext::basics)
 target_compile_options(any_printable_example PRIVATE ${ext_stone-warnings})
