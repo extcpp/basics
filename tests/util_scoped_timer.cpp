@@ -1,3 +1,5 @@
+// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <ext/macros/compiler.hpp>
 #include <ext/util/scoped_timer.hpp>
 #include <gtest/gtest.h>
@@ -17,7 +19,7 @@ void assert_time_eq(std::size_t ms_expected, std::pair<std::uint64_t, std::strin
     ASSERT_LE(in.first / (1000 * 1000), ms_expected);
 #else
     std::cerr << "time not asserted\n";
-#endif
+#endif // EXT_TESTS_NO_TIME_CRITICAL
 }
 
 TEST(util_scoped_timer, nostep) {

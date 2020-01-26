@@ -8,6 +8,14 @@ function(ext_fatal)
     message(FATAL_ERROR "FATAL ERROR -- " ${ARGV})
 endfunction(ext_fatal)
 
+function(ext_cat_file)
+    if(UNIX)
+        message(STATUS "extINFO -- @@@ content of: " ${ARGV})
+        execute_process(COMMAND /bin/cat ${ARGV})
+        message(STATUS "extINFO -- @@@ end content")
+    endif()
+endfunction(ext_cat_file)
+
 #! prefix string with provided symbol(s) until is has given length
 #
 #  in_string - sting to be prefixed

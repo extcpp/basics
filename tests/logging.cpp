@@ -1,3 +1,5 @@
+// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <cstring>
 #include <ext/logging.hpp>
 #include <ext/macros/platform.hpp>
@@ -38,7 +40,7 @@ TEST_F(LoggingDeathTest, fatal) {
 
     ASSERT_DEATH_IF_SUPPORTED(EXT_LOG("work", network, fatal) << "What?!?! No Cafe!?!?!? :(", "");
 }
-#endif
+#endif // EXT_COMPILER_VC
 
 TEST_F(LoggingTest, threads) {
     using namespace ext::logging;

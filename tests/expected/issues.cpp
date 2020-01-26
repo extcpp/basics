@@ -1,3 +1,5 @@
+// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include "expected.hpp"
 
 #include <string>
@@ -144,7 +146,7 @@ MaybeDataPtr test2(int i) noexcept {
 TEST(expected_extensions, issue49) {
     auto m = test(10).and_then(test2);
 }
-#endif
+#endif // !(__GNUC__ <= 5)
 
 eu::expected<int, std::unique_ptr<std::string>> func() {
     return 1;

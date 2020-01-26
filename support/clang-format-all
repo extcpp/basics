@@ -43,3 +43,14 @@ apply_action_to_files(
                        Path(project_dir, "examples")
                       )
 )
+
+#excute twice - becuase clang-format shuffles `//clang-format off` comments around
+apply_action_to_files(
+    project_dir,
+    create_action_format(),
+    filter_cpp,
+    create_filter_path(Path(project_dir, "include"),
+                       Path(project_dir, "tests"),
+                       Path(project_dir, "examples")
+                      )
+)

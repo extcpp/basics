@@ -1,4 +1,5 @@
-// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
 #define EXT_MATH_GEOMETRY_SIMPLE_SHAPES_HEADER
 

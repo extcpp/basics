@@ -1,3 +1,5 @@
+// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <ext/util/show.hpp>
 #include <gtest/gtest.h>
 using namespace std::literals::string_literals;
@@ -41,7 +43,7 @@ TEST(util_show, map_int_str) {
 
 TEST(util_show, vec_map_vec_int_str) {
     using Map = std::map<std::vector<int>, std::string>;
-    Map item{{std::vector{1,2}, "foo"s}, {std::vector{3}, "bar"s}};
+    Map item{{std::vector{1, 2}, "foo"s}, {std::vector{3}, "bar"s}};
     std::vector<Map> out = {item, item};
     ASSERT_EQ(eu::show(out), "[{[1, 2]:\"foo\", [3]:\"bar\"}, {[1, 2]:\"foo\", [3]:\"bar\"}]");
 }
@@ -52,7 +54,7 @@ TEST(util_show, set_int) {
 
 TEST(util_show, tuple) {
     ASSERT_EQ(eu::show(std::tuple<>{}), "( )");
-    ASSERT_EQ(eu::show(std::tuple<int, int, int, std::string>{3, 2 , 1, "risiko"}), "(3, 2, 1, \"risiko\")");
+    ASSERT_EQ(eu::show(std::tuple<int, int, int, std::string>{3, 2, 1, "risiko"}), "(3, 2, 1, \"risiko\")");
     ASSERT_EQ(eu::show(std::tuple<std::string>{"DarkwingDuck"}), "(\"DarkwingDuck\")");
 }
 

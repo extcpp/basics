@@ -1,3 +1,5 @@
+// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <algorithm>
 #include <gtest/gtest.h>
 
@@ -58,7 +60,7 @@ TEST(basic_functions, powersets) {
     ext::util::sort_all(result, expect);
     EXPECT_EQ(result, expect);
 }
-#endif
+#endif // EXT_COMPILER_GCC
 
 TEST(types, static_matrix_i_access) {
 

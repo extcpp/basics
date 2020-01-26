@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
         conf.create_operation_list()
 
-    rv = check_modify_source(["include", "examples"] #dirs to include
+    rv = check_modify_source(["include", "examples", "tests"] #dirs to include
                             ,[] #dirs and files to exclude (does not purge the dir)
                             ,state_and_conf
                             )
