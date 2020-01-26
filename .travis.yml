@@ -88,9 +88,9 @@ matrix:
 
         coverity_scan:
           project:
-            name: extcpp/libext
+            name: extcpp/basics
             version: 0.1
-            description: libext
+            description: ext::basics library
           notification_email: linux@obiwahn.org
           #build_command_prepend: |
           #                       export ${CXX}

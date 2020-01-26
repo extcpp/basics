@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 3.8)
 project(ext-basics VERSION 0.0.1 LANGUAGES CXX)
-message(STATUS "extINFO -- entering libext")
+message(STATUS "extINFO -- entering ext-basics")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -128,20 +128,20 @@ add_library(ext::basics-shared ALIAS ext-basics-shared)
 
 ## testing
 if(LIBEXT_TESTS)
-    ext_log("libext tests enabled")
+    ext_log("ext-basics tests enabled")
     include(CTest)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     ext_add_test_subdirectory("google" tests)
 else()
-    ext_log("libext tests disabled")
+    ext_log("ext-basics tests disabled")
 endif()
 
 ## add projects using this lib
 if(LIBEXT_EXAMPLES)
-    ext_log("libext examples enabled")
+    ext_log("ext-basics examples enabled")
     add_subdirectory(examples)
 else()
-    ext_log("libext examples disabled")
+    ext_log("ext-basics examples disabled")
 endif()
 
 ## installation
@@ -160,7 +160,7 @@ if(COMMAND ext_install)
         EXPORT ext-basics-targets
 		FILE ext-basics-config.cmake
         NAMESPACE ext::
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake
+        DESTINATION ${CMAKE_INSTALL_PREFIX}
     )
 endif()
 

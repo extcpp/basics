@@ -8,7 +8,7 @@ class ExtbaseConan(ConanFile):
     version = "0.0.1"
     license = "MIT"
     author = "Jan Christoph Uhde <jan@uhdejc.com>"
-    url = "https://github.com/extcpp/libext"
+    url = "https://github.com/extcpp/basics"
     description = "Extended C++ - base library"
     topics = ("c++", "utils", "library")
     settings = "os", "compiler", "build_type", "arch"
@@ -17,7 +17,7 @@ class ExtbaseConan(ConanFile):
     generators = "cmake"
 
     def source(self):
-        self.run("git clone -b conan https://github.com/extcpp/libext.git basics")
+        self.run("git clone -b conan https://github.com/extcpp/basics.git basics")
 
     def build(self):
         cmake = CMake(self)

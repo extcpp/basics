@@ -4,12 +4,13 @@ set -u
 ## setup vars
 build=${build:-false}
 debug=${debug:-false}
+debug=true
 examples=${examples:-"OFF"}
 
 ##internal setup
 if [[ -z ${project_root:-""} ]]; then
     project_root="${project_root:-$(realpath . )}"
-    build_root="${build_root:-$(realpath ../libext-build/current)}"
+    build_root="${build_root:-$(realpath ../basics-build/current)}"
     (( $? == 0 )) || ferr "faild to set build_root"
     [[ -e "$build_root" ]] || ferr "invalid build root: $build_root"
 fi
@@ -142,9 +143,10 @@ if $EXT_CI; then
 
     bash <(curl -s https://codecov.io/bash) \
         -f $build_root/coverage.info \
+        -r extcpp/basics \
         -x $GCOV \
         || ferr "codecov upload failed"
 
-    gem install coveralls-lcov || ferr "could not install coveralls-lcov gem"
-    coveralls-lcov $build_root/coverage.info || ferr "coveralls upload failed"
+    #gem install coveralls-lcov || ferr "could not install coveralls-lcov gem"
+    #coveralls-lcov  $build_root/coverage.info || ferr "coveralls upload failed"
 fi
