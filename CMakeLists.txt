@@ -1,7 +1,7 @@
 # Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
 cmake_minimum_required(VERSION 3.8)
-project(libext)
+project(ext-basics)
 message(STATUS "extINFO -- entering libext")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -83,42 +83,45 @@ else()
 endif()
 
 ### define header only lib
-add_library(ext INTERFACE)
-target_include_directories(ext INTERFACE
+add_library(ext-basics INTERFACE)
+target_include_directories(ext-basics INTERFACE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${EXTALLOCATORS_PATH}"
 )
-target_compile_features(ext INTERFACE cxx_std_17)
-target_compile_options(ext INTERFACE
+target_compile_features(ext-basics INTERFACE cxx_std_17)
+target_compile_options(ext-basics INTERFACE
     $<$<AND:$<CONFIG:Debug>,$<BOOL:LIBEXT_WARNINGS>>:${ext_stone-warnings}>
 )
-target_compile_definitions(ext INTERFACE
+target_compile_definitions(ext-basics INTERFACE
     ${ext_common_compile_definitions}
     EXT_HEADER_ONLY_LIB
 )
 
 ### define shared lib
-add_library(ext_shared SHARED ${libext_source} ${libext_header})
-target_include_directories(ext_shared PUBLIC
+add_library(ext-basics-shared SHARED ${libext_source} ${libext_header})
+target_include_directories(ext-basics-shared PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${EXTALLOCATORS_PATH}"
 )
-target_compile_features(ext_shared PUBLIC cxx_std_17)
-target_compile_options(ext_shared PRIVATE ${ext_stone-warnings})
-target_compile_definitions(ext_shared PUBLIC ${ext_common_compile_definitions})
-target_compile_definitions(ext_shared PUBLIC EXT_SHARED_LIB)
-target_compile_definitions(ext_shared PRIVATE EXT_IN_LIB=1)
-target_link_libraries(ext_shared Threads::Threads)
+target_compile_features(ext-basics-shared PUBLIC cxx_std_17)
+target_compile_options(ext-basics-shared PRIVATE ${ext_stone-warnings})
+target_compile_definitions(ext-basics-shared PUBLIC ${ext_common_compile_definitions})
+target_compile_definitions(ext-basics-shared PUBLIC EXT_SHARED_LIB)
+target_compile_definitions(ext-basics-shared PRIVATE EXT_IN_LIB=1)
+target_link_libraries(ext-basics-shared Threads::Threads)
 
 ### define header only lib UNFINISHED
-add_library(ext_unfinished INTERFACE)
-target_include_directories(ext_unfinished INTERFACE
+add_library(ext-basics-unfinished INTERFACE)
+target_include_directories(ext-basics-unfinished INTERFACE
     "${CMAKE_CURRENT_SOURCE_DIR}/.unfinished/include"
 )
 
 # set up folder structure for XCode and VisualStudio
-set_target_properties (ext_shared PROPERTIES FOLDER libext)
+set_target_properties (ext-basics-shared PROPERTIES FOLDER libext)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${libext_header} ${libext_source})
+
+add_library(ext::basics ALIAS ext-basics)
+add_library(ext::basics-shared ALIAS ext-basics-shared)
 
 ## testing
 if(LIBEXT_TESTS)
