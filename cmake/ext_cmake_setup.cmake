@@ -15,12 +15,16 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
         set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
         # set / modify default install prefix
         if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+            ext_log("install location defaulted")
             if(UNIX)
-                set(CMAKE_INSTALL_PREFIX  "$ENV{HOME}/local")
+                ##set(CMAKE_INSTALL_PREFIX  "$ENV{HOME}/.local")
             else()
                 # do not change the default for other operating systems
             endif()
+        else()
+            ext_log("install location manually provided")
         endif()
+        ext_log("installing to: ${CMAKE_INSTALL_PREFIX}")
 
         ext_define_warning_flags()
 

@@ -1,7 +1,7 @@
 # Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
 cmake_minimum_required(VERSION 3.8)
-project(ext-basics)
+project(ext-basics VERSION 0.0.1 LANGUAGES CXX)
 message(STATUS "extINFO -- entering libext")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -24,6 +24,7 @@ TEST_BIG_ENDIAN(ext_is_big_endian)
 
 set(LIBEXT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 include(ext_cmake_setup)
+include(ext_cmake_install)
 
 set(FORCE_COLORED_OUTPUT ON)
 ext_colored_compiler_ouput()
@@ -85,8 +86,9 @@ endif()
 ### define header only lib
 add_library(ext-basics INTERFACE)
 target_include_directories(ext-basics INTERFACE
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    "${EXTALLOCATORS_PATH}"
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${EXTALLOCATORS_PATH}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
 )
 target_compile_features(ext-basics INTERFACE cxx_std_17)
 target_compile_options(ext-basics INTERFACE
@@ -100,8 +102,9 @@ target_compile_definitions(ext-basics INTERFACE
 ### define shared lib
 add_library(ext-basics-shared SHARED ${libext_source} ${libext_header})
 target_include_directories(ext-basics-shared PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    "${EXTALLOCATORS_PATH}"
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${EXTALLOCATORS_PATH}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
 )
 target_compile_features(ext-basics-shared PUBLIC cxx_std_17)
 target_compile_options(ext-basics-shared PRIVATE ${ext_stone-warnings})
@@ -143,7 +146,22 @@ endif()
 
 ## installation
 if(COMMAND ext_install)
-    ext_install(ext "include/ext")
+    set_target_properties(ext-basics PROPERTIES EXPORT_NAME basics)
+    set_target_properties(ext-basics-shared PROPERTIES EXPORT_NAME basics-shared)
+
+    ext_install(ext-basics include/ext)
+    ext_install(ext-basics-shared include/ext)
+
+    install(TARGETS ext-basics ext-basics-shared
+        EXPORT ext-basics-targets
+        DESTINATION ${CMAKE_INSTALL_PREFIX}
+    )
+	install(
+        EXPORT ext-basics-targets
+		FILE ext-basics-config.cmake
+        NAMESPACE ext::
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake
+    )
 endif()
 
 add_custom_target(
