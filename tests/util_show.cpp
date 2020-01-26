@@ -5,12 +5,12 @@ using namespace std::literals::string_literals;
 namespace eu = ::ext::util;
 
 TEST(util_show, string) {
-    ASSERT_EQ(eu::show("foo"s), "\"foo\"");
+    ASSERT_EQ(eu::show("foo"s), "foo");
 }
 
 TEST(util_show, string_view) {
     auto out = "bar"s;
-    ASSERT_EQ(eu::show(std::string_view(out)), "\"bar\"");
+    ASSERT_EQ(eu::show(std::string_view(out)), "bar");
 }
 
 TEST(util_show, vec_empty) {

@@ -16,6 +16,7 @@ template<typename T>
 inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator<<(std::ostream& out,
                                                                                    const T& container);
 
+namespace _detail {
 inline std::ostream& operator<<(std::ostream& out, std::string_view const& str) {
     using namespace std::literals::string_literals;
     std::operator<<(out, "\""s);
@@ -40,11 +41,10 @@ inline std::ostream& operator<<(std::ostream& out, char const* str) {
     return out;
 }
 
-namespace _detail {
-
 template<typename Key, typename Value>
 inline std::ostream& out_pair_in_map(std::ostream& out, const std::pair<Key, Value>& pair) {
     using namespace std::literals::string_literals;
+    using ext::util::_detail::operator<<;
     using ext::util::operator<<;
     out << pair.first;
     std::operator<<(out, ":"s) << pair.second;
@@ -53,10 +53,12 @@ inline std::ostream& out_pair_in_map(std::ostream& out, const std::pair<Key, Val
 
 template<typename Container, typename T>
 inline std::ostream& show(std::ostream& out, T&& value) {
-    using ext::util::operator<<;
+    using ext::util::_detail::operator<<;
     if constexpr (_detail::is_associative<Container>::value) {
         out_pair_in_map(out, std::forward<T>(value));
     } else {
+        using ext::util::_detail::operator<<;
+        using ext::util::operator<<;
         out << std::forward<T>(value);
     }
     return out;
@@ -79,6 +81,7 @@ inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator
         auto current = container.begin();
         if (container.size() > 1) {
             while (next(current) != container.end()) {
+                using ext::util::_detail::operator<<;
                 _detail::show<T>(out, *current);
                 std::operator<<(out, ", "s);
                 current++;
@@ -101,6 +104,7 @@ inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator
 template<typename Key, typename Value>
 inline std::ostream& operator<<(std::ostream& out, const std::pair<Key, Value>& pair) {
     using namespace std::literals::string_literals;
+    using ext::util::_detail::operator<<;
     std::operator<<(out, "("s) << pair.first;
     std::operator<<(out, ", "s) << pair.second;
     std::operator<<(out, ")"s);
@@ -112,6 +116,7 @@ inline std::ostream& show(std::ostream& out, const Tuple& tuple, std::index_sequ
     using namespace std::literals::string_literals;
 
     std::operator<<(out, "("s);
+    using ext::util::_detail::operator<<;
     ((std::operator<<(out, (I == 0 ? ""s : ", "s)) << std::get<I>(tuple)), ...);
     std::operator<<(out, ")"s);
     return out;
