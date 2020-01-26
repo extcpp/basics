@@ -1,4 +1,6 @@
 */.gitignore
+.conan/test_package/build
+/build*
 
 format
 external_libs/*

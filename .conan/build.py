@@ -11,13 +11,13 @@ from cpt.printer import Printer
 class BuilderSettings(object):
     @property
     def username(self):
-        """ Set extcpp as package's owner
+        """ Set ext-basics as package's owner
         """
-        return os.getenv("CONAN_USERNAME", "extcpp")
+        return os.getenv("CONAN_USERNAME", "ext-basics")
 
     @property
     def upload(self):
-        """ Set extcpp repository to be used on upload.
+        """ Set ext-basics repository to be used on upload.
             The upload server address could be customized by env var
             CONAN_UPLOAD. If not defined, the method will check the branch name.
             Only master or CONAN_STABLE_BRANCH_PATTERN will be accepted.
@@ -56,7 +56,7 @@ class BuilderSettings(object):
     def reference(self):
         """ Read project version from CMake file to create Conan referece
         """
-        pattern = re.compile(r"project \(extcpp-base VERSION (\d+\.\d+\.\d+) LANGUAGES CXX\)")
+        pattern = re.compile(r"project\s*\(ext-basics VERSION (\d+\.\d+\.\d+) LANGUAGES CXX\)")
         version = None
         with open('CMakeLists.txt') as file:
             for line in file:
@@ -65,7 +65,7 @@ class BuilderSettings(object):
                     version = result.group(1)
         if not version:
             raise Exception("Could not find version in CMakeLists.txt")
-        return os.getenv("CONAN_REFERENCE", "json/{}".format(version))
+        return os.getenv("CONAN_REFERENCE", "ext-basics/{}".format(version))
 
 if __name__ == "__main__":
     settings = BuilderSettings()

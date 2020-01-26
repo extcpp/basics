@@ -21,6 +21,7 @@ class ExtbaseConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
+        cmake.verbose = True
         cmake.configure(source_folder="basics")
         cmake.build()
 
@@ -32,19 +33,22 @@ class ExtbaseConan(ConanFile):
     def package(self):
         """install / copy artifarct"""
         cmake = CMake(self)
+        cmake.verbose = True
         cmake.definitions["LIBEXT_TESTS"] = False
         cmake.definitions["LIBEXT_WARNINGS"] = False
         cmake.definitions["LIBEXT_EXAMPLES"] = False
         cmake.configure()
-        #cmake.build()
+        cmake.build()
+        cmake.install()
 
-        self.copy("*.h", dst="include", src="src")
-        self.copy("*hello.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so", dst="lib", keep_path=False)
-        self.copy("*.dylib", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
+        #self.copy("*.h", dst="include", src="include")
+        #self.copy("*.hpp", dst="include", src="include")
+        #self.copy("*hello.lib", dst="lib", keep_path=False)
+        #self.copy("*.dll", dst="bin", keep_path=False)
+        #self.copy("*.so", dst="lib", keep_path=False)
+        #self.copy("*.dylib", dst="lib", keep_path=False)
+        #self.copy("*.a", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["libext-basics-shared.so"]
+        self.cpp_info.libs = []
 

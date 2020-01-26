@@ -1,20 +1,20 @@
 macro(ext_install lib)
+    ext_log("prepare install for: ${lib}")
+
     install(
         TARGETS "${lib}"
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
     )
 
-    set(args "${ARGN}")
-    foreach(arg IN LISTS ${args})
-        message("${arg}")
+    foreach(arg ${ARGN})
         install(
             DIRECTORY   "${arg}"
             DESTINATION include
         )
     endforeach()
 
-    include(CPack)
+    #include(CPack)
 endmacro(ext_install)
 
 
