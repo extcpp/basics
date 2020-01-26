@@ -146,14 +146,20 @@ endif()
 
 ## installation
 if(COMMAND ext_install)
+    set_target_properties(ext-basics PROPERTIES EXPORT_NAME basics)
+    set_target_properties(ext-basics-shared PROPERTIES EXPORT_NAME basics-shared)
+
     ext_install(ext-basics include/ext)
     ext_install(ext-basics-shared include/ext)
 
-	install(TARGETS ext-basics ext-basics-shared EXPORT ext-basics-targets)
+    install(TARGETS ext-basics ext-basics-shared
+        EXPORT ext-basics-targets
+        DESTINATION ${CMAKE_INSTALL_PREFIX}
+    )
 	install(
         EXPORT ext-basics-targets
 		FILE ext-basics-config.cmake
-		NAMESPACE ext::
+        NAMESPACE ext::
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake
     )
 endif()

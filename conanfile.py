@@ -38,7 +38,7 @@ class ExtbaseConan(ConanFile):
         cmake.definitions["LIBEXT_WARNINGS"] = False
         cmake.definitions["LIBEXT_EXAMPLES"] = False
         cmake.configure()
-        cmake.build()
+        #cmake.build()
         cmake.install()
 
         #self.copy("*.h", dst="include", src="include")

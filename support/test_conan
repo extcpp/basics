@@ -29,5 +29,5 @@ conan_re=".*conan.*"
     git push origin $force_str || ferr "failed to push"
     rm -fr ~/.conan/data/ext-basics/ || ferr "failed to delete ext-basics in ~/.conan/data"
     rm -fr .conan/test_package/build/ || ferr "failed to delete .conan/test_package/build"
-    #python3 .conan/build.py
+    python3 .conan/build.py
 )

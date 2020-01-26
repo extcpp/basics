@@ -13,7 +13,7 @@ class BuilderSettings(object):
     def username(self):
         """ Set ext-basics as package's owner
         """
-        return os.getenv("CONAN_USERNAME", "ext-basics")
+        return os.getenv("CONAN_USERNAME", "extcpp")
 
     @property
     def upload(self):
