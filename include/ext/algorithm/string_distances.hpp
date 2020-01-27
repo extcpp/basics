@@ -3,6 +3,7 @@
 #define EXT_ALGORITHM_STRING_DISTANCES_HEADER
 
 #include <ext/algorithm/basic.hpp>
+#include <numeric>
 #include <string>
 #include <vector>
 
@@ -23,25 +24,23 @@ std::size_t edit_fast(const T& first, const T& second) {
     const std::size_t items_per_col = first.size();
     const std::size_t number_of_cols = second.size();
 
-    std::vector<std::size_t> previous_col(items_per_col + 1);
-    std::vector<std::size_t> current_col(items_per_col + 1);
+    std::vector<std::size_t> col(items_per_col + 1);
+    std::iota(col.begin(), col.end(), 0);
 
-    for (std::size_t i = 0; i <= items_per_col; i++) {
-        previous_col[i] = i;
-    }
-
-    for (std::size_t j = 1; j <= number_of_cols; j++) {
-        current_col[0] = j;
-        for (std::size_t i = 1; i <= items_per_col; i++) {
-            current_col[i] = min(current_col[i - 1] + 1,                                          // delete
-                                 previous_col[i] + 1,                                             // insert
-                                 previous_col[i - 1] + (first.at(i - 1) == second.at(j - 1) ? 0 : // equal
-                                                            1                                     // replace
-                                                        ));
+    std::size_t start = 1;
+    for (std::size_t j = start; j <= number_of_cols; ++j) {
+        col[0] = j;
+        std::size_t last = j - start;
+        for (std::size_t i = start; i <= items_per_col; ++i) {
+            std::size_t save = col[i];
+            col[i] = min(col[i - 1] + 1,                                // delete
+                         col[i] + 1,                                    // insert
+                         last + (first[i - 1] == second[j - 1] ? 0 : 1) // equal
+            );
+            last = save;
         }
-        current_col.swap(previous_col);
     }
-    return previous_col[items_per_col];
+    return col[items_per_col];
 } // edit_fast
 
 template<typename T>

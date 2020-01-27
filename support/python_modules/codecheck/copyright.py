@@ -54,7 +54,7 @@ class Copyright(Operation):
         out = target_file_handle
         if state.insert_new:
             log.info("insert {}".format(str(state.insert_new)))
-            out.write(g_copy_format.format("xxxx-2019"))
+            out.write(g_copy_format.format("xxxx-2020"))
 
             with open(full_path, 'r') as infile:
                 out.write(infile.read())
@@ -69,7 +69,7 @@ class Copyright(Operation):
 
         #need to fix
         if cnt == state.line_for_copyright:
-            out.write(g_copy_format.format("xxxx-2019"))
+            out.write(g_copy_format.format("xxxx-2020"))
             return Status.OK
         elif cnt == "EOF":
                 return Status.OK_REPLACED

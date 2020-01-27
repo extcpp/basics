@@ -8,66 +8,6 @@ function(ext_fatal)
     message(FATAL_ERROR "FATAL ERROR -- " ${ARGV})
 endfunction(ext_fatal)
 
-macro(ext_setup)
-    # TODO - test this macro in other libs
-    # execute macro only in top-level CMakeLists.txt
-    if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
-        # execute this setup just once
-        if(NOT EXT_SETUP_DONE)
-            if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-                set(LINUX TRUE)
-            else()
-                set(LINUX FALSE)
-            endif()
-
-            set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-            # set / modify default install prefix
-            if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-                if(UNIX)
-                    set(CMAKE_INSTALL_PREFIX  "$ENV{HOME}/local")
-                else()
-                    # do not change the default for other operating systems
-                endif()
-            endif()
-
-            include(ext_cmake_compiler_warnings)
-
-            set(EXT_CXX_COMPILER_IS_GCC FALSE)
-            set(EXT_CXX_COMPILER_IS_CLANG FALSE)
-            if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-                set(EXT_CXX_COMPILER_IS_GCC TRUE)
-            elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-                set(EXT_CXX_COMPILER_IS_CLANG TRUE)
-            endif()
-
-            set(EXT_SETUP_DONE TRUE)
-        endif()
-    endif()
-endmacro(ext_setup)
-
-macro(ext_add_test_subdirectory type)
-    set(EXT_TEST_TYPE "${type}")
-
-    set(dir "${ARGV1}")
-    if(dir STREQUAL "")
-        set(dir "tests")
-    endif()
-
-    if("${type}" STREQUAL "google") # <-- expand type here!
-        if(NOT TARGET gtest) #avoid recursive inclusion of gtest
-          if("${LIBEXT_SOURCE_DIR}" STREQUAL "")
-              ext_fatal("LIBEXT_SOURCE_DIR not found")
-          endif()
-          ext_log("using google test in: ${LIBEXT_SOURCE_DIR}/external_libs/googletest")
-          add_subdirectory(${LIBEXT_SOURCE_DIR}/external_libs/googletest)
-        endif()
-    else()
-        message(ERROR "unknown test type")
-    endif()
-    ext_log("adding tests in: ${dir}")
-    add_subdirectory("${dir}")
-endmacro(ext_add_test_subdirectory)
-
 #! prefix string with provided symbol(s) until is has given length
 #
 #  in_string - sting to be prefixed
@@ -97,45 +37,25 @@ function(ext_add_subdirectory dir debug)
     endif()
 endfunction()
 
-macro(ext_install lib)
-    install(
-        TARGETS "${lib}"
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-    )
+macro(ext_add_test_subdirectory type)
+    set(EXT_TEST_TYPE "${type}")
 
-    set(args "${ARGN}")
-    foreach(arg IN LISTS ${args})
-        message("${arg}")
-        install(
-            DIRECTORY   "${arg}"
-            DESTINATION include
-        )
-    endforeach()
+    set(dir "${ARGV1}")
+    if(dir STREQUAL "")
+        set(dir "tests")
+    endif()
 
-    include(CPack)
-endmacro(ext_install)
-
-
-function(ext_install_files from_dir to_dir files)
-	foreach (file ${files})
-	    get_filename_component(parent ${file} DIRECTORY)
-	    if(IS_DIRECTORY ${from_dir}/${file})
-		    ext_log("install dir ${from_dir}/${file} to ${to_dir}/${parent}")
-	        install(
-	            DIRECTORY
-	                ${from_dir}/${file}
-	            DESTINATION
-	                ${to_dir}/${parent}
-	          )
-	    else()
-		    ext_log("install file ${from_dir}/${file} to ${to_dir}/${parent}")
-	        install(
-	            FILES
-	                ${from_dir}/${file}
-	            DESTINATION
-	                ${to_dir}/${parent}
-	        )
-	    endif()
-	endforeach()
-endfunction(ext_install_files)
+    if("${type}" STREQUAL "google") # <-- expand type here!
+        if(NOT TARGET gtest) #avoid recursive inclusion of gtest
+          if("${LIBEXT_SOURCE_DIR}" STREQUAL "")
+              ext_fatal("LIBEXT_SOURCE_DIR not found")
+          endif()
+          ext_log("using google test in: ${LIBEXT_SOURCE_DIR}/external_libs/googletest")
+          add_subdirectory(${LIBEXT_SOURCE_DIR}/external_libs/googletest)
+        endif()
+    else()
+        message(ERROR "unknown test type")
+    endif()
+    ext_log("adding tests in: ${dir}")
+    add_subdirectory("${dir}")
+endmacro(ext_add_test_subdirectory)

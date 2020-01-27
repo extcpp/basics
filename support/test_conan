@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -u
+set -o pipefail
+
+project_root="${project_root:-"$(realpath -s "$(dirname "$(readlink -s -f "${BASH_SOURCE[0]}")")/..")"}"
+echo "The project root is in: $project_root"
+
+amend=false
+if [[ ${1:-""} == "--amend" ]]; then
+    amend=true
+fi
+
+ferr() { echo $1; exit 1; }
+
+force_str="--force"
+if $amend; then
+    force_str="--force"
+fi
+
+conan_re=".*conan.*"
+
+(
+    cd "${project_root}" || ferr "can not cd"
+    message="$(git log -1 --pretty=%B)"
+    (( $? == 0 )) || ferr "could not get commit message"
+    echo "The last commit message was: '$message'"
+    $amend && { [[ $message =~ $conan_re ]] || ferr "Above message does not mention work on conan!"; }
+    $amend && { git commit --message="$message" --amend || ferr "failed to amend"; }
+    git push origin $force_str || ferr "failed to push"
+    rm -fr ~/.conan/data/ext-basics/ || ferr "failed to delete ext-basics in ~/.conan/data"
+    rm -fr .conan/test_package/build/ || ferr "failed to delete .conan/test_package/build"
+    python3 .conan/build.py
+)

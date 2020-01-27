@@ -22,6 +22,7 @@ do_test=false
 asan=false
 build_prefix="<> "
 rpath=
+generator=
 
 # source build lib
 lib=$project_root/.build_scripts/build_lib
@@ -55,7 +56,7 @@ while [[ -n "$1" ]]; do
       build_type="release"
       shift
     ;;
-    -rd|--rel-wiht-deb-info)
+    -rd|--rel-with-deb-info)
       build_type="relwithdeb"
       shift
     ;;
@@ -79,19 +80,16 @@ while [[ -n "$1" ]]; do
     --gcc)
       export CXX=g++
       export CC=gcc
-      #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
       shift
     ;;
     --gcc-7)
       export CXX=g++-7
       export CC=gcc-7
-      #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
       shift
     ;;
     --gcc-8)
       export CXX=g++-8
       export CC=gcc-8
-      #cm_flags+=( '-DCMAKE_CXX_COMPILER=g++' )
       shift
     ;;
     --gcc-head)
@@ -100,18 +98,16 @@ while [[ -n "$1" ]]; do
       export RPATH="$gcc_dir/lib64"
       export CXX=g++-head
       export CC=gcc-head
-      #cm_flags+=( "-DCMAKE_INSTALL_RPATH=$gcc_lib_dir" )
       shift
     ;;
     --clang)
       export CXX=clang++
       export CC=clang
-      #cm_flags+=( '-DCMAKE_CXX_COMPILER=clang++' )
       shift
     ;;
-    --clang-6.0)
-      export CXX=clang++-6.0
-      export CC=clang-6.0
+    --clang-9)
+      export CXX=clang++-9
+      export CC=clang-9
       shift
     ;;
     --travis)
@@ -125,6 +121,10 @@ while [[ -n "$1" ]]; do
     -a|--asan)
       asan=true
       flags_asan="-fsanitize=address -fsanitize=undefined -fno-sanitize=alignment -fno-omit-frame-pointer -fno-sanitize=vptr -pthread"
+      shift
+    ;;
+    --ninja)
+      generator="ninja"
       shift
     ;;
     *)
@@ -177,6 +177,7 @@ export build_root
 export build_base
 export do_test
 export asan
+export generator
 ## build prepared
 
 "$project_root"/.build_scripts/var_info || exit $?

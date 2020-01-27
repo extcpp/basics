@@ -1,4 +1,6 @@
 */.gitignore
+.conan/test_package/build
+/build*
 
 format
 external_libs/*
@@ -6,6 +8,7 @@ watch*
 
 /*clang*
 /test
+/ninja
 
 test.cpp
 test.hpp

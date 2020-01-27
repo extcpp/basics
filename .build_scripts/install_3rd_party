@@ -12,7 +12,7 @@ fi
 #prepare
 section "install external libs"
 cd "$project_root" || exit 1
-cd external_libs || exit 1
+cd external_libs || { echo "no libs to install"; exit 0; }
 
 #command
 # init_libs    - first stage to get libobi
