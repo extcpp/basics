@@ -1,10 +1,10 @@
 // Copyright - 2016-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 #ifndef EXT_UTIL_CONTAINER_TRAITS_HEADER
 #define EXT_UTIL_CONTAINER_TRAITS_HEADER
-#include <string>
-#include <string_view>
 
+#include <string_view>
 #include <ext/meta/basic.hpp>
+#include <ext/util/forward_std_string.hpp>
 
 namespace ext { namespace util { namespace _detail {
 
