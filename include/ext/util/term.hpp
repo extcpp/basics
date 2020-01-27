@@ -1,8 +1,7 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-// requires c++17 (string_view)
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_TERM_HEADER
 #define EXT_UTIL_TERM_HEADER
-
 #include <optional>
 #include <utility>
 #ifdef EXT_USE_TERM

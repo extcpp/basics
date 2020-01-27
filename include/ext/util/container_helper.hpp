@@ -1,13 +1,13 @@
 // Copyright - 2016-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 // Idea and code from STL
 // http://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-3-of-n
 
 // TODO: Is this useful for people without brain damage? Discuss with Mic.
-
 #ifndef EXT_UTIL_CONTAINER_HELPER_HEADER
 #define EXT_UTIL_CONTAINER_HELPER_HEADER
+#include <ext/util/container_tags.hpp>
 
-#include "container_tags.hpp"
 #include <algorithm>
 
 namespace ext { namespace util {

@@ -1,9 +1,10 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_BENCHMARK_HEADER
 #define EXT_UTIL_BENCHMARK_HEADER
+#include <ext/macros/compiler.hpp>
 
 #include <atomic>
-#include <ext/macros/compiler.hpp>
 
 namespace ext { namespace util {
 

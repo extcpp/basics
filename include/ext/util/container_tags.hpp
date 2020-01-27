@@ -4,6 +4,7 @@
 // http://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-3-of-n
 #ifndef EXT_UTIL_CONTAINER_TAGS_HEADER
 #define EXT_UTIL_CONTAINER_TAGS_HEADER
+#include <ext/meta/basic.hpp>
 
 // https://blog.magnum.graphics/backstage/forward-declaring-stl-container-types/
 #include <deque>
@@ -15,7 +16,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include <ext/meta/basic.hpp>
 
 namespace ext { namespace util {
 namespace _detail {

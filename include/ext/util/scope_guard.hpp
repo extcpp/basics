@@ -1,20 +1,20 @@
-// Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-//
+// Copyright - 2015-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
+
 // idea taken form:
 // Andrei Alexandrescu - CppCon 2015 - Declarative Control Flow
 // https://github.com/CppCon/CppCon2015/blob/master/Presentations/Declarative%20Control%20Flow/Declarative%20Control%20Flow%20-%20Andrei%20Alexandrescu%20-%20CppCon%202015.pdf
 // https://www.youtube.com/watch?v=WjTrfoiB0MQ
-//
-// requires: c++17
 
 #ifndef EXT_UTIL_SCOPE_GUARD_HEADER
 #define EXT_UTIL_SCOPE_GUARD_HEADER
+#include <ext/macros/general.hpp>
+
 #include <cstdint>
 #include <exception>
-#include <iostream> // iostream to different TU?
+#include <iostream>
 #include <type_traits>
 
-#include <ext/macros/general.hpp>
 
 namespace ext { namespace util {
 namespace _detail {

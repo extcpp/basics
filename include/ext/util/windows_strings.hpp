@@ -1,4 +1,5 @@
 // Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 
 // Collection of functions that convert between utf8 encoded
 // strings (std::string and char*) and strings taken by the Windows
@@ -19,9 +20,9 @@
 
 #ifndef EXT_UTIL_WINDOWS_STRINGS_HEADER
 #define EXT_UTIL_WINDOWS_STRINGS_HEADER
-
 #include <ext/macros/platform.hpp>
 #include <ext/util/except.hpp>
+
 #include <memory>
 #include <string>
 

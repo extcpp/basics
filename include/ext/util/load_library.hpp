@@ -1,4 +1,5 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 
 // Collection of functions that allows loading of libraries
 // cross platform for linux and windows. Other platforms are

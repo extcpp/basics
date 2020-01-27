@@ -1,7 +1,7 @@
 // Copyright - 2014-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_SCOPED_TIMER_HEADER
 #define EXT_UTIL_SCOPED_TIMER_HEADER
-
 #include <chrono>
 #include <cmath>
 #include <functional>

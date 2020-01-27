@@ -14,11 +14,9 @@
 // https://github.com/TartanLlama/expected/tree/1d9c5d8c0da84b8ddc54bd3d90d632eec95c1f13
 ///
 
-// Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com> -- added by check_code
-
+// Copyright - 2019-2020 - Jan Christoph Uhde <Jan@UhdeJC.com> -- added by check_code
 #ifndef EXT_UTIL_EXPECTED_HEADER
 #define EXT_UTIL_EXPECTED_HEADER
-
 #include <exception>
 #include <functional>
 #include <type_traits>

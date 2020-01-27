@@ -1,9 +1,8 @@
-// Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
-// Copyright - 2019 - Michael T. Becker
-
+// Copyright - 2019-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2019-2020 - Michael T. Becker
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_ENUM_HEADER
 #define EXT_UTIL_ENUM_HEADER
-
 #include <type_traits>
 
 namespace ext { namespace util {

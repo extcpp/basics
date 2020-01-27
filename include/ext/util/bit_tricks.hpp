@@ -1,8 +1,8 @@
 // Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
-#include <type_traits>
 #ifndef EXT_UTIL_BIT_TRICKS_HEADER
-    #define EXT_UTIL_BIT_TRICKS_HEADER
+#define EXT_UTIL_BIT_TRICKS_HEADER
+#include <type_traits>
 
 namespace ext { namespace util {
 

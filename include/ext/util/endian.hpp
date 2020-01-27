@@ -1,15 +1,14 @@
-// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2018-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_ENDIAN_HEADER
 #define EXT_UTIL_ENDIAN_HEADER
+#include <ext/util/cast.hpp>
 
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <stdexcept>
 #include <type_traits>
-
-#include <ext/util/cast.hpp>
 
 #ifdef __APPLE__
     #include <libkern/OSByteOrder.h>

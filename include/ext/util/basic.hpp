@@ -2,7 +2,6 @@
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_BASIC_HEADER
 #define EXT_UTIL_BASIC_HEADER
-
 #include <ext/macros/general.hpp>
 #include <ext/util/cast.hpp>
 

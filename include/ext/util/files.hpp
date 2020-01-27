@@ -2,6 +2,7 @@
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_FILES_HEADER
 #define EXT_UTIL_FILES_HEADER
+#include <ext/util/scoped_timer.hpp>
 
 #include <algorithm>
 #include <filesystem>
@@ -9,7 +10,6 @@
 #include <iostream>
 #include <iterator>
 
-#include <ext/util/scoped_timer.hpp>
 
 namespace ext::util {
 

@@ -1,7 +1,10 @@
 // Copyright - 2016 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
+
+// TODO remove or make it more general
+
 #ifndef EXT_UTIL_ANY_PRINTABLE_HEADER
 #define EXT_UTIL_ANY_PRINTABLE_HEADER
-
 #include <iostream>
 #include <memory>
 #include <sstream>

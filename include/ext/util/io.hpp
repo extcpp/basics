@@ -1,12 +1,15 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_IO_HEADER
 #define EXT_UTIL_IO_HEADER
-#include "../config.hpp"
+#include <ext/config.hpp>
 
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include <stdexcept>
 #include <string>
+
 
 namespace ext { namespace util {
 

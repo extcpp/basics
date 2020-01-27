@@ -1,8 +1,7 @@
 // Copyright - 2018 - Jan Christoph Uhde <Jan@UhdeJC.com>
-// requires c++17 (string_view)
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_STRING_HEADER
 #define EXT_UTIL_STRING_HEADER
-
 #include <algorithm>
 #include <cassert>
 #include <string>
@@ -10,7 +9,7 @@
 #include <vector>
 
 #ifdef EXT_USE_TERM
-    #include "term.hpp"
+    #include <ext/util/term.hpp>
 #endif // EXT_USE_TERM
 
 namespace ext { namespace util {

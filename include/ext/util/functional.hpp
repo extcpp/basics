@@ -1,4 +1,8 @@
 // Copyright - 2015 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
+
+//TODO - delete?
+
 #ifndef EXT_UTIL_FUNCTIONAL_HEADER
 #define EXT_UTIL_FUNCTIONAL_HEADER
 

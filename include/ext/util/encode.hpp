@@ -1,8 +1,7 @@
-// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2018-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_ENCODE_HEADER
 #define EXT_UTIL_ENCODE_HEADER
-
 #include <bitset>
 #include <iomanip>
 #include <iostream>

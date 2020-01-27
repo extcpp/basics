@@ -1,7 +1,7 @@
 // Copyright - 2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_LAZY_HEADER
 #define EXT_UTIL_LAZY_HEADER
-
 #include <type_traits>
 #include <utility>
 
