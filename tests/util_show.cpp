@@ -60,5 +60,6 @@ TEST(util_show, tuple) {
 
 TEST(util_show, vec_bool) {
     // vector<bool> - seriously? ==> https://github.com/vector-of-bool/dds
-    ASSERT_EQ(eu::show(std::vector<bool>{true, false}), "[true, false]");
+    using namespace std;
+    ASSERT_EQ(eu::show(vector<bool>{true, true, false}), "[true, true, false]");
 }
