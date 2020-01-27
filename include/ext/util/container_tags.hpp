@@ -1,4 +1,5 @@
-// Copyright - xxxx-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 // Idea and code from STL
 // http://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-3-of-n
 #ifndef EXT_UTIL_CONTAINER_TAGS_HEADER

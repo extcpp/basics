@@ -7,11 +7,10 @@ from cpt.packager import ConanMultiPackager
 from cpt.ci_manager import CIManager
 from cpt.printer import Printer
 
-
 class BuilderSettings(object):
     @property
     def username(self):
-        """ Set ext-basics as package's owner
+        """ Set extcpp as package's owner
         """
         return os.getenv("CONAN_USERNAME", "extcpp")
 

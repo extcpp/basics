@@ -11,7 +11,8 @@ from .common import Operation, OperationState, AccessType
 ## // Copyright - 2014 - Jan Christoph Uhde <Jan@UhdeJC.com>
 g_copy_re = re.compile(r'//.*Copyright.*Jan Christoph Uhde')
 g_copy_exact_re = re.compile(r'// Copyright - (20\d{2}(-20\d{2})?) - Jan Christoph Uhde <Jan@UhdeJC.com>')
-g_copy_format = "// Copyright - {} - Jan Christoph Uhde <Jan@UhdeJC.com>\n"
+g_copy_format = ( "// Copyright - {} - Jan Christoph Uhde <Jan@UhdeJC.com>\n" +
+                  "// Please see LICENSE.md for license or visit https://github.com/extcpp/basics\n" )
 
 class CopyrightState(OperationState):
     def __init__(self, access):
@@ -54,7 +55,7 @@ class Copyright(Operation):
         out = target_file_handle
         if state.insert_new:
             log.info("insert {}".format(str(state.insert_new)))
-            out.write(g_copy_format.format("xxxx-2020"))
+            out.write(g_copy_format.format("2020"))
 
             with open(full_path, 'r') as infile:
                 out.write(infile.read())

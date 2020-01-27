@@ -19,7 +19,8 @@ struct has_iterator<T,
                                 decltype(std::declval<T&&>().end())>> : std::true_type {};
 
 template<typename T, class... TT>
-struct is_excluded : std::bool_constant<(std::is_same<meta::remove_cv_ref_t<T>, meta::remove_cv_ref_t<TT>>::value || ...)> {};
+struct is_excluded
+    : std::bool_constant<(std::is_same<meta::remove_cv_ref_t<T>, meta::remove_cv_ref_t<TT>>::value || ...)> {};
 
 template<typename T>
 struct is_container
@@ -30,15 +31,16 @@ template<typename T, typename = void>
 struct is_associative : std::false_type {};
 
 template<typename T>
-struct is_associative<T, std::void_t<typename meta::remove_cv_ref_t<T>::key_type, typename meta::remove_cv_ref_t<T>::mapped_type>>
+struct is_associative<
+    T,
+    std::void_t<typename meta::remove_cv_ref_t<T>::key_type, typename meta::remove_cv_ref_t<T>::mapped_type>>
     : std::true_type {};
 
 template<typename T, typename = void>
 struct is_set : std::false_type {};
 
 template<typename T>
-struct is_set<T, std::void_t<typename meta::remove_cv_ref_t<T>::value_compare>>
-    : std::true_type {};
+struct is_set<T, std::void_t<typename meta::remove_cv_ref_t<T>::value_compare>> : std::true_type {};
 
 }}} // namespace ext::util::_detail
 
