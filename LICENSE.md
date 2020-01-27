@@ -1,4 +1,10 @@
-#The MIT License
+# License
+For all C++ files and CMake parts that are required to use
+this lib successfully the MIT license shall be applied.
+
+All other files shall remain property of the author.
+
+## The MIT License
 
 Copyright 2016-2020 Jan Christoph Uhde
 
