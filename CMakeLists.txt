@@ -99,20 +99,6 @@ target_compile_definitions(ext-basics INTERFACE
     EXT_HEADER_ONLY_LIB
 )
 
-### define shared lib
-add_library(ext-basics-shared SHARED ${libext_source} ${libext_header})
-target_include_directories(ext-basics-shared PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${EXTALLOCATORS_PATH}>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
-)
-target_compile_features(ext-basics-shared PUBLIC cxx_std_17)
-target_compile_options(ext-basics-shared PRIVATE ${ext_stone-warnings})
-target_compile_definitions(ext-basics-shared PUBLIC ${ext_common_compile_definitions})
-target_compile_definitions(ext-basics-shared PUBLIC EXT_SHARED_LIB)
-target_compile_definitions(ext-basics-shared PRIVATE EXT_IN_LIB=1)
-target_link_libraries(ext-basics-shared Threads::Threads)
-
 ### define header only lib UNFINISHED
 add_library(ext-basics-unfinished INTERFACE)
 target_include_directories(ext-basics-unfinished INTERFACE
@@ -120,11 +106,10 @@ target_include_directories(ext-basics-unfinished INTERFACE
 )
 
 # set up folder structure for XCode and VisualStudio
-set_target_properties (ext-basics-shared PROPERTIES FOLDER libext)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${libext_header} ${libext_source})
+#set_target_properties (ext-basics PROPERTIES FOLDER libext) #not for interface libraries
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ext-basics-header} ${ext-basics-source})
 
 add_library(ext::basics ALIAS ext-basics)
-add_library(ext::basics-shared ALIAS ext-basics-shared)
 
 ## testing
 if(LIBEXT_TESTS)
@@ -147,12 +132,10 @@ endif()
 ## installation
 if(COMMAND ext_install)
     set_target_properties(ext-basics PROPERTIES EXPORT_NAME basics)
-    set_target_properties(ext-basics-shared PROPERTIES EXPORT_NAME basics-shared)
 
     ext_install(ext-basics include/ext)
-    ext_install(ext-basics-shared include/ext)
 
-    install(TARGETS ext-basics ext-basics-shared
+    install(TARGETS ext-basics
         EXPORT ext-basics-targets
         DESTINATION ${CMAKE_INSTALL_PREFIX}
     )

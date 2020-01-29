@@ -40,17 +40,13 @@ set(test-files
     #"expected/test"
 )
 
-set(test-files-shared
-    "logging"
-)
-
 if(EXT_CXX_FOLDS_AVAILABLE)
 list(APPEND test-files
     "meta_if_all_any"
 )
 endif()
 
-foreach(suffix IN ITEMS "" "-shared")
+foreach(suffix IN ITEMS "")
     #build one executable
     set(test_sources)
     foreach(test_name IN LISTS test-files${suffix}) # <- DO NOT EXPAND LIST

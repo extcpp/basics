@@ -1,6 +1,5 @@
-set(libext_header
+set(ext-basics-header
     "include/ext/config.hpp"
-    "include/ext/logging.hpp"
     "include/ext/std.hpp"
 
     "include/ext/algorithm/basic.hpp"
@@ -9,9 +8,6 @@ set(libext_header
     #"include/ext/concurrent/hierarchical_mutex.hpp"
     #"include/ext/concurrent/threadsafe_queue.hpp"
     #"include/ext/concurrent/threadsafe_stack.hpp"
-
-    "include/ext/logging/definitions.hpp"
-    "include/ext/logging/functionality.hpp"
 
     "include/ext/macros/advanced.hpp"
     "include/ext/macros/compiler.hpp"

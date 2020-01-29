@@ -1,3 +1,2 @@
-set(libext_source
-    "src/logging.cpp"
+set(ext-basics-source 
 )

@@ -15,7 +15,6 @@ set(examples
     if
     if_all_any
     load_library
-    logging
     meta
     scope_guard
     scoped_timer
@@ -33,7 +32,7 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     add_executable(${example} ${cpp})
     target_link_libraries(${example}
         ${CMAKE_THREAD_LIBS_INIT}
-        ext::basics-shared
+        ext::basics
         ext-basics-unfinished
     )
     if(UNIX)
