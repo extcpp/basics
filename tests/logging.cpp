@@ -44,7 +44,7 @@ TEST_F(LoggingDeathTest, fatal) {
 
 TEST_F(LoggingTest, threads) {
     using namespace ext::logging;
-    configuration::threads = true;
+    configuration::threads = false;
 
     ASSERT_THROW(EXT_LOG("aiaiai") << "No threads ma:(", ext::util::not_implemented_exception);
 

@@ -40,13 +40,14 @@ struct logger {
            const char* file_name,
            int line_no,
            const char* function = "none");
-    ~logger();
 
+    virtual ~logger();
     void write(); // may become virtual
 
     template<typename T>
-    void operator<<(T&& value) {
+    logger& operator<<(T&& value) {
         _ss << std::forward<T>(value);
+        return *this;
     }
 };
 

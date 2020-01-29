@@ -23,7 +23,7 @@ EXT_INIT_PRIORITY_GNU(103)
 _detail::logtopic topic::engine{4, std::string("engine"), level::error};
 
 bool configuration::prefix_newline{false};
-bool configuration::append_newline{false};
+bool configuration::append_newline{true};
 bool configuration::threads{false};
 bool configuration::filename{true};
 bool configuration::function{true};
@@ -82,34 +82,25 @@ _detail::logger::logger(
         _ss << " in " << function << "()";
     }
     _ss << ": '";
-
-    // message follows here
-
-    this->write();
 }
 
 void _detail::logger::write() {
-    if (configuration::threads) {
-        throw util::not_implemented_exception();
-        // add pointer to global lockfree queue
-        // so other thread releases and prints
-        // free memory in same thread?!
-        // _detail::add_queue(ss.str());
-    } else {
-        std::lock_guard<std::mutex> lock(logmutex);
+    std::lock_guard<std::mutex> lock(logmutex);
 
-        _out << _ss.rdbuf() << "'";
-        if (configuration::append_newline) {
-            _ss << "\n";
-        }
-        _out << std::flush; // close message
+    _out << _ss.rdbuf() << "'";
+    if (configuration::append_newline) {
+        _out << "\n";
+    }
+    _out << std::flush; // close message
 
-        if (_level == level::fatal) {
-            _out << "\n" << std::endl;
-            std::terminate();
-        }
+    if (_level == level::fatal) {
+        std::terminate();
     }
 }
 
-_detail::logger::~logger() {}
+_detail::logger::~logger() {
+    try {
+        write();
+    } catch (...) {}
+}
 }} // namespace ext::logging
