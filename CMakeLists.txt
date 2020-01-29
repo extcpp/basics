@@ -74,20 +74,11 @@ set(ext_common_compile_definitions
 )
 
 find_package(Threads REQUIRED)
-### detect if allocators sub-lib is present
-set(EXTALLOCATORS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/external_libs/allocators/include)
-if(EXISTS ${EXTALLOCATORS_PATH})
-    ext_log("found ext allocators")
-else()
-    #unset path if the include directory does not exists -- not checked out
-    unset(EXTALLOCATORS_PATH)
-endif()
 
 ### define header only lib
 add_library(ext-basics INTERFACE)
 target_include_directories(ext-basics INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${EXTALLOCATORS_PATH}>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
 )
 target_compile_features(ext-basics INTERFACE cxx_std_17)
