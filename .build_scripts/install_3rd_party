@@ -9,23 +9,25 @@ else
     exit 1
 fi
 
-#prepare
-section "install external libs"
-cd "$project_root" || exit 1
-cd external_libs || { echo "no libs to install"; exit 0; }
+git submodule update --init --recursive
 
-#command
-# init_libs    - first stage to get libobi
-# init_libs.py - second stage
-if [[ -e ./init_libs  ]]; then
-    ./init_libs || exit 1
-else
-    echo "no external libs specified"
-fi
-
-if [[ -e ./init_libs.py  ]]; then
-    ./init_libs.py || echo "could not run init_libs.py_"
-fi
-
-#end
-echo
+# #prepare
+# section "install external libs"
+# cd "$project_root" || exit 1
+# cd external_libs || { echo "no libs to install"; exit 0; }
+#
+# #command
+# # init_libs    - first stage to get libobi
+# # init_libs.py - second stage
+# if [[ -e ./init_libs  ]]; then
+#     ./init_libs || exit 1
+# else
+#     echo "no external libs specified"
+# fi
+#
+# if [[ -e ./init_libs.py  ]]; then
+#     ./init_libs.py || echo "could not run init_libs.py_"
+# fi
+#
+# #end
+# echo
