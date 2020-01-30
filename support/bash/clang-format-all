@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -u
-
-support_dir="${project_root:-"$(realpath -s "$(dirname "$(readlink -s -f "${BASH_SOURCE[0]}")")")"}"
-. "$support_dir/find-clang-format"
-find_clang_format
-
-find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\)' -exec "${clang_format_binary}" -style=file -i {} \;
