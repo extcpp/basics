@@ -87,7 +87,7 @@ target_compile_options(ext-basics INTERFACE
 )
 target_compile_definitions(ext-basics INTERFACE
     ${ext_common_compile_definitions}
-    EXT_HEADER_ONLY_LIB
+    EXT_BASICS_HEADER_ONLY_LIB
 )
 
 ### define header only lib UNFINISHED
