@@ -19,11 +19,9 @@ set(examples
     scope_guard
     scoped_timer
     show
-    static_lambda
     tagged_pointer
     tuple
     type_to_string
-    vector
 )
 
 foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
@@ -33,7 +31,6 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     target_link_libraries(${example}
         ${CMAKE_THREAD_LIBS_INIT}
         ext::basics
-        ext-basics-unfinished
     )
     if(UNIX)
         target_link_libraries(${example} dl)

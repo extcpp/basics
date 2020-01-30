@@ -90,12 +90,6 @@ target_compile_definitions(ext-basics INTERFACE
     EXT_BASICS_HEADER_ONLY_LIB
 )
 
-### define header only lib UNFINISHED
-add_library(ext-basics-unfinished INTERFACE)
-target_include_directories(ext-basics-unfinished INTERFACE
-    "${CMAKE_CURRENT_SOURCE_DIR}/.unfinished/include"
-)
-
 # set up folder structure for XCode and VisualStudio
 #set_target_properties (ext-basics PROPERTIES FOLDER libext) #not for interface libraries
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ext-basics-header} ${ext-basics-source})
