@@ -25,7 +25,6 @@ init: []
 install:
   - git submodule update --init --recursive
   - cd external_libs
-  - git clone https://github.com/google/googletest
   - cd ..
 
 before_build:
