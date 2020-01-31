@@ -127,34 +127,37 @@ before_install:
   - export EXT_CI_BRANCH=${TRAVIS_BRANCH}
   # calculate pojects paths
   - export PATH="$install_root/bin:$PATH"
-  - export project_root="$(pwd)"
+  - export project_root="$PWD"
   - export build_base="${project_root}-build"
   - export build_root="${build_base}/$build_type"
   - export install_root="$HOME/usr"
   - export build_prefix='<>'
-  # system info
-  - $project_root/.build_scripts/system_info
-  - $project_root/.build_scripts/var_info
 
 install:
+  - echo $project_root
+  - git clone https://github.com/extcpp/build-support --recurse-submodules ../build-support
+  - ../build-support/setup-support . ../build-support
+  # system info
+  - ../build-support/lib/bash_build_scripts/system_info
+  - ../build-support/lib/bash_build_scripts/var_info
   - mkdir "$install_root"
   - mkdir -p "$build_root"
   - ln -s "$build_root" "$build_base/current"
   - sudo $project_root/support/travis/install-$ARCH-$TRAVIS_OS_NAME
-  - $project_root/.build_scripts/install_cmake
-  - $project_root/.build_scripts/install_3rd_party
+  - ../build-support/lib/bash_build_scripts/install_cmake
+  - ../build-support/lib/bash_build_scripts/install_3rd_party
 
 before_script:
 
 script:
-  - $project_root/.build_scripts/var_info
+  - ../build-support/lib/bash_build_scripts/var_info
   - |
-    $project_root/.build_scripts/configure \
+    ../build-support/lib/bash_build_scripts/configure \
       -DCMAKE_BUILD_TYPE="$build_type" \
       -DLIBEXT_TESTS="$tests" \
       -DLIBEXT_EXAMPLES="$examples" \
       -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON \
       $cmake_extra_flags
-  - $project_root/.build_scripts/build
-  - if [[ $coverage == "false" ]]; then $project_root/.build_scripts/test $tests; fi
-  - if [[ $coverage == "true" ]]; then $project_root/support/coverage; fi
+  - ../build-support/lib/bash_build_scripts/build
+  - if [[ $coverage == "false" ]]; then ../build-support/lib/bash_build_scripts/test $tests; fi
+  - if [[ $coverage == "true" ]]; then ../build-support/scripts/coverage; fi

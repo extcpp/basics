@@ -1,3 +1,0 @@
-#!/bin/bash
-
-watchdir . "./build -bt  && ../../libext-build/curren/tests/test_libobi --gtest_filter=\"*$@*\""
