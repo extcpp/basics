@@ -28,7 +28,6 @@ template<bool cond, typename first, typename second>
 using if_bool_t = std::conditional_t<cond, first, second>;
 
 
-
 // if_all  - logical and (fold expression)
 template<bool... XS>
 constexpr bool if_all_v = std::bool_constant<(XS && ...)>::value;
@@ -45,5 +44,5 @@ constexpr bool if_any_v = !if_all_v<!XS...>;
 template<typename T, bool... XS>
 using enable_if_any_t = std::enable_if_t<(if_any_v<XS...>), T>;
 
-}
+} // namespace ext::meta
 #endif // EXT_META_BASIC_HEADER
