@@ -27,9 +27,14 @@ struct vec {
 
     vec(vec const&) = default;
 
-    template<typename... Forward,
-             typename = std::enable_if_t<!(std::is_same_v<vec<T, N>, std::decay_t<Forward>> && ...)>>
-    vec(Forward&&... f) : data{std::forward<Forward>(f)...} {}
+    template<typename... Type,
+             typename = std::enable_if_t<!(std::is_same_v<vec<T, N>, std::decay_t<Type>> && ...)>>
+    vec(Type&&... f) : data{std::forward<Type>(f)...} {}
+
+    //vec(std::initializer_list<T> list) {
+
+
+    //}
 
     vec(std::vector<T> const& v) {
         EXT_ASSERT(N == v.size());
@@ -87,6 +92,9 @@ struct vec {
     }
 };
 
+template<typename X, typename... XS>
+vec(X, XS... ) -> vec<X, sizeof...(XS) + 1>;
+
 template<typename T, std::size_t N>
 vec<T, N> operator-(vec<T, N> const& left, vec<T, N> const& right) {
     auto rv = left;
@@ -105,6 +113,20 @@ vec<T, N> operator+(vec<T, N> const& left, vec<T, N> const& right) {
     return rv;
 }
 
+template<typename T, std::size_t N>
+bool operator==(vec<T, N> const& left, vec<T, N> const& right) {
+    for (std::size_t i = 0; i < N; ++i) {
+        if(left[i] != right[i]){
+            return false;
+        }
+    }
+    return true;
+}
+
+template<typename T, std::size_t N>
+bool operator!=(vec<T, N> const& left, vec<T, N> const& right) {
+    return !(left == right);
+}
 
 namespace _detail {
 
