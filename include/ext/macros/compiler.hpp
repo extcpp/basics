@@ -76,8 +76,8 @@
 
 #ifdef EXT_COMPILER_VC
     // init_set: https://msdn.microsoft.com/en-us/library/7977wcck.aspx
-    #define EXT_INIT_PRIORITY_VC_HIGH EXT_DO_PRAGMA(init_seg, lib)
-    #define EXT_INIT_PRIORITY_VC_LOW EXT_DO_PRAGMA(init_seg, user)
+    #define EXT_INIT_PRIORITY_VC_HIGH EXT_DO_PRAGMA(init_seg(lib))
+    #define EXT_INIT_PRIORITY_VC_LOW EXT_DO_PRAGMA(init_seg(user))
 #else
     #define EXT_INIT_PRIORITY_VC_HIGH EXT_NOTHING()
     #define EXT_INIT_PRIORITY_VC_LOW EXT_NOTHING()
