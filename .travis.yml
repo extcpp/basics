@@ -146,6 +146,8 @@ install:
   - sudo $project_root/support/travis/install-$ARCH-$TRAVIS_OS_NAME
   - ../build-support/lib/bash_build_scripts/install_cmake
   - ../build-support/lib/bash_build_scripts/install_3rd_party
+  - $CXX --version
+  - cmake --version
 
 before_script:
 

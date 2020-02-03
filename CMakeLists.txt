@@ -1,6 +1,6 @@
 # Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.12)
 project(ext-basics VERSION 0.0.1 LANGUAGES CXX)
 message(STATUS "extINFO -- entering ext-basics")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
