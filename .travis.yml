@@ -73,8 +73,10 @@ matrix:
 
     - name: "mac"
       os: osx
-      osx_image: xcode11.2
+      osx_image: xcode11.3
       compiler: clang
+      #env:
+      #  - cmake_extra_flags="-DMACOSX_DEPLOYMENT_TARGET=10.15"
 
     - name: "coverity scan"
       if: branch = coverity_scan
@@ -160,6 +162,6 @@ script:
       -DLIBEXT_EXAMPLES="$examples" \
       -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON \
       $cmake_extra_flags
-  - ../build-support/lib/bash_build_scripts/build
-  - if [[ $coverage == "false" ]]; then ../build-support/lib/bash_build_scripts/test $tests; fi
-  - if [[ $coverage == "true" ]]; then ../build-support/scripts/coverage; fi
+  - ../build-support/lib/bash_build_scripts/build || exit 1
+  - if [[ $coverage == "false" ]]; then ../build-support/lib/bash_build_scripts/test $tests || exit 1 ; fi
+  - if [[ $coverage == "true" ]]; then ../build-support/scripts/coverage || exit 1 ; fi

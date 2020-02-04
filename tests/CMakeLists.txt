@@ -35,6 +35,11 @@ list(APPEND test-files
 )
 endif()
 
+if(NOT APPLE)
+    # wait for MacOS 10.15 to arrive in travis
+    find_package(Filesystem REQUIRED Final Experimental)
+endif()
+
 foreach(suffix IN ITEMS "")
     #build one executable
     set(test_sources)
@@ -45,7 +50,12 @@ foreach(suffix IN ITEMS "")
     set(test_target "test-ext-basics${suffix}")
     add_executable("${test_target}" gtest.cpp ${test_sources})
     target_include_directories("${test_target}" SYSTEM PRIVATE ${gtest_SOURCE_DIR}/include)
-    target_link_libraries("${test_target}" ext::basics${suffix} gtest_main gtest Threads::Threads)
+    target_link_libraries("${test_target}"
+        ext::basics${suffix}
+        gtest_main gtest
+        Threads::Threads
+        #std::filesystem # needs to work on travis
+    )
     target_compile_options("${test_target}" PRIVATE ${ext_stone-warnings})
     target_compile_definitions("${test_target}" PUBLIC EXT_CHECKED=1 EXT_IN_TEST=1)
     # -- repeated calls should append which does not happen for me (cmake 3.16 on linux)
