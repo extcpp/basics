@@ -31,10 +31,7 @@ list(APPEND test-files
 )
 endif()
 
-if(NOT APPLE)
-    # wait for MacOS 10.15 to arrive in travis
-    find_package(Filesystem REQUIRED Final Experimental)
-endif()
+find_package(Filesystem REQUIRED Final Experimental)
 
 foreach(suffix IN ITEMS "")
     #build one executable
@@ -50,7 +47,7 @@ foreach(suffix IN ITEMS "")
         ext::basics${suffix}
         gtest_main gtest
         Threads::Threads
-        #std::filesystem # needs to work on travis
+        std::filesystem
     )
     target_compile_options("${test_target}" PRIVATE ${ext_stone-warnings})
     target_compile_definitions("${test_target}" PUBLIC EXT_CHECKED=1 EXT_IN_TEST=1)
