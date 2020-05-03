@@ -23,6 +23,19 @@ TEST(math_find_nth_prime, 10001) {
 }
 //#endif
 
+TEST(math_find_primes, 100) {
+    auto sieve = ext::math::create_sieve_of_eratosthenes(100);
+
+    std::stringstream ss;
+    for(std::size_t i = 0 ; i < 100; i++) {
+        if(is_prime(i, sieve)) {
+            ss << i << " ";
+        }
+
+    }
+    EXPECT_EQ(ss.str(), "2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 ");
+}
+
 #ifdef EXT_COMPILER_GCC
 TEST(math_sieve, compile_time) {
     constexpr auto sieve_compile = ext::math::create_sieve_of_eratosthenes<4000>();

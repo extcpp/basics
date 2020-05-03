@@ -121,6 +121,24 @@ struct prime_number {
     std::size_t index; //!< index in the sieve where the number is found
 };
 
+bool is_prime(std::size_t n, const sieve_of_eratosthenes& sieve /*, bool use_exceptions = false*/) {
+    if(n > sieve.max_value) {
+        throw std::runtime_error("number not covered by range of sieve");
+    }
+
+    if (n < 2) { return false; }
+    if (n == 2) { return true; }
+    if (n % 2 == 0) { return false; }
+
+    auto index = n / 2;
+
+    if (sieve.sieve[index]) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 //! Calculates the Sieve of Eratosthenes for all primes below a certain number
 /*  @param n prime to find
  *  @param sieve returned by sieve_of_eratosthenes
