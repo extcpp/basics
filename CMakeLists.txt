@@ -15,8 +15,8 @@ option(LIBEXT_TESTS "build tests" OFF)
 option(LIBEXT_TESTS_NO_TIME_CRITICAL "no time critical tests" OFF)
 
 ## general setup and includes
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17 CACHE STRING "")
+set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON) # XCode / VS folders
 
 include (TestBigEndian)
