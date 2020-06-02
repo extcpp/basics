@@ -25,6 +25,8 @@ TEST_BIG_ENDIAN(ext_is_big_endian)
 set(LIBEXT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 include(ext_cmake_setup)
 include(ext_cmake_install)
+include(ext_cmake_utils)
+include(ext_cmake_compiler_specific)
 
 set(FORCE_COLORED_OUTPUT ON)
 ext_colored_compiler_ouput()
