@@ -17,7 +17,20 @@ constexpr bool is_enums_v = std::is_enum_v<E1>&& std::is_enum_v<E2>;
 
 template<typename E1, typename E2>
 constexpr bool is_same_underlying_v = std::is_same_v<std::underlying_type_t<E1>, std::underlying_type_t<E1>>;
+
+template <typename E, typename = E>
+inline constexpr bool is_fixed_enum = false;
+
+template <typename E>
+inline constexpr bool is_fixed_enum<E, decltype(E{0})> = std::is_enum_v<E>;
 } // namespace _detail
+
+/// check if enum is of fixed type
+template <typename E>
+inline constexpr bool is_fixed_enum_v = _detail::is_fixed_enum<E>;
+
+template <typename E>
+struct is_fixed_enum : std::bool_constant<is_fixed_enum_v<E>> {};
 
 /// to underlying
 template<typename T, typename Enum, typename U = std::underlying_type_t<Enum>>
