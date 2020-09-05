@@ -18,16 +18,16 @@ EnumType operator&(EnumType const& e1, EnumType const& e2) {
 
 // e&i -- i&e
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType operator&(EnumType const& e, IntegerType const& i) {
     return e & underlying_to_enum<EnumType>(i);
 }
 
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType operator&(IntegerType const& i, EnumType const& e) {
     return underlying_to_enum<EnumType>(i) & e;
@@ -42,16 +42,16 @@ EnumType& operator&=(EnumType& e1, EnumType const& e2) {
 
 // e&=i -- i&=e
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType& operator&=(EnumType& e, IntegerType const& i) {
     e = e & underlying_to_enum<EnumType>(i);
     return e;
 }
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 IntegerType& operator&=(IntegerType& i, EnumType const& e) {
     i = i & enum_to_underlying<EnumType>(e);
@@ -67,16 +67,16 @@ EnumType operator|(EnumType const& e1, EnumType const& e2) {
 
 // e|i -- i|e
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType operator|(EnumType const& e, IntegerType const& i) {
     return e | underlying_to_enum<EnumType>(i);
 }
 
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType operator|(IntegerType const& i, EnumType const& e) {
     return underlying_to_enum<EnumType>(i) | e;
@@ -91,16 +91,16 @@ EnumType& operator|=(EnumType& e1, EnumType const& e2) {
 
 // e|=i -- i|=e
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType& operator|=(EnumType& e, IntegerType const& i) {
     e = e | underlying_to_enum<EnumType>(i);
     return e;
 }
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 IntegerType& operator|=(IntegerType& i, EnumType const& e) {
     i = i | enum_to_underlying<EnumType>(e);
@@ -116,16 +116,16 @@ EnumType operator^(EnumType const& e1, EnumType const& e2) {
 
 // e^i -- i^e
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType operator^(EnumType const& e, IntegerType const& i) {
     return e ^ underlying_to_enum<EnumType>(i);
 }
 
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType operator^(IntegerType const& i, EnumType const& e) {
     return underlying_to_enum<EnumType>(i) ^ e;
@@ -140,16 +140,16 @@ EnumType& operator^=(EnumType& e1, EnumType const& e2) {
 
 // e^=i -- i^=e
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType& operator^=(EnumType& e, IntegerType const& i) {
     e = e ^ underlying_to_enum<EnumType>(i);
     return e;
 }
 template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType>>
+        ,typename = std::enable_if_t<std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 IntegerType& operator^=(IntegerType& i, EnumType const& e) {
     i = i ^ enum_to_underlying<EnumType>(e);
