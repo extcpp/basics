@@ -42,12 +42,12 @@ struct flag_set {
     explicit flag_set(underlying_type flags_) : flags(flags_) {}
 
     flag_set& add(flag_set const& f) {
-        this->flags = this->flags | f.flags;
+        this->flags = static_cast<underlying_type>(this->flags | f.flags);
         return *this;
     }
 
     flag_set& del(flag_set const& f) {
-        this->flags = this->flags & ~f.flags;
+        this->flags = static_cast<underlying_type>(this->flags & static_cast<underlying_type>(~f.flags));
         return *this;
     }
 

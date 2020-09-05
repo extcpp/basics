@@ -48,7 +48,7 @@ enum class ec : uint8_t{
     baz  = 0b0100
 };
 
-void is_flags_enum(ec){}; // REVIEW -- is not enough to enable operators
+void is_flags_enum(ec){} // REVIEW -- is not enough to enable operators
 EXT_ENABLE_FLAG_SET_OPERATORS(ec)
 
 TEST(util_flag_set, normal_usage) {
