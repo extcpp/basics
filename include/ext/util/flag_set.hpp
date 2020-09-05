@@ -127,7 +127,9 @@ flag_set<T> operator^=(flag_set<T>& lhs, flag_set<T> rhs) {
 // op ~
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
 flag_set<T> operator~(flag_set<T> fs) {
-    return flag_set<T>(~fs.flags);
+    flag_set<T> rv;
+    rv.flags = static_cast<std::underlying_type_t<T>>(~fs.flags);
+    return rv;
 }
 
 // ----------------------------------------------------------------------------
