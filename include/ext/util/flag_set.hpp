@@ -1,8 +1,8 @@
 // Copyright - 2019-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Copyright - 2019-2020 - Michael T. Becker
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
-#ifndef EXT_UTIL_ENUM_HEADER
-#define EXT_UTIL_ENUM_HEADER
+#ifndef EXT_UTIL_FLAG_SET_HEADER
+#define EXT_UTIL_FLAG_SET_HEADER
 #include <type_traits>
 
 namespace ext { namespace util {
@@ -20,9 +20,10 @@ struct flag_set {
 
     explicit flag_set(underlying_type flags_) : flags(flags_) {}
 
-    bool operator()(T f) const {
-        return (flags & static_cast<underlying_type>(f)) > 0;
-    }
+    //REVIEW -- why do we want this
+    //bool operator()(T f) const {
+    //    return (flags & static_cast<underlying_type>(f)) > 0;
+    //}
 
     flag_set& operator|=(flag_set other) {
         flags |= other.flags;
@@ -57,6 +58,8 @@ struct flag_set {
     underlying_type flags;
 };
 
+
+
 template<typename>
 struct is_flags_enum : std::false_type {};
 
@@ -69,28 +72,40 @@ struct is_flags_enum : std::false_type {};
 template<typename T>
 constexpr bool is_flags_enum_v = is_flags_enum<T>::value;
 
+
+
 namespace operators::flag_set {
 using ::ext::util::flag_set;
 
 // --- flag_set operators ---
+template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
+bool operator==(flag_set<T> const& rhs, flag_set<T> const& lhs) {
+    return rhs.flags == lhs.flags;
+}
+
+template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
+bool operator!=(flag_set<T> const& rhs, flag_set<T> const& lhs) {
+    return rhs.flags != lhs.flags;
+}
+
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
 flag_set<T> operator~(flag_set<T> fs) {
     return flag_set<T>(~fs.flags);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator|(flag_set<T> rhs, flag_set<T> lhs) {
-    return flag_set<T>(rhs.flags | lhs.flags);
+flag_set<T> operator|(flag_set<T> lhs, flag_set<T> rhs) {
+    return flag_set<T>(lhs.flags | rhs.flags);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator&(flag_set<T> rhs, flag_set<T> lhs) {
-    return flag_set<T>(rhs.flags & lhs.flags);
+flag_set<T> operator&(flag_set<T> lhs, flag_set<T> rhs) {
+    return flag_set<T>(lhs.flags & rhs.flags);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator^(flag_set<T> rhs, flag_set<T> lhs) {
-    return flag_set<T>(rhs.flags ^ lhs.flags);
+flag_set<T> operator^(flag_set<T> lhs, flag_set<T> rhs) {
+    return flag_set<T>(lhs.flags ^ rhs.flags);
 }
 
 // --- enum operators ---
@@ -100,50 +115,50 @@ flag_set<T> operator~(T f) {
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator|(T rhs, T lhs) {
-    return flag_set<T>(rhs) | flag_set<T>(lhs);
+flag_set<T> operator|(T lhs, T rhs) {
+    return flag_set<T>(lhs) | flag_set<T>(rhs);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator|(flag_set<T> rhs, T lhs) {
-    return rhs | flag_set<T>(lhs);
+flag_set<T> operator|(flag_set<T> lhs, T rhs) {
+    return lhs | flag_set<T>(rhs);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator|(T rhs, flag_set<T> lhs) {
-    return flag_set<T>(rhs) | lhs;
+flag_set<T> operator|(T lhs, flag_set<T> rhs) {
+    return flag_set<T>(lhs) | rhs;
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator&(T rhs, T lhs) {
-    return flag_set<T>(rhs) & flag_set<T>(lhs);
+flag_set<T> operator&(T lhs, T rhs) {
+    return flag_set<T>(lhs) & flag_set<T>(rhs);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator&(flag_set<T> rhs, T lhs) {
-    return rhs & flag_set<T>(lhs);
+flag_set<T> operator&(flag_set<T> lhs, T rhs) {
+    return lhs & flag_set<T>(rhs);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator&(T rhs, flag_set<T> lhs) {
-    return flag_set<T>(rhs) & lhs;
+flag_set<T> operator&(T lhs, flag_set<T> rhs) {
+    return flag_set<T>(lhs) & rhs;
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator^(T rhs, T lhs) {
-    return flag_set<T>(rhs) ^ flag_set<T>(lhs);
+flag_set<T> operator^(T lhs, T rhs) {
+    return flag_set<T>(lhs) ^ flag_set<T>(rhs);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator^(flag_set<T> rhs, T lhs) {
-    return rhs ^ flag_set<T>(lhs);
+flag_set<T> operator^(flag_set<T> lhs, T rhs) {
+    return lhs ^ flag_set<T>(rhs);
 }
 
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
-flag_set<T> operator^(T rhs, flag_set<T> lhs) {
-    return flag_set<T>(rhs) ^ lhs;
+flag_set<T> operator^(T lhs, flag_set<T> rhs) {
+    return flag_set<T>(lhs) ^ rhs;
 }
 } // namespace operators::flag_set
 
 }}     // namespace ext::util
-#endif // EXT_UTIL_ENUM_HEADER
+#endif // EXT_UTIL_FLAG_SET_HEADER
