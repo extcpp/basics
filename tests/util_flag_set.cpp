@@ -41,9 +41,53 @@ TEST(util_flag_set, flag_set_values ) {
 }
 
 
-TEST(util_flag_set, flag_set_and ) {
-    using namespace eu::operators::flag_set;
+enum class ec : uint8_t{
+    none = 0b0000,
+    foo  = 0b0001,
+    bar  = 0b0010,
+    baz  = 0b0100
+};
 
+void is_flags_enum(ec){}; // REVIEW -- is not enough to enable operators
+EXT_ENABLE_FLAG_SET_OPERATORS(ec)
+
+TEST(util_flag_set, normal_usage) {
+    using namespace eu;
+
+    flag_set<ec> set = ec::none;
+    ASSERT_FALSE(set.has(ec::foo));
+
+    set.add(ec::foo);
+    set.add(ec::bar);
+    ASSERT_TRUE(set.has(ec::foo));
+    ASSERT_TRUE(set.has(ec::bar));
+    ASSERT_FALSE(set.has(ec::baz));
+
+    // requires enabled operators
+    set = ec::none;
+    set.add(ec::foo | ec::bar);
+    ASSERT_TRUE(set.has(ec::foo));
+    ASSERT_TRUE(set.has(ec::bar));
+    ASSERT_FALSE(set.has(ec::baz));
+
+    set.del(ec::bar);
+    ASSERT_TRUE(set.has(ec::foo));
+    ASSERT_FALSE(set.has(ec::bar));
+    ASSERT_FALSE(set.has(ec::baz));
+
+    ASSERT_FALSE(set.is(ec::bar));
+
+    set.del(ec::foo);
+    ASSERT_FALSE(set.has(ec::foo));
+    ASSERT_FALSE(set.has(ec::bar));
+    ASSERT_FALSE(set.has(ec::baz));
+
+    ASSERT_TRUE(set.is(ec::none));
+}
+
+
+TEST(util_flag_set, op_and) {
+    using namespace eu;
     const auto one = (test::enum_0011 & test::enum_0001);
     static_assert(std::is_same_v<const flag_set<test>, decltype(one)>);
     ASSERT_TRUE(one == flag_0001);
@@ -82,8 +126,8 @@ TEST(util_flag_set, flag_set_and ) {
     ASSERT_TRUE(x == flag_0001);
 }
 
-TEST(util_flag_set, flag_set_or ) {
-    using namespace eu::operators::flag_set;
+TEST(util_flag_set, op_or) {
+    using namespace eu;
 
     const auto three = (test::enum_0011 | test::enum_0001);
     static_assert(std::is_same_v<const flag_set<test>, decltype(three)>);
@@ -123,8 +167,8 @@ TEST(util_flag_set, flag_set_or ) {
     ASSERT_TRUE(x == flag_0011);
 }
 
-TEST(util_flag_set, flag_set_xor ) {
-    using namespace eu::operators::flag_set;
+TEST(util_flag_set, op_xor) {
+    using namespace eu;
 
     const auto two = (test::enum_0011 ^ test::enum_0001);
     static_assert(std::is_same_v<const flag_set<test>, decltype(two)>);
@@ -164,8 +208,8 @@ TEST(util_flag_set, flag_set_xor ) {
     ASSERT_TRUE(x == flag_0010);
 }
 
-TEST(util_flag_set, flag_set_not ) {
-    using namespace eu::operators::flag_set;
+TEST(util_flag_set, op_not) {
+    using namespace eu;
 
     const auto two_fifty_five = (~test::enum_0000);
     static_assert(std::is_same_v<const flag_set<test>, decltype(two_fifty_five)>);
