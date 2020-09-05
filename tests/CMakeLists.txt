@@ -19,6 +19,7 @@ set(test-files
     "util_encode"
     "util_endian"
     "util_enum"
+    "util_enum_operations"
     "util_except"
     "util_flag_set"
     "util_lazy"

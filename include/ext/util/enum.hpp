@@ -32,19 +32,19 @@ template <typename E>
 struct is_fixed_enum : std::bool_constant<is_fixed_enum_v<E>> {};
 
 /// to underlying
-template<typename T, typename Enum
-        ,typename U = std::underlying_type_t<Enum>
-        ,typename = std::enable_if_t<std::is_enum_v<Enum> && std::is_same_v<T, U>>
-        >
-inline constexpr T enum_to_underlying_safe(Enum e) noexcept {
-    return static_cast<U>(e);
-}
-
 template<typename Enum
         ,typename U = std::underlying_type_t<Enum>
         ,typename = _detail::enable_if_enum_t<Enum>
         >
 inline constexpr U enum_to_underlying(Enum e) noexcept {
+    return static_cast<U>(e);
+}
+
+template<typename T, typename Enum
+        ,typename U = std::underlying_type_t<Enum>
+        ,typename = std::enable_if_t<std::is_enum_v<Enum> && std::is_same_v<T, U>>
+        >
+inline constexpr T enum_to_underlying_safe(Enum e) noexcept {
     return static_cast<U>(e);
 }
 
