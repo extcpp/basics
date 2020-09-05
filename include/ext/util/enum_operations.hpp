@@ -9,81 +9,35 @@ namespace ext { namespace util {
 // This code is incomplete and its application is questionable.
 namespace operators::enumeration {
 
-/// operator | ////////////////////////////////////////////////////////////////
-// e|i -- i|e
-template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
-        >
-EnumType operator|(EnumType const& e, IntegerType const& i) {
-    return static_cast<EnumType>(static_cast<IntegerType>(e) | i);
-}
-
-template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
-        >
-EnumType operator|(IntegerType const& e, EnumType const& i) {
-    return static_cast<EnumType>(static_cast<IntegerType>(e) | i);
-}
-
-// e|e
-template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
-EnumType operator|(EnumType const& e1, EnumType const& e2) {
-    using type = std::underlying_type_t<EnumType>;
-    return static_cast<EnumType>(static_cast<type>(e1) | static_cast<type>(e2));
-}
-
-// e|=i -- i|=e
-template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
-        >
-EnumType& operator|=(EnumType& e, IntegerType const& i) {
-    e = e | i;
-    return e;
-}
-// REVIEW -- Do we want this operation?
-template<typename EnumType, typename IntegerType
-        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
-                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
-        >
-IntegerType& operator|=(IntegerType& i, EnumType const& e) {
-    i = i | enum_to_underlying(e);
-    return i;
-}
-
-// e|=e
-template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
-EnumType& operator|=(EnumType& e1, EnumType const& e2) {
-    static_assert(std::is_enum_v<EnumType>);
-    e1 = e1 | e2;
-    return e1;
-}
-
 /// operator & ////////////////////////////////////////////////////////////////
+// e&e
+template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
+EnumType operator&(EnumType const& e1, EnumType const& e2) {
+    return underlying_to_enum_unsafe<EnumType>(enum_to_underlying(e1) & enum_to_underlying(e2));
+}
+
 // e&i -- i&e
 template<typename EnumType, typename IntegerType
         ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
                     std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType operator&(EnumType const& e, IntegerType const& i) {
-    return static_cast<EnumType>(static_cast<IntegerType>(e) & i);
+    return e & underlying_to_enum<EnumType>(i);
 }
 
 template<typename EnumType, typename IntegerType
         ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
                     std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
-EnumType operator&(IntegerType const& e, EnumType const& i) {
-    return static_cast<EnumType>(static_cast<IntegerType>(e) & i);
+EnumType operator&(IntegerType const& i, EnumType const& e) {
+    return underlying_to_enum<EnumType>(i) & e;
 }
 
-// e&e
+// e&=e
 template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
-EnumType operator&(EnumType const& e1, EnumType const& e2) {
-    using type = std::underlying_type_t<EnumType>;
-    return static_cast<EnumType>(static_cast<type>(e1) & static_cast<type>(e2));
+EnumType& operator&=(EnumType& e1, EnumType const& e2) {
+    e1 = e1 & e2;
+    return e1;
 }
 
 // e&=i -- i&=e
@@ -92,50 +46,96 @@ template<typename EnumType, typename IntegerType
                     std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType& operator&=(EnumType& e, IntegerType const& i) {
-    e = e & i;
+    e = e & underlying_to_enum<EnumType>(i);
     return e;
 }
-// REVIEW -- Do we want this operation?
 template<typename EnumType, typename IntegerType
         ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
                     std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 IntegerType& operator&=(IntegerType& i, EnumType const& e) {
-    i = i & enum_to_underlying(e);
+    i = i & enum_to_underlying<EnumType>(e);
     return i;
 }
 
-// e&=e
+/// operator | ////////////////////////////////////////////////////////////////
+// e|e
 template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
-EnumType& operator&=(EnumType& e1, EnumType const& e2) {
-    static_assert(std::is_enum_v<EnumType>);
-    e1 = e1 & e2;
+EnumType operator|(EnumType const& e1, EnumType const& e2) {
+    return underlying_to_enum_unsafe<EnumType>(enum_to_underlying(e1) | enum_to_underlying(e2));
+}
+
+// e|i -- i|e
+template<typename EnumType, typename IntegerType
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
+                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        >
+EnumType operator|(EnumType const& e, IntegerType const& i) {
+    return e | underlying_to_enum<EnumType>(i);
+}
+
+template<typename EnumType, typename IntegerType
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
+                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        >
+EnumType operator|(IntegerType const& i, EnumType const& e) {
+    return underlying_to_enum<EnumType>(i) | e;
+}
+
+// e|=e
+template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
+EnumType& operator|=(EnumType& e1, EnumType const& e2) {
+    e1 = e1 | e2;
     return e1;
 }
 
+// e|=i -- i|=e
+template<typename EnumType, typename IntegerType
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
+                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        >
+EnumType& operator|=(EnumType& e, IntegerType const& i) {
+    e = e | underlying_to_enum<EnumType>(i);
+    return e;
+}
+template<typename EnumType, typename IntegerType
+        ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
+                    std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
+        >
+IntegerType& operator|=(IntegerType& i, EnumType const& e) {
+    i = i | enum_to_underlying<EnumType>(e);
+    return i;
+}
+
 /// operator ^ ////////////////////////////////////////////////////////////////
+// e^e
+template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
+EnumType operator^(EnumType const& e1, EnumType const& e2) {
+    return underlying_to_enum_unsafe<EnumType>(enum_to_underlying(e1) ^ enum_to_underlying(e2));
+}
+
 // e^i -- i^e
 template<typename EnumType, typename IntegerType
         ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
                     std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType operator^(EnumType const& e, IntegerType const& i) {
-    return static_cast<EnumType>(static_cast<IntegerType>(e) ^ i);
+    return e ^ underlying_to_enum<EnumType>(i);
 }
 
 template<typename EnumType, typename IntegerType
         ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
                     std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
-EnumType operator^(IntegerType const& e, EnumType const& i) {
-    return static_cast<EnumType>(static_cast<IntegerType>(e) ^ i);
+EnumType operator^(IntegerType const& i, EnumType const& e) {
+    return underlying_to_enum<EnumType>(i) ^ e;
 }
 
-// e^e
+// e^=e
 template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
-EnumType operator^(EnumType const& e1, EnumType const& e2) {
-    using type = std::underlying_type_t<EnumType>;
-    return static_cast<EnumType>(static_cast<type>(e1) ^ static_cast<type>(e2));
+EnumType& operator^=(EnumType& e1, EnumType const& e2) {
+    e1 = e1 ^ e2;
+    return e1;
 }
 
 // e^=i -- i^=e
@@ -144,25 +144,16 @@ template<typename EnumType, typename IntegerType
                     std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 EnumType& operator^=(EnumType& e, IntegerType const& i) {
-    e = e ^ i;
+    e = e ^ underlying_to_enum<EnumType>(i);
     return e;
 }
-// REVIEW -- Do we want this operation?
 template<typename EnumType, typename IntegerType
         ,typename = std::enable_if_t<std::is_enum_v<EnumType> &&
                     std::is_same_v<std::underlying_type_t<EnumType>,IntegerType>>
         >
 IntegerType& operator^=(IntegerType& i, EnumType const& e) {
-    i = i ^ enum_to_underlying(e);
+    i = i ^ enum_to_underlying<EnumType>(e);
     return i;
-}
-
-// e^=e
-template<typename EnumType, typename = std::enable_if_t<std::is_enum_v<EnumType>>>
-EnumType& operator^=(EnumType& e1, EnumType const& e2) {
-    static_assert(std::is_enum_v<EnumType>);
-    e1 = e1 ^ e2;
-    return e1;
 }
 
 /// operator ~ ////////////////////////////////////////////////////////////////
