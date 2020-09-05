@@ -55,34 +55,34 @@ TEST(util_flag_set, normal_usage) {
     using namespace eu;
 
     flag_set<ec> set = ec::none;
-    ASSERT_FALSE(set.has(ec::foo));
+    ASSERT_FALSE(set.contains(ec::foo));
 
     set.add(ec::foo);
     set.add(ec::bar);
-    ASSERT_TRUE(set.has(ec::foo));
-    ASSERT_TRUE(set.has(ec::bar));
-    ASSERT_FALSE(set.has(ec::baz));
+    ASSERT_TRUE(set.contains(ec::foo));
+    ASSERT_TRUE(set.contains(ec::bar));
+    ASSERT_FALSE(set.contains(ec::baz));
 
     // requires enabled operators
     set = ec::none;
     set.add(ec::foo | ec::bar);
-    ASSERT_TRUE(set.has(ec::foo));
-    ASSERT_TRUE(set.has(ec::bar));
-    ASSERT_FALSE(set.has(ec::baz));
+    ASSERT_TRUE(set.contains(ec::foo));
+    ASSERT_TRUE(set.contains(ec::bar));
+    ASSERT_FALSE(set.contains(ec::baz));
 
-    set.del(ec::bar);
-    ASSERT_TRUE(set.has(ec::foo));
-    ASSERT_FALSE(set.has(ec::bar));
-    ASSERT_FALSE(set.has(ec::baz));
+    set.remove(ec::bar);
+    ASSERT_TRUE(set.contains(ec::foo));
+    ASSERT_FALSE(set.contains(ec::bar));
+    ASSERT_FALSE(set.contains(ec::baz));
 
-    ASSERT_FALSE(set.is(ec::bar));
+    ASSERT_FALSE(set.equal(ec::bar));
 
-    set.del(ec::foo);
-    ASSERT_FALSE(set.has(ec::foo));
-    ASSERT_FALSE(set.has(ec::bar));
-    ASSERT_FALSE(set.has(ec::baz));
+    set.remove(ec::foo);
+    ASSERT_FALSE(set.contains(ec::foo));
+    ASSERT_FALSE(set.contains(ec::bar));
+    ASSERT_FALSE(set.contains(ec::baz));
 
-    ASSERT_TRUE(set.is(ec::none));
+    ASSERT_TRUE(set.equal(ec::none));
 }
 
 

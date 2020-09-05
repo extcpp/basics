@@ -41,26 +41,48 @@ struct flag_set {
 
     explicit flag_set(underlying_type flags_) : flags(flags_) {}
 
+    // add
     flag_set& add(flag_set const& f) {
         this->flags = static_cast<underlying_type>(this->flags | f.flags);
         return *this;
     }
 
-    flag_set& del(flag_set const& f) {
+    flag_set& add(T const& f) {
+        this->flags = static_cast<underlying_type>(this->flags | static_cast<underlying_type>(f));
+        return *this;
+    }
+
+    // remove
+    flag_set& remove(flag_set const& f) {
         this->flags = static_cast<underlying_type>(this->flags & static_cast<underlying_type>(~f.flags));
         return *this;
     }
 
-    bool has(flag_set const& f) {
-        return (this->flags & f.flags) == f.flags;
+    flag_set& remove(T const& f) {
+        this->flags = static_cast<underlying_type>(this->flags & static_cast<underlying_type>(~ static_cast<underlying_type>(f)));
+        return *this;
     }
 
-    bool is(flag_set const& f) {
+
+    // contains
+    bool contains(flag_set const& f) {
+        return static_cast<underlying_type>(this->flags & f.flags) == f.flags;
+    }
+
+    bool contains(T const& f) {
+        return (this->flags & static_cast<underlying_type>(f)) == static_cast<underlying_type>(f);
+    }
+
+    // equal
+    bool equal(flag_set const& f) {
         return this->flags == f.flags;
     }
 
+    bool equal(T const& f) {
+        return this->flags == static_cast<underlying_type>(f);
+    }
 
-    //REVIEW -- why do we want this
+    // REVIEW - Mic why did you create this one?
     //bool operator()(T f) const {
     //    return (flags & static_cast<underlying_type>(f)) > 0;
     //}
