@@ -3,20 +3,33 @@
 #ifndef EXT_UTIL_BIT_TRICKS_HEADER
 #define EXT_UTIL_BIT_TRICKS_HEADER
 #include <type_traits>
+#include <ext/util/cast.hpp>
 
-namespace ext { namespace util {
+namespace ext::util {
 
+
+/// returns number stripped of all bits, but the least significant.
 template<typename T>
 constexpr inline T lsb(T number) {
     static_assert(-1 == ~0, "not 2's complement");
-    return (number & -number);
+
+    if constexpr(std::is_signed_v<T>) {
+        return (number & -number);
+    } else {
+        using siged_type = std::make_signed_t<T>;
+        siged_type signed_number = convert_checked<siged_type>(number);
+        siged_type result = (signed_number & -signed_number);
+        return convert_checked<T>(result);
+    }
 }
 
-template<typename T>
-std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, bool> inline constexpr is_power_of_two(T number) {
+template<typename T
+        ,typename = std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>>
+        >
+inline constexpr bool is_power_of_two(T number) {
     // alignment is expected to be a power of 2
     return (number != 0) && ((number & (number - 1)) == 0);
 }
 
-}}     // namespace ext::util
+} // namespace ext::util
 #endif // EXT_UTIL_BIT_TRICKS_HEADER
