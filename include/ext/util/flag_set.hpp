@@ -1,39 +1,42 @@
 // Copyright - 2019-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Copyright - 2019-2020 - Michael T. Becker
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
+// motivated by http://blog.bitwigglers.org/using-enum-classes-as-type-safe-bitmasks/
+
 #ifndef EXT_UTIL_FLAG_SET_HEADER
 #define EXT_UTIL_FLAG_SET_HEADER
 #include <type_traits>
 
-namespace ext { namespace util {
+namespace ext::util {
 
 namespace _detail_flag_set {
-template<typename, typename = void>
-struct is_flags_enum : std::false_type { };
 
-template<typename T>
-struct is_flags_enum<T, std::void_t<decltype(is_flags_enum(std::declval<T>()))>> : std::true_type {};
+    template<typename, typename = void>
+    struct is_flags_enum : std::false_type { };
+
+    template<typename T>
+    struct is_flags_enum<T, std::void_t<decltype(is_flags_enum(std::declval<T>()))>> : std::true_type {};
 
 } // namespace _detail_flag_set
 
-#define EXT_ENABLE_FLAG_SET_OPERATORS(x)         \
-    namespace ext::util::_detail_flag_set {      \
-    template<>                                   \
-    struct is_flags_enum<x> : std::true_type {}; \
+#define EXT_ENABLE_FLAG_SET_OPERATORS(x)             \
+    namespace ext::util::_detail_flag_set {          \
+        template<>                                   \
+        struct is_flags_enum<x> : std::true_type {}; \
     }
 
 template<typename T>
 constexpr bool is_flags_enum_v = _detail_flag_set::is_flags_enum<T>::value;
 
 template<typename T>
-struct flag_set;
-
-// flag_set by Michael Becker
-// motivated by http://blog.bitwigglers.org/using-enum-classes-as-type-safe-bitmasks/
-template<typename T>
 struct flag_set {
     static_assert(std::is_enum_v<T>, "given type is not an enum");
     using underlying_type = std::underlying_type_t<T>;
+
+    template <typename IntegerType>
+    static underlying_type cast(IntegerType x) {
+        return static_cast<underlying_type>(x);
+    }
 
     flag_set() : flags(0) {}
 
@@ -43,49 +46,43 @@ struct flag_set {
 
     // add
     flag_set& add(flag_set const& f) {
-        this->flags = static_cast<underlying_type>(this->flags | f.flags);
+        this->flags = cast(this->flags | f.flags);
         return *this;
     }
 
     flag_set& add(T const& f) {
-        this->flags = static_cast<underlying_type>(this->flags | static_cast<underlying_type>(f));
+        this->flags = cast(this->flags | cast(f));
         return *this;
     }
 
     // remove
     flag_set& remove(flag_set const& f) {
-        this->flags = static_cast<underlying_type>(this->flags & static_cast<underlying_type>(~f.flags));
+        this->flags = cast(this->flags & cast(~f.flags));
         return *this;
     }
 
     flag_set& remove(T const& f) {
-        this->flags = static_cast<underlying_type>(this->flags & static_cast<underlying_type>(~ static_cast<underlying_type>(f)));
+        this->flags = cast(this->flags & cast(~ cast(f)));
         return *this;
     }
 
-
     // contains
-    bool contains(flag_set const& f) {
-        return static_cast<underlying_type>(this->flags & f.flags) == f.flags;
+    bool contains(flag_set const& f) const {
+        return cast(this->flags & f.flags) == f.flags;
     }
 
-    bool contains(T const& f) {
-        return (this->flags & static_cast<underlying_type>(f)) == static_cast<underlying_type>(f);
+    bool contains(T const& f) const {
+        return (this->flags & cast(f)) == cast(f);
     }
 
     // equal
-    bool equal(flag_set const& f) {
+    bool equal(flag_set const& f) const {
         return this->flags == f.flags;
     }
 
-    bool equal(T const& f) {
-        return this->flags == static_cast<underlying_type>(f);
+    bool equal(T const& f) const {
+        return this->flags == cast(f);
     }
-
-    // REVIEW - Mic why did you create this one?
-    //bool operator()(T f) const {
-    //    return (flags & static_cast<underlying_type>(f)) > 0;
-    //}
 
     underlying_type flags;
 };
@@ -238,5 +235,5 @@ flag_set<T> operator~(T f) {
 }
 
 
-}}     // namespace ext::util
+} // namespace ext::util
 #endif // EXT_UTIL_FLAG_SET_HEADER
