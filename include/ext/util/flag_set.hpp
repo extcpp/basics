@@ -40,7 +40,6 @@ struct flag_set {
     }
 
     flag_set() : flags(0) {}
-
     flag_set(T f) : flags(static_cast<underlying_type>(f)) {}
 
     explicit flag_set(underlying_type flags_) : flags(flags_) {}
@@ -63,7 +62,7 @@ struct flag_set {
     }
 
     flag_set& remove(T const& f) {
-        this->flags = cast(this->flags & cast(~ cast(f)));
+        this->flags = cast(this->flags & cast(~cast(f)));
         return *this;
     }
 
@@ -74,15 +73,6 @@ struct flag_set {
 
     bool contains(T const& f) const {
         return (this->flags & cast(f)) == cast(f);
-    }
-
-    // equal
-    bool equal(flag_set const& f) const {
-        return this->flags == f.flags;
-    }
-
-    bool equal(T const& f) const {
-        return this->flags == cast(f);
     }
 
     underlying_type flags;
@@ -156,6 +146,29 @@ flag_set<T> operator~(flag_set<T> fs) {
 // ----------------------------------------------------------------------------
 // --- enum operators ---
 // ----------------------------------------------------------------------------
+
+// op == -- !=
+template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
+bool operator==(flag_set<T> const& rhs, T const& lhs) {
+    return rhs.flags == flag_set<T>(lhs).flags;
+}
+
+template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
+bool operator==(T const& rhs, flag_set<T> const& lhs) {
+    return flag_set<T>(rhs).flags == lhs.flags;
+}
+
+template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
+bool operator!=(flag_set<T> const& rhs, T const& lhs) {
+    return rhs.flags != flag_set<T>(lhs).flags;
+}
+
+template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>
+bool operator!=(T const& rhs, flag_set<T> const& lhs) {
+    return flag_set<T>(rhs).flags == lhs.flags;
+}
+
+
 
 // op &
 template<typename T, typename = std::enable_if_t<is_flags_enum_v<T>>>

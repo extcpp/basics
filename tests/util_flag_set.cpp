@@ -51,38 +51,151 @@ enum class ec : uint8_t{
 void is_flags_enum(ec){} // REVIEW -- is not enough to enable operators
 EXT_ENABLE_FLAG_SET_OPERATORS(ec)
 
-TEST(util_flag_set, normal_usage) {
-    using namespace eu;
 
-    flag_set<ec> set = ec::none;
-    ASSERT_FALSE(set.contains(ec::foo));
 
+using namespace eu;
+TEST(util_flag_set, layout) {
+    static_assert(std::is_standard_layout_v<flag_set<ec>>);
+    ASSERT_FALSE(std::is_trivial_v<flag_set<ec>>); // flags are initalized to 0
+    ASSERT_FALSE(std::is_pod_v<flag_set<ec>>); // not trivial
+}
+
+TEST(util_flag_set, contains) {
+    {
+        flag_set<ec> set;
+        ASSERT_TRUE(set.contains(ec::none));
+        ASSERT_FALSE(set.contains(ec::foo));
+        ASSERT_FALSE(set.contains(ec::bar));
+        ASSERT_FALSE(set.contains(ec::baz));
+    }
+
+    {
+        flag_set<ec> set = ec::foo;
+        ASSERT_TRUE(set.contains(ec::none)); // x & 0 == 0 (always true)
+        ASSERT_TRUE(set.contains(ec::foo));
+        ASSERT_FALSE(set.contains(ec::bar));
+        ASSERT_FALSE(set.contains(ec::baz));
+    }
+
+    {
+        // requires enabled operators
+        flag_set<ec> set = ec::foo | ec::bar;
+        ASSERT_TRUE(set.contains(ec::none));
+        ASSERT_TRUE(set.contains(ec::foo));
+        ASSERT_TRUE(set.contains(ec::bar));
+        ASSERT_FALSE(set.contains(ec::baz));
+    }
+}
+
+TEST(util_flag_set, equals) {
+    {
+        flag_set<ec> set;
+        ASSERT_TRUE (set == ec::none);
+        ASSERT_FALSE(set == ec::foo);
+        ASSERT_FALSE(set == ec::bar);
+        ASSERT_FALSE(set == ec::baz);
+    }
+
+    {
+        flag_set<ec> set = ec::foo;
+        ASSERT_FALSE(set == ec::none);
+        ASSERT_TRUE (set == ec::foo);
+        ASSERT_FALSE(set == ec::bar);
+        ASSERT_FALSE(set == ec::baz);
+    }
+
+    {
+        // requires enabled operators
+        flag_set<ec> set = ec::foo | ec::bar;
+        ASSERT_FALSE(set == ec::none);
+        ASSERT_FALSE(set == ec::foo);
+        ASSERT_FALSE(set == ec::bar);
+        ASSERT_FALSE(set == ec::baz);
+        ASSERT_TRUE (set == (ec::foo | ec::bar));
+    }
+}
+
+TEST(util_flag_set, not_equals) {
+    {
+        flag_set<ec> set;
+        ASSERT_FALSE(set != ec::none);
+        ASSERT_TRUE (set != ec::foo);
+        ASSERT_TRUE (set != ec::bar);
+        ASSERT_TRUE (set != ec::baz);
+    }
+
+    {
+        flag_set<ec> set = ec::foo;
+        ASSERT_TRUE (set != ec::none);
+        ASSERT_FALSE(set != ec::foo);
+        ASSERT_TRUE (set != ec::bar);
+        ASSERT_TRUE (set != ec::baz);
+    }
+
+    {
+        // requires enabled operators
+        flag_set<ec> set = ec::foo | ec::bar;
+        ASSERT_TRUE (set != ec::none);
+        ASSERT_TRUE (set != ec::foo);
+        ASSERT_TRUE (set != ec::bar);
+        ASSERT_TRUE (set != ec::baz);
+        ASSERT_FALSE(set != (ec::foo | ec::bar));
+    }
+}
+
+TEST(util_flag_set, create) {
+    using fs = flag_set<ec>;
+    {
+        fs set = ec::foo | ec::bar;
+        ASSERT_TRUE (set.flags == fs(ec::foo | ec::bar).flags);
+    }
+
+    {
+        fs set = ec::none;
+        ASSERT_TRUE (set.flags == fs().flags);
+    }
+
+    {
+        fs set;
+        ASSERT_TRUE (set.flags == fs().flags);
+    }
+}
+
+TEST(util_flag_set, add) {
+    flag_set<ec> set;
     set.add(ec::foo);
+    ASSERT_TRUE (set == ec::foo);
     set.add(ec::bar);
-    ASSERT_TRUE(set.contains(ec::foo));
-    ASSERT_TRUE(set.contains(ec::bar));
-    ASSERT_FALSE(set.contains(ec::baz));
+    ASSERT_TRUE (set == (ec::foo | ec::bar));
+}
 
-    // requires enabled operators
-    set = ec::none;
-    set.add(ec::foo | ec::bar);
-    ASSERT_TRUE(set.contains(ec::foo));
-    ASSERT_TRUE(set.contains(ec::bar));
-    ASSERT_FALSE(set.contains(ec::baz));
-
-    set.remove(ec::bar);
-    ASSERT_TRUE(set.contains(ec::foo));
-    ASSERT_FALSE(set.contains(ec::bar));
-    ASSERT_FALSE(set.contains(ec::baz));
-
-    ASSERT_FALSE(set.equal(ec::bar));
-
+TEST(util_flag_set, remove) {
+    flag_set<ec> set = (ec::foo | ec::bar);
     set.remove(ec::foo);
-    ASSERT_FALSE(set.contains(ec::foo));
-    ASSERT_FALSE(set.contains(ec::bar));
-    ASSERT_FALSE(set.contains(ec::baz));
+    ASSERT_TRUE (set == ec::bar);
+    set.remove(ec::bar);
+    ASSERT_TRUE (set == ec::none);
+}
 
-    ASSERT_TRUE(set.equal(ec::none));
+
+TEST(util_flag_set, copy) {
+    eu::flag_set<ec> set = ec::foo;
+
+    ASSERT_TRUE(set == ec::foo);
+
+    flag_set<ec> set2(set);
+    ASSERT_TRUE(set2 == ec::foo);
+
+    flag_set<ec> set3;
+    set3 = set2;
+    ASSERT_TRUE(set3 == ec::foo);
+
+    flag_set<ec> set4(std::move(set3));
+    ASSERT_TRUE(set4 == ec::foo);
+
+    flag_set<ec> set5;
+    set5 = std::move(set4);
+    ASSERT_TRUE(set5 == ec::foo);
 }
 
 
