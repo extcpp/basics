@@ -3,6 +3,7 @@
 #ifndef EXT_UTIL_SERIALIZATION_HEADER
 #define EXT_UTIL_SERIALIZATION_HEADER
 #include <ext/util/endian.hpp>
+#include <string>
 
 namespace ext { namespace util {
 

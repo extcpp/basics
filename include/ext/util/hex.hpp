@@ -1,8 +1,7 @@
 // Copyright - 2018-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
-#ifndef EXT_UTIL_ENCODE_HEADER
-#define EXT_UTIL_ENCODE_HEADER
-#include <bitset>
+#ifndef EXT_UTIL_HEX_HEADER
+#define EXT_UTIL_HEX_HEADER
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -11,7 +10,6 @@
 
 namespace ext { namespace util {
 
-//// HEX
 template<typename T>
 std::enable_if_t<std::is_integral_v<T>, std::string> encode_hex(T i) {
     std::stringbuf buf;
@@ -101,13 +99,6 @@ inline std::string decode_hex(std::string const& in) {
 inline std::string decode_hex(std::string_view const& in) {
     return decode_hex(in.data(), in.size());
 }
-//// HEX - end
 
-//// BINARY
-template<typename T>
-std::enable_if_t<std::is_integral_v<T>, std::string> encode_binary(T integer) {
-    return std::bitset<sizeof(T) * 8>(integer).to_string();
-}
-//// BINARY - end
 }}     // namespace ext::util
 #endif // EXT_UTIL_ENCODE_HEADER
