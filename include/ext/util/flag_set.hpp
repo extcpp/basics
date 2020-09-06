@@ -28,10 +28,11 @@ namespace _detail_flag_set {
 template<typename T>
 constexpr bool is_flags_enum_v = _detail_flag_set::is_flags_enum<T>::value;
 
-template<typename T>
+template<typename T, typename U = std::underlying_type_t<T>>
 struct flag_set {
     static_assert(std::is_enum_v<T>, "given type is not an enum");
-    using underlying_type = std::underlying_type_t<T>;
+    static_assert(std::is_same_v<std::underlying_type_t<T>,U>, "enum is not of expected underlying_type");
+    using underlying_type = U;
 
     template <typename IntegerType>
     static underlying_type cast(IntegerType x) {
