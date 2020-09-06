@@ -10,13 +10,15 @@
 
 #ifdef __unix__
     #define EXT_UNIX
-#elif defined _WIN32
-    #define EXT_WINDOWS
 #endif // __unix__
 
 #ifdef __APPLE__
     #define EXT_MACOS
 #endif // __APPLE__
+
+#ifdef _WIN32
+    #define EXT_WINDOWS
+#endif // __WIN32__
 
 // arch
 #ifdef EXT_UNIX
