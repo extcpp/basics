@@ -48,10 +48,13 @@ enum class ec : uint8_t{
     baz  = 0b0100
 };
 
-void is_flags_enum(ec){} // REVIEW -- is not enough to enable operators
-EXT_ENABLE_FLAG_SET_OPERATORS(ec)
+// Enable flag_set operators via function
+// defintion and ADL.
+void enable_flags_enum(ec){}
 
-
+// Enable flag_set operators by defining
+// strut in ext::util
+//EXT_ENABLE_FLAG_SET_OPERATORS(ec)
 
 using namespace eu;
 TEST(util_flag_set, layout) {

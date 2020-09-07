@@ -15,7 +15,7 @@ namespace _detail_flag_set {
     struct is_flags_enum : std::false_type { };
 
     template<typename T>
-    struct is_flags_enum<T, std::void_t<decltype(is_flags_enum(std::declval<T>()))>> : std::true_type {};
+    struct is_flags_enum<T, std::void_t<decltype(enable_flags_enum(std::declval<T>()))>> : std::true_type {};
 
 } // namespace _detail_flag_set
 
