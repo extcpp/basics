@@ -1,33 +1,21 @@
 # Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.14)
 project(ext-basics VERSION 0.0.1 LANGUAGES CXX)
 message(STATUS "extINFO -- entering ext-basics")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ## OPTIONS
 option(LIBEXT_EXAMPLES "build examples" OFF)
 option(LIBEXT_WARNINGS "enable warnings" ON)
-option(LIBEXT_CHECKED "user assert" ON)
+option(LIBEXT_CHECKED  "user assert" ON)
 
 option(LIBEXT_TESTS "build tests" OFF)
 option(LIBEXT_TESTS_NO_TIME_CRITICAL "no time critical tests" OFF)
 
-## general setup and includes
-set(CMAKE_CXX_STANDARD 17 CACHE STRING "")
-set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "")
-set_property(GLOBAL PROPERTY USE_FOLDERS ON) # XCode / VS folders
+# enable extcpp cmake
+include(${CMAKE_CURRENT_LIST_DIR}/ext_cmake_enable.cmake)
 
-include (TestBigEndian)
-TEST_BIG_ENDIAN(ext_is_big_endian)
-
-set(LIBEXT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 include(ext_cmake_setup)
-include(ext_cmake_install)
-include(ext_cmake_utils)
-include(ext_cmake_compiler_specific)
-
 set(FORCE_COLORED_OUTPUT ON)
 ext_colored_compiler_ouput()
 
@@ -56,9 +44,6 @@ elseif(APPLE)
 else()
     set(ext_l1_cache_line_size FALSE)
 endif()
-
-# include build dir to find version.hpp
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # required by folder structure for XCode and VisualStudio (includes)
 # sources are always required
@@ -139,5 +124,5 @@ add_custom_target(
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     COMMAND ${CMAKE_COMMAND}
                 -D "EXT_GIT_VERSION_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/ext_version.hpp"
-                -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ext_script_git_version.cmake"
+                -P "${ext_cmake_dir}/ext_script_git_version.cmake"
 )

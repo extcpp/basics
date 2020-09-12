@@ -1,6 +1,0 @@
-[submodule "cmake"]
-	path = cmake
-	url = https://github.com/extcpp/cmake.git
-[submodule "external_libs/googletest"]
-	path = external_libs/googletest
-	url = https://github.com/google/googletest.git
