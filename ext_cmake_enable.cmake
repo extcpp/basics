@@ -45,7 +45,4 @@ endif()
 
 message(STATUS "extINFO -- CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
 
-include(ext_cmake_utils)
-include(ext_cmake_enable_libs)
-
 set(EXT_CMAKE_ENABLED TRUE)

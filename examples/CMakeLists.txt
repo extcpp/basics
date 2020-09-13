@@ -35,7 +35,3 @@ foreach(ex IN LISTS examples) # <- DO NOT EXPAND LIST
     target_compile_options(${example} PRIVATE ${ext_stone-warnings})
     set_target_properties (${example} PROPERTIES FOLDER examples/${example})
 endforeach()
-
-add_executable(any_printable_example any_printable_main.cpp any_printable_use_impl.cpp)
-target_link_libraries(any_printable_example ext::basics)
-target_compile_options(any_printable_example PRIVATE ${ext_stone-warnings})

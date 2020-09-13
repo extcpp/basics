@@ -8,7 +8,6 @@ set(test-files
 
     "structures_binary_index_tree"
 
-    "util_any_printable"
     "util_basic"
     "util_cast"
     "util_endian"

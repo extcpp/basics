@@ -24,8 +24,8 @@ init: []
 
 install:
   #- git submodule update --init --recursive
-  - cd external_libs
-  - cd ..
+  #- cd external_libs
+  #- cd ..
 
 before_build:
   - if defined BINDIR (set "PATH=%BINDIR%;%PATH:C:\Program Files\Git\usr\bin;=%")
