@@ -14,10 +14,7 @@ option(LIBEXT_TESTS_NO_TIME_CRITICAL "no time critical tests" OFF)
 
 # enable extcpp cmake
 include(${CMAKE_CURRENT_LIST_DIR}/ext_cmake_enable.cmake)
-
 include(ext_cmake_setup)
-set(FORCE_COLORED_OUTPUT ON)
-ext_colored_compiler_ouput()
 
 # verbose windows linking
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /VERBOSE:LIB")
