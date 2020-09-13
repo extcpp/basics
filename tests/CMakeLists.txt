@@ -3,10 +3,6 @@ project(ext-basics-tests)
 set(test-files 
     "algorithm_basic"
     "algorithm_string_distances"
-    "algorithm_knapsack"
-
-    "math"
-    "math_simple_shapes"
 
     "meta_has_member"
     "meta_is_one_of"

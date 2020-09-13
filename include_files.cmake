@@ -5,18 +5,10 @@ set(ext-basics-header
     "include/ext/algorithm/basic.hpp"
     "include/ext/algorithm/string_distances.hpp"
 
-    #"include/ext/concurrent/hierarchical_mutex.hpp"
-    #"include/ext/concurrent/threadsafe_queue.hpp"
-    #"include/ext/concurrent/threadsafe_stack.hpp"
-
     "include/ext/macros/advanced.hpp"
     "include/ext/macros/compiler.hpp"
     "include/ext/macros/general.hpp"
     "include/ext/macros/platform.hpp"
-
-    "include/ext/math/basic_functions.hpp"
-    "include/ext/math/geometry/simple_shapes.hpp"
-    "include/ext/math/primes.hpp"
 
     "include/ext/memory/align.hpp"
     "include/ext/memory/tagged_pointer.hpp"
@@ -31,9 +23,6 @@ set(ext-basics-header
     #"include/ext/meta/void_t.hpp"
 
     "include/ext/structures/binary_index_tree.hpp"
-    #"include/ext/structures/multi_array.hpp"
-    #"include/ext/structures/simple2darray.hpp"
-    #"include/ext/structures/vector.hpp"
 
     "include/ext/util/access_private.hpp"
     "include/ext/util/any_printable.hpp"
