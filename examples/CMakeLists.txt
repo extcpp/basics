@@ -10,8 +10,6 @@ find_package(Threads REQUIRED)
 set(examples
     binary_index_tree
     container_helper
-    function_cache
-    functional
     if
     if_all_any
     load_library
