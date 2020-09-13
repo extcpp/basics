@@ -4,7 +4,6 @@ set(test-files
     "algorithm_basic"
     "algorithm_string_distances"
 
-    "meta_has_member"
     "meta_is_one_of"
 
     "structures_binary_index_tree"

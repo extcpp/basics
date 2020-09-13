@@ -2,7 +2,6 @@
 #ifndef EXT_ALGORITHM_BASIC_HEADER
 #define EXT_ALGORITHM_BASIC_HEADER
 
-#include "../meta/has_member.hpp"
 #include <algorithm>
 #include <iterator>
 #include <map>

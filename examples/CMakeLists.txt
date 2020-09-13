@@ -20,7 +20,6 @@ set(examples
     scoped_timer
     show
     tagged_pointer
-    tuple
     type_to_string
 )
 
