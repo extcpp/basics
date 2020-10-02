@@ -15,8 +15,19 @@ set(ext_cmake_dir_hints
 
 foreach(ext_cmake_dir_candidate IN LISTS EXT_CMAKE_HINTS EXT_CMAKE_PATHS ext_cmake_dir_hints)
     set(ext_cmake_dir "${ext_cmake_dir_candidate}")
+    get_filename_component(ext_cmake_dir "${ext_cmake_dir}" ABSOLUTE)
     if(EXISTS ${ext_cmake_dir}/ext_script_git_version.cmake)
-        message(STATUS "extINFO -- found ext cmake directory in: ${ext_cmake_dir}")
+        message(STATUS "extINFO -- Found ext cmake directory in: ${ext_cmake_dir}")
+
+        set(ext_libraries_path_candidate "${ext_cmake_dir}/..")
+        get_filename_component(ext_libraries_path_candidate "${ext_libraries_path_candidate}" ABSOLUTE)
+
+        if(NOT EXT_LIBRARIES_PATH)
+            if(EXISTS "${ext_libraries_path_candidate}/basics/include/ext/util")
+                message(STATUS "extINFO -- Setting EXT_LIBRARIES_PATH to: ${ext_libraries_path_candidate} (enable_cmake)")
+                set(EXT_LIBRARIES_PATH "${ext_libraries_path_candidate}" CACHE PATH "Path of ext libraries.")
+            endif()
+        endif()
         break()
     endif()
 endforeach()

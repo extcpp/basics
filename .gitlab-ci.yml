@@ -1,0 +1,106 @@
+#workflow:
+#  rules:
+#    - if: $CI_COMMIT_MESSAGE =~ /WIP/
+#      when: never
+
+stages:
+  - prepare
+  - build
+  - test
+  - deploy
+
+
+variables:
+  tests: "ON"
+  examples: "ON"
+
+  verbose: "false"
+  coverage: "false"
+  build_type: "Debug"
+  system_info: "false"
+
+  project_root: $CI_PROJECT_DIR
+  build_prefixr: '<>'
+  TERM: "xterm"
+  EXT_CI: "true"
+  EXT_CI_BRANCH: $CI_COMMIT_REF_NAME
+
+default:
+  image: sid:latest
+
+  tags:
+    - shell
+
+  before_script:
+    # Exports
+    - export CXX=${CXX:-g++}
+    - export CC=${CC:-gcc}
+    - export CXXFLAGS=${CXXFLAGS:-""}
+    - export build_base="${project_root}-build"
+    - export build_root="${build_base}/$build_type"
+    - if ${verbose:-false}; then export VERBOSE=1; fi
+    - export ARCH=${ARCH:-amd64}
+    - export install_root="$HOME/usr"
+    - export PATH="$install_root/bin:$PATH"
+
+basics:
+  stage: build
+  script:
+    # build support
+    - git clone https://github.com/extcpp/build-support --recurse-submodules ../build-support
+    - ../build-support/setup-support . ../build-support
+
+    # info
+    - ../build-support/lib/bash_build_scripts/var_info
+    - if [[ $system_info == true ]]; then ../build-support/lib/bash_build_scripts/system_info; fi
+
+    # paths
+    - mkdir -p "$install_root"
+    - mkdir -p "$build_root"
+    - ln -s "$build_root" "$build_base/current"
+
+    #- sudo $project_root/support/travis/install-$ARCH-$TRAVIS_OS_NAME
+    - ../build-support/lib/bash_build_scripts/install_cmake
+    - ../build-support/lib/bash_build_scripts/install_3rd_party
+
+    # info
+    - $CXX --version
+    - cmake --version
+
+    # configure
+    - |
+      ../build-support/lib/bash_build_scripts/configure \
+        -DCMAKE_BUILD_TYPE="$build_type" \
+        -DLIBEXT_TESTS="$tests" \
+        -DLIBEXT_EXAMPLES="$examples" \
+        -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON \
+        $cmake_extra_flags
+
+    # build
+    - ../build-support/lib/bash_build_scripts/build || exit 1
+    - cp ./current-build-dir/tests/test-ext-basics .
+
+    # test
+    #- if [[ $coverage == "false" ]]; then ../build-support/lib/bash_build_scripts/test $tests || exit 1 ; fi
+    #- if [[ $coverage == "true" ]]; then ../build-support/scripts/coverage || exit 1 ; fi
+
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - test-ext-basics
+
+  after_script:
+    - export build_base="${project_root}-build"
+    - export build_root="${build_base}/$build_type"
+    - rm -fr ../build-support
+    - rm -fr "$build_base"
+
+test:
+  stage: test
+  script:
+    - if [[ $tests == "ON" ]]; then ./test-ext-basics; fi
+
+deploy:
+  stage: deploy
+  script:
+    - git clean -fdx
