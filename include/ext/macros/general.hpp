@@ -10,9 +10,9 @@
 #define EXT_EXPAND(...) __VA_ARGS__
 #define EXT_STRINGIFY(a) #a
 
-// use indirection (_EXT_CONCATENATE_IMPL) because ## inhibits expansion
-#define _EXT_CONCATENATE_IMPL(s1, ...) s1##__VA_ARGS__
-#define EXT_CONCATENATE(s1, ...) _EXT_CONCATENATE_IMPL(s1, __VA_ARGS__)
+// use indirection (EXT_INTERNAL_CONCATENATE_IMPL) because ## inhibits expansion
+#define EXT_INTERNAL_CONCATENATE_IMPL(s1, ...) s1##__VA_ARGS__
+#define EXT_CONCATENATE(s1, ...) EXT_INTERNAL_CONCATENATE_IMPL(s1, __VA_ARGS__)
 
 // __COUNTER__ provides increasing non negative number
 #ifdef __COUNTER__
