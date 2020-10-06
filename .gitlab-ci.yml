@@ -85,7 +85,7 @@ basics:
     #- if [[ $coverage == "true" ]]; then ../build-support/scripts/coverage || exit 1 ; fi
 
   artifacts:
-    expire_in: 1 day
+    expire_in: 5 mins
     paths:
       - test-ext-basics
 
