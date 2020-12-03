@@ -112,7 +112,7 @@ if(COMMAND ext_install)
         EXPORT ext-basics-targets
 		FILE ext-basics-config.cmake
         NAMESPACE ext::
-        DESTINATION ${CMAKE_INSTALL_PREFIX}
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake
     )
 endif()
 
