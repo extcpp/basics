@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 using namespace std::literals::string_literals;
 
-namespace eu = ::ext::util;
+namespace eu = ::ext::util::show;
 
 TEST(util_show, string) {
     ASSERT_EQ(eu::show("foo"s), "foo");
