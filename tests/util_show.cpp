@@ -2,6 +2,8 @@
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <ext/util/pretty.hpp>
 #include <gtest/gtest.h>
+#include <sstream>
+
 using namespace std::literals::string_literals;
 
 namespace eu = ::ext::util::pretty;
@@ -46,6 +48,10 @@ TEST(util_pretty, vec_map_vec_int_str) {
     Map item{{std::vector{1, 2}, "foo"s}, {std::vector{3}, "bar"s}};
     std::vector<Map> out = {item, item};
     ASSERT_EQ(eu::fmt(out), "[{[1, 2]:\"foo\", [3]:\"bar\"}, {[1, 2]:\"foo\", [3]:\"bar\"}]");
+    std::stringstream ss;
+    using eu::operator<<;
+    ss << out;
+    ASSERT_EQ(ss.str(), "[{[1, 2]:\"foo\", [3]:\"bar\"}, {[1, 2]:\"foo\", [3]:\"bar\"}]");
 }
 
 TEST(util_pretty, set_int) {
@@ -56,6 +62,10 @@ TEST(util_pretty, tuple) {
     ASSERT_EQ(eu::fmt(std::tuple<>{}), "( )");
     ASSERT_EQ(eu::fmt(std::tuple<int, int, int, std::string>{3, 2, 1, "risiko"}), "(3, 2, 1, \"risiko\")");
     ASSERT_EQ(eu::fmt(std::tuple<std::string>{"DarkwingDuck"}), "(\"DarkwingDuck\")");
+    std::stringstream ss;
+    using eu::operator<<;
+    ss << std::tuple<int, int, int, std::string>{3, 2, 1, "risiko"};
+    ASSERT_EQ(ss.str(), "(3, 2, 1, \"risiko\")");
 }
 
 TEST(util_pretty, vec_bool) {
