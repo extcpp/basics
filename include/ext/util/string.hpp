@@ -122,5 +122,107 @@ inline auto replace(std::string_view const& str, std::string_view const& seq, st
     rv.append(tmp.back().begin(), tmp.back().end());
     return rv;
 }
+
+
+namespace _detail::split {
+inline std::size_t first_char_matches(std::string::value_type const c,
+                                      std::vector<std::string_view> const& seperators,
+                                      std::vector<std::string_view>& positions,
+                                      bool ordered) {
+
+    std::size_t rv = 0;
+    positions.clear();
+
+    for (auto const& sep : seperators) {
+        if (sep.empty())
+            continue;
+
+        if (c == sep.front()) {
+            auto const length = sep.size();
+            if (!ordered && length == 1) {
+                return 1;
+            } else {
+                rv = std::max(rv, length);
+                positions.push_back(sep);
+            }
+        }
+    }
+    return rv;
+}
+} // namespace _detail::split
+
+
+inline std::vector<std::string_view> split_on_multiple(std::string const& to_split,
+                                                       std::vector<std::string> const& seperators = {" "},
+                                                       bool ordered = true) {
+
+    std::vector<std::string_view> seps(seperators.begin(), seperators.end());
+
+    if (ordered) {
+        std::stable_sort(seps.begin(), seps.end());
+    }
+
+    std::vector<std::string_view> rv;
+
+    auto const data = to_split.data();
+    auto const begin = to_split.begin();
+    auto const end = to_split.end();
+
+    auto start = begin;
+    auto current = begin;
+    std::vector<std::string_view> candidates;
+
+    auto add_word = [&]() {
+        auto const offset = std::distance(begin, start);
+        auto const pointer = to_split.data() + offset;
+        auto const length = std::distance(start, current);
+
+        std::string_view part(pointer, length);
+        rv.push_back(std::move(part));
+    };
+
+    while (current != end) {
+        candidates.clear();
+
+        // matches first char only and returns all possible candidates
+        // as well as the length of the longest match
+        auto length = _detail::split::first_char_matches(*current, seps, candidates, ordered);
+        if (length == 0) {
+            // no match
+            current++;
+        } else if (length == 1) {
+            add_word();
+            current++;
+            start = current;
+        } else {
+            auto current_view =
+                std::string_view{data + std::distance(begin, current), (std::size_t) std::distance(current, end)};
+            bool matched = false;
+            for (auto const& candidate : candidates) {
+                if (ext::util::starts_with(current_view, candidate)) {
+                    matched = true;
+                    add_word();
+
+                    current += std::min(candidate.length(), (size_t) std::distance(current, end));
+                    start = current;
+
+                    break;
+                }
+            }
+
+            if (!matched)
+                current++;
+        }
+
+        assert(current <= end);
+    }
+
+    if (start != current) {
+        add_word();
+    }
+
+    return rv;
+}
+
 }}     // namespace ext::util
 #endif // EXT_UTIL_STRING_HEADER
