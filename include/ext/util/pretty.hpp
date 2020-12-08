@@ -90,7 +90,7 @@ inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator
     if (size > 0) {
         auto current = container.begin();
         if (container.size() > 1) {
-            while (next(current) != container.end()) {
+            while (std::next(current) != container.end()) {
                 using ext::util::_detail::pretty::operator<<;
                 _detail::pretty::fmt_internal<T>(out, *current);
                 std::operator<<(out, ", "s);
