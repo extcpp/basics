@@ -1,13 +1,13 @@
 // Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <ext/util/container_helper.hpp>
-#include <ext/util/show.hpp>
+#include <ext/util/pretty.hpp>
 #include <iostream>
 #include <numeric>
 #include <ostream>
 
 int main() {
-    using ext::util::operator<<;
+    using ext::util::pretty::operator<<;
     namespace eu = ext::util;
     std::vector<int> vec(7);
 

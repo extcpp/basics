@@ -1,13 +1,13 @@
 // Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
-#include <ext/util/show.hpp>
+#include <ext/util/pretty.hpp>
 #include <iostream>
 #include <map>
 #include <vector>
 
 int main(/*int argc, const char *argv[]*/) {
     // pull in operator
-    using ext::util::operator<<;
+    using ext::util::pretty::operator<<;
 
     // define data
     std::vector<int> vec = {1, 2, 3, 4, 5, 6};
@@ -23,7 +23,7 @@ int main(/*int argc, const char *argv[]*/) {
     // cool stuff starts below
 
     // do this when you really need the string
-    std::cout << ext::util::show(vec) << std::endl;
+    std::cout << ext::util::pretty::fmt(vec) << std::endl;
 
     // prefer this!
     std::cout << vec << std::endl;

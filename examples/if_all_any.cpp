@@ -1,14 +1,14 @@
 // Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <ext/meta/basic.hpp>
-#include <ext/util/show.hpp>
+#include <ext/util/pretty.hpp>
 #include <iostream>
 #include <map>
 #include <vector>
 
 int main(/*int argc, const char *argv[]*/) {
     // pull in operator
-    using ext::util::operator<<;
+    using ext::util::pretty::operator<<;
 
     std::cout << std::boolalpha << ext::meta::if_all_v<true, true> << std::endl
               << ext::meta::if_all_v<true, true> << std::endl
