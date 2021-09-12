@@ -2,7 +2,6 @@
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_TRACING_CLASSES_HEADER
 #define EXT_UTIL_TRACING_CLASSES_HEADER
-#include <ext/meta/is_one_of.hpp>
 
 #include <iomanip>
 #include <iostream>
