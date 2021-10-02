@@ -11,7 +11,7 @@ using cmake, travis, appveyor, coverage and friends.
 
 .. more shields at http://shields.io
 
-.. |travis| image:: https://travis-ci.org/extcpp/basics.svg?branch=master
+.. |travis| image:: https://app.travis-ci.com/extcpp/basics.svg?branch=master
    :target: https://travis-ci.org/extcpp/basics
 
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/u635nbjw1wc9qx8v/branch/master?svg=true
