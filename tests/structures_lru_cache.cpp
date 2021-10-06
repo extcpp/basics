@@ -1,10 +1,10 @@
 // Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
-#include <ext/util/lru_cache.hpp>
+#include <ext/structures/lru_cache.hpp>
 #include <ext/macros/compiler.hpp>
 #include <gtest/gtest.h>
 
-namespace eu = ::ext::util;
+namespace es = ::ext::structures;
 
 #ifndef EXT_CHECKED
     static_assert(false, "this test must run with check macro active");
@@ -15,7 +15,7 @@ void times_100(int& x) { x=x*100; }
 bool is_even(int const& x) { return x % 2 == 0; }
 
 TEST(util_lru_cache, put_get) {
-    eu::lru_cache<int,int> cache(3);
+    es::lru_cache<int,int> cache(3);
     ASSERT_EQ(cache.size(),0);
 
     //---------------------------------
@@ -59,7 +59,7 @@ TEST(util_lru_cache, put_get) {
 }
 
 TEST(util_lru_cache, get_update_and_get_remove) {
-    eu::lru_cache<int,int> cache(3);
+    es::lru_cache<int,int> cache(3);
     cache.put(1,1);
     cache.put(2,2);
     cache.put(3,3);
@@ -79,7 +79,7 @@ TEST(util_lru_cache, get_update_and_get_remove) {
 }
 
 TEST(util_lru_cache, update) {
-    eu::lru_cache<int,int> cache(3);
+    es::lru_cache<int,int> cache(3);
     cache.put(1,1);
     cache.put(2,2);
     cache.put(3,3);
@@ -100,7 +100,7 @@ TEST(util_lru_cache, update) {
 }
 
 TEST(util_lru_cache, remove) {
-    eu::lru_cache<int,int> cache(3);
+    es::lru_cache<int,int> cache(3);
     cache.put(1,1);
     cache.put(2,2);
     cache.put(3,3);
@@ -119,7 +119,7 @@ TEST(util_lru_cache, remove) {
 }
 
 TEST(util_lru_cache, remove_predicates) {
-    eu::lru_cache<int,int> cache(4);
+    es::lru_cache<int,int> cache(4);
     cache.put(1,1);
     cache.put(2,2);
     cache.put(3,3);

@@ -7,6 +7,7 @@ set(test-files
     "meta_is_one_of"
 
     "structures_binary_index_tree"
+    "structures_lru_cache"
 
     "util_basic"
     "util_cast"
@@ -19,7 +20,6 @@ set(test-files
     "util_flag_set"
     "util_hex"
     "util_lazy"
-    "util_lru_cache"
     "util_result"
     "util_scoped_timer"
     "util_serialization"
