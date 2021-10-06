@@ -13,7 +13,7 @@
 
 namespace ext::util {
 
-bool files_equal(std::filesystem::path const& file1, std::filesystem::path const& file2, bool verbose = false) {
+inline bool files_equal(std::filesystem::path const& file1, std::filesystem::path const& file2, bool verbose = false) {
     scoped_timer timer("files_equal");
     if (verbose) {
         std::cerr << std::endl << "compare: " << std::endl << file1 << std::endl << file2 << std::endl;
