@@ -64,12 +64,12 @@ inline bool not_in_exclude(std::string const& to_check, re_vector const& exclude
     return !match(to_check, exclude_vec, false);
 }
 
-inline bool in_must_include_one_of(std::string const& to_check, re_vector const& include_one_of_vec) {
+inline bool must_include_one_of(std::string const& to_check, re_vector const& include_one_of_vec) {
     return match(to_check, include_one_of_vec, false);
 }
 
-inline bool in_must_include_all_of(std::string const& to_check, re_vector const& include_one_of_vec) {
-    return match(to_check, include_one_of_vec, true);
+inline bool must_include_all_of(std::string const& to_check, re_vector const& include_all_of_vec) {
+    return match(to_check, include_all_of_vec, true);
 }
 
 }}     // namespace ext::util
