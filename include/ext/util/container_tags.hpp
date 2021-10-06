@@ -5,6 +5,7 @@
 #ifndef EXT_UTIL_CONTAINER_TAGS_HEADER
 #define EXT_UTIL_CONTAINER_TAGS_HEADER
 #include <ext/meta/basic.hpp>
+#include <ext/meta/basic_old.hpp>
 
 // https://blog.magnum.graphics/backstage/forward-declaring-stl-container-types/
 #include <deque>

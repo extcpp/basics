@@ -3,6 +3,7 @@
 #ifndef EXT_UTIL_CONTAINER_TRAITS_HEADER
 #define EXT_UTIL_CONTAINER_TRAITS_HEADER
 #include <ext/meta/basic.hpp>
+#include <ext/meta/basic_old.hpp>
 #include <ext/util/forward_std_string.hpp>
 
 #include <string_view>

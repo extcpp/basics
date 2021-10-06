@@ -10,7 +10,6 @@ find_package(Threads REQUIRED)
 set(examples
     binary_index_tree
     container_helper
-    if
     if_all_any
     load_library
     meta
