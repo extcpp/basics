@@ -25,6 +25,7 @@ set(test-files
     "util_serialization"
     "util_show"
     "util_string"
+    "util_tuple"
     "util_windows_strings"
 )
 
