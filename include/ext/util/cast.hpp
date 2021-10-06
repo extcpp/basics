@@ -69,17 +69,26 @@ inline constexpr std::size_t size_of(T const&... args) {
 //// singed <-> unsingend - conversion
 
 template<typename T, typename S = std::make_unsigned_t<T>>
-constexpr std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, S> to_unsigned(T in) {
+constexpr S to_unsigned(T in) {
+    static_assert(std::is_integral_v<T>, "type is not an integral type");
+    static_assert(std::is_signed_v<T>, "type is not singed");
+
     return S(in);
 }
 
 template<typename T, typename S = std::make_signed_t<T>>
-constexpr std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, S> to_signed(T in) {
+constexpr S to_signed(T in) {
+    static_assert(std::is_integral_v<T>, "type is not an integral type");
+    static_assert(std::is_unsigned_v<T>, "type is not unsinged");
+
     return S(in);
 }
 
 template<typename T, typename S = std::make_unsigned_t<T>>
-constexpr std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, S> to_unsigned_checked(T in) {
+constexpr S to_unsigned_checked(T in) {
+    static_assert(std::is_integral_v<T>, "type is not an integral type");
+    static_assert(std::is_signed_v<T>, "type is not singed");
+
     if (in < T(std::numeric_limits<S>::min())) {
         throw std::logic_error("conversion to_unsigend not possible");
     }
@@ -87,7 +96,10 @@ constexpr std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, S> to_u
 }
 
 template<typename T, typename S = std::make_signed_t<T>>
-constexpr std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, S> to_signed_checked(T in) {
+constexpr S to_signed_checked(T in) {
+    static_assert(std::is_integral_v<T>, "type is not an integral type");
+    static_assert(std::is_unsigned_v<T>, "type is not unsinged");
+
     if (in > T(std::numeric_limits<S>::max())) {
         throw std::logic_error("conversion to_sigend not possible");
     }
