@@ -46,13 +46,8 @@ enable_if_container_has_tag_t<Container, _detail::listlike_tag> erase_if(Contain
 }
 
 template<typename Container, class Compare>
-enable_if_container_has_tag_t<Container, _detail::listlike_tag> sort_comp(Container& c, Compare comp) {
+enable_if_container_has_tag_t<Container, _detail::listlike_tag> sort(Container& c, Compare comp = std::less<>()) {
     c.sort(comp);
-}
-
-template<typename Container>
-enable_if_container_has_tag_t<Container, _detail::listlike_tag> sort(Container& c) {
-    c.sort();
 }
 
 // maplike
