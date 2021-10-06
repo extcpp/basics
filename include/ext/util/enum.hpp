@@ -8,11 +8,9 @@ namespace ext::util {
 
 namespace _detail_enum {
     // use underlying type if Type is a enum
-    template<typename E, typename U = std::underlying_type_t<E>>
-    using enable_if_enum_t = std::enable_if_t<std::is_enum_v<E>, U>;
 
     template<typename E1, typename E2>
-    constexpr bool are_enums_v = std::is_enum_v<E1>&& std::is_enum_v<E2>;
+    constexpr bool are_enums_v = std::is_enum_v<E1> && std::is_enum_v<E2>;
 
     template<typename E1, typename E2>
     constexpr bool is_same_underlying_v = std::is_same_v<std::underlying_type_t<E1>, std::underlying_type_t<E2>>;
@@ -32,35 +30,32 @@ template <typename E>
 struct is_fixed_enum : std::bool_constant<is_fixed_enum_v<E>> {};
 
 /// to underlying
-template<typename Enum
-        ,typename U = std::underlying_type_t<Enum>
-        ,typename = _detail_enum::enable_if_enum_t<Enum>
-        >
-inline constexpr U enum_to_underlying(Enum e) noexcept {
-    return static_cast<U>(e);
+template<typename Enum>
+inline constexpr std::underlying_type_t<Enum> enum_to_underlying(Enum const& e) noexcept {
+    static_assert(std::is_enum_v<Enum>, "type is not an enum");
+    return static_cast<std::underlying_type_t<Enum>>(e);
 }
 
-template<typename T, typename Enum
-        ,typename U = std::underlying_type_t<Enum>
-        ,typename = std::enable_if_t<std::is_enum_v<Enum> && std::is_same_v<T, U>>
-        >
-inline constexpr T enum_to_underlying_safe(Enum e) noexcept {
-    return static_cast<U>(e);
+template<typename T, typename Enum>
+inline constexpr T enum_to_underlying_unsafe(Enum e) noexcept {
+    static_assert(std::is_enum_v<Enum>, "type is not an enum");
+    static_assert(std::is_integral_v<T>, "type is not an integral type");
+    return static_cast<T>(e);
 }
+
 
 /// to enum
-template<typename Enum, typename T
-        ,typename U = std::underlying_type_t<Enum>
-        ,typename = std::enable_if_t<std::is_enum_v<Enum> && std::is_same_v<U, T>>
-        >
+template<typename Enum, typename T>
 inline constexpr Enum underlying_to_enum(T value) noexcept {
+    static_assert(std::is_enum_v<Enum>, "type is not an enum");
+    static_assert(std::is_same_v<T, std::underlying_type_t<Enum>>, "type to convert from and underlying type are not the same");
     return static_cast<Enum>(value);
 }
 
-template<typename Enum, typename T
-        ,typename = std::enable_if_t<std::is_enum_v<Enum> && std::is_integral_v<T>>
-        >
+template<typename Enum, typename T>
 inline constexpr Enum underlying_to_enum_unsafe(T value) noexcept {
+    static_assert(std::is_enum_v<Enum>, "type is not an enum");
+    static_assert(std::is_integral_v<T>, "type is not an integral type");
     return static_cast<Enum>(value);
 }
 

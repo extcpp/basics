@@ -24,7 +24,7 @@ TEST(util_enum, enum_to_underlying) {
     enum class enum_a : uint8_t { one = 1, two = 2, three = 3 };
 
     ASSERT_EQ(eu::enum_to_underlying(enum_a::one), 1);
-    ASSERT_EQ(eu::enum_to_underlying_safe<uint8_t>(enum_a::one), 1);
+    ASSERT_EQ(eu::enum_to_underlying_unsafe<uint8_t>(enum_a::one), 1);
 }
 
 TEST(util_enum, underlying_to_enum) {
