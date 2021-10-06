@@ -18,11 +18,11 @@ void for_each_arg(F&& function, T&&... args) {
 }
 
 template<typename... T>
-void sort_all(T&&... args) {
+void sort_all(T&... args) {
     static auto do_it = [](auto& container) {
         std::sort(std::begin(container), std::end(container));
     };
-    for_each_arg(do_it, std::forward<T>(args)...);
+    for_each_arg(do_it, args...);
 }
 
 inline std::string_view filename(std::string const& pathname, bool is_linux = true, bool both = false) {
