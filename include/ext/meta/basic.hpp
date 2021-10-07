@@ -5,6 +5,14 @@
 
 namespace ext::meta {
 
+//for parts where we do not have C++20 yet
+template<typename T>
+using remove_cvref_t =  std::remove_cv_t<std::remove_reference_t<T>>;
+
+//replacement of deprecated std::is_pod
+template<typename T>
+constexpr bool is_pod_v = std::is_trivial_v<T> && std::is_standard_layout_v<T>;
+
 // create conjunction or disjunction of multiple types
 // if_all  - logical and (fold expression)
 template<bool... XS>

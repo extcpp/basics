@@ -7,6 +7,8 @@
 #ifndef EXT_UTIL_TUPLE_HEADER
 #define EXT_UTIL_TUPLE_HEADER
 
+#include <ext/meta/basic.hpp>
+
 #include <utility>
 #include <tuple>
 #include <type_traits>
@@ -16,7 +18,7 @@ namespace ext::util {
 // is tuple check
 template <typename T, typename = void> struct is_tuple_impl: std::false_type {};
 template <typename ...T> struct is_tuple_impl<std::tuple<T...>>: std::true_type {};
-template <typename T> struct is_tuple: is_tuple_impl<std::remove_cvref_t<T>> {};
+template <typename T> struct is_tuple: is_tuple_impl<meta::remove_cvref_t<T>> {};
 template <typename T> constexpr bool is_tuple_v = is_tuple<T>::value;
 
 // for each impl
