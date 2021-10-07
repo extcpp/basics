@@ -5,6 +5,7 @@
 #include <string>
 using namespace std::literals::string_literals;
 
+#include <ext/util/string.hpp>
 #include <ext/util/windows_strings.hpp>
 
 #ifdef EXT_WINDOWS
@@ -34,7 +35,7 @@ TEST(util_windows_strings, empty) {
 TEST(util_windows_strings, japanese) {
     auto test_string_jap =
         u8"ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔ"s;
-    ASSERT_EQ(test_string_jap, string_from_win(string_to_win(test_string_jap)));
+    ASSERT_EQ(from_u8string(test_string_jap), string_from_win(string_to_win(test_string_jap)));
 }
 
 TEST(util_windows_strings, euro_sign) {

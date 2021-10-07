@@ -14,6 +14,20 @@
 
 namespace ext { namespace util {
 
+inline std::string from_u8string(const std::string &s) {
+  return s;
+}
+
+inline std::string from_u8string(std::string &&s) {
+  return std::move(s);
+}
+
+#if defined(__cpp_lib_char8_t)
+inline std::string from_u8string(const std::u8string &s) {
+  return std::string(s.begin(), s.end());
+}
+#endif
+
 inline std::string section(std::string const& text, std::size_t width = 80, char fill = '=') {
 #ifdef EXT_USE_TERM
     auto size = get_term_size();
