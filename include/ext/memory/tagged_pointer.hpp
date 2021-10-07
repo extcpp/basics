@@ -36,9 +36,9 @@ class tagged_pointer {
     // if you are not setting both at the same time.
     tagged_pointer() noexcept = default;
     tagged_pointer(tagged_pointer const&) noexcept = default;
-    tagged_pointer(tagged_pointer&&) noexcept = delete;
+    tagged_pointer(tagged_pointer&&) noexcept = default;
     tagged_pointer& operator=(tagged_pointer const&) noexcept = default;
-    tagged_pointer& operator=(tagged_pointer&&) noexcept = delete;
+    tagged_pointer& operator=(tagged_pointer&&) noexcept = default;
 
     tagged_pointer(T* pointer, std::uintptr_t tag) noexcept : _pointer(create(pointer, tag)){};
 
