@@ -2,6 +2,7 @@
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <ext/memory/tagged_pointer.hpp>
 #include <ext/util/bit_tricks.hpp>
+#include <ext/meta/basic.hpp>
 
 #include <atomic>
 #include <iostream>
@@ -27,7 +28,7 @@ int main() {
     cout << "  pointer.get(): " << util::encode_binary(reinterpret_cast<uintptr_t>(pointer.get())) << endl;
     cout << "   pointer.mask: " << util::encode_binary(pointer.mask) << endl;
     cout << "  pointer.tag(): " << util::encode_binary(pointer.tag()) << endl;
-    cout << "         is pod: " << std::is_pod_v<decltype(pointer)> << endl;
+    cout << "         is pod: " << meta::is_pod_v<decltype(pointer)> << endl;
     cout << "standard layout: " << std::is_standard_layout_v<decltype(pointer)> << endl;
     cout << "           size: " << sizeof(pointer) << endl;
     cout << endl;
@@ -42,7 +43,7 @@ int main() {
          << endl;
     cout << "   pointer.mask: " << util::encode_binary(atomic_pointer.load().mask) << endl;
     cout << "  pointer.tag(): " << util::encode_binary(atomic_pointer.load().tag()) << endl;
-    cout << "         is pod: " << std::is_pod_v<decltype(atomic_pointer)> << endl;
+    cout << "         is pod: " << meta::is_pod_v<decltype(atomic_pointer)> << endl;
     cout << "standard layout: " << std::is_standard_layout_v<decltype(atomic_pointer)> << endl;
     cout << "           size: " << sizeof(atomic_pointer) << endl;
     cout << endl;
