@@ -8,6 +8,7 @@
 #include <string_view>
 #include <vector>
 
+#include <ext/util/basic.hpp>
 #ifdef EXT_USE_TERM
     #include <ext/util/term.hpp>
 #endif // EXT_USE_TERM
@@ -187,9 +188,9 @@ inline std::vector<std::string_view> split_on_multiple(std::string const& to_spl
     std::vector<std::string_view> candidates;
 
     auto add_word = [&]() {
-        auto const offset = std::distance(begin, start);
+        auto const offset = abs_distance(begin, start);
         auto const pointer = to_split.data() + offset;
-        auto const length = std::distance(start, current);
+        auto const length = abs_distance(start, current);
 
         std::string_view part(pointer, length);
         rv.push_back(std::move(part));
@@ -210,14 +211,14 @@ inline std::vector<std::string_view> split_on_multiple(std::string const& to_spl
             start = current;
         } else {
             auto current_view =
-                std::string_view{data + std::distance(begin, current), (std::size_t) std::distance(current, end)};
+                std::string_view{data + abs_distance(begin, current), abs_distance(current, end)};
             bool matched = false;
             for (auto const& candidate : candidates) {
                 if (ext::util::starts_with(current_view, candidate)) {
                     matched = true;
                     add_word();
 
-                    current += std::min(candidate.length(), (size_t) std::distance(current, end));
+                    std::advance(current,std::min(candidate.length(), abs_distance(current, end)));
                     start = current;
 
                     break;

@@ -11,6 +11,11 @@
 
 namespace ext { namespace util {
 
+template <typename T>
+std::size_t abs_distance(T const& begin, T const& end) {
+    return static_cast<size_t>(std::abs(std::distance(begin,end)));
+}
+
 template<typename F, typename... T>
 void for_each_arg(F&& function, T&&... args) {
     (function(std::forward<T>(args)), ...); // c++17 fold expression
