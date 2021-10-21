@@ -12,10 +12,10 @@ using namespace ext::util;
 using namespace std::literals;
 
 static int defer_may_throw_x = 0;
-void defer_may_throw_free_function() { defer_may_throw_x++; } // deprecation warning should be generated
+void defer_may_throw_free_function() { defer_may_throw_x++; throw std::logic_error{"nobody will see this"}; } // deprecation warning should be generated
 
 TEST(util_defer_may_throw, special) {
-    defer lambda([&]() {  }); // deprecation warning should be generated
+    defer lambda([&]() { throw std::logic_error{" intentionally broken "}; }); // deprecation warning should be generated
 
     static_assert(!std::is_copy_constructible_v<decltype(lambda)>);
     static_assert(!std::is_copy_assignable_v<decltype(lambda)>);
@@ -29,8 +29,8 @@ TEST(util_defer_may_throw, special) {
 TEST(util_defer_may_throw, move_assign_lambda) {
     int a = 0;
     {
-        defer action1(std::function<void()>([&](){ a++;}));
-        defer action2(std::function<void()>([&](){ a+=2;}));
+        defer action1(std::function<void()>([&]() noexcept { a++; })); // std function can not be noexcept?
+        defer action2(std::function<void()>([&]() noexcept { a+=2;}));
         action1 = std::move(action2);
         ASSERT_EQ(a, 0);
     }
