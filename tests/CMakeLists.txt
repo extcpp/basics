@@ -3,6 +3,7 @@ project(ext-basics-tests)
 set(test-files 
     "algorithm_basic"
     "algorithm_string_distances"
+    "algorithm_longest_common_subsequence"
 
     "meta_is_one_of"
 
