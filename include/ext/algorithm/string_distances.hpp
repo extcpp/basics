@@ -2,10 +2,10 @@
 #ifndef EXT_ALGORITHM_STRING_DISTANCES_HEADER
 #define EXT_ALGORITHM_STRING_DISTANCES_HEADER
 
-#include <ext/algorithm/basic.hpp>
 #include <numeric>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 namespace ext { namespace algorithm { namespace distances {
 
@@ -33,10 +33,10 @@ std::size_t edit_fast(const T& first, const T& second) {
         std::size_t last = j - start;
         for (std::size_t i = start; i <= items_per_col; ++i) {
             std::size_t save = col[i];
-            col[i] = min(col[i - 1] + 1,                                // delete
-                         col[i] + 1,                                    // insert
-                         last + (first[i - 1] == second[j - 1] ? 0 : 1) // equal
-            );
+            col[i] = std::min({ col[i - 1] + 1                                 // delete
+                              , col[i] + 1                                     // insert
+                              , last + (first[i - 1] == second[j - 1] ? 0 : 1) // equal
+                              });
             last = save;
         }
     }
@@ -61,9 +61,10 @@ std::size_t edit_matrix(const T& first, const T& second) {
 
     for (std::size_t j = 1; j <= number_of_cols; ++j) {
         for (std::size_t i = 1; i <= items_per_col; ++i) {
-            matrix[i][j] = min(matrix[i - 1][j] + 1,
-                               matrix[i][j - 1] + 1,
-                               matrix[i - 1][j - 1] + (first[i - 1] == second[j - 1] ? 0 : 1));
+            matrix[i][j] = std::min({ matrix[i - 1][j] + 1
+                                    , matrix[i][j - 1] + 1
+                                    , matrix[i - 1][j - 1] + (first[i - 1] == second[j - 1] ? 0 : 1)
+                                    });
         }
     }
     return matrix[items_per_col][number_of_cols];
