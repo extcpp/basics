@@ -1,6 +1,13 @@
 project(ext-basics-tests)
 
-set(test-files 
+ext_log("ext-basics tests enabled")
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+if (NOT TARGET gtest)
+    find_package(googletest REQUIRED)
+endif()
+
+set(test-files
     "algorithm_basic"
     "algorithm_string_distances"
 
@@ -35,6 +42,7 @@ list(APPEND test-files
 )
 endif()
 
+add_foundation_cmake_modules()
 find_package(Filesystem REQUIRED Final Experimental)
 
 foreach(suffix IN ITEMS "")
