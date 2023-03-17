@@ -34,6 +34,9 @@ if (NOT TARGET ext::foundation)
     message(STATUS "[extcpp] find_package(ExtFoundation)")
     find_package(ExtFoundation REQUIRED)
     ext_log("found ext::foundation")
+
+    # TODO add modules from ~/.local/lib/cmake or the location specified by ExtFoundation-config.cmake
+    # include(define_ext_foundation_macros)
 endif()
 
 include(src_files.cmake)
