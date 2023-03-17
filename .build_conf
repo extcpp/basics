@@ -1,0 +1,2 @@
+#!/bin/bash
+export cmake_var_userflags="-DEXT_DOWNLOAD=ON"

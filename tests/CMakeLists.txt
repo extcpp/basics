@@ -4,7 +4,8 @@ ext_log("ext-basics tests enabled")
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 if (NOT TARGET gtest)
-    find_package(googletest REQUIRED)
+    EXT_DECLARE_DEPENDENCIES()
+    find_package(GTest REQUIRED)
 endif()
 
 set(test-files
@@ -42,7 +43,7 @@ list(APPEND test-files
 )
 endif()
 
-add_foundation_cmake_modules()
+ext_add_ext_modules()
 find_package(Filesystem REQUIRED Final Experimental)
 
 foreach(suffix IN ITEMS "")

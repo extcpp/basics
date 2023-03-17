@@ -1,11 +1,11 @@
 # Copyright - 2015-2019 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.25)
 project(ext-basics VERSION 0.0.1 LANGUAGES CXX)
 message(STATUS "[extcpp] entering ext::basics")
 
 ## OPTIONS
-option(EXT_DOWNLOAD "allow dependency download" ON)
+option(EXT_DOWNLOAD "allow dependency download" OFF)
 
 option(EXT_WRITE_VERSION "write version.hpp" OFF)
 option(LIBEXT_EXAMPLES "build examples" OFF)
@@ -18,36 +18,17 @@ option(LIBEXT_CHECKED  "user assert" ON)
 option(EXT_DEFER_NON_NOTHROW "allow throwing functions in defer" OFF)
 option(EXT_DEFER_MOVE_ASSIGN "allow move assignment of defer object" OFF)
 
-if (NOT TARGET ext::foundation)
-    message(STATUS "[extcpp] trying to find ext::foundation")
-    message(STATUS "[extcpp] EXT_DOWNLOAD=${EXT_DOWNLOAD}")
-    if(EXT_DOWNLOAD)
-        message(STATUS "[extcpp] declaring download location for ext::foundation")
-        include(FetchContent)
-        FetchContent_Declare(
-            ExtFoundation
-            GIT_REPOSITORY https://github.com/extcpp/foundation.git
-            GIT_TAG        master
-            OVERRIDE_FIND_PACKAGE
-        )
-    endif()
-    message(STATUS "[extcpp] find_package(ExtFoundation)")
-    find_package(ExtFoundation REQUIRED)
-    ext_log("found ext::foundation")
-
-    # TODO add modules from ~/.local/lib/cmake or the location specified by ExtFoundation-config.cmake
-    # include(define_ext_foundation_macros)
-endif()
+include(use_ext_foundation.cmake)
+ext_colorize_output()
 
 include(src_files.cmake)
 include(include_files.cmake)
 
-#### library setup
-#set(ext_common_compile_definitions
-#    $<$<BOOL:${LIBEXT_TESTS_NO_TIME_CRITICAL}>:EXT_TESTS_NO_TIME_CRITICAL=1>
-#    $<$<BOOL:${EXT_DEFER_NON_NOTHROW}>:EXT_DEFER_ALLOW_NON_NOTHROW_INVOCABLE=1>
-#    $<$<BOOL:${EXT_DEFER_MOVE_ASSIGN}>:EXT_DEFER_ENABLE_MOVE_ASSIGN=1>
-#)
+set(ext_basics_compile_definitions
+    $<$<BOOL:${LIBEXT_TESTS_NO_TIME_CRITICAL}>:EXT_TESTS_NO_TIME_CRITICAL=1>
+    $<$<BOOL:${EXT_DEFER_NON_NOTHROW}>:EXT_DEFER_ALLOW_NON_NOTHROW_INVOCABLE=1>
+    $<$<BOOL:${EXT_DEFER_MOVE_ASSIGN}>:EXT_DEFER_ENABLE_MOVE_ASSIGN=1>
+)
 
 find_package(Threads REQUIRED)
 
@@ -63,7 +44,7 @@ target_compile_options(ext-basics INTERFACE
     $<$<AND:$<CONFIG:Debug>,$<BOOL:LIBEXT_WARNINGS>>:${ext_stone-warnings}>
 )
 target_compile_definitions(ext-basics INTERFACE
-    ${ext_common_compile_definitions}
+    ${ext_basics_compile_definitions}
     EXT_BASICS_HEADER_ONLY_LIB
 )
 
@@ -90,9 +71,10 @@ else()
 endif()
 
 ## installation
-if(COMMAND EXT_INSTALL)
+if(COMMAND ext_install_lib)
+    ext_set_default_install_prefix("$ENV{HOME}/.local")
     set_target_properties(ext-basics PROPERTIES EXPORT_NAME basics)
-    EXT_INSTALL(ext-basics "ext::" ExtBasics include/ext)
+    ext_install_lib(ext-basics "ext::" ExtBasics include/ext)
 endif()
 
-EXT_RUN_VERSION_SCRIPT(basics)
+ext_generate_version_hpp(basics)
