@@ -27,13 +27,12 @@
 
 namespace ext { namespace util {
 using namespace std::literals::string_literals;
+using scoped_timer_timings = std::vector<std::pair<std::uint64_t, std::string>>;
+inline void scoped_timer_no_action_callback([[maybe_unused]] scoped_timer_timings const& times) { }
 
 namespace _detail::scoped_timer {
-using int_string_vec = std::vector<std::pair<std::uint64_t, std::string>>;
-using callback_arg_type = int_string_vec const&;
-using default_callback_type = int_string_vec (*)(callback_arg_type);
 
-inline std::stringstream to_string_stream(int_string_vec const& times) {
+inline std::stringstream to_string_stream(scoped_timer_timings const& times) {
     std::stringstream ss;
     constexpr auto Mega = 1000 * 1000;
     constexpr auto Giga = 1000 * 1000 * 1000;
@@ -65,20 +64,13 @@ inline std::stringstream to_string_stream(int_string_vec const& times) {
     return ss;
 } // function - to_string_stream
 
-inline int_string_vec default_callback(int_string_vec const& times) {
+inline void default_callback(scoped_timer_timings const& times) {
     std::cerr << to_string_stream(times).rdbuf();
-    return times;
-}
-
-inline int_string_vec no_action_callback(int_string_vec const& times) {
-    return times;
 }
 
 } // namespace _detail::scoped_timer
 
-using scoped_timer_res = _detail::scoped_timer::int_string_vec;
-
-template<typename callback_type = _detail::scoped_timer::default_callback_type>
+template <typename callback_type>
 class scoped_timer {
     public:
     using clock = std::chrono::high_resolution_clock;
@@ -108,7 +100,7 @@ class scoped_timer {
 
     void init(std::string const& name = "", std::size_t vec_size = 6) {
         using namespace _detail::scoped_timer;
-        static_assert(std::is_convertible_v<callback_type, std::function<void(callback_arg_type)>>,
+        static_assert(std::is_convertible_v<callback_type, std::function<void(scoped_timer_timings const&)>>,
                       "callback-type does not match");
         enabled_in_dtor = true;
         add_dtor_entry = true;
@@ -135,29 +127,39 @@ class scoped_timer {
     void dismiss() {
         enabled_in_dtor = false;
     }
+
     void disable_dtor_entry() {
         add_dtor_entry = false;
     }
 
-    _detail::scoped_timer::int_string_vec run(bool disable = true) {
+    scoped_timer_timings run(bool disable = true) {
         if (disable) {
             dismiss();
         }
-        return callback(calculate());
+
+        auto rv = calculate();
+        callback(rv);
+        return rv;
     }
 
-    _detail::scoped_timer::int_string_vec run_external(callback_type& cb, bool disable = true) {
+    scoped_timer_timings run_external(callback_type& cb, bool disable = true) {
         if (disable) {
             dismiss();
         }
-        return cb(calculate());
+
+        auto rv = calculate();
+        callback(rv);
+        return rv;
     }
 
     std::string to_string(bool disable = true) {
         if (disable) {
             dismiss();
         }
-        return to_string_stream(calculate()).str();
+
+        auto rv = calculate();
+        callback(rv);
+        return _detail::scoped_timer::to_string_stream(rv).str();
     }
 
     ~scoped_timer(void) {
@@ -176,11 +178,11 @@ class scoped_timer {
         return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count());
     }
 
-    _detail::scoped_timer::int_string_vec calculate() const {
+    scoped_timer_timings calculate() const {
         using namespace _detail::scoped_timer;
         auto& tp = timepoints_with_description;
         auto total_time = get_time_diff(tp.front().first, tp.back().first);
-        int_string_vec times;
+        scoped_timer_timings times;
         times.emplace_back(std::make_pair(total_time, tp.front().second));
         for (auto it = ++tp.begin(); it != tp.end(); it++) {
             auto duration = get_time_diff(std::prev(it)->first, it->first);
@@ -190,5 +192,10 @@ class scoped_timer {
         return times;
     } // function - calculate
 };
+
+template<typename cb> scoped_timer(cb, std::string const&) -> scoped_timer<cb>;
+scoped_timer(std::string const&) -> scoped_timer<void (*)(scoped_timer_timings const&)>;
+scoped_timer(char const *) -> scoped_timer<void (*)(scoped_timer_timings const&)>;
+
 }}     // namespace ext::util
 #endif // EXT_UTIL_SCOPED_TIMER_HEADER

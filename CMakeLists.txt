@@ -5,6 +5,7 @@ project(ext-basics VERSION 0.0.1 LANGUAGES CXX)
 message(STATUS "[extcpp] entering ext::basics")
 
 ## OPTIONS
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "wirte compile_commands.json")
 option(EXT_DOWNLOAD "allow dependency download" OFF)
 
 option(EXT_WRITE_VERSION "write version.hpp" OFF)

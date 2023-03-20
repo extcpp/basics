@@ -26,10 +26,9 @@ void assert_time_eq(std::size_t ms_expected, std::pair<std::uint64_t, std::strin
 }
 
 TEST(util_scoped_timer, nostep) {
-    scoped_timer_res result;
-    auto callback = [&result](scoped_timer_res const& in) {
+    scoped_timer_timings result;
+    auto callback = [&result](scoped_timer_timings const& in) {
         result = in;
-        return in;
     };
 
     {
@@ -41,10 +40,9 @@ TEST(util_scoped_timer, nostep) {
 }
 
 TEST(util_scoped_timer, steps) {
-    scoped_timer_res result;
-    auto callback = [&result](scoped_timer_res const& in) {
+    scoped_timer_timings result;
+    auto callback = [&result](scoped_timer_timings const& in) {
         result = in;
-        return in;
     };
 
     {
@@ -64,10 +62,9 @@ TEST(util_scoped_timer, steps) {
 }
 
 TEST(util_scoped_timer, no_dtor) {
-    scoped_timer_res result;
-    auto callback = [&result](scoped_timer_res const& in) {
+    scoped_timer_timings result;
+    auto callback = [&result](scoped_timer_timings const& in) {
         result = in;
-        return in;
     };
 
     {
@@ -87,10 +84,9 @@ TEST(util_scoped_timer, no_dtor) {
 }
 
 TEST(util_scoped_timer, dismiss) {
-    scoped_timer_res result;
-    auto callback = [&result](scoped_timer_res const& in) {
+    scoped_timer_timings result;
+    auto callback = [&result](scoped_timer_timings const& in) {
         result = in;
-        return in;
     };
 
     {
