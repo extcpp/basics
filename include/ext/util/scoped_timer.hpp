@@ -69,6 +69,11 @@ inline int_string_vec default_callback(int_string_vec const& times) {
     std::cerr << to_string_stream(times).rdbuf();
     return times;
 }
+
+inline int_string_vec no_action_callback(int_string_vec const& times) {
+    return times;
+}
+
 } // namespace _detail::scoped_timer
 
 using scoped_timer_res = _detail::scoped_timer::int_string_vec;
