@@ -26,6 +26,7 @@ set(ext-basics-header
 	"include/ext/util/io.hpp"
 	"include/ext/util/lazy.hpp"
 	"include/ext/util/load_library.hpp"
+	"include/ext/util/memstream.hpp"
 	"include/ext/util/pretty.hpp"
 	"include/ext/util/regex.hpp"
 	"include/ext/util/result.hpp"

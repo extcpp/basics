@@ -32,6 +32,7 @@ set(test-files
     "util_flag_set"
     "util_hex"
     "util_lazy"
+    "util_memstream"
     "util_result"
     "util_scoped_timer"
     "util_serialization"
