@@ -1,2 +1,6 @@
 #!/bin/bash
-export cmake_var_userflags="-DEXT_DOWNLOAD=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+export cmake_var_userflags="
+    -DEXT_DOWNLOAD=OFF
+    -DEXT_FOUNDATION_PATH=$PWD/../foundation
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+"

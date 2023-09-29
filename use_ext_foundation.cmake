@@ -10,11 +10,13 @@ if (NOT TARGET ext::foundation)
             GIT_TAG        master
         )
         FetchContent_MakeAvailable(ExtFoundation)
-    else()
-        find_package(ExtFoundation REQUIRED)
+    elseif(EXISTS "${EXT_FOUNDATION_PATH}/CMakeLists.txt")
+        message(STATUS "[extcpp] looking for foundation in ${EXT_FOUNDATION_PATH}")
+        add_subdirectory("${EXT_FOUNDATION_PATH}" "${CMAKE_CURRENT_BINARY_DIR}/foundation")
     endif()
 
     if(NOT TARGET ext::foundation)
+        find_package(ExtFoundation REQUIRED) # already fatal
         message(FATAL_ERROR "[extcpp] can not provide target ext::foundation")
     endif()
 endif()
