@@ -2,13 +2,14 @@ name: CMake
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, github ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, github ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  CXX: g++-12
 
 jobs:
   build:
@@ -28,8 +29,9 @@ jobs:
       env:
         CXX_FLAGS: -fsanitize-address -fsanitize-undefined
       run: |
+        c++ --version
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja \
-           -DLIBEXT_TESTS=ON -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON -DLIBEXT_EXAMPLES=ON
+           -DLIBEXT_TESTS=ON -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON -DLIBEXT_EXAMPLES=ON -DEXT_DOWNLOAD=ON
 
     - name: Build
       # Build your program with the given configuration
