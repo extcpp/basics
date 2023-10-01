@@ -4,8 +4,12 @@ ext_log("ext-basics tests enabled")
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 if (NOT TARGET gtest)
-    EXT_DECLARE_DEPENDENCIES()
-    find_package(GTest REQUIRED)
+    if(EXT_DOWNLOAD)
+        EXT_DECLARE_DEPENDENCIES()
+        FetchContent_MakeAvailable(GTest)
+    else()
+        find_package(GTest REQUIRED)
+    endif()
 endif()
 
 set(test-files
