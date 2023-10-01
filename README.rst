@@ -1,4 +1,4 @@
-|travis| |appveyor| |codecov| |codeship| |cpp| |mit|
+|cpp| |mit|
 
 basics
 ======
