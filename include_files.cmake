@@ -1,6 +1,7 @@
 set(ext-basics-header
 	"include/ext/config.hpp"
 	"include/ext/algorithm/basic.hpp"
+	"include/ext/algorithm/longest_common_subsequence.hpp"
 	"include/ext/algorithm/string_distances.hpp"
 	"include/ext/memory/align.hpp"
 	"include/ext/memory/tagged_pointer.hpp"
