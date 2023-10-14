@@ -3,6 +3,7 @@
 #define EXT_STRUCTURES_TRIE_HEADER
 
 #include <cstdint>
+#include <iostream>
 #include <map>
 #include <memory>
 #include <optional>
@@ -74,6 +75,35 @@ class node {
 
 // description of how a node will be splitted
 template <typename Key>
+inline std::ostream& operator<<(std::ostream& os, std::unique_ptr<node<char, std::uint8_t>> const& node) {
+    if (node == nullptr) {
+        os << "no node" << std::endl;
+        return os;
+    }
+
+    std::cerr << "[" << vec2str(node->prefix) << "]";
+    if (node->children)
+        for (auto const& pair : *(node->children)) std::cerr << " -> " << pair.first;
+    os << std::endl;
+
+    return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, node<char, std::uint8_t> const* node) {
+    if (node == nullptr) {
+        os << "no node" << std::endl;
+        return os;
+    }
+
+    std::cerr << "[" << vec2str(node->prefix) << "]";
+    if (node->children)
+        for (auto const& pair : *(node->children)) std::cerr << " -> " << pair.first;
+    os << std::endl;
+
+    return os;
+}
+
+template<typename Key>
 struct split {
     using key_t = Key;
     using label_t = typename key_t::value_type;
@@ -86,6 +116,16 @@ struct split {
 };
 
 template <typename Key>
+inline std::ostream& operator<<(std::ostream& os, split<std::vector<char>> const& si) {
+    os << "= parent_prefix: " << detail_trie::vec2str(si.parent_prefix) << std::endl;
+    os << "= split_label:   " << (si.split_label.has_value() ? si.split_label.value() : 'x') << std::endl;
+    os << "= split_prefix:  " << detail_trie::vec2str(si.split_prefix) << std::endl;
+    os << "= insert_label:  " << (si.insert_label.has_value() ? si.insert_label.value() : 'x') << std::endl;
+    os << "= insert_prefix: " << detail_trie::vec2str(si.insert_prefix) << std::endl;
+    return os;
+}
+
+template<typename Key>
 [[nodiscard]] constexpr std::size_t find_split_point(Key const& a, Key const& b) {
     std::size_t rv = 0;
     while (rv < std::min(a.size(), b.size())) {
@@ -143,12 +183,14 @@ class trie {
 
     [[nodiscard]] std::pair<node_t*, bool> insert(key_t const& key, std::unique_ptr<value_t> value = nullptr) {
         using namespace detail_trie;
-
+        std::cerr << "#######################################" << std::endl;
+        std::cerr << "insert: " << vec2str(key) << std::endl;
         auto [insert_parent, insert_prefix] = find_insert_parent(root.get(), key);
         if (insert_parent == nullptr)
             return {nullptr, false};
 
         auto& ip = *insert_parent;
+        std::cerr << "ip no mod: " << insert_parent;
 
         if (insert_prefix.empty()) {
             // must be inserted into ip
@@ -163,6 +205,7 @@ class trie {
         }
 
         split<key_t> si = split_info(insert_parent->prefix, insert_prefix);
+
         if (!si.insert_label.has_value())
             return {insert_parent, false};
 
@@ -181,9 +224,15 @@ class trie {
             ip.prefix = si.parent_prefix;
             ip.is_word = false;
             ip.value = nullptr;
+
+            std::cerr << "split done: " << insert_parent;
+            for (auto const& pair : *ip.children) std::cerr << "@ " << pair.first << " - " << pair.second;
         }
 
-        return ip.insert_node(si.insert_label.value(), si.insert_prefix, value, true);
+        auto rv = ip.insert_node(si.insert_label.value(), si.insert_prefix, value, true);
+        std::cerr << "insert done: " << insert_parent;
+        for (auto const& pair : *ip.children) std::cerr << "@ " << pair.first << " - " << pair.second;
+        return std::move(rv);
     }
 
 #ifndef EXT_TEST
