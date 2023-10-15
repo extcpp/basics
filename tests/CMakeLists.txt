@@ -39,6 +39,7 @@ set(test-files
     "util_serialization"
     "util_show"
     "util_string"
+    "util_template_string_literal"
     "util_tuple"
     "util_windows_strings"
 )

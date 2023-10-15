@@ -6,6 +6,12 @@
 
 namespace ext::util {
 
+// Usage:
+// template<template_string_literal lit>
+// struct example_class {
+//     const std::string name  = lit.value;
+// };
+
 // c++20 -- class types in non-type template parameters
 template<std::size_t N>
 struct template_string_literal {
