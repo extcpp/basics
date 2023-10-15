@@ -50,7 +50,7 @@ typedef const char* const_utf8_e_str;
  * windows)
  * @return                  dl_handle or NULL on fail
  */
-dl_handle dl_open(const_utf8_e_str filename, int flag = RTLD_LAZY) {
+inline dl_handle dl_open(const_utf8_e_str filename, int flag = RTLD_LAZY) {
 #ifdef EXT_UNIX
     return ::dlopen(filename, flag);
 #elif EXT_WINDOWS
@@ -64,7 +64,7 @@ dl_handle dl_open(const_utf8_e_str filename, int flag = RTLD_LAZY) {
 }
 
 //! open library - overload for std::string
-dl_handle dl_open(const std::string& filename, int flag = RTLD_LAZY) {
+inline dl_handle dl_open(const std::string& filename, int flag = RTLD_LAZY) {
     return dl_open(filename.c_str(), flag);
 }
 
@@ -73,7 +73,7 @@ dl_handle dl_open(const std::string& filename, int flag = RTLD_LAZY) {
  * Functions that returns textual error
  * @return  textual description of the error in utf-8 encoded std::string
  */
-std::string dl_error(void) {
+inline std::string dl_error(void) {
 #ifdef EXT_UNIX
     // returns a static buffer - do not free!!!!
     char const* buffer = ::dlerror();
@@ -111,7 +111,7 @@ std::string dl_error(void) {
  *  @return     dl_address  pointer to requested symbol
  *                          or NULL if symbol is not found
  */
-dl_address dl_sym(dl_handle handle, const_utf8_e_str symbol) {
+inline dl_address dl_sym(dl_handle handle, const_utf8_e_str symbol) {
 #ifdef EXT_UNIX
     return ::dlsym(handle, symbol);
 #elif EXT_WINDOWS
@@ -125,12 +125,12 @@ dl_address dl_sym(dl_handle handle, const_utf8_e_str symbol) {
 }
 
 //! get address of symbol - overload for std::string
-dl_address dl_sym(dl_handle handle, const std::string& symbol) {
+inline dl_address dl_sym(dl_handle handle, const std::string& symbol) {
     return dl_sym(handle, symbol.c_str());
 }
 
 //! get address of symbol or throw logic_error
-dl_address dl_sym_e(dl_handle handle, const std::string& symbol) {
+inline dl_address dl_sym_e(dl_handle handle, const std::string& symbol) {
     dl_address address = dl_sym(handle, symbol.c_str());
     if (address == NULL) {
         throw std::logic_error(dl_error());
@@ -146,7 +146,7 @@ dl_address dl_sym_e(dl_handle handle, const std::string& symbol) {
  *  @param[in]  handle  handle of lib to close
  *  @return             returns NULL on fail
  */
-dl_rv dl_close(dl_handle handle) {
+inline dl_rv dl_close(dl_handle handle) {
 #ifdef EXT_UNIX
     return ::dlclose(handle);
 #elif EXT_WINDOWS
