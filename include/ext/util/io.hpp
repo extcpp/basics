@@ -13,12 +13,16 @@
 
 namespace ext { namespace util {
 
-inline std::string istream_to_string(std::istream& in, bool remove_spaces = false) {
+inline std::pair<std::string, bool> istream_to_string(std::istream& in, bool remove_spaces = false) {
+    constexpr std::size_t buf_size = 4096;
+
     std::string result;
-    char buffer[4096];
+    std::string::value_type buffer[buf_size];
+
     while (in.read(buffer, sizeof(buffer))) {
         result.append(buffer, sizeof(buffer));
     }
+
     // number of chars in last operation
     result.append(buffer, in.gcount());
 
@@ -28,10 +32,11 @@ inline std::string istream_to_string(std::istream& in, bool remove_spaces = fals
         };
         result.erase(std::remove_if(result.begin(), result.end(), is_space), result.end());
     }
-    return result;
+
+    return {result, in.eof()};
 }
 
-inline std::string ifstream_to_string(std::ifstream& in, bool remove_spaces = false) {
+inline std::pair<std::string, bool> ifstream_to_string(std::ifstream& in, bool remove_spaces = false) {
     if (!in.is_open()) {
         throw std::logic_error("You try to read from a closed stream!");
     }
