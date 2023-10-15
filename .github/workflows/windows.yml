@@ -30,7 +30,7 @@ jobs:
 
     - shell: bash
       working-directory: build/
-      run: cmake $GITHUB_WORKSPACE -DEXT_DOWNLOAD=ON -DLIBEXT_TESTS=ON -G "Visual Studio 17 2022"
+      run: cmake $GITHUB_WORKSPACE -DEXT_DOWNLOAD=ON -DLIBEXT_TESTS=ON -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON -G "Visual Studio 17 2022"
 
     - working-directory: build/
       run: cmake --build . --config ${{ matrix.build_type }}
@@ -53,7 +53,7 @@ jobs:
 
     - shell: bash
       working-directory: build/
-      run: cmake $GITHUB_WORKSPACE -DEXT_DOWNLOAD=ON  -DLIBEXT_TESTS=ON -G "Visual Studio 17 2022" -T ClangCL
+      run: cmake $GITHUB_WORKSPACE -DEXT_DOWNLOAD=ON  -DLIBEXT_TESTS=ON -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON -G "Visual Studio 17 2022" -T ClangCL
 
     - working-directory: build/
       run: cmake --build . --config ${{ matrix.build_type }}

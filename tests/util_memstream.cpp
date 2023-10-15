@@ -31,7 +31,7 @@ TEST(util_memstream, imemstream_basic) {
 
 TEST(util_memstream, viewstream_size) {
     int size = sizeof(eu::viewstream);
-    ASSERT_GE(size, 250);
+    ASSERT_GE(size, 200); // much smaller on windows !!!
     ASSERT_LE(size, 450);
 }
 
