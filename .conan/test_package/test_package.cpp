@@ -3,13 +3,12 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <ext/util/show.hpp>
 
-int main()
-{
+int main() {
     std::vector<std::string> out{"ext::basics", "successfully", "installs"};
     using ext::util::operator<<;
     std::cout << "\n\n" << out << "\n" << std::endl;

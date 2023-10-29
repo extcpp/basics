@@ -15,19 +15,19 @@
 
 namespace ext { namespace util {
 
-inline std::string from_u8string(const std::string &s) {
-  return s;
+inline std::string from_u8string(const std::string& s) {
+    return s;
 }
 
-inline std::string from_u8string(std::string &&s) {
-  return std::move(s);
+inline std::string from_u8string(std::string&& s) {
+    return std::move(s);
 }
 
 #if defined(__cpp_lib_char8_t)
-inline std::string from_u8string(const std::u8string &s) {
-  return std::string(s.begin(), s.end());
+inline std::string from_u8string(const std::u8string& s) {
+    return std::string(s.begin(), s.end());
 }
-#endif
+#endif // defined(__cpp_lib_char8_t)
 
 inline std::string section(std::string const& text, std::size_t width = 80, char fill = '=') {
 #ifdef EXT_USE_TERM
@@ -92,7 +92,7 @@ inline auto ends_with(std::string_view const& str, std::string_view const& suffi
 }
 
 // StringType should behave like string /  string_view
-template<typename StringType>
+template <typename StringType>
 inline auto split_on(std::string_view const& str, std::string_view const& seq, bool add_empty = false)
     -> std::vector<StringType> {
     auto rv = std::vector<StringType>{};
@@ -210,15 +210,14 @@ inline std::vector<std::string_view> split_on_multiple(std::string const& to_spl
             current++;
             start = current;
         } else {
-            auto current_view =
-                std::string_view{data + abs_distance(begin, current), abs_distance(current, end)};
+            auto current_view = std::string_view{data + abs_distance(begin, current), abs_distance(current, end)};
             bool matched = false;
             for (auto const& candidate : candidates) {
                 if (ext::util::starts_with(current_view, candidate)) {
                     matched = true;
                     add_word();
 
-                    std::advance(current,std::min(candidate.length(), abs_distance(current, end)));
+                    std::advance(current, std::min(candidate.length(), abs_distance(current, end)));
                     start = current;
 
                     break;

@@ -1,9 +1,11 @@
-#include <gtest/gtest.h>
-#include <ext/util/memstream.hpp>
-#include <sstream>
-#include <string_view>
-#include <string>
+// Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <chrono>
+#include <ext/util/memstream.hpp>
+#include <gtest/gtest.h>
+#include <sstream>
+#include <string>
+#include <string_view>
 
 using namespace std::string_literals;
 
@@ -25,7 +27,7 @@ TEST(util_memstream, imemstream_basic) {
     ASSERT_EQ(hello, "hello");
     istream >> world;
     ASSERT_EQ(world, "world");
-    istream >>  eof;
+    istream >> eof;
     ASSERT_EQ(eof, "");
 }
 
@@ -48,7 +50,7 @@ TEST(util_memstream, viewstream_read) {
     ASSERT_EQ(hello, "hello");
     istream >> world;
     ASSERT_EQ(world, "world");
-    istream >>  eof;
+    istream >> eof;
     ASSERT_EQ(eof, "");
 }
 
@@ -60,7 +62,7 @@ TEST(util_memstream, viewstream_reuse) {
     std::string goodbye, eof;
     istream >> goodbye;
     ASSERT_EQ(goodbye, "goodbye");
-    istream >>  eof;
+    istream >> eof;
     ASSERT_EQ(eof, "");
 }
 
@@ -78,18 +80,17 @@ TEST(util_memstream, viewstream_chrono) {
     auto views = std::vector{a, b};
 
     eu::viewstream istream;
-    //std::chrono::year_month_day ymd;
+    // std::chrono::year_month_day ymd;
     std::string date;
-    for(auto const& view : views)
-    {
+    for (auto const& view : views) {
         istream.reset(view);
-        //std::chrono::from_stream(istream, "%Y-%m-%d", ymd);
+        // std::chrono::from_stream(istream, "%Y-%m-%d", ymd);
         istream >> date;
     }
 
-    //ASSERT_EQ(std::chrono::year_month_day(
-    //    std::chrono::year(2023),
-    //    std::chrono::month(11),
-    //    std::chrono::day(11)), ymd);
+    // ASSERT_EQ(std::chrono::year_month_day(
+    //     std::chrono::year(2023),
+    //     std::chrono::month(11),
+    //     std::chrono::day(11)), ymd);
     ASSERT_EQ(b, date);
 }

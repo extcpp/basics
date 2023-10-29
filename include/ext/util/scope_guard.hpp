@@ -41,7 +41,7 @@ struct uncaught_exception_counter {
 
 enum class scope_guard_execution_policy { always, on_no_exception, on_exception };
 
-template<typename FunctionType, scope_guard_execution_policy policy = scope_guard_execution_policy::always>
+template <typename FunctionType, scope_guard_execution_policy policy = scope_guard_execution_policy::always>
 struct scope_guard {
     using decayed_type = std::decay_t<FunctionType>;
     decayed_type callback;
@@ -126,7 +126,7 @@ class on_fail_helper {};
 class on_success_helper {};
 class on_exit_helper {};
 
-template<typename Helper, typename FunctionType>
+template <typename Helper, typename FunctionType>
 inline decltype(auto) operator+(Helper, FunctionType&& fn) {
     if constexpr (std::is_same_v<Helper, on_exit_helper>) {
         return scope_guard<std::decay_t<FunctionType>, scope_guard_execution_policy::always>(

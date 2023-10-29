@@ -235,7 +235,8 @@ inline std::wstring string_to_win(const std::string& in_string) {
 }
 
 inline std::wstring string_to_win(const std::u8string& in_string) {
-    return string_to_win(reinterpret_cast<std::string::value_type const*>(in_string.c_str()), static_cast<int>(in_string.size()));
+    return string_to_win(reinterpret_cast<std::string::value_type const*>(in_string.c_str()),
+                         static_cast<int>(in_string.size()));
 }
 
 }} // namespace ext::util

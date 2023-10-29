@@ -28,7 +28,7 @@
 namespace ext { namespace util {
 using namespace std::literals::string_literals;
 using scoped_timer_timings = std::vector<std::pair<std::uint64_t, std::string>>;
-inline void scoped_timer_no_action_callback([[maybe_unused]] scoped_timer_timings const& times) { }
+inline void scoped_timer_no_action_callback([[maybe_unused]] scoped_timer_timings const& times) {}
 
 namespace _detail::scoped_timer {
 
@@ -114,7 +114,7 @@ class scoped_timer {
         timepoints_with_description.emplace_back(clock::now(), ""s);
     }
 
-    template<typename T>
+    template <typename T>
     void add_step(T&& str) {
         static_assert(std::is_convertible_v<T, std::string>, "parameter is not convertible to string");
         timepoints_with_description.emplace_back(clock::now(), std::forward<T>(str));
@@ -193,9 +193,10 @@ class scoped_timer {
     } // function - calculate
 };
 
-template<typename cb> scoped_timer(cb, std::string const&) -> scoped_timer<cb>;
-scoped_timer(std::string const&) -> scoped_timer<void (*)(scoped_timer_timings const&)>;
-scoped_timer(char const *) -> scoped_timer<void (*)(scoped_timer_timings const&)>;
+template <typename cb>
+scoped_timer(cb, std::string const&) -> scoped_timer<cb>;
+scoped_timer(std::string const&)->scoped_timer<void (*)(scoped_timer_timings const&)>;
+scoped_timer(char const*)->scoped_timer<void (*)(scoped_timer_timings const&)>;
 
 }}     // namespace ext::util
 #endif // EXT_UTIL_SCOPED_TIMER_HEADER

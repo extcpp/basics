@@ -34,7 +34,7 @@ int main(/*int argc, const char *argv[]*/) {
 
     // prefer this!
     std::cout << vec2 << std::endl;
-#endif
+#endif // CLANG_ANALYZE
 
     return 0;
 }

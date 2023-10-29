@@ -17,7 +17,7 @@ inline constexpr std::size_t cache_line_size() {
 #endif // EXT_KNOWN_L1_CACHE_LINE_SIZE
 }
 
-template<typename T>
+template <typename T>
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, bool> inline constexpr is_alignment(T number) {
     return util::is_power_of_two(number);
 }

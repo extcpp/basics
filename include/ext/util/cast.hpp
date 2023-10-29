@@ -11,50 +11,50 @@
 namespace ext { namespace util {
 
 //// size calcuation for important types
-template<typename T, std::size_t N>
+template <typename T, std::size_t N>
 inline constexpr std::size_t size(T (&)[N]) {
     return N;
 }
 
 namespace _detail {
-template<typename T>
+template <typename T>
 inline constexpr std::size_t size_of() {
     return (sizeof(T));
 }
 
-template<typename T>
+template <typename T>
 inline constexpr std::size_t size_of(T const& arg) {
     return (sizeof(decltype(arg)));
 }
 
-template<typename T, std::size_t N>
+template <typename T, std::size_t N>
 inline constexpr std::size_t size_of() {
     return (sizeof(T) * N);
 }
 
-template<typename T, std::size_t N>
+template <typename T, std::size_t N>
 inline constexpr std::size_t size_of(T (&)[N]) {
     return N * size_of<T>();
 }
 
-template<typename T, std::size_t N>
+template <typename T, std::size_t N>
 inline constexpr std::size_t size_of(std::array<T, N> const&) {
     return (sizeof(T) * N);
 }
 
-template<typename C, typename T, typename A>
+template <typename C, typename T, typename A>
 inline constexpr std::size_t size_of(std::basic_string<C, T, A> const& arg) {
     return (sizeof(T) * arg.size());
 }
 
 } // namespace _detail
 
-template<typename... T>
+template <typename... T>
 inline constexpr std::size_t size_of() {
     return (_detail::size_of<T>() + ...);
 }
 
-template<typename... T>
+template <typename... T>
 inline constexpr std::size_t size_of(T const&... args) {
     return (_detail::size_of(args) + ...);
 }
@@ -68,7 +68,7 @@ inline constexpr std::size_t size_of(T const&... args) {
 
 //// singed <-> unsingend - conversion
 
-template<typename T, typename S = std::make_unsigned_t<T>>
+template <typename T, typename S = std::make_unsigned_t<T>>
 constexpr S to_unsigned(T in) {
     static_assert(std::is_integral_v<T>, "type is not an integral type");
     static_assert(std::is_signed_v<T>, "type is not singed");
@@ -76,7 +76,7 @@ constexpr S to_unsigned(T in) {
     return S(in);
 }
 
-template<typename T, typename S = std::make_signed_t<T>>
+template <typename T, typename S = std::make_signed_t<T>>
 constexpr S to_signed(T in) {
     static_assert(std::is_integral_v<T>, "type is not an integral type");
     static_assert(std::is_unsigned_v<T>, "type is not unsinged");
@@ -84,7 +84,7 @@ constexpr S to_signed(T in) {
     return S(in);
 }
 
-template<typename T, typename S = std::make_unsigned_t<T>>
+template <typename T, typename S = std::make_unsigned_t<T>>
 constexpr S to_unsigned_checked(T in) {
     static_assert(std::is_integral_v<T>, "type is not an integral type");
     static_assert(std::is_signed_v<T>, "type is not singed");
@@ -95,7 +95,7 @@ constexpr S to_unsigned_checked(T in) {
     return S(in);
 }
 
-template<typename T, typename S = std::make_signed_t<T>>
+template <typename T, typename S = std::make_signed_t<T>>
 constexpr S to_signed_checked(T in) {
     static_assert(std::is_integral_v<T>, "type is not an integral type");
     static_assert(std::is_unsigned_v<T>, "type is not unsinged");
@@ -108,17 +108,17 @@ constexpr S to_signed_checked(T in) {
 
 //// standard conversions - potentially different sizes
 
-template<typename To, typename From>
+template <typename To, typename From>
 std::enable_if_t<!std::is_array<To>::value, void> convert(const From& from, To& to) {
     std::memcpy(&to, &from, sizeof(To));
 }
 
-template<typename To, typename From, std::size_t length>
+template <typename To, typename From, std::size_t length>
 std::enable_if_t<std::is_array<To>::value, void> convert(const From& from, To (&to)[length]) {
     std::memcpy(&to, &from, sizeof(To) * length);
 }
 
-template<typename To, typename From>
+template <typename To, typename From>
 constexpr inline To convert_checked(const From& from) {
     static_assert(sizeof(To) == sizeof(From), "type_cast requires types with equal size");
     To to;
@@ -126,7 +126,7 @@ constexpr inline To convert_checked(const From& from) {
     return to;
 }
 
-template<typename To, typename From>
+template <typename To, typename From>
 constexpr inline To convert_to_bigger(const From& from) {
     // copy `from` size form `from` to `to` and fill rest with 0
     // FFFF      -> 0000 0000 => 0000 FFFF
@@ -138,7 +138,7 @@ constexpr inline To convert_to_bigger(const From& from) {
     return to;
 }
 
-template<typename To, typename From>
+template <typename To, typename From>
 constexpr inline To convert_to_smaller(const From& from) {
     // copy `from` size form `from` to `to` and fill rest with 0
     // 0000 FFFF -> 0000 => FFFF
@@ -150,7 +150,7 @@ constexpr inline To convert_to_smaller(const From& from) {
     return to;
 }
 
-template<typename To, typename From>
+template <typename To, typename From>
 constexpr inline To convert_different(const From& from) {
     // if `to` is less equal only copy `to` size form `from` to `to`
     // otherwise copy `from` size form `from` to `to` and fill rest with 0

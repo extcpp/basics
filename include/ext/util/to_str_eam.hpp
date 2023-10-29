@@ -15,7 +15,7 @@ inline std::ostream& operator<<(std::ostream& out, ext::util::result const& res)
     return out;
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator<<(std::ostream& out, ext::util::typed_result<T> const& res) {
     out << std::boolalpha << ", ok:" << res.ok() << ", code:" << res.code() << ", message:'" << res.message() << "'"
         << ", vaild:" << res.valid;

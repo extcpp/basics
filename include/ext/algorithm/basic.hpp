@@ -10,7 +10,7 @@
 #include <vector>
 namespace ext { namespace algorithm {
 
-template<typename T, typename Predicate, bool stable = false>
+template <typename T, typename Predicate, bool stable = false>
 std::vector<T> partition_out(std::vector<T>& vec, Predicate pred) {
     auto end = vec.end();
     decltype(end) split_point;
@@ -30,43 +30,43 @@ std::vector<T> partition_out(std::vector<T>& vec, Predicate pred) {
     return out;
 }
 
-template<typename T, typename Predicate>
+template <typename T, typename Predicate>
 std::vector<T> stable_partition_out(std::vector<T>& vec, Predicate&& pred) {
     return partition_out<T, Predicate, true>(vec, std::forward<Predicate>(pred));
 }
 
-template<typename T, typename Predicate = std::less<>>
+template <typename T, typename Predicate = std::less<>>
 T const& min(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
     return std::min(a, std::min(b, c, comp), comp);
 }
 
-template<typename T, typename Predicate = std::less<>>
+template <typename T, typename Predicate = std::less<>>
 T const& max(T const& a, T const& b, T const& c, Predicate comp = Predicate()) {
     return std::max(std::max(a, b, comp), c, comp);
 }
 
-template<typename T>
+template <typename T>
 T&& min(T&& x) {
     return std::forward<T>(x);
 }
 
-template<typename T1, typename T2, typename... Ts>
+template <typename T1, typename T2, typename... Ts>
 decltype(auto) min(T1&& x1, T2&& x2, Ts&&... xs) {
     return (x1 < x2) ? min(x1, std::forward<Ts>(xs)...) : min(x2, std::forward<Ts>(xs)...);
 }
 
-template<typename T>
+template <typename T>
 T&& max(T&& x) {
     return std::forward<T>(x);
 }
 
-template<typename T1, typename T2, typename... Ts>
+template <typename T1, typename T2, typename... Ts>
 decltype(auto) max(T1&& x1, T2&& x2, Ts&&... xs) {
     return (x1 > x2) ? max(x1, std::forward<Ts>(xs)...) : max(x2, std::forward<Ts>(xs)...);
 }
 
 // count occurrences in container /////////////////////////////////////////
-template<typename Iterator, typename Int = std::size_t>
+template <typename Iterator, typename Int = std::size_t>
 auto count_occurrences(Iterator begin, Iterator end) {
     using Key = typename std::iterator_traits<Iterator>::value_type;
     std::map<Key, Int> result;
@@ -76,7 +76,7 @@ auto count_occurrences(Iterator begin, Iterator end) {
     return result;
 }
 
-template<typename Container, typename Int = int>
+template <typename Container, typename Int = int>
 auto count_occurrences(const Container& container) {
     using Iterator = decltype(std::begin(container));
     return count_occurrences<Iterator, Int>(std::begin(container), std::end(container));
@@ -85,7 +85,7 @@ auto count_occurrences(const Container& container) {
 // merge maps //////////////////////////////////////////////////////////////
 // Items that are already present in the first map get replaced if
 // the predicate evaluates to true
-template<typename Map, typename Predicate = std::not_equal_to<>>
+template <typename Map, typename Predicate = std::not_equal_to<>>
 auto& merge_maps(Map& modify, const Map& add, Predicate predicate = Predicate()) {
     for (auto it = add.begin(); it != add.end(); it++) {
         auto found = modify.find(it->first);

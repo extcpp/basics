@@ -31,7 +31,7 @@ const eu::flag_set<test> flag_0011 = test::enum_0011;
 const eu::flag_set<test> flag_1110 = test::enum_1110;
 const eu::flag_set<test> flag_1111 = test::enum_1111;
 
-TEST(util_flag_set, flag_set_values ) {
+TEST(util_flag_set, flag_set_values) {
     ASSERT_EQ(flag_0000.flags, 0);
     ASSERT_EQ(flag_0001.flags, 1);
     ASSERT_EQ(flag_0010.flags, 2);
@@ -41,26 +41,21 @@ TEST(util_flag_set, flag_set_values ) {
 }
 
 
-enum class ec : uint8_t{
-    none = 0b0000,
-    foo  = 0b0001,
-    bar  = 0b0010,
-    baz  = 0b0100
-};
+enum class ec : uint8_t { none = 0b0000, foo = 0b0001, bar = 0b0010, baz = 0b0100 };
 
 // Enable flag_set operators via function
 // defintion and ADL.
-void enable_flags_enum(ec){}
+void enable_flags_enum(ec) {}
 
 // Enable flag_set operators by defining
 // strut in ext::util
-//EXT_ENABLE_FLAG_SET_OPERATORS(ec)
+// EXT_ENABLE_FLAG_SET_OPERATORS(ec)
 
 using namespace eu;
 TEST(util_flag_set, layout) {
     static_assert(std::is_standard_layout_v<flag_set<ec>>);
     ASSERT_FALSE(std::is_trivial_v<flag_set<ec>>); // flags are initalized to 0
-    ASSERT_FALSE(std::is_pod_v<flag_set<ec>>); // not trivial
+    ASSERT_FALSE(std::is_pod_v<flag_set<ec>>);     // not trivial
 }
 
 TEST(util_flag_set, contains) {
@@ -93,7 +88,7 @@ TEST(util_flag_set, contains) {
 TEST(util_flag_set, equals) {
     {
         flag_set<ec> set;
-        ASSERT_TRUE (set == ec::none);
+        ASSERT_TRUE(set == ec::none);
         ASSERT_FALSE(set == ec::foo);
         ASSERT_FALSE(set == ec::bar);
         ASSERT_FALSE(set == ec::baz);
@@ -102,7 +97,7 @@ TEST(util_flag_set, equals) {
     {
         flag_set<ec> set = ec::foo;
         ASSERT_FALSE(set == ec::none);
-        ASSERT_TRUE (set == ec::foo);
+        ASSERT_TRUE(set == ec::foo);
         ASSERT_FALSE(set == ec::bar);
         ASSERT_FALSE(set == ec::baz);
     }
@@ -114,7 +109,7 @@ TEST(util_flag_set, equals) {
         ASSERT_FALSE(set == ec::foo);
         ASSERT_FALSE(set == ec::bar);
         ASSERT_FALSE(set == ec::baz);
-        ASSERT_TRUE (set == (ec::foo | ec::bar));
+        ASSERT_TRUE(set == (ec::foo | ec::bar));
     }
 }
 
@@ -122,26 +117,26 @@ TEST(util_flag_set, not_equals) {
     {
         flag_set<ec> set;
         ASSERT_FALSE(set != ec::none);
-        ASSERT_TRUE (set != ec::foo);
-        ASSERT_TRUE (set != ec::bar);
-        ASSERT_TRUE (set != ec::baz);
+        ASSERT_TRUE(set != ec::foo);
+        ASSERT_TRUE(set != ec::bar);
+        ASSERT_TRUE(set != ec::baz);
     }
 
     {
         flag_set<ec> set = ec::foo;
-        ASSERT_TRUE (set != ec::none);
+        ASSERT_TRUE(set != ec::none);
         ASSERT_FALSE(set != ec::foo);
-        ASSERT_TRUE (set != ec::bar);
-        ASSERT_TRUE (set != ec::baz);
+        ASSERT_TRUE(set != ec::bar);
+        ASSERT_TRUE(set != ec::baz);
     }
 
     {
         // requires enabled operators
         flag_set<ec> set = ec::foo | ec::bar;
-        ASSERT_TRUE (set != ec::none);
-        ASSERT_TRUE (set != ec::foo);
-        ASSERT_TRUE (set != ec::bar);
-        ASSERT_TRUE (set != ec::baz);
+        ASSERT_TRUE(set != ec::none);
+        ASSERT_TRUE(set != ec::foo);
+        ASSERT_TRUE(set != ec::bar);
+        ASSERT_TRUE(set != ec::baz);
         ASSERT_FALSE(set != (ec::foo | ec::bar));
     }
 }
@@ -150,34 +145,34 @@ TEST(util_flag_set, create) {
     using fs = flag_set<ec>;
     {
         fs set = ec::foo | ec::bar;
-        ASSERT_TRUE (set.flags == fs(ec::foo | ec::bar).flags);
+        ASSERT_TRUE(set.flags == fs(ec::foo | ec::bar).flags);
     }
 
     {
         fs set = ec::none;
-        ASSERT_TRUE (set.flags == fs().flags);
+        ASSERT_TRUE(set.flags == fs().flags);
     }
 
     {
         fs set;
-        ASSERT_TRUE (set.flags == fs().flags);
+        ASSERT_TRUE(set.flags == fs().flags);
     }
 }
 
 TEST(util_flag_set, add) {
     flag_set<ec> set;
     set.add(ec::foo);
-    ASSERT_TRUE (set == ec::foo);
+    ASSERT_TRUE(set == ec::foo);
     set.add(ec::bar);
-    ASSERT_TRUE (set == (ec::foo | ec::bar));
+    ASSERT_TRUE(set == (ec::foo | ec::bar));
 }
 
 TEST(util_flag_set, remove) {
     flag_set<ec> set = (ec::foo | ec::bar);
     set.remove(ec::foo);
-    ASSERT_TRUE (set == ec::bar);
+    ASSERT_TRUE(set == ec::bar);
     set.remove(ec::bar);
-    ASSERT_TRUE (set == ec::none);
+    ASSERT_TRUE(set == ec::none);
 }
 
 
@@ -266,19 +261,19 @@ TEST(util_flag_set, op_or) {
 
     flag_set<test> x;
 
-    x  = flag_0001;
+    x = flag_0001;
     x |= flag_0010;
     ASSERT_TRUE(x == flag_0011);
 
-    x  = flag_0001;
+    x = flag_0001;
     x |= flag_0011;
     ASSERT_TRUE(x == flag_0011);
 
-    x  = flag_0001;
+    x = flag_0001;
     x |= test::enum_0010;
     ASSERT_TRUE(x == flag_0011);
 
-    x  = flag_0001;
+    x = flag_0001;
     x |= test::enum_0011;
     ASSERT_TRUE(x == flag_0011);
 }
@@ -307,19 +302,19 @@ TEST(util_flag_set, op_xor) {
 
     flag_set<test> x;
 
-    x  = flag_0001;
+    x = flag_0001;
     x ^= flag_0010;
     ASSERT_TRUE(x == flag_0011);
 
-    x  = flag_0001;
+    x = flag_0001;
     x ^= flag_0011;
     ASSERT_TRUE(x == flag_0010);
 
-    x  = flag_0001;
+    x = flag_0001;
     x ^= test::enum_0010;
     ASSERT_TRUE(x == flag_0011);
 
-    x  = flag_0001;
+    x = flag_0001;
     x ^= test::enum_0011;
     ASSERT_TRUE(x == flag_0010);
 }

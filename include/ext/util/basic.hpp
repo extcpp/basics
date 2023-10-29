@@ -13,16 +13,16 @@ namespace ext { namespace util {
 
 template <typename T>
 std::size_t abs_distance(T const& begin, T const& end) {
-    return static_cast<size_t>(std::abs(std::distance(begin,end)));
+    return static_cast<size_t>(std::abs(std::distance(begin, end)));
 }
 
-template<typename F, typename... T>
+template <typename F, typename... T>
 void for_each_arg(F&& function, T&&... args) {
     (function(std::forward<T>(args)), ...); // c++17 fold expression
                                             // EXT_EXPAND_SIDE_EFFECTS(function(std::forward<T>(args)));
 }
 
-template<typename... T>
+template <typename... T>
 void sort_all(T&... args) {
     static auto do_it = [](auto& container) {
         std::sort(std::begin(container), std::end(container));

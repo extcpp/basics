@@ -64,7 +64,7 @@ struct result {
         return *this;
     }
 
-    auto get_message() const & -> std::string {
+    auto get_message() const& -> std::string {
         if (message.empty()) {
             if (code != EXT_OK) {
                 message = error_code_vo_string(code);
@@ -129,7 +129,7 @@ struct result {
     mutable std::string message; // lazy message assignment
 };
 
-template<typename T>
+template <typename T>
 struct typed_result {
     using value_type = T;
     value_type value;
@@ -143,14 +143,14 @@ struct typed_result {
     typed_result() = default;
 
     // handling lvalue references and pointers
-    template<bool x = std::is_lvalue_reference_v<T> || std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
+    template <bool x = std::is_lvalue_reference_v<T> || std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
     typed_result(value_type val, result const& res = {}) : value(val), valid(true), _result(res) {
 #ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
 #endif // EXT_DEBUG
     }
 
-    template<bool x = std::is_lvalue_reference_v<T> || std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
+    template <bool x = std::is_lvalue_reference_v<T> || std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
     typed_result(value_type val, result&& res) : value(val), valid(true), _result(std::move(res)) {
 #ifdef EXT_DEBUG
         std::cerr << "ctor: lvalue ref / pointer - 0 copy" << std::endl;
@@ -159,7 +159,7 @@ struct typed_result {
     // handling lvalue references and pointers - end
 
     // handling lvalues
-    template<int x = !std::is_reference_v<T> && !std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
+    template <int x = !std::is_reference_v<T> && !std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
     typed_result(value_type const& val, result const& res = {})
         : value(val) // copy here
         , valid(true)
@@ -169,7 +169,7 @@ struct typed_result {
 #endif // EXT_DEBUG
     }
 
-    template<int x = !std::is_reference_v<T> && !std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
+    template <int x = !std::is_reference_v<T> && !std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
     typed_result(value_type const& val, result&& res)
         : value(val) // copy here
         , valid(true)
@@ -181,16 +181,16 @@ struct typed_result {
     // handling lvalues - end
 
     // handling rvalue / copy
-    template<std::uint32_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_move_constructible_v<T>,
-             typename std::enable_if_t<x, int> = 0>
+    template <std::uint32_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_move_constructible_v<T>,
+              typename std::enable_if_t<x, int> = 0>
     typed_result(value_type&& val, result const& res = {}) : value(std::move(val)), valid(true), _result(res) {
 #ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
 #endif // EXT_DEBUG
     }
 
-    template<std::uint32_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_move_constructible_v<T>,
-             typename std::enable_if_t<x, int> = 0>
+    template <std::uint32_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_move_constructible_v<T>,
+              typename std::enable_if_t<x, int> = 0>
     typed_result(value_type&& val, result&& res) : value(std::move(val)), valid(true), _result(std::move(res)) {
 #ifdef EXT_DEBUG
         std::cerr << "ctor: rvalue (move ctor) - 0 copy" << std::endl;
@@ -199,9 +199,9 @@ struct typed_result {
     // handling rvalue / copy - end
 
     // handling rvalue / assign
-    template<std::uint64_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_move_constructible_v<T> &&
-                               std::is_move_assignable_v<T>,
-             typename std::enable_if_t<x, int> = 0>
+    template <std::uint64_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_move_constructible_v<T> &&
+                                std::is_move_assignable_v<T>,
+              typename std::enable_if_t<x, int> = 0>
     typed_result(value_type&& val, result const& res = {}) : value(), valid(true), _result(res) {
         this->value = std::move(val);
 #ifdef EXT_DEBUG
@@ -209,9 +209,9 @@ struct typed_result {
 #endif // EXT_DEBUG
     }
 
-    template<std::uint64_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_move_constructible_v<T> &&
-                               std::is_move_assignable_v<T>,
-             typename std::enable_if_t<x, int> = 0>
+    template <std::uint64_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_move_constructible_v<T> &&
+                                std::is_move_assignable_v<T>,
+              typename std::enable_if_t<x, int> = 0>
     typed_result(value_type&& val, result&& res) : value(), valid(true), _result(std::move(res)) {
         this->value = std::move(val);
 #ifdef EXT_DEBUG
@@ -258,7 +258,7 @@ struct typed_result {
 
     // this function does not modify the value - it behaves exactly as it
     // does for the standalone result
-    template<typename... Args>
+    template <typename... Args>
     typed_result& reset(Args&&... args) {
         _result.reset(std::forward<Args>(args)...);
         return *this;
@@ -302,7 +302,7 @@ namespace v2 {
 // template<typename X>
 // typed_result::reset(typed_result<X>&& res)
 
-template<typename T = bool>
+template <typename T = bool>
 struct typed_result {
     using value_type = T;
     mutable std::string message; // lazy message assignment
@@ -313,7 +313,7 @@ struct typed_result {
     typed_result() = default;
 
     // handling lvalue references and pointers
-    template<bool x = std::is_lvalue_reference_v<T> || std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
+    template <bool x = std::is_lvalue_reference_v<T> || std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
     typed_result(value_type val // required
                  ,
                  int co = EXT_OK,
@@ -328,7 +328,7 @@ struct typed_result {
     // handling lvalue references and pointers - end
 
     // handling lvalues
-    template<int x = !std::is_reference_v<T> && !std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
+    template <int x = !std::is_reference_v<T> && !std::is_pointer_v<T>, typename std::enable_if_t<x, int> = 0>
     typed_result(value_type const& val, int co = EXT_OK, std::string const& msg = "")
         : message(msg)
         , code(co)
@@ -339,9 +339,9 @@ struct typed_result {
 #endif // EXT_DEBUG
     }
 
-    template<typename V,
-             int x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_same_v<V, T>,
-             typename std::enable_if_t<x, int> = 0>
+    template <typename V,
+              int x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_same_v<V, T>,
+              typename std::enable_if_t<x, int> = 0>
     typed_result(value_type const& val, typed_result<V>&& res)
         : message(std::move(res.message))
         , code(res.code)
@@ -352,9 +352,9 @@ struct typed_result {
 #endif // EXT_DEBUG
     }
 
-    template<typename V,
-             int x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_same_v<V, T>,
-             typename std::enable_if_t<x, int> = 0>
+    template <typename V,
+              int x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_same_v<V, T>,
+              typename std::enable_if_t<x, int> = 0>
     typed_result(typed_result<V> const& res)
         : message(res.message)
         , code(res.code)
@@ -367,8 +367,8 @@ struct typed_result {
     // handling lvalues - end
 
     // handling rvalue / copy
-    template<std::uint32_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_move_constructible_v<T>,
-             typename std::enable_if_t<x, int> = 0>
+    template <std::uint32_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && std::is_move_constructible_v<T>,
+              typename std::enable_if_t<x, int> = 0>
     typed_result(value_type&& val, int co = EXT_OK, std::string const& msg = "")
         : message(msg)
         , code(co)
@@ -382,9 +382,9 @@ struct typed_result {
     // handling rvalue / copy - end
 
     // handling rvalue / assign
-    template<std::uint64_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_move_constructible_v<T> &&
-                               std::is_move_assignable_v<T>,
-             typename std::enable_if_t<x, int> = 0>
+    template <std::uint64_t x = !std::is_reference_v<T> && !std::is_pointer_v<T> && !std::is_move_constructible_v<T> &&
+                                std::is_move_assignable_v<T>,
+              typename std::enable_if_t<x, int> = 0>
     typed_result(value_type&& val, int co = EXT_OK, std::string const& msg = "") : message(msg), code(co), value() {
         value = std::move(val);
 #ifdef EXT_DEBUG
@@ -477,14 +477,14 @@ struct typed_result {
         return *this;
     }
 
-    template<typename V>
+    template <typename V>
     auto reset(typed_result<V> const& other) -> typed_result& {
         code = other.code;
         message = other.message;
         return *this;
     }
 
-    template<typename V>
+    template <typename V>
     auto reset(typed_result<V>&& other) noexcept -> typed_result& {
         code = other.code;
         message = std::move(other.message);

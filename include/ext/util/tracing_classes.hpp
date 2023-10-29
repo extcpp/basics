@@ -8,7 +8,7 @@
 
 namespace ext { namespace util {
 
-template<class T>
+template <class T>
 class tracing_class {
     T _value;
     static unsigned const _width = 28;

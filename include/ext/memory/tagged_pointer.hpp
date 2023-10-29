@@ -10,7 +10,7 @@
 
 namespace ext { namespace memory {
 
-template<typename T, std::uintptr_t Alignment = std::alignment_of_v<T>>
+template <typename T, std::uintptr_t Alignment = std::alignment_of_v<T>>
 class tagged_pointer {
     std::uintptr_t _pointer;
 

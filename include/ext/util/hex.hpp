@@ -10,7 +10,7 @@
 
 namespace ext { namespace util {
 
-template<typename T>
+template <typename T>
 std::enable_if_t<std::is_integral_v<T>, std::string> encode_hex(T i) {
     std::stringbuf buf;
     std::ostream os(&buf);
@@ -101,4 +101,4 @@ inline std::string decode_hex(std::string_view const& in) {
 }
 
 }}     // namespace ext::util
-#endif // EXT_UTIL_ENCODE_HEADER
+#endif // EXT_UTIL_HEX_HEADER

@@ -5,42 +5,42 @@
 
 namespace ext::meta {
 
-//for parts where we do not have C++20 yet
-template<typename T>
-using remove_cvref_t =  std::remove_cv_t<std::remove_reference_t<T>>;
+// for parts where we do not have C++20 yet
+template <typename T>
+using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
-//replacement of deprecated std::is_pod
-template<typename T>
+// replacement of deprecated std::is_pod
+template <typename T>
 constexpr bool is_pod_v = std::is_trivial_v<T> && std::is_standard_layout_v<T>;
 
 // create conjunction or disjunction of multiple types
 // if_all  - logical and (fold expression)
-template<bool... XS>
+template <bool... XS>
 constexpr bool if_all_v = std::bool_constant<(XS && ...)>::value;
 
 // if_any - logical or (fold expression)
-template<bool... XS>
+template <bool... XS>
 constexpr bool if_any_v = !if_all_v<!XS...>;
 
 
 //// enable_if for more than one condition
 // enable_if_all
-template<typename T, bool... XS>
+template <typename T, bool... XS>
 using enable_if_all_t = std::enable_if_t<(if_all_v<XS...>), T>;
 
 // enable_if_any
-template<typename T, bool... XS>
+template <typename T, bool... XS>
 using enable_if_any_t = std::enable_if_t<(if_any_v<XS...>), T>;
 
 
 //// check if all or any type matches the first type
 // are same
 template <class T, class... Ts>
-inline constexpr bool are_same_v = if_all_v<std::is_same_v<T, Ts> ...>;
+inline constexpr bool are_same_v = if_all_v<std::is_same_v<T, Ts>...>;
 
 // is any
-template<class T, class... Ts>
-inline constexpr bool is_any_v = if_any_v<std::is_same_v<T, Ts> ...>;
+template <class T, class... Ts>
+inline constexpr bool is_any_v = if_any_v<std::is_same_v<T, Ts>...>;
 
 
 } // namespace ext::meta

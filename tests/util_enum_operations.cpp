@@ -57,15 +57,15 @@ TEST(util_enum_operations, op_and) {
     std::uint8_t u;
     test e;
 
-    u  = ui8_0001;
+    u = ui8_0001;
     u &= test::enum_0011;
     ASSERT_TRUE(u == ui8_0001);
 
-    e  = test::enum_0001;
+    e = test::enum_0001;
     e &= ui8_0011;
     ASSERT_TRUE(e == test::enum_0001);
 
-    e  = test::enum_0001;
+    e = test::enum_0001;
     e &= test::enum_0011;
     ASSERT_TRUE(e == test::enum_0001);
 }
@@ -90,15 +90,15 @@ TEST(util_enum_operations, op_or) {
     std::uint8_t u;
     test e;
 
-    u  = ui8_0001;
+    u = ui8_0001;
     u |= test::enum_0011;
     ASSERT_TRUE(u == ui8_0011);
 
-    e  = test::enum_0001;
+    e = test::enum_0001;
     e |= ui8_0011;
     ASSERT_TRUE(e == test::enum_0011);
 
-    e  = test::enum_0001;
+    e = test::enum_0001;
     e |= test::enum_0011;
     ASSERT_TRUE(e == test::enum_0011);
 }
@@ -123,15 +123,15 @@ TEST(util_enum_operations, op_xor) {
     std::uint8_t u;
     test e;
 
-    u  = ui8_0001;
+    u = ui8_0001;
     u ^= test::enum_0011;
     ASSERT_TRUE(u == ui8_0010);
 
-    e  = test::enum_0001;
+    e = test::enum_0001;
     e ^= ui8_0011;
     ASSERT_TRUE(e == test::enum_0010);
 
-    e  = test::enum_0001;
+    e = test::enum_0001;
     e ^= test::enum_0011;
     ASSERT_TRUE(e == test::enum_0010);
 }

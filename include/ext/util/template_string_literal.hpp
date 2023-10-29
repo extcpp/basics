@@ -1,4 +1,4 @@
-// Copyright - Jan Christoph Uhde <Jan@UhdeJC.com>
+// Copyright - xxxx-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #ifndef EXT_UTIL_TEMPLATE_STRING_LITERAL_HEADER
 #define EXT_UTIL_TEMPLATE_STRING_LITERAL_HEADER
@@ -14,7 +14,7 @@ namespace ext::util {
 
 // c++20 -- class types in non-type template parameters
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0732r2.pdf
-template<std::size_t N>
+template <std::size_t N>
 struct template_string_literal {
     constexpr template_string_literal(const char (&str)[N]) {
         std::copy_n(str, N, value);
@@ -23,4 +23,4 @@ struct template_string_literal {
 };
 
 } // namespace ext::util
-#endif
+#endif // EXT_UTIL_TEMPLATE_STRING_LITERAL_HEADER

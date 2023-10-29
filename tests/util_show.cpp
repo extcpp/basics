@@ -53,7 +53,7 @@ TEST(util_pretty, vec_map_vec_int_str) {
     using eu::operator<<;
     ss << out;
     ASSERT_EQ(ss.str(), "[{[1, 2]:\"foo\", [3]:\"bar\"}, {[1, 2]:\"foo\", [3]:\"bar\"}]");
-#endif
+#endif // CLANG_ANALYZE
 }
 
 TEST(util_pretty, set_int) {

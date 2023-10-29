@@ -1,24 +1,24 @@
 // Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
-#include <ext/util/enum.hpp>
 #include <ext/macros/compiler.hpp>
+#include <ext/util/enum.hpp>
 #include <gtest/gtest.h>
 
 namespace eu = ::ext::util;
 
 #ifndef EXT_COMPILER_VC
 TEST(util_enum, is_fixed_enum) {
-    enum class enum_a { };
-    enum class enum_b : uint8_t { };
-    enum enum_c { };
-    enum enum_d : uint8_t { };
+    enum class enum_a {};
+    enum class enum_b : uint8_t {};
+    enum enum_c {};
+    enum enum_d : uint8_t {};
 
     static_assert(eu::is_fixed_enum_v<enum_a>);
     static_assert(eu::is_fixed_enum_v<enum_b>);
     static_assert(!eu::is_fixed_enum_v<enum_c>);
     static_assert(eu::is_fixed_enum_v<enum_d>);
 }
-#endif
+#endif // EXT_COMPILER_VC
 
 TEST(util_enum, enum_to_underlying) {
     enum class enum_a : uint8_t { one = 1, two = 2, three = 3 };

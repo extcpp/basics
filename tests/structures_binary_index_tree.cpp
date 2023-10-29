@@ -8,8 +8,8 @@
 #define EXT_STRUCTURES_BINARY_INDEX_TREE_TEST
 #include <ext/structures/binary_index_tree.hpp>
 
-//#include <ext/util/show.hpp>
-// using ext::util::operator<<;
+// #include <ext/util/show.hpp>
+//  using ext::util::operator<<;
 
 TEST(structures_binary_index_tree, detail) {
     EXPECT_EQ(ext::structures::detail::parent_interrogation(0), 0);
@@ -48,7 +48,7 @@ TEST(structures_binary_index_tree, detail) {
     EXPECT_EQ(ext::structures::detail::parent_update(16), 32);
 }
 
-template<typename Container>
+template <typename Container>
 std::vector<typename Container::value_type> get_sums(Container const& input) {
     std::vector<typename Container::value_type> prefix_sum;
     int sum = 0;
@@ -59,7 +59,7 @@ std::vector<typename Container::value_type> get_sums(Container const& input) {
     return prefix_sum;
 }
 
-template<typename Container>
+template <typename Container>
 std::vector<typename Container::value_type> bit_get_sums(Container const& input) {
     std::vector<typename Container::value_type> prefix_sum;
     for (std::size_t i = 0; i < input.size(); ++i) {
@@ -69,7 +69,7 @@ std::vector<typename Container::value_type> bit_get_sums(Container const& input)
     return prefix_sum;
 }
 
-template<typename Container>
+template <typename Container>
 std::vector<typename Container::value_type> bit_get_values(Container const& input) {
     std::vector<typename Container::value_type> values;
     for (std::size_t i = 0; i < input.size(); ++i) {
@@ -78,7 +78,7 @@ std::vector<typename Container::value_type> bit_get_values(Container const& inpu
     return values;
 }
 
-template<typename Input, typename BitArr, typename Bit>
+template <typename Input, typename BitArr, typename Bit>
 void compare(Input const& input, BitArr const& bit_arr, Bit const& bit, std::string const& desc) {
     ASSERT_EQ(input, bit_get_values(bit_arr)) << desc;
     ASSERT_EQ(input, bit.value_vec()) << desc;

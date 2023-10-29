@@ -13,14 +13,14 @@ namespace ext::util {
 
 namespace pretty {
 // function to print containers
-template<typename T>
+template <typename T>
 inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator<<(std::ostream& out,
                                                                                    const T& container);
-}
+} // namespace pretty
 
 // functions that add quoting in containers
 namespace _detail::pretty {
-//string_view
+// string_view
 inline std::ostream& operator<<(std::ostream& out, std::string_view const& str) {
     using namespace std::literals::string_literals;
     std::operator<<(out, "\""s);
@@ -29,7 +29,7 @@ inline std::ostream& operator<<(std::ostream& out, std::string_view const& str) 
     return out;
 }
 
-//string
+// string
 inline std::ostream& operator<<(std::ostream& out, std::string const& str) {
     using namespace std::literals::string_literals;
     std::operator<<(out, "\""s);
@@ -38,7 +38,7 @@ inline std::ostream& operator<<(std::ostream& out, std::string const& str) {
     return out;
 }
 
-//c-string
+// c-string
 inline std::ostream& operator<<(std::ostream& out, char const* str) {
     using namespace std::literals::string_literals;
     std::operator<<(out, "\""s);
@@ -47,8 +47,8 @@ inline std::ostream& operator<<(std::ostream& out, char const* str) {
     return out;
 }
 
-//pair
-template<typename Key, typename Value>
+// pair
+template <typename Key, typename Value>
 inline std::ostream& out_pair_in_map(std::ostream& out, const std::pair<Key, Value>& pair) {
     using namespace std::literals::string_literals;
     using ext::util::_detail::pretty::operator<<;
@@ -58,7 +58,7 @@ inline std::ostream& out_pair_in_map(std::ostream& out, const std::pair<Key, Val
     return out;
 }
 
-template<typename Container, typename T>
+template <typename Container, typename T>
 inline std::ostream& fmt_internal(std::ostream& out, T&& value) {
     using ext::util::_detail::pretty::operator<<;
     if constexpr (_detail::is_associative<Container>::value) {
@@ -71,12 +71,12 @@ inline std::ostream& fmt_internal(std::ostream& out, T&& value) {
     return out;
 }
 
-} // namespace _detail
+} // namespace _detail::pretty
 
 
 namespace pretty {
 // diverse container
-template<typename T>
+template <typename T>
 inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator<<(std::ostream& out,
                                                                                    const T& container) {
     using namespace std::literals::string_literals;
@@ -114,7 +114,7 @@ inline std::enable_if_t<_detail::is_container<T>::value, std::ostream&> operator
 
 
 // pair outside of container
-template<typename Key, typename Value>
+template <typename Key, typename Value>
 inline std::ostream& operator<<(std::ostream& out, const std::pair<Key, Value>& pair) {
     using namespace std::literals::string_literals;
     using ext::util::_detail::pretty::operator<<;
@@ -126,7 +126,7 @@ inline std::ostream& operator<<(std::ostream& out, const std::pair<Key, Value>& 
 // pair outside of container - end
 
 // tuple
-template<typename Tuple, std::size_t... I>
+template <typename Tuple, std::size_t... I>
 inline std::ostream& fmt(std::ostream& out, const Tuple& tuple, std::index_sequence<I...>) {
     using namespace std::literals::string_literals;
 
@@ -143,20 +143,20 @@ inline std::ostream& fmt(std::ostream& out, const std::tuple<>&, std::index_sequ
     return out;
 }
 
-template<typename... T>
+template <typename... T>
 inline constexpr std::ostream& operator<<(std::ostream& out, const std::tuple<T...>& tuple) {
     return fmt(out, tuple, std::make_index_sequence<sizeof...(T)>());
 }
 // tuple - end
 
-template<typename T>
+template <typename T>
 inline std::string fmt(T&& item) {
     std::stringstream ss;
     ss << std::boolalpha << std::forward<T>(item);
     return ss.str();
 }
 
-} // namespace pretty - end
+} // namespace pretty
 
-}     // namespace ext::util
+} // namespace ext::util
 #endif // EXT_UTIL_PRETTY_HEADER

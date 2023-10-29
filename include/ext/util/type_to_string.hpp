@@ -13,7 +13,7 @@
 
 namespace ext { namespace util {
 
-template<class T>
+template <class T>
 std::string type_to_string()
 //! create string providing description of given type
 {

@@ -15,13 +15,13 @@ namespace ext { namespace structures {
 namespace detail {
 
 // parent in interrogation tree
-template<typename T>
+template <typename T>
 constexpr inline T parent_interrogation(T number) {
     return number - ext::util::lsb(number);
 }
 
 // get index of next node
-template<typename T>
+template <typename T>
 constexpr inline T parent_update(T number) {
     static_assert(-1 == ~0, "not 2's complement");
     // if (number == T(0)) {
@@ -32,7 +32,7 @@ constexpr inline T parent_update(T number) {
 } // namespace detail
 
 // Paper GetCumul
-template<typename T, typename Iterator>
+template <typename T, typename Iterator>
 inline T bit_get_sum(Iterator begin, Iterator /*end*/, std::size_t index) {
     auto sum = *begin;
     while (index > 0) {
@@ -43,7 +43,7 @@ inline T bit_get_sum(Iterator begin, Iterator /*end*/, std::size_t index) {
 }
 
 // Paper PutValue
-template<typename T, typename Iterator>
+template <typename T, typename Iterator>
 inline void bit_modify(Iterator begin, Iterator end, std::size_t index, T value) {
     // zero has no lsb -> endless loop
     if (index == 0) {
@@ -59,7 +59,7 @@ inline void bit_modify(Iterator begin, Iterator end, std::size_t index, T value)
 }
 
 // Paper GetProb
-template<typename T, typename Iterator>
+template <typename T, typename Iterator>
 inline T bit_get(Iterator begin, Iterator /*end*/, std::size_t index) {
     T rv = *(begin + static_cast<std::ptrdiff_t>(index)); // get value at positon
     if (index > std::size_t(0)) {
@@ -73,7 +73,7 @@ inline T bit_get(Iterator begin, Iterator /*end*/, std::size_t index) {
     return rv;
 }
 
-template<typename T, typename Iterator>
+template <typename T, typename Iterator>
 inline void bit_set(Iterator begin, Iterator end, std::size_t index, T value) {
     auto current = bit_get<T>(begin, end, index);
     auto mod_value = value - current;
@@ -91,7 +91,7 @@ inline void bit_set(Iterator begin, Iterator end, std::size_t index, T value) {
 //     return begin + static_cast<std::ptrdiff_t>(index);
 // }
 
-template<typename T>
+template <typename T>
 class binary_index_tree {
     public:
     binary_index_tree(std::size_t size = 8) {

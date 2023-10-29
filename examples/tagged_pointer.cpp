@@ -1,8 +1,8 @@
 // Copyright - 2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 // Please see LICENSE.md for license or visit https://github.com/extcpp/basics
 #include <ext/memory/tagged_pointer.hpp>
-#include <ext/util/bit_tricks.hpp>
 #include <ext/meta/basic.hpp>
+#include <ext/util/bit_tricks.hpp>
 
 #include <atomic>
 #include <iostream>

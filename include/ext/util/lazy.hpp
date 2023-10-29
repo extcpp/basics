@@ -10,7 +10,7 @@ namespace ext { namespace util {
 
 // The following struct is taken from Jean Guegant blog who invites to use it.
 // see: http://jguegant.github.io/blogs/tech/
-template<class Invocable>
+template <class Invocable>
 struct lazy_construct {
     using result_type = std::invoke_result_t<const Invocable&>;
 

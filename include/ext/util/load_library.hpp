@@ -98,7 +98,7 @@ std::string dl_error(void) {
     #else
     std::string rv(lpMsgBuf);
     #endif // UNICODE
-    ::LocalFree(lpMsgBuf);
+        ::LocalFree(lpMsgBuf);
     return rv;
 #endif     // EXT_UNIX
 }

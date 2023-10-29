@@ -43,7 +43,7 @@ constexpr void byte_swap(void* ptr, std::size_t bytes) {
 } // namespace
 
 // host to little unsinged
-template<typename T> // constexpr
+template <typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_little(T in) {
 #ifdef __APPLE__
     if constexpr (sizeof(T) == 2) {
@@ -77,13 +77,13 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_litt
 }
 
 // host to little singed
-template<typename T> // constexpr
+template <typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T> host_to_little(T in) {
     return to_signed(host_to_little(to_unsigned(in)));
 }
 
 // little to host unsinged
-template<typename T> // constexpr
+template <typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> little_to_host(T in) {
 #ifdef __APPLE__
     if constexpr (sizeof(T) == 2) {
@@ -117,13 +117,13 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> little_to_ho
 }
 
 // little to host unsinged
-template<typename T> // constexpr
+template <typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T> little_to_host(T in) {
     return to_signed(little_to_host(to_unsigned(in)));
 }
 
 // host to big unsinged
-template<typename T> // constexpr
+template <typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_big(T in) {
 #ifdef __APPLE__
     if constexpr (sizeof(T) == 2) {
@@ -157,13 +157,13 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> host_to_big(
 }
 
 // host to big singed
-template<typename T> // constexpr
+template <typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T> host_to_big(T in) {
     return to_signed(host_to_big(to_unsigned(in)));
 }
 
 // big to host unsinged
-template<typename T> // constexpr
+template <typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> big_to_host(T in) {
 #ifdef __APPLE__
     if constexpr (sizeof(T) == 2) {
@@ -197,7 +197,7 @@ std::enable_if_t<std::is_integral_v<T> && std::is_unsigned_v<T>, T> big_to_host(
 }
 
 // big to host unsinged
-template<typename T> // constexpr
+template <typename T> // constexpr
 std::enable_if_t<std::is_integral_v<T> && std::is_signed_v<T>, T> big_to_host(T in) {
     return to_signed(big_to_host(to_unsigned(in)));
 }

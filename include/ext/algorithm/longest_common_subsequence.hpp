@@ -2,11 +2,12 @@
 #ifndef EXT_ALGORITHM_LONGEST_COMMON_SUBSEQUENCE_HEADER
 #define EXT_ALGORITHM_LONGEST_COMMON_SUBSEQUENCE_HEADER
 
+#include <algorithm>
 #include <numeric>
 #include <string>
-#include <vector>
-#include <algorithm>
 #include <type_traits>
+#include <vector>
+
 #include <ext/util/pretty.hpp>
 
 namespace ext { namespace algorithm {
@@ -30,17 +31,17 @@ using lcs_matrix = std::vector<std::vector<std::size_t>>; // m x n
 //
 // seq: MJAU
 
-template<typename Container>
+template <typename Container>
 lcs_matrix lcs_solve(Container const& a, Container const& b) {
     auto m = a.size();
     auto n = b.size();
     lcs_matrix rv(m + 1, std::vector<std::size_t>(n + 1, 0));
-    for (std::size_t i=1; i < m+1; ++i) {       // iterates over a
-        for (std::size_t j=1; j < n+1; ++j) {   // iterates over b
-            if(a[i-1] == b[j-1]) {              // -1 because w have the eps
-                rv[i][j] =  rv[i-1][j-1] + 1;   // if a char matches
+    for (std::size_t i = 1; i < m + 1; ++i) {     // iterates over a
+        for (std::size_t j = 1; j < n + 1; ++j) { // iterates over b
+            if (a[i - 1] == b[j - 1]) {           // -1 because w have the eps
+                rv[i][j] = rv[i - 1][j - 1] + 1;  // if a char matches
             } else {
-                rv[i][j] = std::max({rv[i-1][j], rv[i][j-1]});
+                rv[i][j] = std::max({rv[i - 1][j], rv[i][j - 1]});
             }
         }
     }
@@ -58,13 +59,13 @@ Container lcs_get_sequence(lcs_matrix const& m, Container const& a) {
     std::size_t j = m.front().size() - 1;
     std::size_t value = m[i][j];
 
-    while(value != 0) {
-        if (m[i-1][j] == value){
+    while (value != 0) {
+        if (m[i - 1][j] == value) {
             --i;
-        } else if (m[i][j-1] == value) {
+        } else if (m[i][j - 1] == value) {
             --j;
         } else {
-            rv.push_back(a[i-1]);
+            rv.push_back(a[i - 1]);
             value = m[--i][--j];
         }
     }
@@ -72,6 +73,6 @@ Container lcs_get_sequence(lcs_matrix const& m, Container const& a) {
     return rv;
 }
 
-}}
+}} // namespace ext::algorithm
 
-#endif
+#endif // EXT_ALGORITHM_LONGEST_COMMON_SUBSEQUENCE_HEADER
