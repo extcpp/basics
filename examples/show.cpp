@@ -28,11 +28,13 @@ int main(/*int argc, const char *argv[]*/) {
     // prefer this!
     std::cout << vec << std::endl;
 
+#ifndef CLANG_ANALYZE
     // a bit more magic
     std::cout << vec_of_maps << std::endl;
 
     // prefer this!
     std::cout << vec2 << std::endl;
+#endif
 
     return 0;
 }

@@ -12,12 +12,15 @@ class algorithm_longest_common_subsequence : public ::testing::Test {
             auto lenght = lsc_get_length(matrix);
             auto common = lcs_get_sequence(matrix, test_string_pair.first);
 
-            EXPECT_TRUE(expected_lenght == lenght && expected_common == common)
-                << "\n    input: '" << test_string_pair.first << "' and '" << test_string_pair.second << "'"
-                << "\n   result: "  << lenght << " -- " <<  common
-                << "\n expected: "  << expected_lenght << " -- " << expected_common
-                << "\n" << ext::util::pretty::fmt(matrix)
-                << "\n\n";
+        EXPECT_TRUE(expected_lenght == lenght && expected_common == common)
+            << "\n    input: '" << test_string_pair.first << "' and '" << test_string_pair.second << "'"
+            << "\n   result: " << lenght << " -- " << common << "\n expected: " << expected_lenght << " -- "
+            << expected_common << "\n"
+#ifndef CLANG_ANALYZE
+            << ext::util::pretty::fmt(matrix) << "\n\n";
+#else
+            << "\n";
+#endif
     }
 };
 

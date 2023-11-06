@@ -44,6 +44,7 @@ TEST(util_pretty, map_int_str) {
 }
 
 TEST(util_pretty, vec_map_vec_int_str) {
+#ifndef CLANG_ANALYZE
     using Map = std::map<std::vector<int>, std::string>;
     Map item{{std::vector{1, 2}, "foo"s}, {std::vector{3}, "bar"s}};
     std::vector<Map> out = {item, item};
@@ -52,6 +53,7 @@ TEST(util_pretty, vec_map_vec_int_str) {
     using eu::operator<<;
     ss << out;
     ASSERT_EQ(ss.str(), "[{[1, 2]:\"foo\", [3]:\"bar\"}, {[1, 2]:\"foo\", [3]:\"bar\"}]");
+#endif
 }
 
 TEST(util_pretty, set_int) {

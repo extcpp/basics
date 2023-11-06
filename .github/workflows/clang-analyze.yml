@@ -1,0 +1,27 @@
+name: clang-analyze
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
+
+jobs:
+  clang-analyze:
+    runs-on: ubuntu-latest
+    env:
+        SB: scan-build-15
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -yq
+      - run: sudo apt-get install -yq clang-tools-15
+      - run: ${SB} cmake -E make_directory build
+      - working-directory: build/
+        run: ${SB} cmake -DLIBEXT_TESTS=ON -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON -DLIBEXT_EXAMPLES=ON -DEXT_DOWNLOAD=ON -DCLANG_ANALYZE=ON $GITHUB_WORKSPACE
+      - working-directory: build/
+        run: ${SB} cmake --build .

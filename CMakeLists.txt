@@ -12,6 +12,7 @@ option(EXT_WRITE_VERSION "write version.hpp" OFF)
 option(LIBEXT_EXAMPLES "build examples" OFF)
 option(LIBEXT_TESTS "build tests" OFF)
 option(LIBEXT_TESTS_NO_TIME_CRITICAL "disable time critical tests" OFF)
+option(CLANG_ANALYZE "clang analyze build" OFF)
 
 ### configure defer
 option(LIBEXT_WARNINGS "enable warnings" ON)
@@ -29,6 +30,7 @@ set(ext_basics_compile_definitions
     $<$<BOOL:${LIBEXT_TESTS_NO_TIME_CRITICAL}>:EXT_TESTS_NO_TIME_CRITICAL=1>
     $<$<BOOL:${EXT_DEFER_NON_NOTHROW}>:EXT_DEFER_ALLOW_NON_NOTHROW_INVOCABLE=1>
     $<$<BOOL:${EXT_DEFER_MOVE_ASSIGN}>:EXT_DEFER_ENABLE_MOVE_ASSIGN=1>
+    $<$<BOOL:${CLANG_ANALYZE}>:CLANG_ANALYZE>
 )
 
 find_package(Threads REQUIRED)
