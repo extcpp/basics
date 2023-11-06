@@ -2,8 +2,10 @@
 #ifndef EXT_MEMORY_TAGGED_POINTER_HEADER
 #define EXT_MEMORY_TAGGED_POINTER_HEADER
 
-#include <cassert>
 #include <ext/memory/align.hpp>
+
+#include <cassert>
+#include <cstdint>
 #include <memory>
 
 namespace ext { namespace memory {
