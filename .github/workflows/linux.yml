@@ -19,7 +19,7 @@ jobs:
       matrix:
         compiler:
           - g++-12
-          - clang++-14
+          - clang++-15
         build_type: [ Debug, Release ]
 
     # The CMake configure and build commands are platform agnostic and should work equally
