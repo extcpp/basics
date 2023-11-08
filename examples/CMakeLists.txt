@@ -1,6 +1,6 @@
 # Copyright - 2015-2020 - Jan Christoph Uhde <Jan@UhdeJC.com>
 
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.5.0)
 project(ext_examples)
 
 ## required libs
