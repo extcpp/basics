@@ -64,13 +64,22 @@ struct result {
         return *this;
     }
 
-    auto get_message() const -> std::string {
+    auto get_message() const & -> std::string {
         if (message.empty()) {
             if (code != EXT_OK) {
                 message = error_code_vo_string(code);
             }
         }
         return message;
+    }
+
+    auto get_message() && -> std::string {
+        if (message.empty()) {
+            if (code != EXT_OK) {
+                return error_code_vo_string(code);
+            }
+        }
+        return std::move(message);
     }
 
     auto get_code() const -> int {
@@ -222,13 +231,13 @@ struct typed_result {
         return _result.get_message();
     }
     std::string message() && {
-        return std::move(std::move(_result).get_message());
+        return std::move(_result).get_message();
     }
     std::string get_message() const& {
         return _result.get_message();
     }
     std::string get_message() && {
-        return std::move(std::move(_result).get_message());
+        return std::move(_result).get_message();
     }
 
     bool ok() const {
