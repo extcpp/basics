@@ -148,7 +148,7 @@ class scoped_timer {
         }
 
         auto rv = calculate();
-        callback(rv);
+        cb(rv);
         return rv;
     }
 
