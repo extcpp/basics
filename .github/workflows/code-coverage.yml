@@ -1,0 +1,32 @@
+name: Code Coverage
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
+
+jobs:
+  code-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: cmake -E make_directory build
+
+    - working-directory: build/
+      run: cmake $GITHUB_WORKSPACE -DEXT_DOWNLOAD=ON -DLIBEXT_TESTS=ON -DLIBEXT_TESTS_NO_TIME_CRITICAL=ON -DCMAKE_CXX_FLAGS="-coverage" -DCLANG_ANALYZE=ON
+
+    - working-directory: build/
+      run: cmake --build .
+
+    - working-directory: build/
+      run: ctest -VV --output-on-failure
+
+    - working-directory: build/
+      run: bash <(curl -s https://codecov.io/bash)
