@@ -1,4 +1,4 @@
-|cpp| |mit|
+|cpp| |mit| |codecov|
 
 basics
 ======
