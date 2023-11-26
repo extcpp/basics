@@ -23,9 +23,12 @@ bool is_even(int const& x) {
 TEST(util_lru_cache, put_get) {
     es::lru_cache<int, int> cache(3);
     ASSERT_EQ(cache.size(), 0);
-
+    ASSERT_EQ(cache.get(1), nullptr);
+    int const one = 1;
+    int const three = 3;
+    int const seven = 7;
     //---------------------------------
-    cache.put(1, 1);
+    cache.put(1, one);
     cache.put(2, 2);
     cache.put(3, 3);
 
@@ -52,7 +55,7 @@ TEST(util_lru_cache, put_get) {
     //---------------------------------
     // trigger splice
     cache.put(3, 3);
-    cache.put(3, 3);
+    cache.put(three, three);
     cache.put(4, 4);
 
     ASSERT_EQ(cache.size(), 3);
@@ -62,6 +65,17 @@ TEST(util_lru_cache, put_get) {
     ASSERT_EQ(*cache.get(3), 3);
     ASSERT_NE(cache.get(4), nullptr);
     ASSERT_EQ(*cache.get(4), 4);
+    //---------------------------------
+    cache.put(7, seven);
+
+    ASSERT_EQ(cache.size(), 3);
+    ASSERT_EQ(cache.get(2), nullptr);
+    ASSERT_NE(cache.get(3), nullptr);
+    ASSERT_EQ(*cache.get(3), 3);
+    ASSERT_NE(cache.get(4), nullptr);
+    ASSERT_EQ(*cache.get(4), 4);
+    ASSERT_NE(cache.get(7), nullptr);
+    ASSERT_EQ(*cache.get(7), 7);
 }
 
 TEST(util_lru_cache, get_update_and_get_remove) {
@@ -82,6 +96,9 @@ TEST(util_lru_cache, get_update_and_get_remove) {
     //---------------------------------
     ASSERT_EQ(cache.remove_all_matching(is_even), 2);
     ASSERT_EQ(cache.size(), 0);
+
+    //---------------------------------
+    ASSERT_EQ(cache.get_update(666, times_2), nullptr);
 }
 
 TEST(util_lru_cache, update) {
@@ -103,6 +120,10 @@ TEST(util_lru_cache, update) {
     ASSERT_EQ(*cache.get(2), 200);
     ASSERT_EQ(*cache.get(4), 4);
     ASSERT_EQ(*cache.get(3), 300);
+    //---------------------------------
+    *cache.get_mut(3) = 333;
+    ASSERT_EQ(*cache.get(3), 333);
+    ASSERT_EQ(cache.get_mut(666), nullptr);
 }
 
 TEST(util_lru_cache, remove) {
