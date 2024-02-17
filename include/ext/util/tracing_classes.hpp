@@ -13,7 +13,7 @@ class tracing_class {
     T _value;
     static unsigned const _width = 28;
 
-    public:
+public:
     // default constructor
     tracing_class() : _value() {
         std::cout << std::setw(_width) << "Default Constructor:" << _value << std::endl;

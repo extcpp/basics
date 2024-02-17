@@ -37,7 +37,7 @@ struct imemstream : std::basic_istream<T> {
         this->init(&buffer);
     }
 
-    private:
+private:
     membuf<T> buffer;
 };
 

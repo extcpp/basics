@@ -5,7 +5,7 @@
 
 namespace ext { namespace algorithm {
 class algorithm_longest_common_subsequence : public ::testing::Test {
-    protected:
+protected:
     void test_function(std::pair<std::string, std::string> sequences,
                        std::size_t expected_lenght,
                        std::string expected_common) {

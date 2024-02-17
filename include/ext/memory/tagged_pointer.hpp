@@ -29,7 +29,7 @@ class tagged_pointer {
         return ret | (tag & mask);
     };
 
-    public:
+public:
     static constexpr std::uintptr_t alignment = Alignment;
     static constexpr std::uintptr_t mask = Alignment - 1;
 

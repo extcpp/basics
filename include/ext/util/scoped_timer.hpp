@@ -72,17 +72,17 @@ inline void default_callback(scoped_timer_timings const& times) {
 
 template <typename callback_type>
 class scoped_timer {
-    public:
+public:
     using clock = std::chrono::high_resolution_clock;
     using clock_string_vec = std::vector<std::pair<clock::time_point, std::string>>;
 
-    private:
+private:
     callback_type callback;
     clock_string_vec timepoints_with_description;
     bool enabled_in_dtor = true;
     bool add_dtor_entry = true;
 
-    public:
+public:
     scoped_timer(callback_type cb = &_detail::scoped_timer::default_callback, std::string const& name = ""s)
         : callback(cb) {
         init(name);
@@ -172,7 +172,7 @@ class scoped_timer {
         }
     }
 
-    private:
+private:
     // get difference between time-points in nanoseconds
     static std::uint64_t get_time_diff(clock::time_point const& t0, clock::time_point const& t1) {
         return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count());

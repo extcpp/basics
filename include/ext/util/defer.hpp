@@ -61,7 +61,7 @@ struct defer {
         }
     }
 
-    private:
+private:
     Functor functor;
     bool active;
 

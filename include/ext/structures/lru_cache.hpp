@@ -14,7 +14,7 @@ namespace ext::structures {
 
 template <typename Key, typename Value>
 class lru_cache {
-    public:
+public:
     lru_cache(size_t max_size) : _max_size{max_size} {}
     lru_cache(lru_cache const&) = delete;
 
@@ -175,7 +175,7 @@ class lru_cache {
         return _map.size();
     }
 
-    private:
+private:
     std::list<std::pair<Key, Value>> _list;
     std::unordered_map<Key, decltype(_list.begin())> _map;
     size_t _max_size;

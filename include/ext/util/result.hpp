@@ -135,10 +135,10 @@ struct typed_result {
     value_type value;
     bool valid = true;
 
-    private:
+private:
     result _result;
 
-    public:
+public:
     //// constructors
     typed_result() = default;
 

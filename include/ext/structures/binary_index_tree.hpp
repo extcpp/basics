@@ -93,7 +93,7 @@ inline void bit_set(Iterator begin, Iterator end, std::size_t index, T value) {
 
 template <typename T>
 class binary_index_tree {
-    public:
+public:
     binary_index_tree(std::size_t size = 8) {
         std::size_t new_size = size;
 
@@ -159,7 +159,7 @@ class binary_index_tree {
         return _storage;
     }
 #endif // EXT_STRUCTURES_BINARY_INDEX_TREE_TEST
-    private:
+private:
     void grow_fill(std::size_t index) {
         if (index >= _storage.size()) {
             EXT_ASSERT(ext::util::is_power_of_two(_storage.size()));

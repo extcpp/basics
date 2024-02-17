@@ -12,7 +12,7 @@ namespace ext { namespace util {
  */
 
 class not_implemented_exception : public std::logic_error {
-    public:
+public:
     explicit not_implemented_exception() : std::logic_error("not implemented"){};
     explicit not_implemented_exception(std::string const& arg) : std::logic_error(arg){};
     explicit not_implemented_exception(char const* arg) : std::logic_error(arg){};
@@ -24,7 +24,7 @@ class not_implemented_exception : public std::logic_error {
 };
 
 class debug_exception : public std::logic_error {
-    public:
+public:
     explicit debug_exception(std::string const& arg) : std::logic_error(arg){};
     explicit debug_exception(char const* arg) : std::logic_error(arg){};
     debug_exception(debug_exception const&) = default;
@@ -35,7 +35,7 @@ class debug_exception : public std::logic_error {
 };
 
 class permission_denied_exception : public std::runtime_error {
-    public:
+public:
     explicit permission_denied_exception(std::string const& arg) : std::runtime_error(arg){};
     explicit permission_denied_exception(char const* arg) : std::runtime_error(arg){};
     permission_denied_exception(permission_denied_exception const&) = default;
@@ -46,7 +46,7 @@ class permission_denied_exception : public std::runtime_error {
 };
 
 class cat_not_connect_exception : public std::runtime_error {
-    public:
+public:
     explicit cat_not_connect_exception(std::string const& arg) : std::runtime_error(arg){};
     explicit cat_not_connect_exception(char const* arg) : std::runtime_error(arg){};
     cat_not_connect_exception(cat_not_connect_exception const&) = default;

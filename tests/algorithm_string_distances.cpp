@@ -5,7 +5,7 @@
 
 namespace ext { namespace algorithm { namespace distances {
 class string_distance_fixture : public ::testing::Test {
-    protected:
+protected:
     typedef std::vector<std::pair<std::string, std::string>> test_data_type;
     test_data_type test_data;
     string_distance_fixture() {
