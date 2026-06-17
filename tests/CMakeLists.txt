@@ -21,6 +21,7 @@ set(test-files
 
     "structures_binary_index_tree"
     "structures_lru_cache"
+    "structures_trie"
 
     "util_basic"
     "util_cast"
